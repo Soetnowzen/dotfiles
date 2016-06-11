@@ -6,7 +6,6 @@ help:
 	@echo "Choose a platform (arch/windows)"
 
 all:
-	bash
 
 bash:
 	ln -fsn $(here)/bash/bash_profile $(HOME)/.bash_profile
@@ -15,5 +14,8 @@ bash:
 vim:
 	ln -fsn $(here)/vim/vimrc $(HOME)/.vimrc
 	git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
+
+vimperator:
+	ln -fsn $(here)/vimperator/vimperatorrc $(HOME)/.vimperatorrc
 
 .PHONY: bash
