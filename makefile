@@ -6,6 +6,7 @@ help:
 	@echo "Choose a platform (arch/windows)"
 
 all:
+	bash vim vimperator
 
 bash:
 	ln -fsn $(here)/bash/bash_profile $(HOME)/.bash_profile
