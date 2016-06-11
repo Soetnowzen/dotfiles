@@ -1,0 +1,150 @@
+set nocompatible
+filetype off
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+if &term =~ "xterm\\|urxvt"
+  let &t_SI .= "\<Esc>[5 q"
+  let &t_EI .= "\<Esc>[1 q"
+endif
+
+" vimdiff opens in vertical mode now
+" set diffopt=vertical
+
+" Sets row numbers
+set number
+
+" unmap ctrl + Y
+iunmap <C-Y>
+
+" Navigate wrapped lines
+nnoremap j gj
+nnoremap k gk
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-h> <C-W>h
+nnoremap <C-l> <C-W>l
+
+" normal mode remap case switch
+nnoremap § ~
+
+" visual mode remap case switch
+vnoremap § ~
+
+nnoremap <space> :noh<cr>
+
+" Insertion mode remaps
+inoremap :w<cr> <Esc>:w<cr>a
+inoremap :wq<cr> <Esc>:wq<cr>
+inoremap jj <Esc>
+
+" Cursor marking
+set cursorline
+
+" Leave a few lines when scrolling
+set scrolloff=3
+
+" Changes tabulary to spaces
+set expandtab
+
+" Tabs only two spaces
+set tabstop=2
+set shiftwidt=2
+
+" Ventral directory for swap files
+set directory=~/.vim/temp//,.
+
+" Removes useless gui crap
+set guioptions-=M
+set guioptions-=T
+set guioptions-=r
+set guioptions-=m
+
+" Doesn't save swp-files after each session
+" set nobackup
+" set noundofile
+
+" :e ignores files
+set wildignore=*.o, *.exe, *.hi, *.swp
+
+" Vundle
+set rtp+=~/.vim/bundle
+call vundle#begin('~/.vim/bundle')
+
+Plugin 'gmarik/Vundle.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'ctrlpvim/ctrlp.vim'
+
+call vundle#end()
+fletype plugin indent on
+
+" ctrlp.vim basic options
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+
+" Map Ctrl-n to open the NERDTree
+map <C-n> :NERDTreeToggle<CR>
+
+" Syntastic stuff
+let g:syntastic_check_on_open=1
+let g:syntastic_enable_signs=1
+
+set splitbelow
+set splitright
+
+" Sets colors based on a dark background
+" if gvim else vim
+syntax enable
+let g:solarized_italic=0 " 0 | 1
+let g:solarized_underline=0 " 0 | 1
+let g:solarized_bold=0 " 0 | 1
+let g:solarized_contrast="high" " low | normal | high
+let g:solarized_visibility="high" " low | normal | high
+let g:solarized_termcolors=16 " 16 | 256
+let g:solarized_termtrans=0 " 0 | 1
+if has('gui_running')
+  set background=light
+
+  " set guifont
+  set guifont=consolas:h8:w4
+
+  " Window Size
+  if exists("+columns")
+    set columns=90
+  endif
+  if exists("+lines")
+    set lines=64
+  endif
+else
+  set background=dark
+endif
+colorscheme solarized
+
+" Creates a Bobo for marking error spaces
+highlight Bobo guifg=Magenta ctermfg=Magenta
+highlight ColorColumn guifg=Magenta ctermfg=Magenta
+highlight trail guifg=Red ctermfg=Red
+
+" Error tokens after 80 tokens
+let &colorcolumn=join(range(81,999),",")
+
+" Highlight trailing spaces
+augroup trailing
+  au!
+  au InsertEnter * :match none /\s\+$/
+  au InsertEnter * :match trail /\s\+$/
+augroup END
+
+" Show search matches while typing
+set incsearch
+
+" Show autocompletion options
+set wildmeny
+set wildmode=list:longest,full
+
+" Added a new command to remove trailing spaces
+" (search and replace / whitespaces / one or more, end of line)
+command RemoveSpaces %s/\s\+$/
