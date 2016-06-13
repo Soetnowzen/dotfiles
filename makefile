@@ -18,5 +18,6 @@ vim:
 
 vimperator:
 	ln -fsn $(here)/vimperator/vimperatorrc $(HOME)/.vimperatorrc
+	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
 .PHONY: bash
