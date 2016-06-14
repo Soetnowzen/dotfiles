@@ -1,3 +1,8 @@
+# Make sure .bashrc has:
+# if [ -f ~/.bash_aliases ]; then
+#     . ~/.bash_aliases
+# fi
+
 # unix
 alias ls='ls --color'
 alias la='ls -A'
