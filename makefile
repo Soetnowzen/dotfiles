@@ -15,9 +15,10 @@ bash:
 vim:
 	ln -fsn $(here)/vim/vimrc $(HOME)/.vimrc
 	git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
+	vim +PluginInstall +qall
 
 vimperator:
 	ln -fsn $(here)/vimperator/vimperatorrc $(HOME)/.vimperatorrc
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
-.PHONY: bash
+.PHONY: bash vim vimperator
