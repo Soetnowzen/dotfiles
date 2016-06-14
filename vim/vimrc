@@ -66,11 +66,11 @@ set guioptions-=m
 " set noundofile
 
 " :e ignores files
-set wildignore=*.o, *.exe, *.hi, *.swp
+"set wildignore=*.o, *.exe, *.hi, *.swp
 
 " Vundle
-set rtp+=~/.vim/bundle
-call vundle#begin('~/.vim/bundle')
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/syntastic'
@@ -79,7 +79,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'ctrlpvim/ctrlp.vim'
 
 call vundle#end()
-fletype plugin indent on
+filetype plugin indent on
 
 " ctrlp.vim basic options
 let g:ctrlp_map = '<c-p>'

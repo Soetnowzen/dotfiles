@@ -14,7 +14,10 @@ bash:
 
 vim:
 	ln -fsn $(here)/vim/vimrc $(HOME)/.vimrc
-	git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim
+	if [ -d $(HOME)/.vim/bundle/Vundle.vim ]; \
+		then echo "Vundle exists"; \
+		else git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
+	fi
 	vim +PluginInstall +qall
 
 vimperator:
