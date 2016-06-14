@@ -50,9 +50,9 @@ set expandtab
 
 " Tabs only two spaces
 set tabstop=2
-set shiftwidt=2
+set shiftwidth=2
 
-" Ventral directory for swap files
+" Central directory for swap files
 set directory=~/.vim/temp//,.
 
 " Removes useless gui crap
@@ -126,7 +126,7 @@ colorscheme solarized
 " Creates a Bobo for marking error spaces
 highlight Bobo guifg=Magenta ctermfg=Magenta
 highlight ColorColumn guifg=Magenta ctermfg=Magenta
-highlight trail guifg=Red ctermfg=Red
+highlight trail guifg=Magenta ctermfg=Magenta
 
 " Error tokens after 80 tokens
 let &colorcolumn=join(range(81,999),",")
@@ -135,14 +135,14 @@ let &colorcolumn=join(range(81,999),",")
 augroup trailing
   au!
   au InsertEnter * :match none /\s\+$/
-  au InsertEnter * :match trail /\s\+$/
+  au InsertLeave * :match trail /\s\+$/
 augroup END
 
 " Show search matches while typing
 set incsearch
 
 " Show autocompletion options
-set wildmeny
+set wildmenu
 set wildmode=list:longest,full
 
 " Added a new command to remove trailing spaces
