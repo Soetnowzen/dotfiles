@@ -1,3 +1,13 @@
+# unix
 alias ls='ls --color'
 alias la='ls -A'
 alias ll='la -l'
+alias vimr='vim ~/.vimrc'
+
+# Magento
+magento_path='/var/www/html/magento-trial'
+alias mage_root='cd $magento_path'
+alias mage_theme='mage_root && cd app/design/frontend/Venustheme/'
+alias mage_module='mage_root && cd app/code/Ves'
+alias mage_build='$magento_path/bin/magento setup:upgrade --keep-generated'
+alias mage_static='$magento_path/bin/magento setup:static-content:deploy en_US sv_SE'
