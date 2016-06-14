@@ -53,7 +53,13 @@ set tabstop=2
 set shiftwidth=2
 
 " Central directory for swap files
-set directory=~/.vim/temp//,.
+set directory-=$HOME/.vim/tmp
+set directory^=$HOME/.vim/tmp//
+set backupdir-=$HOME/.vim/tmp
+set backupdir^=$HOME/.vim/tmp//
+"set backupdir=./backup,.,/tmp
+"set directory=.,./.backup,/tmp
+"set directory=~/.vim/temp//,.
 
 " Removes useless gui crap
 set guioptions-=M

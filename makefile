@@ -9,8 +9,9 @@ all:
 	bash vim vimperator
 
 bash:
-	ln -fsn $(here)/bash/bash_profile $(HOME)/.bash_profile
-	ln -fsn $(here)/bash/bashrc $(HOME)/.bashrc
+	ln -fsn $(here)/bash/bash_aliases $(HOME)/.bash_aliases
+	#ln -fsn $(here)/bash/bash_profile $(HOME)/.bash_profile
+	#ln -fsn $(here)/bash/bashrc $(HOME)/.bashrc
 
 vim:
 	ln -fsn $(here)/vim/vimrc $(HOME)/.vimrc
