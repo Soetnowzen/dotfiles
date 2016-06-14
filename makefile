@@ -19,6 +19,7 @@ vim:
 		then echo "Vundle exists"; \
 		else git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
 	fi
+	mkdir -p $(HOME)/.vim/.backup
 	vim +PluginInstall +qall
 
 vimperator:

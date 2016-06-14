@@ -53,10 +53,13 @@ set tabstop=2
 set shiftwidth=2
 
 " Central directory for swap files
-set directory-=$HOME/.vim/tmp
-set directory^=$HOME/.vim/tmp//
-set backupdir-=$HOME/.vim/tmp
-set backupdir^=$HOME/.vim/tmp//
+set backup
+set directory-=$HOME/.vim/.backup
+set directory^=$HOME/.vim/.backup//
+set backupdir-=$HOME/.vim/.backup
+set backupdir^=$HOME/.vim/.backup//
+set writebackup
+
 "set backupdir=./backup,.,/tmp
 "set directory=.,./.backup,/tmp
 "set directory=~/.vim/temp//,.
