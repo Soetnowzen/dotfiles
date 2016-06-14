@@ -101,11 +101,11 @@ syntax enable
 let g:solarized_italic=0 " 0 | 1
 let g:solarized_underline=0 " 0 | 1
 let g:solarized_bold=0 " 0 | 1
-let g:solarized_contrast="high" " low | normal | high
-let g:solarized_visibility="high" " low | normal | high
 let g:solarized_termcolors=16 " 16 | 256
 let g:solarized_termtrans=0 " 0 | 1
 if has('gui_running')
+  let g:solarized_contrast="high" " low | normal | high
+  let g:solarized_visibility="high" " low | normal | high
   set background=light
 
   " set guifont
@@ -119,6 +119,8 @@ if has('gui_running')
     set lines=64
   endif
 else
+  let g:solarized_contrast="low" " low | normal | high
+  let g:solarized_visibility="low" " low | normal | high
   set background=dark
 endif
 colorscheme solarized
