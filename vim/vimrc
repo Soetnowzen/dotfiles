@@ -115,10 +115,11 @@ let g:solarized_termtrans=0 " 0 | 1
 if has('gui_running')
   let g:solarized_contrast="high" " low | normal | high
   let g:solarized_visibility="high" " low | normal | high
-  set background=light
+  "set background=light
+  set background=dark
 
   " set guifont
-  set guifont=consolas:h8:w4
+  "set guifont=consolas:h8:w4
 
   " Window Size
   if exists("+columns")
@@ -140,7 +141,7 @@ highlight ColorColumn guifg=Magenta ctermfg=Magenta
 highlight trail guifg=Magenta ctermfg=Magenta
 
 " Error tokens after 80 tokens
-let &colorcolumn=join(range(81,999),",")
+let colorcolumn=join(range(81,999),",")
 
 " Highlight trailing spaces
 augroup trailing
