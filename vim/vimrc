@@ -25,6 +25,10 @@ nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-h> <C-W>h
 nnoremap <C-l> <C-W>l
+nnoremap <Left> <C-W><
+nnoremap <Right> <C-W>>
+nnoremap <Up> <C-W>+
+nnoremap <Down> <C-W>-
 
 " normal mode remap case switch
 nnoremap § ~
