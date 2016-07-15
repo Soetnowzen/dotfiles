@@ -21,9 +21,9 @@ iunmap <C-Y>
 " Navigate wrapped lines
 nnoremap j gj
 nnoremap k gk
+nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
-nnoremap <C-h> <C-W>h
 nnoremap <C-l> <C-W>l
 nnoremap <Left> <C-W><
 nnoremap <Right> <C-W>>
@@ -31,10 +31,10 @@ nnoremap <Up> <C-W>+
 nnoremap <Down> <C-W>-
 
 " normal mode remap case switch
-nnoremap ง ~
+nnoremap ยง ~
 
 " visual mode remap case switch
-vnoremap ง ~
+vnoremap ยง ~
 
 nnoremap <space> :noh<cr>
 
@@ -71,8 +71,8 @@ set writebackup
 " Removes useless gui crap
 set guioptions-=M
 set guioptions-=T
-set guioptions-=r
 set guioptions-=m
+set guioptions-=r
 
 " Doesn't save swp-files after each session
 " set nobackup
@@ -85,25 +85,25 @@ set guioptions-=m
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'ctrlpvim/ctrlp.vim'
 
 call vundle#end()
 filetype plugin indent on
 
 " ctrlp.vim basic options
-let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_map = '<c-p>'
 
 " Map Ctrl-n to open the NERDTree
 map <C-n> :NERDTreeToggle<CR>
 
 " Syntastic stuff
-let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
+let g:syntastic_check_on_open=1
 
 set splitbelow
 set splitright
@@ -111,11 +111,11 @@ set splitright
 " Sets colors based on a dark background
 " if gvim else vim
 syntax enable
-let g:solarized_italic=0 " 0 | 1
-let g:solarized_underline=0 " 0 | 1
 let g:solarized_bold=0 " 0 | 1
+let g:solarized_italic=0 " 0 | 1
 let g:solarized_termcolors=16 " 16 | 256
 let g:solarized_termtrans=0 " 0 | 1
+let g:solarized_underline=0 " 0 | 1
 if has('gui_running')
   let g:solarized_contrast="high" " low | normal | high
   let g:solarized_visibility="high" " low | normal | high
@@ -144,7 +144,8 @@ highlight ColorColumn guifg=Magenta ctermfg=Magenta
 highlight trail guifg=Magenta ctermfg=Magenta
 
 " Error tokens after 80 tokens
-let &colorcolumn=join(range(81,999),",")
+" let &colorcolumn=join(range(81,999),",")
+let colorcolumn = 81
 
 " Highlight trailing spaces
 augroup trailing
