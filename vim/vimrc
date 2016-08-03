@@ -45,6 +45,7 @@ inoremap jj <Esc>
 
 " Cursor marking
 set cursorline
+set cursorcolumn
 
 " Leave a few lines when scrolling
 set scrolloff=3
