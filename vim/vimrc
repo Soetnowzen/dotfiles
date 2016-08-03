@@ -31,10 +31,10 @@ nnoremap <Up> <C-W>+
 nnoremap <Down> <C-W>-
 
 " normal mode remap case switch
-nnoremap ยง ~
+nnoremap ง ~
 
 " visual mode remap case switch
-vnoremap ยง ~
+vnoremap ง ~
 
 nnoremap <space> :noh<cr>
 
