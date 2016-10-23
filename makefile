@@ -24,6 +24,7 @@ vim:
 
 vimperator:
 	ln -fsn $(here)/vimperator/vimperatorrc $(HOME)/.vimperatorrc
+	mkdir -p $(HOME)/.vimperator/colors
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
 .PHONY: bash vim vimperator
