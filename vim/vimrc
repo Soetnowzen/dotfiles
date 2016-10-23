@@ -47,6 +47,9 @@ inoremap jj <Esc>
 set cursorline
 set cursorcolumn
 
+" Set fold method to be indentation instead of manual
+set fdm=indent
+
 " Leave a few lines when scrolling
 set scrolloff=3
 
