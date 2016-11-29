@@ -60,6 +60,15 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
+au BufNewFile,BufRead *.py, *.pl
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+
 " Central directory for swap files
 set backup
 set directory-=$HOME/.vim/.backup
