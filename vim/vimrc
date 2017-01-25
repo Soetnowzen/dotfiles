@@ -61,13 +61,13 @@ set tabstop=2
 set shiftwidth=2
 
 au BufNewFile,BufRead *.py, *.pl
-    \ set tabstop=4 |
-    \ set softtabstop=4 |
-    \ set shiftwidth=4 |
-    \ set textwidth=79 |
-    \ set expandtab |
-    \ set autoindent |
-    \ set fileformat=unix |
+  \ set tabstop=4 |
+  \ set softtabstop=4 |
+  \ set shiftwidth=4 |
+  \ set textwidth=79 |
+  \ set expandtab |
+  \ set autoindent |
+  \ set fileformat=unix |
 
 " Central directory for swap files
 set backup
@@ -113,6 +113,8 @@ let g:ctrlp_map = '<c-p>'
 
 " Map Ctrl-n to open the NERDTree
 map <C-n> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$']
+let NERDTreeQuitOnOpen = 1
 
 " Syntastic stuff
 let g:syntastic_enable_signs=1
