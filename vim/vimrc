@@ -60,14 +60,18 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
-au BufNewFile,BufRead *.py, *.pl
-  \ set tabstop=4 |
-  \ set softtabstop=4 |
-  \ set shiftwidth=4 |
-  \ set textwidth=79 |
-  \ set expandtab |
-  \ set autoindent |
-  \ set fileformat=unix |
+au BufRead,BufNewFile *.py,*.pyw,*.pl set tabstop=4
+au BufRead,BufNewFile *.py,*.pyw,*.pl set shiftwidth=4
+au BufRead,BufNewFile Makefile* set noexpandtab
+
+" au BufNewFile,BufRead *.py,*.pl
+"   \ set tabstop=4 |
+"   \ set softtabstop=4 |
+"   \ set shiftwidth=4 |
+"   \ set textwidth=79 |
+"   \ set expandtab |
+"   \ set autoindent |
+"   \ set fileformat=unix |
 
 " Central directory for swap files
 set backup
