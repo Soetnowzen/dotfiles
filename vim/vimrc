@@ -102,6 +102,7 @@ set guioptions-=r
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'gmarik/Vundle.vim'
@@ -149,7 +150,7 @@ if has('gui_running')
   " Window Size
   if exists("+columns")
     set columns=90
-    au BufRead,BufNewFile *.py,*.pyw,*.pl set columns=125
+    au BufRead,BufNewFile *.py,*.pyw,*.pl set columns=130
   endif
   if exists("+lines")
     set lines=64
