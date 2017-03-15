@@ -169,7 +169,8 @@ highlight trail guifg=Magenta ctermfg=Magenta
 
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
-let colorcolumn = 81
+set colorcolumn=81
+au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121
 
 " Highlight trailing spaces
 augroup trailing
