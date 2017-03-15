@@ -149,6 +149,7 @@ if has('gui_running')
   " Window Size
   if exists("+columns")
     set columns=90
+    au BufRead,BufNewFile *.py,*.pyw,*.pl set columns=125
   endif
   if exists("+lines")
     set lines=64
