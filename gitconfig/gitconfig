@@ -14,3 +14,4 @@
   lg2 = log --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s%C(blue)\\ [%cn]" --decorate --graph
 [user]
 	name = Soetnowzen
+	email = BaraFinkel@gmail.com
