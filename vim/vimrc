@@ -150,6 +150,7 @@ highlight trail guifg=Magenta ctermfg=Magenta
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
 let colorcolumn = 81
+" match trail /\%81v.\+/
 
 " Highlight trailing spaces
 augroup trailing
@@ -157,6 +158,7 @@ augroup trailing
   au InsertEnter * :match none /\s\+$/
   au InsertLeave * :match trail /\s\+$/
 augroup END
+
 
 " Show search matches while typing
 set incsearch
