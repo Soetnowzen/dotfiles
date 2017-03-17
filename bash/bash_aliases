@@ -9,7 +9,9 @@ alias la='ls -A'
 alias ll='la -l'
 alias vimr='vim ~/.vimrc'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
-alias findBrokenLinks='find -L . -type l'
+alias find_broken_links='find -L . -type l'
+
+PS1='$(whoami)@$(hostname):$(pwd)>'
 
 # Magento
 magento_path='/var/www/html/magento-trial'

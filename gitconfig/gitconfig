@@ -1,7 +1,7 @@
+[color]
+	ui = auto
 [core]
   editor = vim
-[color]
-  ui = auto
 [alias]
   st = status
   a = add
@@ -13,5 +13,4 @@
   lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s%C(reset)%C(blue)[%an]%C(reset)%C(green)(%ar)%C(reset)' --all
   lg2 = log --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s%C(blue)\\ [%cn]" --decorate --graph
 [user]
-	email = BaraFinkel@gmail.com
 	name = Soetnowzen
