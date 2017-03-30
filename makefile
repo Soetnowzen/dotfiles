@@ -9,12 +9,12 @@ all:
 	bash vim vimperator git mintty
 
 bash:
-	ln -fsn $(here)/bash/bash_aliases $(HOME)/.bash_aliases
+	ln -fsn $(here)/bash/.bash_aliases $(HOME)/.bash_aliases
 	#ln -fsn $(here)/bash/bash_profile $(HOME)/.bash_profile
 	#ln -fsn $(here)/bash/bashrc $(HOME)/.bashrc
 
 vim:
-	ln -fsn $(here)/vim/vimrc $(HOME)/.vimrc
+	ln -fsn $(here)/vim/.vimrc $(HOME)/.vimrc
 	if [ -d $(HOME)/.vim/bundle/Vundle.vim ]; \
 		then echo "Vundle exists"; \
 		else git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
@@ -23,14 +23,14 @@ vim:
 	vim +PluginInstall +qall
 
 vimperator:
-	ln -fsn $(here)/vimperator/vimperatorrc $(HOME)/.vimperatorrc
+	ln -fsn $(here)/vimperator/.vimperatorrc $(HOME)/.vimperatorrc
 	mkdir -p $(HOME)/.vimperator/colors
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
 git:
-	ln -fsn $(here)/gitconfig/gitconfig $(HOME)/.gitconfig
+	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
 
 mintty:
-	ln -fsn $(here)/minttyrc/minttyrc $(HOME)/.minttyrc
+	ln -fsn $(here)/minttyrc/.minttyrc $(HOME)/.minttyrc
 
 .PHONY: bash vim vimperator git mintty
