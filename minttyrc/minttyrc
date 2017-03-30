@@ -1,5 +1,5 @@
 BoldAsFont=no
-Transparency=medium
+Transparency=low
 FontHeight=8
 Term=xterm-256color
 Scrollbar=none

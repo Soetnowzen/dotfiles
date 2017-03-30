@@ -11,6 +11,6 @@ hi CmdLine -append font-size:11px
 hi CompDesc -append font-size:11px
 
 set hintchars=asdfghjklqwertyuiopzxcvbnm
-source! "C:\\Users\\Baraf_000\\_vimperatorrc.local"
+" source! "C:\\Users\\Baraf_000\\_vimperatorrc.local"
 
 " vim: set ft=vimperator:

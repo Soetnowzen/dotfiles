@@ -6,7 +6,7 @@ help:
 	@echo "Choose a platform (arch/windows)"
 
 all:
-	bash vim vimperator minttyrc
+	bash vim vimperator git mintty
 
 bash:
 	ln -fsn $(here)/bash/bash_aliases $(HOME)/.bash_aliases
@@ -27,7 +27,10 @@ vimperator:
 	mkdir -p $(HOME)/.vimperator/colors
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
-minttyrc:
+git:
+	ln -fsn $(here)/gitconfig/gitconfig $(HOME)/.gitconfig
+
+mintty:
 	ln -fsn $(here)/minttyrc/minttyrc $(HOME)/.minttyrc
 
-.PHONY: bash vim vimperator minttyrc
+.PHONY: bash vim vimperator git mintty
