@@ -1,0 +1,16 @@
+"3.8.2 (created: 2014/02/13 23:52:43)
+
+noremap j jjj
+noremap k kkk
+
+set gui=nonavigation
+
+colorscheme solarized_dark
+
+hi CmdLine -append font-size:11px
+hi CompDesc -append font-size:11px
+
+set hintchars=asdfghjklqwertyuiopzxcvbnm
+" source! "C:\\Users\\Baraf_000\\_vimperatorrc.local"
+
+" vim: set ft=vimperator:
