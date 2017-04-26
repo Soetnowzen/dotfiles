@@ -18,10 +18,10 @@ set number
 " unmap ctrl + Y
 iunmap <C-Y>
 
-if has('win32')
+" if has('win32')
   " Avoid mswin.vim making Ctrl-v ac as paste
-  noremap <C-v> <C-v>
-endif
+noremap <C-v> <C-v>
+" endif
 
 " Navigate wrapped lines
 nnoremap j gj
@@ -65,7 +65,7 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
-au BufRead,BufNewFile *.tex,*.txt set set spell spelllang=en_us
+au BufRead,BufNewFile *.tex,*.txt set spell spelllang=en_us
 au BufRead,BufNewFile *.py,*.pyw,*.pl set tabstop=4
 au BufRead,BufNewFile *.py,*.pyw,*.pl set shiftwidth=4
 au BufRead,BufNewFile Makefile* set noexpandtab
@@ -175,8 +175,8 @@ highlight trail guifg=Magenta ctermfg=Magenta
 
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
-set colorcolumn=81
-au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121
+set colorcolumn=81,82,83
+au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
 
 " Highlight trailing spaces
 augroup trailing
