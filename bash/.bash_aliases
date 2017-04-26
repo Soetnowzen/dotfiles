@@ -11,8 +11,23 @@ alias vimr='vim ~/.vimrc'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
 alias lst='ls -R | grep ":$" | sed -e '"'"'s/:$//'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
+# find . -print | sed -e '/^\.$/d' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 
-PS1='$(whoami)@$(hostname):$(pwd)>'
+# Bash Prompt
+parse_git_branch() {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+# PS1='$(whoami)@$(hostname):$(pwd)>'
+RED="\[$(tput setaf 1)\]"
+GREEN="\[$(tput setaf 2)\]"
+YELLOW="\[$(tput setaf 3)\]"
+BLUE="\[$(tput setaf 4)\]"
+MAGENTA="\[$(tput setaf 5)\]"
+CYAN="\[$(tput setaf 6)\]"
+WHITE="\[$(tput setaf 7)\]"
+RESET="\[$(tput sgr0)\]"
+
+export PS1="\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET} \n$ "
 
 # Magento
 magento_path='/var/www/html/magento-trial'
