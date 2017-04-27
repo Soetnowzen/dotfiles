@@ -1,10 +1,12 @@
+#!/bin/zsh
+
 # Make sure .bashrc has:
 # if [ -f ~/.bash_aliases ]; then
 #     . ~/.bash_aliases
 # fi
 
 # unix
-alias ls='ls --color'
+alias ls='ls --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
 alias vimr='vim ~/.vimrc'
