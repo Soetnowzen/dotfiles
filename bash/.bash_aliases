@@ -30,7 +30,7 @@ CYAN="\[$(tput setaf 6)\]"
 WHITE="\[$(tput setaf 7)\]"
 RESET="\[$(tput sgr0)\]"
 
-export PS1="\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\n$ "
+export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\n$ "
 
 # Magento
 magento_path='/var/www/html/magento-trial'
