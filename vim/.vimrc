@@ -147,16 +147,15 @@ let g:solarized_underline=0 " 0 | 1
 if has('gui_running')
   let g:solarized_contrast="high" " low | normal | high
   let g:solarized_visibility="high" " low | normal | high
-  "set background=light
+  " set background=light
   set background=dark
 
   " set guifont
-  "set guifont=consolas:h8:w4
+  " set guifont=consolas:h8:w4
 
   " Window Size
   if exists("+columns")
     set columns=90
-    au BufRead,BufNewFile *.py,*.pyw,*.pl set columns=130
   endif
   if exists("+lines")
     set lines=64
@@ -184,7 +183,6 @@ augroup trailing
   au InsertEnter * :match none /\s\+$/
   au InsertLeave * :match trail /\s\+$/
 augroup END
-
 
 " Show search matches while typing
 set incsearch
