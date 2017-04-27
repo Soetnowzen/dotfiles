@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Make sure .bashrc has:
 # if [ -f ~/.bash_aliases ]; then
@@ -32,7 +32,9 @@ CYAN="\[$(tput setaf 6)\]"
 WHITE="\[$(tput setaf 7)\]"
 RESET="\[$(tput sgr0)\]"
 
-export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\n$ "
+export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} $ "
+# export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(__git_ps1 \" (%s)\")${RESET}\n$ "
+# export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\n$ "
 
 # Magento
 magento_path='/var/www/html/magento-trial'
