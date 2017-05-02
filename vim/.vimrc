@@ -53,7 +53,39 @@ set cursorline
 set cursorcolumn
 
 " Set fold method to be indentation instead of manual
-set fdm=indent
+" set foldmethod=indent
+" set foldnestmax=10
+" set nofoldenable
+" set foldlevel=1
+" set fdm=syntax
+" set foldlevelstart=1
+
+" let javaScript_fold=1     " JavaScript
+" let perl_fold=1           " Perl
+" let php_folding=1         " PHP
+" let r_syntax_folding=1    " R
+" let ruby_fold=1           " Ruby
+" let sh_fold_enabled=1     " sh
+" let vimsyn_folding='af'   " Vim script
+" let xml_syntax_folding=1  " XML
+function! MyFoldLevel( lineNumber )
+  let thisLine = getline( a:lineNumber )
+  " Don't create fold if entire comment or {} pair is on one line.
+  if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)' )
+    return '='
+  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{' )
+    return "a1"
+  elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}' )
+    return "s1"
+  endif
+  return '='
+endfunction
+setlocal foldexpr=MyFoldLevel(v:lnum)
+setlocal foldmethod=expr
+" set fdm=marker
+" set fmr={,}
+" set fdm=syntax
+" syn region csFold start="{" end="}" transparent fold
 
 " Leave a few lines when scrolling
 set scrolloff=3
@@ -65,19 +97,10 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
-au BufRead,BufNewFile *.tex,*.txt set spell spelllang=en_us
-au BufRead,BufNewFile *.py,*.pyw,*.pl set tabstop=4
 au BufRead,BufNewFile *.py,*.pyw,*.pl set shiftwidth=4
+au BufRead,BufNewFile *.py,*.pyw,*.pl set tabstop=4
+au BufRead,BufNewFile *.tex,*.txt set spell spelllang=en_us
 au BufRead,BufNewFile Makefile* set noexpandtab
-
-" au BufNewFile,BufRead *.py,*.pl
-"   \ set tabstop=4 |
-"   \ set softtabstop=4 |
-"   \ set shiftwidth=4 |
-"   \ set textwidth=79 |
-"   \ set expandtab |
-"   \ set autoindent |
-"   \ set fileformat=unix |
 
 " Central directory for swap files
 set backup
