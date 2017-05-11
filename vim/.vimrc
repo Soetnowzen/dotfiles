@@ -104,10 +104,15 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 
 " Central directory for swap files
 set backup
-set directory-=$HOME/.vim/.backup
-set directory^=$HOME/.vim/.backup//
-set backupdir-=$HOME/.vim/.backup
-set backupdir^=$HOME/.vim/.backup//
+" set directory-=$HOME/.vim/.backup
+" set directory^=$HOME/.vim/.backup//
+set directory=$HOME/.vim/.backup//
+" set backupdir-=$HOME/.vim/.backup
+" set backupdir^=$HOME/.vim/.backup//
+set backupdir=$HOME/.vim/.backup//
+" set undodir-=$HOME/.vim/.backup
+" set undodir^=$HOME/.vim/.backup//
+set undodir=$HOME/.vim/.backup//
 set writebackup
 
 "set backupdir=./backup,.,/tmp
