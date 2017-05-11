@@ -141,7 +141,8 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
+Plugin 'vim-syntastic/syntastic'
 
 call vundle#end()
 filetype plugin indent on
@@ -156,10 +157,30 @@ let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$']
 let NERDTreeQuitOnOpen = 1
 
 " Syntastic stuff
-let g:syntastic_check_on_open=1
-let g:syntastic_enable_perl_checker=1
-let g:syntastic_enable_signs=1
-let g:syntastic_check_on_open=1
+function! s:get_cabal_sandbox()
+  if filereadable('cabal.sandbox.config')
+    let l:output = system('cat cabal.sandbox.config | grep local-repo')
+    let l:dir = matchstr(substitute(l:output, '\n', ' ', 'g'), 'local-repo: \zs\S\+\ze\/packages')
+    return '-s ' . l:dir
+  else
+    return ''
+  endif
+endfunction
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+" let g:syntastic_<filetype>_checkers = ['checker-name>']
+" let g:syntastic_debug = 3
+" let g:syntastic_debug = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_perl_checker = 1
+let g:syntastic_enable_signs = 1
+let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 
 set splitbelow
 set splitright
