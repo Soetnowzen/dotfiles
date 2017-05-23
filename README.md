@@ -6,3 +6,5 @@ Makes symlinks from relevant directories.
  * bash
  * vim
  * vimperator
+ * git
+ * mintty
