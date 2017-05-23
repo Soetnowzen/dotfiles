@@ -10,6 +10,7 @@ alias ls='ls --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
 alias vimr='vim ~/.vimrc'
+alias print_path='echo $PATH | tr : "\n"'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
 # alias lst1='ls -R | grep ":$" | sed -e '"'"'s/:$//'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"

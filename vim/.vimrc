@@ -114,6 +114,7 @@ set backupdir=$HOME/.vim/.backup//
 " set undodir^=$HOME/.vim/.backup//
 set undodir=$HOME/.vim/.backup//
 set writebackup
+set undofile
 
 "set backupdir=./backup,.,/tmp
 "set directory=.,./.backup,/tmp
