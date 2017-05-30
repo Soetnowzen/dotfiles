@@ -6,7 +6,7 @@ help:
 	@echo "Choose a platform (arch/windows)"
 
 all:
-	bash vim vimperator git mintty
+	bash vim vimperator git mintty tcsh
 
 bash:
 	ln -fsn $(here)/bash/.bash_aliases $(HOME)/.bash_aliases
@@ -33,4 +33,7 @@ git:
 mintty:
 	ln -fsn $(here)/minttyrc/.minttyrc $(HOME)/.minttyrc
 
-.PHONY: bash vim vimperator git mintty
+tcsh:
+	ln -fsn $(here)/tcsh/.tcshrc $(HOME)/.tcshrc
+
+.PHONY: bash vim vimperator git mintty tcsh
