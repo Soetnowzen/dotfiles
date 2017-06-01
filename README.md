@@ -8,3 +8,5 @@ Makes symlinks from relevant directories.
  * vimperator
  * git
  * mintty
+ * tcsh
+ * tmux

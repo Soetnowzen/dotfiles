@@ -6,7 +6,7 @@ help:
 	@echo "Choose a platform (arch/windows)"
 
 all:
-	bash vim vimperator git mintty tcsh
+	bash vim vimperator git mintty tcsh tmux
 
 bash:
 	ln -fsn $(here)/bash/.bash_aliases $(HOME)/.bash_aliases
@@ -36,4 +36,7 @@ mintty:
 tcsh:
 	ln -fsn $(here)/tcsh/.tcshrc $(HOME)/.tcshrc
 
-.PHONY: bash vim vimperator git mintty tcsh
+tmux:
+	ln -fsn $(here)/tmux/.tmux.conf $(HOME)/.tmux.conf
+
+.PHONY: bash vim vimperator git mintty tcsh tmux
