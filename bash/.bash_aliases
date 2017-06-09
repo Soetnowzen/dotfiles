@@ -9,6 +9,7 @@
 alias ls='ls --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
+alias ccat='pygmentize -g'
 alias vimr='vim ~/.vimrc'
 alias print_path='echo $PATH | tr : "\n"'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
