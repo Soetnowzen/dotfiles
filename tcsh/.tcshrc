@@ -5,4 +5,4 @@ alias la ls -A
 alias ll la -l
 
 alias getCurrentGitBranch 'git branch |& grep \* | sed "s/\* \(.*\)/ (\1)/"'
-alias precmd set 'prompt = "%{\033[34m%}%n@%m %{\033[32m%}%c%{\033[33m%}`getCurrentGitBranch`%{\033[0m%} %# "'
+alias precmd set 'prompt = "%{\033[34m%}%n@%m %{\033[32m%}%~%{\033[33m%}`getCurrentGitBranch`%{\033[0m%} %# "'
