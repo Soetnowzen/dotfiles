@@ -11,20 +11,24 @@ alias la='ls -A'
 alias ll='la -l'
 alias ccat='pygmentize -g'
 alias vimr='vim ~/.vimrc'
+alias :q='exit'
 alias print_path='echo $PATH | tr : "\n"'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
 # alias lst1='ls -R | grep ":$" | sed -e '"'"'s/:$//'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
 # alias lst1='find . -print | sed -e '"'"'/^\.$/d'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
-# lst2() {
+# lst2()
+# {
 #   find $1 -print | sed -e '/^\.$/d' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
 # }
-lst() {
+lst()
+{
   ls -Rog $1 | grep '^-\|:$'
 }
 
 # Bash Prompt
-parse_git_branch() {
+parse_git_branch()
+{
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 # PS1='$(whoami)@$(hostname):$(pwd)>'
