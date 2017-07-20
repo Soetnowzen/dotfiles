@@ -241,6 +241,10 @@ set incsearch
 set wildmenu
 set wildmode=list:longest,full
 
+" Search for two something seperated by a whitespace & swap + place '='
+" inbetween.
+" s/\(.\+\)\s\+\(.\+\)/\2 = \1/g
+
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)
 command RemoveSpaces %s/\s\+$/
