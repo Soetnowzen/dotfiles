@@ -3,7 +3,7 @@ here := $(shell pwd)
 help:
 	@echo "Select a target"
 	@make -rpn | sed -n -e '/^$$/ { n ; /^[^ ]*:/p}' | egrep -v '^.PHONY' | egrep -v '^all'
-	@echo "Choose a platform (arch/windows)"
+	@echo "Choose a platform (debian/windows)"
 
 all:
 	bash vim vimperator git mintty tcsh tmux
