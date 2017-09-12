@@ -15,6 +15,11 @@ alias :q='exit'
 alias print_path='echo $PATH | tr : "\n"'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
+
+# Solarized
+alias sol.dark='source ~/dotfiles/mintty/sol.dark'
+alias sol.light='source ~/dotfiles/mintty/sol.light'
+
 # alias lst1='ls -R | grep ":$" | sed -e '"'"'s/:$//'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
 # alias lst1='find . -print | sed -e '"'"'/^\.$/d'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
 # lst2()

@@ -31,7 +31,7 @@ git:
 	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
 
 mintty:
-	ln -fsn $(here)/minttyrc/.minttyrc.dark $(HOME)/.minttyrc
+	ln -fsn $(here)/mintty/.minttyrc.dark $(HOME)/.minttyrc
 
 tcsh:
 	ln -fsn $(here)/tcsh/.tcshrc $(HOME)/.tcshrc
