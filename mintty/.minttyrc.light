@@ -1,4 +1,5 @@
 BoldAsFont=no
+BoldAsColour=yes
 Transparency=low
 FontHeight=8
 Term=xterm-256color
@@ -8,6 +9,9 @@ Columns=80
 Rows=94
 Locale=sv_SE
 Charset=UTF-8
+
+Font=Consolas
+AllowBlinking=yes
 
 ForegroundColour=101, 123, 131
 BackgroundColour=253, 246, 227
