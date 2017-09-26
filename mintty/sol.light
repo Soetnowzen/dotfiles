@@ -1,2 +1,4 @@
 echo -ne   '\eP\e]10;#657B83\a'  # Foreground   -> base00
 echo -ne   '\eP\e]11;#FDF6E3\a'  # Background   -> base3
+echo -ne   '\eP\e]10;#626262\a'  # Foreground   -> base00
+echo -ne   '\eP\e]11;#FFFFD7\a'  # Background   -> base3
