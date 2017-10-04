@@ -1,14 +1,21 @@
 [color]
-	ui = auto
+  ui = auto
 [core]
   editor = vim
+  pager = less -R
+[push]
+  default = simple
 [alias]
   s = status
+  st = status
   a = add
   ps = push
   pl = pull
   f = fetch
   c = commit
+  ci = commit
+  co = checkout
+  br = branch
   d = diff
   files = diff-tree --no-commit-id --name-only -r
   lg = !"git lg1"

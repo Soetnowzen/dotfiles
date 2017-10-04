@@ -1,9 +1,10 @@
 #!/bin/tcsh
 
-alias ls ls --color --group-directories-first
+alias ls ls -F --color --group-directories-first
 alias la ls -A
 alias ll la -l
 alias :q exit
+alias print_path 'echo $PATH | tr : "\n"'
 
 alias getCurrentGitBranch 'git branch |& grep \* | sed "s/\* \(.*\)/ (\1)/"'
 alias precmd set 'prompt = "%{\033[34m%}%n@%m %{\033[32m%}%~%{\033[33m%}`getCurrentGitBranch`%{\033[0m%} %# "'
