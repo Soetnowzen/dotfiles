@@ -213,8 +213,9 @@ if has('gui_running')
     set lines=64
   endif
 else
-  let g:solarized_contrast="high" " low | normal | high
-  let g:solarized_visibility="high" " low | normal | high
+  # Perhaps check if windows or unix is running?
+  let g:solarized_contrast="low" " low | normal | high
+  let g:solarized_visibility="low" " low | normal | high
   set background=dark
 endif
 colorscheme solarized
