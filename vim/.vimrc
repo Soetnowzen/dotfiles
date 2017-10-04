@@ -213,7 +213,7 @@ if has('gui_running')
     set lines=64
   endif
 else
-  # Perhaps check if windows or unix is running?
+  " Perhaps check if windows or unix is running?
   let g:solarized_contrast="low" " low | normal | high
   let g:solarized_visibility="low" " low | normal | high
   set background=dark
