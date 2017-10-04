@@ -6,7 +6,7 @@
 # fi
 
 # unix
-alias ls='ls --color --group-directories-first'
+alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
 alias ccat='pygmentize -g'
