@@ -5,6 +5,7 @@ alias la ls -A
 alias ll la -l
 alias :q exit
 alias print_path 'echo $PATH | tr : "\n"'
+alias vimr vim ~/.vimrc
 
 setenv TERM xterm-256color
 
