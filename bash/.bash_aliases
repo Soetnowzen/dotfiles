@@ -51,6 +51,13 @@ export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESE
 # export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(__git_ps1 \" (%s)\")${RESET}\n$ "
 # export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\n$ "
 
+norm="$(printf '\033[0m')" #returns to "normal"
+bold="$(printf '\033[0;1m')" #set bold
+red="$(printf '\033[0;31m')" #set red
+boldred="$(printf '\033[0;1;31m')" #set bold, and set red.
+
+alias test='sed -e "s/[a-zA-Z\_\.]\+\:[0-9]\+/${boldred}&${norm}/g"'  # will color any occurence of someregexp in Bold red
+
 # Magento
 magento_path='/var/www/html/magento-trial'
 alias mage_root='cd $magento_path'
