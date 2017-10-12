@@ -158,7 +158,7 @@ let g:ctrlp_map = '<c-p>'
 map <C-n> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$']
 let NERDTreeQuitOnOpen = 1
-" let NERDTreeDirArrows = 0
+let NERDTreeDirArrows = 0
 " let NERDTreeDirArrowsExpandable = '+'
 " let NERDTreeDirArrowsCollapsible = '~'
 
@@ -189,7 +189,7 @@ let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 
-let g:syntastic_cpp_include_dirs = ['../include', 'include', '/**/export', '../../export', '../export', 'export', '../../src', '../src', 'src', '../test/bin', 'test/bin']
+let g:syntastic_cpp_include_dirs = ['../include', 'include', '/**/inc', '../../inc', '../inc','/**/export', '../../export', '../export', 'export', '../../src', '../src', 'src', '../test/bin', 'test/bin']
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_quiet_messages = {'level': 'warnings'}
