@@ -9,6 +9,7 @@
 alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
+alias grep='grep --color'
 alias ccat='pygmentize -g'
 alias vimr='vim ~/.vimrc'
 alias :q='exit'

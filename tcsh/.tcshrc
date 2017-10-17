@@ -3,11 +3,15 @@
 alias ls ls -F --color --group-directories-first
 alias la ls -A
 alias ll la -l
+alias grep grep --color
 alias :q exit
 alias print_path 'echo $PATH | tr : "\n"'
 alias vimr vim ~/.vimrc
 
 setenv TERM xterm-256color
+
+alias test 'sed -e "s/[a-zA-Z\_\.]\+\:[0-9]\+/%{\033[1;31m%} & %{\033[0m%}/g"'
+alias color_failure "grep --color -rE 'warn|info|fail'"
 
 alias getCurrentGitBranch 'git branch |& grep \* | sed "s/\* \(.*\)/ (\1)/"'
 alias precmd set 'prompt = "%{\033[34m%}%n@%m %{\033[32m%}%~%{\033[33m%}`getCurrentGitBranch`%{\033[0m%} %# "'
