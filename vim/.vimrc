@@ -17,6 +17,57 @@ let &t_EI .= "\<Esc>[1 q"
 " Sets row numbers
 set number
 
+let s:comment_map = {
+      \   "c": '\/\/',
+      \   "cpp": '\/\/',
+      \   "go": '\/\/',
+      \   "java": '\/\/',
+      \   "javascript": '\/\/',
+      \   "lua": '--',
+      \   "scala": '\/\/',
+      \   "php": '\/\/',
+      \   "python": '#',
+      \   "ruby": '#',
+      \   "rust": '\/\/',
+      \   "sh": '#',
+      \   "desktop": '#',
+      \   "fstab": '#',
+      \   "conf": '#',
+      \   "profile": '#',
+      \   "bashrc": '#',
+      \   "bash_profile": '#',
+      \   "mail": '>',
+      \   "eml": '>',
+      \   "bat": 'REM',
+      \   "ahk": ';',
+      \   "vim": '"',
+      \   "tex": '%',
+      \ }
+
+function! ToggleComment()
+  if has_key(s:comment_map, &filetype)
+    let comment_leader = s:comment_map[&filetype]
+    if getline('.') =~ "^\\s*" . comment_leader . " "
+      " Uncomment the line
+      execute "silent s/^\\(\\s*\\)" . comment_leader . " /\\1/"
+    else
+      if getline('.') =~ "^\\s*" . comment_leader
+        " Uncomment the line
+        execute "silent s/^\\(\\s*\\)" . comment_leader . "/\\1/"
+      else
+        " Comment the line
+        execute "silent s/^\\(\\s*\\)/\\1" . comment_leader . " /"
+      end
+    end
+  else
+    echo "No comment leader found for filetype"
+  end
+endfunction
+
+
+nnoremap <leader><Space> :call ToggleComment()<cr>
+vnoremap <C-j> :call ToggleComment()<cr>
+
 " unmap ctrl + Y
 iunmap <C-Y>
 
@@ -189,7 +240,9 @@ let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 
-let g:syntastic_cpp_include_dirs = ['../include', 'include', '/**/inc', '../../inc', '../inc','/**/export', '../../export', '../export', 'export', '../../src', '../src', 'src', '../test/bin', 'test/bin']
+" let g:syntastic_c_cflags = '-I/usr/include/lib'
+
+let g:syntastic_cpp_include_dirs = ['../include', 'include', 'includes', 'headers', '/\*\*/inc', '../../inc', '../inc', 'inc', '/\*\*/export', '../../export', '../export', 'export', '../../src', '../src', 'src', '../test/bin', 'test/bin']
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_quiet_messages = {'level': 'warnings'}

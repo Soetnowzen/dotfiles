@@ -21,6 +21,10 @@ alias find_broken_links='find -L . -type l'
 alias sol.dark='source ~/dotfiles/mintty/sol.dark'
 alias sol.light='source ~/dotfiles/mintty/sol.light'
 
+# Autocomple searches when using up and down
+bind '"\e[A":history-search-backward'
+bind '"\e[B":history-search-forward'
+
 # alias lst1='ls -R | grep ":$" | sed -e '"'"'s/:$//'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
 # alias lst1='find . -print | sed -e '"'"'/^\.$/d'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
 # lst2()
@@ -47,8 +51,7 @@ CYAN="\[$(tput setaf 6)\]"
 WHITE="\[$(tput setaf 7)\]"
 RESET="\[$(tput sgr0)\]"
 
-export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET}
-\$ "
+export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
 # export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(__git_ps1 \" (%s)\")${RESET}\n$ "
 # export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\n$ "
 
