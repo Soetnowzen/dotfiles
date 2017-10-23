@@ -141,6 +141,14 @@ au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
 " set fdm=syntax
 " syn region csFold start="{" end="}" transparent fold
 
+" Regular Expressions set to very magic
+nnoremap / /\v
+vnoremap / /\v
+cnoremap %s %smagic/
+cnoremap \>s/ \>smagic/
+nnoremap :g/ :g/\v
+nnoremap :g// :g//
+
 " Leave a few lines when scrolling
 set scrolloff=3
 
