@@ -135,6 +135,7 @@ function! MyFoldLevel( lineNumber )
 endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
+au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
 " set fdm=marker
 " set fmr={,}
 " set fdm=syntax
@@ -292,7 +293,7 @@ highlight trail guifg=Magenta ctermfg=Magenta
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
 set colorcolumn=81,82,83
-au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
+au BufRead,BufNewFile *.py,*.pyw,*.pl,*.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=121,122,123
 
 " Highlight trailing spaces
 augroup trailing
