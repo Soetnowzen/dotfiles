@@ -1,3 +1,4 @@
+set encoding=utf-8
 set nocompatible
 filetype off
 source $VIMRUNTIME/vimrc_example.vim
@@ -141,6 +142,14 @@ au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
 " set fdm=syntax
 " syn region csFold start="{" end="}" transparent fold
 
+" Regular Expressions set to very magic
+nnoremap / /\v
+vnoremap / /\v
+cnoremap %s %smagic/
+cnoremap \>s/ \>smagic/
+nnoremap :g/ :g/\v
+nnoremap :g// :g//
+
 " Leave a few lines when scrolling
 set scrolloff=3
 
@@ -211,8 +220,8 @@ map <C-n> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$']
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
-" let NERDTreeDirArrowsExpandable = '+'
-" let NERDTreeDirArrowsCollapsible = '~'
+let NERDTreeDirArrowsExpandable = '+'
+let NERDTreeDirArrowsCollapsible = '~'
 
 " Syntastic stuff
 function! s:get_cabal_sandbox()
@@ -303,11 +312,26 @@ augroup trailing
 augroup END
 
 highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+match ExtraWhitespace /\s\+$\|[if\|for\|while][^\ ][\(]/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$\|[if\|for\|while][^\ ][\(]/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$\|[if\|for\|while][^\ ][\(]/
 autocmd BufWinLeave * call clearmatches()
+
+" Before
+" match ExtraWhitespace /[^\ \<\>\+\*\-\/][\+\*\/\-\>\<\^\&\|\=]/
+" autocmd BufWinEnter * match ExtraWhitespace /[^\ \<\>\+\*\-\/][\+\*\/\-\>\<\^\&\|\=]/
+" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+" autocmd InsertLeave * match ExtraWhitespace /[^\ \<\>\+\*\-\/][\+\*\/\-\>\<\^\&\|\=]/
+" autocmd BufWinLeave * call clearmatches()
+
+" After
+" [\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]
+" match ExtraWhitespace /[\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]/
+" autocmd BufWinEnter * match ExtraWhitespace /[\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]/
+" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+" autocmd InsertLeave * match ExtraWhitespace /[\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]/
+" autocmd BufWinLeave * call clearmatches()
 
 " Show search matches while typing
 set incsearch
