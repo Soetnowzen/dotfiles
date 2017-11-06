@@ -36,6 +36,7 @@ let s:comment_map = {
       \   "conf": '#',
       \   "profile": '#',
       \   "bashrc": '#',
+      \   "tcsh": '#',
       \   "bash_profile": '#',
       \   "mail": '>',
       \   "eml": '>',
@@ -46,28 +47,32 @@ let s:comment_map = {
       \ }
 
 function! ToggleComment()
-  if has_key(s:comment_map, &filetype)
-    let comment_leader = s:comment_map[&filetype]
-    if getline('.') =~ "^\\s*" . comment_leader . " "
-      " Uncomment the line
-      execute "silent s/^\\(\\s*\\)" . comment_leader . " /\\1/"
-    else
-      if getline('.') =~ "^\\s*" . comment_leader
+  " Skip if row only are whitespaces
+  if getline('.') !~ "^\\s*$"
+    if has_key(s:comment_map, &filetype)
+      let comment_leader = s:comment_map[&filetype]
+      if getline('.') =~ "^\\s*" . comment_leader . " "
         " Uncomment the line
-        execute "silent s/^\\(\\s*\\)" . comment_leader . "/\\1/"
+        execute "silent s/^\\(\\s*\\)" . comment_leader . " /\\1/"
       else
-        " Comment the line
-        execute "silent s/^\\(\\s*\\)/\\1" . comment_leader . " /"
+        if getline('.') =~ "^\\s*" . comment_leader
+          " Uncomment the line
+          execute "silent s/^\\(\\s*\\)" . comment_leader . "/\\1/"
+        else
+          " Comment the line
+          execute "silent s/^\\(\\s*\\)/\\1" . comment_leader . " /"
+        end
       end
+    else
+      echo "No comment leader found for filetype"
     end
-  else
-    echo "No comment leader found for filetype"
   end
 endfunction
 
 
 nnoremap <leader><Space> :call ToggleComment()<cr>
 vnoremap <C-j> :call ToggleComment()<cr>
+nnoremap <C-j> :call ToggleComment()<cr>
 
 " unmap ctrl + Y
 iunmap <C-Y>
@@ -312,11 +317,15 @@ augroup trailing
   au InsertLeave * :match trail /\s\+$/
 augroup END
 
+let pattern="\\s+$|(if|for|while)\\("
 highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$\|[if\|for\|while][^\ ][\(]/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$\|[if\|for\|while][^\ ][\(]/
+execute 'match ExtraWhitespace /\v'. pattern .'/'
+execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
+execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
+" match ExtraWhitespace /\s\+$/
+" autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$\|[if\|for\|while][^\ ][\(]/
+" autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 " Before
@@ -348,3 +357,5 @@ set wildmode=list:longest,full
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)
 command RemoveSpaces %s/\s\+$/
+" command AddSpaces %smagic/(if|for|while)\(/\1 \(/
+command AddSpaces %s/\(if\|for\|while\)(/\1 (/
