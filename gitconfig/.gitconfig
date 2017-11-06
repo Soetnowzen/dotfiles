@@ -17,6 +17,7 @@
   co = checkout
   br = branch
   d = diff
+  undo = reset --soft HEAD~1
   files = diff-tree --no-commit-id --name-only -r
   lg = !"git lg1"
   lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s%C(reset)%C(blue)[%an]%C(reset)%C(green)(%ar)%C(reset)' --all

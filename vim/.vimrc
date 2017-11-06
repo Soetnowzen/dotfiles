@@ -137,6 +137,7 @@ endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
 au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
+au BufRead,BufNewFile *.py,*.pyw set fdm=indent
 " set fdm=marker
 " set fmr={,}
 " set fdm=syntax
