@@ -19,31 +19,32 @@ let &t_EI .= "\<Esc>[1 q"
 set number
 
 let s:comment_map = {
+      \   "ahk": ';',
+      \   "bash_profile": '#',
+      \   "bashrc": '#',
+      \   "bat": 'REM',
       \   "c": '\/\/',
+      \   "conf": '#',
       \   "cpp": '\/\/',
+      \   "desktop": '#',
+      \   "eml": '>',
+      \   "fstab": '#',
       \   "go": '\/\/',
       \   "java": '\/\/',
       \   "javascript": '\/\/',
       \   "lua": '--',
-      \   "scala": '\/\/',
+      \   "mail": '>',
       \   "php": '\/\/',
+      \   "profile": '#',
       \   "python": '#',
       \   "ruby": '#',
       \   "rust": '\/\/',
+      \   "scala": '\/\/',
       \   "sh": '#',
-      \   "desktop": '#',
-      \   "fstab": '#',
-      \   "conf": '#',
-      \   "profile": '#',
-      \   "bashrc": '#',
+      \   "spec": '#',
       \   "tcsh": '#',
-      \   "bash_profile": '#',
-      \   "mail": '>',
-      \   "eml": '>',
-      \   "bat": 'REM',
-      \   "ahk": ';',
-      \   "vim": '"',
       \   "tex": '%',
+      \   "vim": '"',
       \ }
 
 function! ToggleComment()
@@ -210,12 +211,21 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'gmarik/Vundle.vim'
+Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'scrooloose/nerdtree'
 " Plugin 'scrooloose/syntastic'
 Plugin 'vim-syntastic/syntastic'
 
 call vundle#end()
 filetype plugin indent on
+
+" vim-cpp-enhanced-highlight
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+" let g:cpp_experimental_simple_template_highlight = 1  " Or
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_no_function_highlight = 1
 
 " ctrlp.vim basic options
 let g:ctrlp_cmd = 'CtrlP'
@@ -255,6 +265,8 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
+
+let g:syntastic_python_checkers=['flake8']
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
 
@@ -308,7 +320,8 @@ highlight trail guifg=Magenta ctermfg=Magenta
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
 set colorcolumn=81,82,83
-au BufRead,BufNewFile *.py,*.pyw,*.pl,*.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=121,122,123
+au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
+au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
 
 " Highlight trailing spaces
 augroup trailing
