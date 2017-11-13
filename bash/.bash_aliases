@@ -42,6 +42,44 @@ parse_git_branch()
 {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
+
+git_uplift()
+{
+  temp_name="tmp"
+  echo $temp_name
+  if [[ $1 != "" ]]; then
+    temp_name=$1
+  fi
+  echo $temp_name
+
+  # git fetch --all
+  echo "git fetch --all"
+  echo $(parse_git_branch)
+  if [[ $(parse_git_branch)=~"\((.+)\)" ]]; then
+    echo "1: $1"
+    current_branch=$1
+  else
+    echo "no"
+    echo $(parse_git_branch)
+  fi
+  echo "current_branch: $current_branch"
+  # git checkout -b $(temp_name) origin/$(current_branch) --no-track
+  echo "git checkout -b $temp_name origin/$current_branch --no-track"
+  # read
+  # merge_message = "$(git merge origin/master --no-ff)"
+  # echo "merge_message = \"$(git merge origin/master --no-ff)\""
+  # if [[ merge_message == "MERGE CONFLICT" ]]; then
+    # git mt
+    # echo "git mt"
+  # fi
+  # git push origin tmp:ref/for/$(current_branch)
+  # echo "git push origin tmp:ref/for/$(current_branch)"
+  # git checkout $(current_branch)
+  # echo "git checkout $(current_branch)"
+  # git branch -D $(temp_name)
+  echo "git branch -D $temp_name"
+}
+
 # PS1='$(whoami)@$(hostname):$(pwd)>'
 RED="\[$(tput setaf 1)\]"
 GREEN="\[$(tput setaf 2)\]"
