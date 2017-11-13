@@ -9,11 +9,12 @@
 alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
-alias grep='grep --color'
-alias ccat='pygmentize -g'
-alias vimr='vim ~/.vimrc'
 alias :q='exit'
+alias ccat='pygmentize -g'
+alias grep='grep --color'
 alias print_path='echo $PATH | tr : "\n"'
+alias tm='tmux attach || tmux new'
+alias vimr='vim ~/.vimrc'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
 
