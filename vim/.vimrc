@@ -209,15 +209,16 @@ call vundle#begin()
 
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'scrooloose/nerdtree'
-" Plugin 'scrooloose/syntastic'
+Plugin 'vim-python/python-syntax'
 Plugin 'vim-syntastic/syntastic'
 
 call vundle#end()
 filetype plugin indent on
+
+let g:python_highlight_all = 1
 
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1
