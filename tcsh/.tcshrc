@@ -5,9 +5,10 @@ set autoexpand
 alias ls ls -F --color --group-directories-first
 alias la ls -A
 alias ll la -l
-alias grep grep --color
 alias :q exit
+alias grep grep --color
 alias print_path 'echo $PATH | tr : "\n"'
+alias tm 'tmux attach || tmux new'
 alias vimr vim ~/.vimrc
 
 setenv TERM xterm-256color

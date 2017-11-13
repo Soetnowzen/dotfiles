@@ -10,10 +10,12 @@ alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
 alias :q='exit'
+alias ccat='pygmentize -g'
 alias grep='grep --color'
 alias print_path='echo $PATH | tr : "\n"'
-alias tm='tmux attach || tmux'
+alias tm='tmux attach || tmux new'
 alias vimr='vim ~/.vimrc'
+
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
 
@@ -25,12 +27,6 @@ alias sol.light='source ~/dotfiles/mintty/sol.light'
 bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-forward'
 
-# alias lst1='ls -R | grep ":$" | sed -e '"'"'s/:$//'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
-# alias lst1='find . -print | sed -e '"'"'/^\.$/d'"'"' -e '"'"'s/[^-][^\/]*\//--/g'"'"' -e '"'"'s/^/   /'"'"' -e '"'"'s/-/|/'"'"
-# lst2()
-# {
-#   find $1 -print | sed -e '/^\.$/d' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-# }
 lst()
 {
   ls -Rog $1 | grep '^-\|:$'
@@ -90,8 +86,6 @@ WHITE="\[$(tput setaf 7)\]"
 RESET="\[$(tput sgr0)\]"
 
 export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
-# export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(__git_ps1 \" (%s)\")${RESET}\n$ "
-# export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\n$ "
 
 norm="$(printf '\033[0m')" #returns to "normal"
 bold="$(printf '\033[0;1m')" #set bold
