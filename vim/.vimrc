@@ -357,6 +357,12 @@ autocmd BufWinLeave * call clearmatches()
 " autocmd InsertLeave * match ExtraWhitespace /[\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]/
 " autocmd BufWinLeave * call clearmatches()
 
+autocmd BufWinEnter quickfix nnoremap <silent> <buffer>
+      \ q :cclose<cr>:lclose<cr>
+autocmd BufEnter * if (winnr('$') == 1 && &buftype ==# 'quickfix' ) |
+      \ bd|
+      \ q | endif
+
 " Show search matches while typing
 set incsearch
 

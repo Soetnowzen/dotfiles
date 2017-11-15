@@ -5,6 +5,8 @@
 #     . ~/.bash_aliases
 # fi
 
+set -o vi
+
 # unix
 alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
