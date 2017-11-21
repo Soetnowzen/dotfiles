@@ -331,7 +331,12 @@ augroup trailing
   au InsertLeave * :match trail /\s\+$/
 augroup END
 
-let pattern="\\s+$|(if|for|while)\\("
+let bit_operations="\\/\\*\\-+&%<>\\=\\|"
+let bit_operations_after="|[". bit_operations ."]{1,2}\\w"
+let bit_operations_before="|\\w[". bit_operations ."]{1,2}"
+
+let pattern="\\s+$|(if|for|while)\\(" " . bit_operations_after . bit_operations_before
+au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern=pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=red guibg=red
 execute 'match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
@@ -341,27 +346,6 @@ execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 " autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
-
-" Before
-" match ExtraWhitespace /[^\ \<\>\+\*\-\/][\+\*\/\-\>\<\^\&\|\=]/
-" autocmd BufWinEnter * match ExtraWhitespace /[^\ \<\>\+\*\-\/][\+\*\/\-\>\<\^\&\|\=]/
-" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-" autocmd InsertLeave * match ExtraWhitespace /[^\ \<\>\+\*\-\/][\+\*\/\-\>\<\^\&\|\=]/
-" autocmd BufWinLeave * call clearmatches()
-
-" After
-" [\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]
-" match ExtraWhitespace /[\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]/
-" autocmd BufWinEnter * match ExtraWhitespace /[\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]/
-" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-" autocmd InsertLeave * match ExtraWhitespace /[\+\*\/\-\>\<\^\&\|\=][^\ \<\>\=]/
-" autocmd BufWinLeave * call clearmatches()
-
-autocmd BufWinEnter quickfix nnoremap <silent> <buffer>
-      \ q :cclose<cr>:lclose<cr>
-autocmd BufEnter * if (winnr('$') == 1 && &buftype ==# 'quickfix' ) |
-      \ bd|
-      \ q | endif
 
 " Show search matches while typing
 set incsearch
@@ -379,3 +363,4 @@ set wildmode=list:longest,full
 command RemoveSpaces %s/\s\+$/
 " command AddSpaces %smagic/(if|for|while)\(/\1 \(/
 command AddSpaces %s/\(if\|for\|while\)(/\1 (/
+" command OperationalSpaces %s/([\/\*\-+&%<>\=\|])//
