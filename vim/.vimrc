@@ -143,7 +143,7 @@ endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
 au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
-au BufRead,BufNewFile *.py,*.pyw set fdm=indent
+au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
 " set fdm=marker
 " set fmr={,}
 " set fdm=syntax
@@ -174,21 +174,11 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 
 " Central directory for swap files
 set backup
-" set directory-=$HOME/.vim/.backup
-" set directory^=$HOME/.vim/.backup//
 set directory=$HOME/.vim/.backup//
-" set backupdir-=$HOME/.vim/.backup
-" set backupdir^=$HOME/.vim/.backup//
 set backupdir=$HOME/.vim/.backup//
-" set undodir-=$HOME/.vim/.backup
-" set undodir^=$HOME/.vim/.backup//
 set undodir=$HOME/.vim/.backup//
 set writebackup
 set undofile
-
-"set backupdir=./backup,.,/tmp
-"set directory=.,./.backup,/tmp
-"set directory=~/.vim/temp//,.
 
 " Removes useless gui crap
 set guioptions-=M
@@ -251,23 +241,25 @@ function! s:get_cabal_sandbox()
   endif
 endfunction
 
-" set laststatus=2
-set statusline=
-set statusline +=%1*\ %n\ %*            "buffer number
-set statusline +=%5*%{&ff}%*            "file format
-set statusline +=%3*%y%*                "file type
-set statusline +=%4*\ %<%F%*            "full path
-set statusline +=%2*%m%*                "modified flag
-set statusline +=%1*%=%5l%*             "current line
-set statusline +=%2*/%L%*               "total lines
-set statusline +=%1*%4v\ %*             "virtual column number
-set statusline +=%2*0x%04B\ %*          "character under cursor
+" set laststatus = 2
+set statusline =
+set statusline +=%1*\ %n\ %*            " buffer number
+set statusline +=%5*%{&ff}%*            " file format
+set statusline +=%3*%y%*                " file type
+set statusline +=%4*\ %<%F%*            " full path
+set statusline +=%2*%m%*                " modified flag
+
+set statusline +=%#warningmsg#
+set statusline +=%{SyntasticStatuslineFlag()}
+set statusline +=%*
+
+set statusline +=%1*%=%5l%*             " current line
+set statusline +=%2*/%L%*               " total lines
+set statusline +=%1*%4v\ %*             " virtual column number
+" set statusline +=%2*0x%04B\ %*          " character under cursor
 
 " set statusline=
 " set statusline +="%f%m%r%h%w [%Y] [0x%02.2B]%< %F%=%4v,%4l %3p%% of %L"
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
 
 " Syntastic
 " let g:syntastic_<filetype>_checkers = ['checker-name>']
@@ -281,7 +273,7 @@ let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 
-let g:syntastic_python_checkers=['flake8']
+let g:syntastic_python_checkers = ['flake8']
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
 
@@ -316,13 +308,13 @@ if has('gui_running')
     set columns=90
   endif
   if exists("+lines")
-    set lines=64
+    set lines = 64
   endif
 else
   set t_Co=256
   " Perhaps check if windows or unix is running?
-  let g:solarized_contrast="high" " low | normal | high
-  let g:solarized_visibility="high" " low | normal | high
+  let g:solarized_contrast = "high" " low | normal | high
+  let g:solarized_visibility = "high" " low | normal | high
   set background=dark
 endif
 colorscheme solarized
@@ -345,13 +337,16 @@ augroup trailing
   au InsertLeave * :match trail /\s\+$/
 augroup END
 
-let bit_operations="\\/\\*\\-+&%<>\\=\\|"
-let bit_operations_after="|[". bit_operations ."]{1,2}\\w"
-let bit_operations_before="|\\w[". bit_operations ."]{1,2}"
+" let bit_operations="\\/\\*\\-\\+\\&\\%\\<\\>\\=\\|"
+let bit_operations = "\\*\\+\\&\\=\\|"
+let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
+let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
+" let bit_operations_after = "|[^\"].*[". bit_operations ."]{1,2}\\w.*[^\"]"
+" let bit_operations_before = "|[^\"].*\\w[". bit_operations ."]{1,2}.*[^\"]"
 
-let pattern="\\s+$|(if|for|while)\\(" " . bit_operations_after . bit_operations_before
-au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern=pattern.bit_operations_after.bit_operations_before
-highlight ExtraWhitespace ctermbg=red guibg=red
+let pattern = "\\s+$|(if|for|while)\\(". bit_operations_after . bit_operations_before
+au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
+highlight ExtraWhitespace ctermbg = Grey guibg = Grey
 execute 'match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
