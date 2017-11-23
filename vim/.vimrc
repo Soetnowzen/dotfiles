@@ -339,7 +339,7 @@ augroup trailing
 augroup END
 
 " let bit_operations="\\/\\*\\-\\+\\&\\%\\<\\>\\=\\|"
-let bit_operations = "\\*\\+\\&\\=\\|"
+let bit_operations = "\\*\\+\\&\\|"
 let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
 let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 " let bit_operations_after = "|[^\"].*[". bit_operations ."]{1,2}\\w.*[^\"]"
@@ -373,4 +373,5 @@ set wildmode=list:longest,full
 command RemoveSpaces %s/\s\+$/
 " command AddSpaces %smagic/(if|for|while)\(/\1 \(/
 command AddSpaces %s/\(if\|for\|while\)(/\1 (/
-" command OperationalSpaces %s/([\/\*\-+&%<>\=\|])//
+command AfterSpaces %s/\([*+&|]\{1,2\}\)\(\w\)/\1 \2/
+command BeforeSpaces %s/\(\w\)\([*+&|]\{1,2\}\)/\1 \2/
