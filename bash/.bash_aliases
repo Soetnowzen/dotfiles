@@ -89,7 +89,7 @@ RESET="\[$(tput sgr0)\]"
 
 export DISPLAY=:0
 
-export PS1="${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
+export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
 
 norm="$(printf '\033[0m')" #returns to "normal"
 bold="$(printf '\033[0;1m')" #set bold
