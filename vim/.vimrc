@@ -44,6 +44,7 @@ let s:comment_map = {
       \   "spec": '#',
       \   "tcsh": '#',
       \   "tex": '%',
+      \   "tmux": "#",
       \   "vim": '"',
       \ }
 
