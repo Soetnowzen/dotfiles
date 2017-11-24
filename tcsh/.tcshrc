@@ -7,6 +7,7 @@ alias la ls -A
 alias ll la -l
 alias :q exit
 alias grep grep --color
+alias less less -r
 alias print_path 'echo $PATH | tr : "\n"'
 alias tm 'tmux attach || tmux new'
 alias vimr vim ~/.vimrc
