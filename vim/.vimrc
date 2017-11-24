@@ -204,6 +204,8 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'scrooloose/nerdtree'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-python/python-syntax'
 Plugin 'vim-syntastic/syntastic'
 
@@ -211,6 +213,13 @@ call vundle#end()
 filetype plugin indent on
 
 let g:python_highlight_all = 1
+
+" Arline
+" :AirlineTheme solarized
+let g:airline_solarized_bg='dark'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_detect_spell=1
+let g:airline_detect_spelllang=1
 
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1
@@ -243,26 +252,6 @@ function! s:get_cabal_sandbox()
   endif
 endfunction
 
-" set laststatus = 2
-set statusline =
-set statusline +=%1*\ %n\ %*            " buffer number
-set statusline +=%5*%{&ff}%*            " file format
-set statusline +=%3*%y%*                " file type
-set statusline +=%4*\ %<%F%*            " full path
-set statusline +=%2*%m%*                " modified flag
-
-set statusline +=%#warningmsg#
-set statusline +=%{SyntasticStatuslineFlag()}
-set statusline +=%*
-
-set statusline +=%1*%=%5l%*             " current line
-set statusline +=%2*/%L%*               " total lines
-set statusline +=%1*%4v\ %*             " virtual column number
-" set statusline +=%2*0x%04B\ %*          " character under cursor
-
-" set statusline=
-" set statusline +="%f%m%r%h%w [%Y] [0x%02.2B]%< %F%=%4v,%4l %3p%% of %L"
-
 " Syntastic
 " let g:syntastic_<filetype>_checkers = ['checker-name>']
 " let g:syntastic_debug = 3
@@ -291,11 +280,12 @@ set splitright
 " Sets colors based on a dark background
 " if gvim else vim
 syntax enable
-let g:solarized_bold=0 " 0 | 1
-let g:solarized_italic=0 " 0 | 1
+let g:solarized_bold=1 " 0 | 1
+let g:solarized_hitrail=1 " 0 | 1
+let g:solarized_italic=1 " 0 | 1
 let g:solarized_termcolors=16 " 16 | 256
-let g:solarized_termtrans=0 " 0 | 1
-let g:solarized_underline=0 " 0 | 1
+let g:solarized_termtrans=1 " 0 | 1
+let g:solarized_underline=1 " 0 | 1
 if has('gui_running')
   let g:solarized_contrast="high" " low | normal | high
   let g:solarized_visibility="high" " low | normal | high
@@ -322,9 +312,9 @@ endif
 colorscheme solarized
 
 " Creates a Bobo for marking error spaces
-highlight Bobo guifg=Magenta ctermfg=Magenta
-highlight ColorColumn guifg=Magenta ctermfg=Magenta
-highlight trail guifg=Magenta ctermfg=Magenta
+" highlight Bobo guifg=Magenta ctermfg=Magenta
+" highlight ColorColumn guifg=Magenta ctermfg=Magenta
+" highlight trail guifg=Magenta ctermfg=Magenta
 
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
@@ -333,11 +323,39 @@ au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
 au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
 
 " Highlight trailing spaces
-augroup trailing
-  au!
-  au InsertEnter * :match none /\s\+$/
-  au InsertLeave * :match trail /\s\+$/
-augroup END
+" augroup trailing
+  " au!
+  " au InsertEnter * :match none /\s\+$/
+  " au InsertLeave * :match trail /\s\+$/
+" augroup END
+
+" set laststatus = 2
+" set statusline =
+" set statusline +=%1*\ %n\ %*            " buffer number
+" set statusline +=%5*%{&ff}%*            " file format
+" set statusline +=%3*%y%*                " file type
+" set statusline +=%4*\ %<%F%*            " full path
+" set statusline +=%2*%m%*                " modified flag
+
+" set statusline +=%#warningmsg#
+" set statusline +=%{SyntasticStatuslineFlag()}
+" set statusline +=%*
+
+" set statusline +=%1*%=%5l%*             " current line
+" set statusline +=%2*/%L%*               " total lines
+" set statusline +=%1*%4v\ %*             " virtual column number
+" set statusline +=%2*0x%04B\ %*          " character under cursor
+
+" set statusline=
+" set statusline +="%f%m%r%h%w [%Y] [0x%02.2B]%< %F%=%4v,%4l %3p%% of %L"
+
+" highlight StatusLine ctermbg=Blue ctermfg=Yellow guibg=DarkGrey guifg=White
+" highlight StatusLineNC ctermbg=Yellow ctermfg=Blue guibg=White guifg=DarkGray
+" hi User1 guifg=#eea040 guibg=#222222
+" hi User2 guifg=#dd3333 guibg=#222222
+" hi User3 guifg=#ff66ff guibg=#222222
+" hi User4 guifg=#a0ee40 guibg=#222222
+" hi User5 guifg=#eeee40 guibg=#222222
 
 " let bit_operations="\\/\\*\\-\\+\\&\\%\\<\\>\\=\\|"
 let bit_operations = "\\*\\+\\&\\|"
@@ -348,7 +366,7 @@ let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 
 let pattern = "\\s+$|(if|for|while)\\(". bit_operations_after . bit_operations_before
 au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
-highlight ExtraWhitespace ctermbg = Grey guibg = Grey
+highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
@@ -375,4 +393,5 @@ command RemoveSpaces %s/\s\+$/
 " command AddSpaces %smagic/(if|for|while)\(/\1 \(/
 command AddSpaces %s/\(if\|for\|while\)(/\1 (/
 command AfterSpaces %s/\([*+&|]\{1,2\}\)\(\w\)/\1 \2/
+
 command BeforeSpaces %s/\(\w\)\([*+&|]\{1,2\}\)/\1 \2/
