@@ -29,6 +29,7 @@ let s:comment_map = {
       \   "desktop": '#',
       \   "eml": '>',
       \   "fstab": '#',
+      \   "gitconfig": '#',
       \   "go": '\/\/',
       \   "java": '\/\/',
       \   "javascript": '\/\/',

@@ -5,20 +5,24 @@
   pager = less -R
 [push]
   default = simple
+[merge]
+  tool = vimdiff
+  conflictsyle = diff3
+  prompt = false
 [alias]
-  s = status
-  st = status
   a = add
-  ps = push
-  pl = pull
-  f = fetch
+  br = branch
   c = commit
   ci = commit
   co = checkout
-  br = branch
   d = diff
-  undo = reset --soft HEAD~1
+  f = fetch
   files = diff-tree --no-commit-id --name-only -r
+  mt = mergetool
+  pl = pull
+  ps = push
+  s = status
+  undo = reset --soft HEAD~1
   lg = !"git lg1"
   lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s%C(reset)%C(blue)[%an]%C(reset)%C(green)(%ar)%C(reset)' --all
   lg2 = log --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s%C(blue)\\ [%cn]" --decorate --graph
