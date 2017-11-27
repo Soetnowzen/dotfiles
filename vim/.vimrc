@@ -203,6 +203,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -213,6 +214,79 @@ call vundle#end()
 filetype plugin indent on
 
 let g:python_highlight_all = 1
+
+" vim-clang-format
+" your favorite style options
+let g:clang_format#style_options = {
+      \ "AccessModifierOffset" : -4,
+      \ "AllowShortIfStatementsOnASingleLine" : "false",
+      \ "AlwaysBreakTemplateDeclarations" : "true",
+      \ "Standard" : "C++11",
+      \ "TabWidth" : 2,
+      \ "AlignAfterOpenBracket" : "Align",
+      \ "AlignOperands" : "true",
+      \ "AllowAllParametersOfDeclarationOnNextLine" : "false",
+      \ "AllowShortCaseLabelsOnASingleLine" : "false",
+      \ "AllowShortFunctionsOnASingleLine" : "None",
+      \ "AllowShortLoopsOnASingleLine" : "false",
+      \ "AlwaysBreakBeforeMultilineStrings" : "false",
+      \ "BinPackArguments" : "false",
+      \ "BinPackParameters" : "false",
+      \ "AfterClass" : "true",
+      \ "AfterControlStatement" : "true",
+      \ "AfterEnum" : "true",
+      \ "AfterFunction" : "true",
+      \ "AfterNamespace" : "true",
+      \ "AfterStruct" : "true",
+      \ "AfterUnion" : "true",
+      \ "AfterExternBlock" : "true",
+      \ "BeforeCatch" : "true",
+      \ "BeforeElse" : "true",
+      \ "SplitEmptyFunction" : "true",
+      \ "SplitEmptyRecord" : "true",
+      \ "SplitEmptyNamespace" : "true",
+      \ "BreakBeforeBinaryOperators" : "NonAssignment",
+      \ "BreakConstructorInitializers" : "AfterColon",
+      \ "BreakStringLiterals" : "true",
+      \ "ColumnLimit" : 150,
+      \ "CompactNamespaces" : "false",
+      \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "false",
+      \ "ContinuationIndentWidth" : 2,
+      \ "FixNamespaceComments" : "false",
+      \ "IndentCaseLabels" : "true",
+      \ "IndentPPDirectives" : "None",
+      \ "IndentWidth" : 2,
+      \ "IndentWrappedFunctionNames" : "true",
+      \ "KeepEmptyLinesAtTheStartOfBlocks" : "false",
+      \ "MaxEmptyLinesToKeep" : 1,
+      \ "NamespaceIndentation" : "All",
+      \ "DerivePointerAlignment" : "true",
+      \ "PointerAlignment" : "Middle",
+      \ "SortIncludes" : "true",
+      \ "SortUsingDeclarations" : "true",
+      \ "SpaceAfterCStyleCast" : "false",
+      \ "SpaceAfterTemplateKeyword" : "false",
+      \ "SpaceBeforeAssignmentOperators" : "true",
+      \ "SpaceBeforeParens" : "ControlStatements",
+      \ "SpaceInEmptyParentheses" : "false",
+      \ "SpacesBeforeTrailingComments" : 1,
+      \ "SpacesInAngles" : "false",
+      \ "SpacesInCStyleCastParentheses" : "false",
+      \ "SpacesInContainerLiterals" : "false",
+      \ "SpacesInParentheses" : "false",
+      \ "SpacesInSquareBrackets" : "false",
+      \ "UseTab" : "Never",
+      \ "BreakBeforeBraces" : "GNU"}
+" SBPO_Never | SBPO_ControlStatements | SBPO_Always
+
+augroup ClangFormatSettings
+  autocmd!
+  " map to = in C++ code
+  autocmd FileType c,cpp,objc nnoremap = :<C-u>ClangFormat<CR>
+  autocmd FileType c,cpp,objc vnoremap = :ClangFormat<CR>
+  " if you install vim-operator-user
+  " autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
+augroup END
 
 " Arline
 " :AirlineTheme solarized
