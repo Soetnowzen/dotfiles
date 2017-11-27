@@ -358,7 +358,7 @@ au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
 " hi User5 guifg=#eeee40 guibg=#222222
 
 " let bit_operations="\\/\\*\\-\\+\\&\\%\\<\\>\\=\\|"
-let bit_operations = "\\*\\+\\&\\|"
+let bit_operations = "*&|"
 let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
 let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 " let bit_operations_after = "|[^\"].*[". bit_operations ."]{1,2}\\w.*[^\"]"
@@ -394,4 +394,4 @@ command RemoveSpaces %s/\s\+$/
 command AddSpaces %s/\(if\|for\|while\)(/\1 (/
 command AfterSpaces %s/\([*+&|]\{1,2\}\)\(\w\)/\1 \2/
 
-command BeforeSpaces %s/\(\w\)\([*+&|]\{1,2\}\)/\1 \2/
+command BeforeSpaces %s/\(\w\)\([*&|]\{1,2\}\)/\1 \2/
