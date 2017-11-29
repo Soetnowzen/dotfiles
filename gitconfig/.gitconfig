@@ -16,13 +16,17 @@
   ci = commit
   co = checkout
   d = diff
+  dw = diff --word-diff
   f = fetch
+  filelog = log -u
   files = diff-tree --no-commit-id --name-only -r
+  fl = log -u
+  lg = !"git lg1"
+  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s%C(reset)%C(blue)[%an]%C(reset)%C(green)(%ar)%C(reset)' --all
+  lg2 = log --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s%C(blue)\\ [%cn]" --decorate --graph
+  ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%C(blue)\\ [%cn]" --decorate --numstat
   mt = mergetool
   pl = pull
   ps = push
   s = status
   undo = reset --soft HEAD~1
-  lg = !"git lg1"
-  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s%C(reset)%C(blue)[%an]%C(reset)%C(green)(%ar)%C(reset)' --all
-  lg2 = log --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s%C(blue)\\ [%cn]" --decorate --graph

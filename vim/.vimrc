@@ -203,7 +203,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'rhysd/vim-clang-format'
+" Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -217,76 +217,76 @@ let g:python_highlight_all = 1
 
 " vim-clang-format
 " your favorite style options
-let g:clang_format#style_options = {
-      \ "AccessModifierOffset" : -4,
-      \ "AllowShortIfStatementsOnASingleLine" : "false",
-      \ "AlwaysBreakTemplateDeclarations" : "true",
-      \ "Standard" : "C++11",
-      \ "TabWidth" : 2,
-      \ "AlignAfterOpenBracket" : "Align",
-      \ "AlignOperands" : "true",
-      \ "AllowAllParametersOfDeclarationOnNextLine" : "false",
-      \ "AllowShortCaseLabelsOnASingleLine" : "false",
-      \ "AllowShortFunctionsOnASingleLine" : "None",
-      \ "AllowShortLoopsOnASingleLine" : "false",
-      \ "AlwaysBreakBeforeMultilineStrings" : "false",
-      \ "BinPackArguments" : "false",
-      \ "BinPackParameters" : "false",
-      \ "AfterClass" : "true",
-      \ "AfterControlStatement" : "true",
-      \ "AfterEnum" : "true",
-      \ "AfterFunction" : "true",
-      \ "AfterNamespace" : "true",
-      \ "AfterStruct" : "true",
-      \ "AfterUnion" : "true",
-      \ "AfterExternBlock" : "true",
-      \ "BeforeCatch" : "true",
-      \ "BeforeElse" : "true",
-      \ "SplitEmptyFunction" : "true",
-      \ "SplitEmptyRecord" : "true",
-      \ "SplitEmptyNamespace" : "true",
-      \ "BreakBeforeBinaryOperators" : "NonAssignment",
-      \ "BreakConstructorInitializers" : "AfterColon",
-      \ "BreakStringLiterals" : "true",
-      \ "ColumnLimit" : 150,
-      \ "CompactNamespaces" : "false",
-      \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "false",
-      \ "ContinuationIndentWidth" : 2,
-      \ "FixNamespaceComments" : "false",
-      \ "IndentCaseLabels" : "true",
-      \ "IndentPPDirectives" : "None",
-      \ "IndentWidth" : 2,
-      \ "IndentWrappedFunctionNames" : "true",
-      \ "KeepEmptyLinesAtTheStartOfBlocks" : "false",
-      \ "MaxEmptyLinesToKeep" : 1,
-      \ "NamespaceIndentation" : "All",
-      \ "DerivePointerAlignment" : "true",
-      \ "PointerAlignment" : "Middle",
-      \ "SortIncludes" : "true",
-      \ "SortUsingDeclarations" : "true",
-      \ "SpaceAfterCStyleCast" : "false",
-      \ "SpaceAfterTemplateKeyword" : "false",
-      \ "SpaceBeforeAssignmentOperators" : "true",
-      \ "SpaceBeforeParens" : "ControlStatements",
-      \ "SpaceInEmptyParentheses" : "false",
-      \ "SpacesBeforeTrailingComments" : 1,
-      \ "SpacesInAngles" : "false",
-      \ "SpacesInCStyleCastParentheses" : "false",
-      \ "SpacesInContainerLiterals" : "false",
-      \ "SpacesInParentheses" : "false",
-      \ "SpacesInSquareBrackets" : "false",
-      \ "UseTab" : "Never",
-      \ "BreakBeforeBraces" : "GNU"}
+" let g:clang_format#style_options = {
+      " \ "AccessModifierOffset" : -4,
+      " \ "AllowShortIfStatementsOnASingleLine" : "false",
+      " \ "AlwaysBreakTemplateDeclarations" : "true",
+      " \ "Standard" : "C++11",
+      " \ "TabWidth" : 2,
+      " \ "AlignAfterOpenBracket" : "Align",
+      " \ "AlignOperands" : "true",
+      " \ "AllowAllParametersOfDeclarationOnNextLine" : "false",
+      " \ "AllowShortCaseLabelsOnASingleLine" : "false",
+      " \ "AllowShortFunctionsOnASingleLine" : "None",
+      " \ "AllowShortLoopsOnASingleLine" : "false",
+      " \ "AlwaysBreakBeforeMultilineStrings" : "false",
+      " \ "BinPackArguments" : "false",
+      " \ "BinPackParameters" : "false",
+      " \ "AfterClass" : "true",
+      " \ "AfterControlStatement" : "true",
+      " \ "AfterEnum" : "true",
+      " \ "AfterFunction" : "true",
+      " \ "AfterNamespace" : "true",
+      " \ "AfterStruct" : "true",
+      " \ "AfterUnion" : "true",
+      " \ "AfterExternBlock" : "true",
+      " \ "BeforeCatch" : "true",
+      " \ "BeforeElse" : "true",
+      " \ "SplitEmptyFunction" : "true",
+      " \ "SplitEmptyRecord" : "true",
+      " \ "SplitEmptyNamespace" : "true",
+      " \ "BreakBeforeBinaryOperators" : "NonAssignment",
+      " \ "BreakConstructorInitializers" : "AfterColon",
+      " \ "BreakStringLiterals" : "true",
+      " \ "ColumnLimit" : 150,
+      " \ "CompactNamespaces" : "false",
+      " \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "false",
+      " \ "ContinuationIndentWidth" : 2,
+      " \ "FixNamespaceComments" : "false",
+      " \ "IndentCaseLabels" : "true",
+      " \ "IndentPPDirectives" : "None",
+      " \ "IndentWidth" : 2,
+      " \ "IndentWrappedFunctionNames" : "true",
+      " \ "KeepEmptyLinesAtTheStartOfBlocks" : "false",
+      " \ "MaxEmptyLinesToKeep" : 1,
+      " \ "NamespaceIndentation" : "All",
+      " \ "DerivePointerAlignment" : "true",
+      " \ "PointerAlignment" : "Middle",
+      " \ "SortIncludes" : "true",
+      " \ "SortUsingDeclarations" : "true",
+      " \ "SpaceAfterCStyleCast" : "false",
+      " \ "SpaceAfterTemplateKeyword" : "false",
+      " \ "SpaceBeforeAssignmentOperators" : "true",
+      " \ "SpaceBeforeParens" : "ControlStatements",
+      " \ "SpaceInEmptyParentheses" : "false",
+      " \ "SpacesBeforeTrailingComments" : 1,
+      " \ "SpacesInAngles" : "false",
+      " \ "SpacesInCStyleCastParentheses" : "false",
+      " \ "SpacesInContainerLiterals" : "false",
+      " \ "SpacesInParentheses" : "false",
+      " \ "SpacesInSquareBrackets" : "false",
+      " \ "UseTab" : "Never",
+      " \ "BreakBeforeBraces" : "GNU"}
 " SBPO_Never | SBPO_ControlStatements | SBPO_Always
 
-augroup ClangFormatSettings
-  autocmd!
-  " map to = in C++ code
-  autocmd FileType c,cpp,objc nnoremap = :<C-u>ClangFormat<CR>
-  autocmd FileType c,cpp,objc vnoremap = :ClangFormat<CR>
+" map to = in C++ code
+" augroup ClangFormatSettings
+  " autocmd!
+  " autocmd FileType c,cpp,objc nnoremap = :<C-u>ClangFormat<CR>
+  " autocmd FileType c,cpp,objc vnoremap = :ClangFormat<CR>
   " if you install vim-operator-user
   " autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
-augroup END
+" augroup END
 
 " Arline
 " :AirlineTheme solarized
@@ -294,6 +294,15 @@ let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
 let g:airline_detect_spelllang=1
+function! AirlineInit()
+  let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
+  let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
+  let g:airline_section_c = airline#section#create(['filetype'])
+  let g:airline_section_x = airline#section#create(['%P'])
+  let g:airline_section_y = airline#section#create(['%B'])
+  let g:airline_section_z = airline#section#create_right(['%l', '%c'])
+endfunction
+autocmd VimEnter * call AirlineInit()
 
 " vim-cpp-enhanced-highlight
 let g:cpp_class_scope_highlight = 1
@@ -302,10 +311,6 @@ let g:cpp_class_decl_highlight = 1
 " let g:cpp_experimental_simple_template_highlight = 1  " Or
 let g:cpp_experimental_template_highlight = 1
 let g:cpp_no_function_highlight = 1
-
-" ctrlp.vim basic options
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_map = '<c-p>'
 
 " Map Ctrl-n to open the NERDTree
 map <C-n> :NERDTreeToggle<CR>
