@@ -19,6 +19,11 @@ alias print_path='echo $PATH | tr : "\n"'
 alias tm='tmux attach || tmux new'
 alias vimr='vim ~/.vimrc'
 
+function find()
+{
+  find $@ | grep '[^/]*$';
+}
+
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
 
