@@ -443,7 +443,7 @@ let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 " let bit_operations_after = "|[^\"].*[". bit_operations ."]{1,2}\\w.*[^\"]"
 " let bit_operations_before = "|[^\"].*\\w[". bit_operations ."]{1,2}.*[^\"]"
 
-let pattern = "\\s+$|(if|for|while)\\(". bit_operations_after . bit_operations_before
+let pattern = "\\s+$|(if|for|while)\\(" " . bit_operations_after . bit_operations_before
 au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
@@ -471,6 +471,5 @@ set wildmode=list:longest,full
 command RemoveSpaces %s/\s\+$/
 " command AddSpaces %smagic/(if|for|while)\(/\1 \(/
 command AddSpaces %s/\(if\|for\|while\)(/\1 (/
-command AfterSpaces %s/\([*+&|]\{1,2\}\)\(\w\)/\1 \2/
-
-command BeforeSpaces %s/\(\w\)\([*&|]\{1,2\}\)/\1 \2/
+" command AfterSpaces %s/\([*+&|]\{1,2\}\)\(\w\)/\1 \2/
+" command BeforeSpaces %s/\(\w\)\([*&|]\{1,2\}\)/\1 \2/

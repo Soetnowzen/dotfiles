@@ -4,7 +4,7 @@
   editor = vim
   pager = less -R
 [push]
-  default = simple
+  default = upstream
 [merge]
   tool = vimdiff
   conflictsyle = diff3
