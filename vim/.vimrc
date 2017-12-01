@@ -351,6 +351,16 @@ let g:syntastic_cpp_include_dirs = ['../include', 'include', 'includes', 'header
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_quiet_messages = {'level': 'warnings'}
+
+function! FindConfig(prefix, what, where)
+  let cfg = findfile(a:what, escape(a:where, ' ') . ';')
+  return cfg !=# '' ? ' ' . a:prefix . ' ' . shellescape(cfg) : ''
+endfunction
+
+autocmd FileType javascript let b:syntastic_javascript_jscs_args =
+      \ get(g:, 'syntastic_javascript_jscs_args', '') .
+      \ FindConfig('-c', '.jscsrc', expand('<afile>:p:h', 1))
+
 set wildchar=<Tab> wildmenu wildmode=full
 
 set splitbelow
