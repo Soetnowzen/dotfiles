@@ -22,9 +22,9 @@
   files = diff-tree --no-commit-id --name-only -r
   fl = log -u
   lg = !"git lg1"
-  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset)%s%C(reset)%C(blue)[%an]%C(reset)%C(green)(%ar)%C(reset)' --all
-  lg2 = log --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s%C(blue)\\ [%cn]" --decorate --graph
-  ll = log --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s%C(blue)\\ [%cn]%C(green)(%ar)" --decorate --numstat --graph
+  lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ar)%C(reset)' --all
+  lg2 = log --decorate --graph --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s\\ %C(blue)[%cn]"
+  ll = log --graph --decorate --numstat --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s\\ %C(blue)[%cn]%C(green)(%ar)"
   mt = mergetool
   pl = pull
   ps = push
