@@ -48,39 +48,34 @@ parse_git_branch()
 
 git_uplift()
 {
-  temp_name="tmp"
-  echo $temp_name
-  if [[ $1 != "" ]]; then
-    temp_name=$1
-  fi
-  echo $temp_name
+  temp_branch="tmp"
+  [[ $1 != "" ]] && temp_branch=$1;
 
   # git fetch --all
   echo "git fetch --all"
-  echo $(parse_git_branch)
-  if [[ $(parse_git_branch)=~"\((.+)\)" ]]; then
-    echo "1: $1"
-    current_branch=$1
-  else
-    echo "no"
-    echo $(parse_git_branch)
-  fi
-  echo "current_branch: $current_branch"
-  # git checkout -b $(temp_name) origin/$(current_branch) --no-track
-  echo "git checkout -b $temp_name origin/$current_branch --no-track"
-  # read
-  # merge_message = "$(git merge origin/master --no-ff)"
-  # echo "merge_message = \"$(git merge origin/master --no-ff)\""
-  # if [[ merge_message == "MERGE CONFLICT" ]]; then
-    # git mt
-    # echo "git mt"
-  # fi
-  # git push origin tmp:ref/for/$(current_branch)
-  # echo "git push origin tmp:ref/for/$(current_branch)"
-  # git checkout $(current_branch)
-  # echo "git checkout $(current_branch)"
-  # git branch -D $(temp_name)
-  echo "git branch -D $temp_name"
+  # [[ $(parse_git_branch) =~ \((.+)\) ]] && current_branch=${BASH_REMATCH[1]};
+  [[ $(git status -sb) =~ \#\#\ ([^\.]+)\s*\.+origin\/(.+) ]] && current_branch=${BASH_REMATCH[1]} && remote_branch=${BASH_REMATCH[2]};
+  echo "current_branch: '$current_branch'"
+  echo "remote_branch: '$remote_branch'"
+  echo "Press enter."
+  read
+  # git checkout -b $temp_branch origin/makemake/$current_branch --no-track
+  echo "git checkout -b $temp_branch origin/$remote_branch --no-track"
+  echo "Press enter."
+  read
+  # git merge origin/master --no-ff
+  echo "git merge origin/master --no-ff"
+  echo "Press enter."
+  read
+  error_code=$?; [[ $error_code != 0 ]] && echo "git mt";
+  # git push origin tmp:ref/for/$current_branch
+  echo "git push origin tmp:ref/for/$remote_branch"
+  echo "Press enter."
+  read
+  # git checkout $current_branch
+  echo "git checkout $current_branch"
+  # git branch -D $temp_branch
+  echo "git branch -D $temp_branch"
 }
 
 # PS1='$(whoami)@$(hostname):$(pwd)>'
