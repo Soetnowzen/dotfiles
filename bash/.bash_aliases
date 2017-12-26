@@ -13,6 +13,7 @@ alias la='ls -A'
 alias ll='la -l'
 alias :q='exit'
 alias ccat='pygmentize -g'
+alias g='git'
 alias grep='grep --color'
 alias less='less -r'
 alias print_path='echo $PATH | tr : "\n"'
@@ -46,21 +47,21 @@ parse_git_branch()
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-git_uplift()
+git-uplift()
 {
   temp_branch="tmp"
   [[ $1 != "" ]] && temp_branch=$1;
 
-  # git fetch --all
-  echo "git fetch --all"
+  git fetch --all
+  # echo "git fetch --all"
   # [[ $(parse_git_branch) =~ \((.+)\) ]] && current_branch=${BASH_REMATCH[1]};
   [[ $(git status -sb) =~ \#\#\ ([^\.]+)\s*\.+origin\/(.+) ]] && current_branch=${BASH_REMATCH[1]} && remote_branch=${BASH_REMATCH[2]};
   echo "current_branch: '$current_branch'"
   echo "remote_branch: '$remote_branch'"
   echo "Press enter."
   read
-  # git checkout -b $temp_branch origin/makemake/$current_branch --no-track
-  echo "git checkout -b $temp_branch origin/$remote_branch --no-track"
+  git checkout -b $temp_branch origin/$remote_branch --no-track
+  # echo "git checkout -b $temp_branch origin/$remote_branch --no-track"
   echo "Press enter."
   read
   # git merge origin/master --no-ff
@@ -72,10 +73,10 @@ git_uplift()
   echo "git push origin tmp:ref/for/$remote_branch"
   echo "Press enter."
   read
-  # git checkout $current_branch
-  echo "git checkout $current_branch"
-  # git branch -D $temp_branch
-  echo "git branch -D $temp_branch"
+  git checkout $current_branch
+  # echo "git checkout $current_branch"
+  git branch -D $temp_branch
+  # echo "git branch -D $temp_branch"
 }
 
 # PS1='$(whoami)@$(hostname):$(pwd)>'

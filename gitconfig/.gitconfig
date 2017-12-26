@@ -3,12 +3,16 @@
 [core]
   editor = vim
   pager = less -R
+	whitespace = trailing-space,space-before-tab
 [push]
-  default = upstream
+	default = tracking
 [merge]
   tool = vimdiff
   conflictsyle = diff3
   prompt = false
+[diff]
+	renames = copies
+	mnemonicprefix = true
 [alias]
   a = add
   br = branch

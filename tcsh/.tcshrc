@@ -6,12 +6,13 @@ alias ls ls -F --color --group-directories-first
 alias la ls -A
 alias ll la -l
 alias :q exit
+alias find find \!* | grep '[^/]*$'
+alias g git
 alias grep grep --color
 alias less less -r
 alias print_path 'echo $PATH | tr : "\n"'
 alias tm 'tmux attach || tmux new'
 alias vimr vim ~/.vimrc
-alias find find \!* | grep '[^/]*$'
 
 setenv TERM xterm-256color
 
