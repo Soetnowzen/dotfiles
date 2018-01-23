@@ -109,6 +109,22 @@ nnoremap <space> :noh<cr>
 inoremap :w<cr> <Esc>:w<cr>a
 inoremap :wq<cr> <Esc>:wq<cr>
 inoremap jj <Esc>
+inoremap { {}<Left>
+inoremap {<CR> {<CR>}<Esc>O
+inoremap {{ {
+" }}
+inoremap {} {}
+inoremap [ []<Left>
+inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+inoremap ( ()<Left>
+inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
+inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+inoremap /* /**/<Left><Left>
+inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
+inoremap /*<CR> /*<CR>*/<Esc>O
+inoremap <Leader>/* /*
+inoremap """<CR> """<CR>"""<Esc>O
 
 " Cursor marking
 set cursorline
@@ -154,8 +170,8 @@ au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
 " Regular Expressions set to very magic
 nnoremap / /\v
 vnoremap / /\v
-cnoremap %s %smagic/
-cnoremap \>s/ \>smagic/
+cnoremap %s %s/\v
+cnoremap \>s/ \>s/\v
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
 
@@ -199,21 +215,32 @@ set guioptions-=r
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+" Plugin 'rhysd/vim-clang-format'
+Plugin 'AndrewRadev/linediff.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
-" Plugin 'rhysd/vim-clang-format'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-python/python-syntax'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'wesQ3/vim-windowswap'
 
 call vundle#end()
 filetype plugin indent on
 
 let g:python_highlight_all = 1
+
+" vim-windowswap
+nnoremap <C-y>w :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <C-p>w :call WindowSwap#DoWindowSwap()<CR>
+nnoremap <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
+
+" linediff
+noremap \ldt :Linediff<CR>
+noremap \ldo :LinediffReset<CR>
 
 " vim-clang-format
 " your favorite style options
@@ -319,6 +346,8 @@ let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
 let NERDTreeDirArrowsExpandable = '+'
 let NERDTreeDirArrowsCollapsible = '~'
+" let NERDTreeMapOpenSplit='-'
+" let NERDTreeMapOpenVSplit='|'
 
 " Syntastic stuff
 function! s:get_cabal_sandbox()
@@ -349,6 +378,8 @@ let g:syntastic_python_checkers = ['flake8']
 
 let g:syntastic_cpp_include_dirs = ['../include', 'include', 'includes', 'headers', '/\*\*/inc', '../../inc', '../inc', 'inc', '/\*\*/export', '../../export', '../export', 'export', '../../src', '../src', 'src', '../test/bin', 'test/bin']
 let g:syntastic_cpp_check_header = 1
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 let g:syntastic_enable_signs = 1
 let g:syntastic_quiet_messages = {'level': 'warnings'}
 
@@ -356,6 +387,10 @@ function! FindConfig(prefix, what, where)
   let cfg = findfile(a:what, escape(a:where, ' ') . ';')
   return cfg !=# '' ? ' ' . a:prefix . ' ' . shellescape(cfg) : ''
 endfunction
+
+autocmd FileType c,cpp,objc let b:syntastic_cpp_cpplint_args =
+      \ get(g:, 'syntastic_cpp_cpplint_args', '') .
+      \ FindConfig('-c', '.h', expand('<afile>:p:h', 1))
 
 autocmd FileType javascript let b:syntastic_javascript_jscs_args =
       \ get(g:, 'syntastic_javascript_jscs_args', '') .
