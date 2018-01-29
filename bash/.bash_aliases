@@ -89,7 +89,7 @@ CYAN="\[$(tput setaf 6)\]"
 WHITE="\[$(tput setaf 7)\]"
 RESET="\[$(tput sgr0)\]"
 
-export DISPLAY=:0
+export DISPLAY=:0.0
 
 export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
 
