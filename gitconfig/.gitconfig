@@ -34,3 +34,9 @@
   ps = push
   s = status
   undo = reset --soft HEAD~1
+  dt = difftool -y
+[user]
+  name = eseblag
+  email = sebastian.lagerman@ericsson.com
+[diff]
+  tool = meld

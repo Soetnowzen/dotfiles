@@ -166,3 +166,8 @@ colors_and_formatting()
     echo # New line
   done
 }
+
+# Ericsson (Don't push this)
+alias moshell='/app/moshell/latest/moshell/moshell'
+alias rbshost04='ssh -Y rbshost04.mo.sw.ericsson.se'
+alias rbshost05='ssh -Y rbshost05.mo.sw.ericsson.se'
