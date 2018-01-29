@@ -9,6 +9,7 @@ alias :q exit
 alias find find \!* | grep '[^/]*$'
 alias g git
 alias grep grep --color
+alias grepc grep -Rin --color --include=*.{cc,h}
 alias less less -r
 alias print_path 'echo $PATH | tr : "\n"'
 alias tm 'tmux attach || tmux new'

@@ -15,6 +15,7 @@ alias :q='exit'
 alias ccat='pygmentize -g'
 alias g='git'
 alias grep='grep --color'
+alias grepc='grep -Rin --color --include=*.{cc,h}'
 alias less='less -r'
 alias print_path='echo $PATH | tr : "\n"'
 alias tm='tmux attach || tmux new'
@@ -92,6 +93,26 @@ RESET="\[$(tput sgr0)\]"
 export DISPLAY=:0.0
 
 export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
+
+# bd = (BLOCK, BLK)   Block device (buffered) special file
+# cd = (CHAR, CHR)    Character device (unbuffered) special file
+# di = (DIR)  Directory
+# do = (DOOR) [Door][1]
+# ex = (EXEC) Executable file (ie. has 'x' set in permissions)
+# fi = (FILE) Normal file
+# ln = (SYMLINK, LINK, LNK)   Symbolic link. If you set this to ‘target’ instead of a numerical value, the color is as for the file pointed to.
+# mi = (MISSING)  Non-existent file pointed to by a symbolic link (visible when you type ls -l)
+# no = (NORMAL, NORM) Normal (non-filename) text. Global default, although everything should be something
+# or = (ORPHAN)   Symbolic link pointing to an orphaned non-existent file
+# ow = (OTHER_WRITABLE)   Directory that is other-writable (o+w) and not sticky
+# pi = (FIFO, PIPE)   Named pipe (fifo file)
+# sg = (SETGID)   File that is setgid (g+s)
+# so = (SOCK) Socket file
+# st = (STICKY)   Directory with the sticky bit set (+t) and not other-writable
+# su = (SETUID)   File that is setuid (u+s)
+# tw = (STICKY_OTHER_WRITABLE)    Directory that is sticky and other-writable (+t,o+w)
+# *.extension =   Every file using this extension e.g. *.rpm = files with the ending .rpm
+LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:' ; export LS_COLORS
 
 norm="$(printf '\033[0m')" #returns to "normal"
 bold="$(printf '\033[0;1m')" #set bold
