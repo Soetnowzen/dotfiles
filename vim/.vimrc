@@ -446,6 +446,8 @@ set colorcolumn=81,82,83
 au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
 au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
 
+au BufRead,BufNewFile *.log set filetype=log
+
 " Highlight trailing spaces
 " augroup trailing
   " au!
