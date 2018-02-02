@@ -96,6 +96,8 @@ nnoremap <Left> <C-W><
 nnoremap <Right> <C-W>>
 nnoremap <Up> <C-W>+
 nnoremap <Down> <C-W>-
+nnoremap H gT
+nnoremap L gt
 
 " normal mode remap case switch
 nnoremap § ~
