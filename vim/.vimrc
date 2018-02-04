@@ -374,7 +374,10 @@ let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['python', 'flake8']
+let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+" let g:syntastic_cpp_checkers = ['clang_cpp', 'gcc']
+let g:syntastic_cpp_checkers = ['cppcheck', 'cpplint']
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
 
