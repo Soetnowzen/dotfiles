@@ -74,8 +74,8 @@ endfunction
 
 
 nnoremap <leader><Space> :call ToggleComment()<cr>
-vnoremap <C-j> :call ToggleComment()<cr>
-nnoremap <C-j> :call ToggleComment()<cr>
+vnoremap <C-m> :call ToggleComment()<cr>
+nnoremap <C-m> :call ToggleComment()<cr>
 
 " unmap ctrl + Y
 iunmap <C-Y>
@@ -127,6 +127,7 @@ inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
 inoremap /*<CR> /*<CR>*/<Esc>O
 inoremap <Leader>/* /*
 inoremap """<CR> """<CR>"""<Esc>O
+inoremap '''CR> '''<CR>'''<Esc>O
 
 " Cursor marking
 set cursorline
@@ -173,6 +174,7 @@ au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
 nnoremap / /\v
 vnoremap / /\v
 cnoremap %s %s/\v
+cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
@@ -205,6 +207,10 @@ set guioptions-=M
 set guioptions-=T
 set guioptions-=m
 set guioptions-=r
+
+set switchbuf +=useopen
+set switchbuf +=usetab
+set switchbuf +=split
 
 " Doesn't save swp-files after each session
 " set nobackup
@@ -344,6 +350,7 @@ let g:cpp_no_function_highlight = 1
 " Map Ctrl-n to open the NERDTree
 map <C-n> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$']
+let NERDTreeWinSize = 42
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
 let NERDTreeDirArrowsExpandable = '+'
@@ -374,7 +381,10 @@ let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['python', 'flake8']
+let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+" let g:syntastic_cpp_checkers = ['clang_cpp', 'gcc']
+let g:syntastic_cpp_checkers = ['cppcheck', 'cpplint']
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
 
