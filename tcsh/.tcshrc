@@ -21,7 +21,7 @@ alias test 'sed -e "s/[a-zA-Z\_\.]\+\:[0-9]\+/%{\033[1;31m%} & %{\033[0m%}/g"'
 alias color_failure grep -i \'err\\w*\\\|warn\\w*\\\|info\\w*\\\|fail\\w*\\\|\$\'
 
 alias getCurrentGitBranch 'git branch |& grep \* | sed "s/\* \(.*\)/ (\1)/"'
-alias precmd set 'prompt = "%{\033[36m%}%T %{\033[34m%}%n@%m %{\033[32m%}%~%{\033[33m%}`getCurrentGitBranch`%{\033[0m%} %# "'
+alias precmd set 'prompt = "%{\033[36m%}%T %{\033[34m%}%n@%m %{\033[32m%}%~%{\033[33m%}`getCurrentGitBranch`%{\033[0m%}%# "'
 
 # bindkey -v
 

@@ -92,7 +92,7 @@ RESET="\[$(tput sgr0)\]"
 
 export DISPLAY=:0
 
-export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
+export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET}\$ "
 
 # bd = (BLOCK, BLK)   Block device (buffered) special file
 # cd = (CHAR, CHR)    Character device (unbuffered) special file
