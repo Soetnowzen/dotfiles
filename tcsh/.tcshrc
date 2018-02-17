@@ -12,7 +12,9 @@ alias grep grep --color
 alias grepc grep -Rin --color --include=*.{cc,h}
 alias less less -r
 alias print_path 'echo $PATH | tr : "\n"'
+alias g_pl_stash 'git stash && git pull && git stash pop'
 alias tm 'tmux attach || tmux new'
+alias v vim
 alias vimr vim ~/.vimrc
 
 setenv TERM xterm-256color
