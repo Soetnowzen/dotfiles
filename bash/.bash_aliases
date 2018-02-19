@@ -47,7 +47,7 @@ lst()
 # Bash Prompt
 parse_git_branch()
 {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
 git-uplift()
@@ -94,7 +94,7 @@ RESET="\[$(tput sgr0)\]"
 
 export DISPLAY=:0
 
-export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET}\$ "
+export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
 
 # bd = (BLOCK, BLK)   Block device (buffered) special file
 # cd = (CHAR, CHR)    Character device (unbuffered) special file
