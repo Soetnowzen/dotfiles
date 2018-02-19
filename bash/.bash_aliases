@@ -169,7 +169,7 @@ colors_and_formatting()
   done
 }
 
-# Ericsson (Don't push this)
-alias moshell='/app/moshell/latest/moshell/moshell'
-alias rbshost04='ssh -Y rbshost04.mo.sw.ericsson.se'
-alias rbshost05='ssh -Y rbshost05.mo.sw.ericsson.se'
+if [ -r ~/.bashrc.work ]
+then
+  . ~/.bashrc.work
+fi
