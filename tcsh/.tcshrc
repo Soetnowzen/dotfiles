@@ -12,7 +12,9 @@ alias grep grep --color
 alias grepc grep -Rin --color --include=*.{cc,h}
 alias less less -r
 alias print_path 'echo $PATH | tr : "\n"'
+alias g_pl_stash 'git stash && git pull && git stash pop'
 alias tm 'tmux attach || tmux new'
+alias v vim
 alias vimr vim ~/.vimrc
 
 setenv TERM xterm-256color
@@ -20,8 +22,8 @@ setenv TERM xterm-256color
 alias test 'sed -e "s/[a-zA-Z\_\.]\+\:[0-9]\+/%{\033[1;31m%} & %{\033[0m%}/g"'
 alias color_failure grep -i \'err\\w*\\\|warn\\w*\\\|info\\w*\\\|fail\\w*\\\|\$\'
 
-alias getCurrentGitBranch 'git branch |& grep \* | sed "s/\* \(.*\)/ (\1)/"'
-alias precmd set 'prompt = "%{\033[36m%}%T %{\033[34m%}%n@%m %{\033[32m%}%~%{\033[33m%}`getCurrentGitBranch`%{\033[0m%} %# "'
+alias getCurrentGitBranch 'git branch |& grep \* | sed "s/\* \(.*\)/(\1)/"'
+alias precmd set 'prompt = "%{\033[36m%}%T %{\033[34m%}%n@%m %{\033[32m%}%~%{\033[33m%}`getCurrentGitBranch`%{\033[0m%}%# "'
 
 # bindkey -v
 
@@ -29,43 +31,5 @@ alias precmd set 'prompt = "%{\033[36m%}%T %{\033[34m%}%n@%m %{\033[32m%}%~%{\03
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
-# Ericsson (Don't push this)
-alias kp5_setup '/repo/eseblag/ncmain/utils/kp5_setup'
+if (-r ~/.cshrc.work) source ~/.cshrc.work
 
-# module add clang
-module add cppcheck
-module add ctags
-module add lynx
-module add meld
-module add pygtk
-module add tmux
-setenv PATH ${PATH}:/app/meld/1.6.0/LMWP3/bin
-setenv PATH ${PATH}:/app/meld/1.8.0/RHEL6/bin
-# alias format_nc "/opt/tools/wh/dtd/tools/catrbs/$catrbsVERSION/utils/formatters/bin/format_nc.sh"
-# alias format_nc "/opt/tools/wh/dtd/tools/catrbs/latest/utils/formatters/bin/format_nc.sh"
-# setenv PATH ${PATH}:/opt/tools/wh/dtd/tools/catrbs/$catrbsVERSION/utils/formatters/bin
-setenv PATH ${PATH}:/opt/tools/wh/dtd/tools/catrbs/latest/utils/formatters/bin
-alias grepsrc grep --include \*.hpp --include \*.cpp --include \*.h --include \*.cc --exclude=\*Mock\* --exclude=\*Stub*\ --exclude-dir=\*stub*\ --exclude-dir=\*Stub\* --exclude-dir=\*Mock*\ --exclude-dir=\*mock\* --exclude-dir=\*test\* --exclude=\*Test\* -R -n
-
-alias moshell /app/moshell/latest/moshell/moshell
-alias rbshost04 ssh -Y rbshost04.mo.sw.ericsson.se
-alias rbshost05 ssh -Y rbshost05.mo.sw.ericsson.se
-
-# ESID
-module add python/2.7.13
-module load python/2.7-addons-requests-2.17.3
-module load python/2.7-addons-codecoverage
-module load python/2.7-addons-flake8
-setenv PYTHONPATH ${PYTHONPATH}:/repo/eseblag/EsiDebugger
-
-# MOM
-module add j2re/1.8.0
-
-# test guards
-alias sebbe find . -path \"*/test/bin\" -exec bash -c \"cd \'\{\}\' \&\& kp5 -ts guard \> \`pwd \| tr \/ \%\`\ \&\& \[ \$\? \=\= 0 \] \&\& rm \`pwd \| tr \/ \%\` \" \\\;
-# alias sebbe find . -path \"*/test/bin\" -exec bash -c \"cd \'\{\}\' \&\& pwd \&\& echo \'hej\' \> \`pwd \| tr \/ \%\`\\\'\.txt\\\'    \" \\\;
-# alias zebbe foreach d ( `find . -path \"*/test/bin\" )
-# alias sebbe2 foreach item ( `find . -path \"*/test/bin\"` )
-  # echo item = $item
-# end
-# kp5 \-ts guard

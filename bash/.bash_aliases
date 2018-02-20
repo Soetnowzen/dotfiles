@@ -18,7 +18,9 @@ alias grep='grep --color'
 alias grepc='grep -Rin --color --include=*.{cc,h}'
 alias less='less -r'
 alias print_path='echo $PATH | tr : "\n"'
+alias g_pl_stash='git stash && git pull && git stash pop'
 alias tm='tmux attach || tmux new'
+alias v='vim'
 alias vimr='vim ~/.vimrc'
 
 function find()
@@ -45,7 +47,7 @@ lst()
 # Bash Prompt
 parse_git_branch()
 {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
 
 git-uplift()
@@ -92,7 +94,7 @@ RESET="\[$(tput sgr0)\]"
 
 export DISPLAY=:0.0
 
-export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch \" (%s)\")${RESET} \$ "
+export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
 
 # bd = (BLOCK, BLK)   Block device (buffered) special file
 # cd = (CHAR, CHR)    Character device (unbuffered) special file
@@ -167,7 +169,7 @@ colors_and_formatting()
   done
 }
 
-# Ericsson (Don't push this)
-alias moshell='/app/moshell/latest/moshell/moshell'
-alias rbshost04='ssh -Y rbshost04.mo.sw.ericsson.se'
-alias rbshost05='ssh -Y rbshost05.mo.sw.ericsson.se'
+if [ -r ~/.bashrc.work ]
+then
+  . ~/.bashrc.work
+fi
