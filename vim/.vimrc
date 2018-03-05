@@ -171,8 +171,8 @@ au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
 " syn region csFold start="{" end="}" transparent fold
 
 " Regular Expressions set to very magic
-nnoremap / /\v
-vnoremap / /\v
+nnoremap / /\v\c
+vnoremap / /\v\c
 cnoremap %s %s/\v
 cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v
