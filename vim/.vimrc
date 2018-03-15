@@ -123,11 +123,16 @@ inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")
 inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
 inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
 inoremap /* /**/<Left><Left>
+inoremap /*<BS> <NOP>
+inoremap /*<BS><BS> <NOP>
 inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
 inoremap /*<CR> /*<CR>*/<Esc>O
 inoremap <Leader>/* /*
 inoremap """<CR> """<CR>"""<Esc>O
 inoremap '''CR> '''<CR>'''<Esc>O
+
+let pairing_characters = ["[]", "{}", "''", "\"\"", "()"]
+inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
 " Cursor marking
 set cursorline
