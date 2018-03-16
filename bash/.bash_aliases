@@ -116,13 +116,6 @@ export PS1="${CYAN}\A ${BLUE}\u@\h ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESE
 # *.extension =   Every file using this extension e.g. *.rpm = files with the ending .rpm
 LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:' ; export LS_COLORS
 
-norm="$(printf '\033[0m')" #returns to "normal"
-bold="$(printf '\033[0;1m')" #set bold
-red="$(printf '\033[0;31m')" #set red
-boldred="$(printf '\033[0;1;31m')" #set bold, and set red.
-
-alias test='sed -e "s/[a-zA-Z\_\.]\+\:[0-9]\+/${boldred}&${norm}/g"'  # will color any occurence of someregexp in Bold red
-
 # Magento
 magento_path='/var/www/html/magento-trial'
 alias mage_root='cd $magento_path'
