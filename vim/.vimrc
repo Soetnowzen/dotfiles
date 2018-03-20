@@ -113,9 +113,13 @@ inoremap :wq<cr> <Esc>:wq<cr>
 inoremap jj <Esc>
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<Esc>O
-inoremap {{ {
-" }}
+inoremap {{ {  " }}
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
+inoremap < <><Left>
+inoremap <<space> <<space>
+inoremap << <
+inoremap <<<space> <<<space>
+inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
@@ -129,9 +133,9 @@ inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
 inoremap /*<CR> /*<CR>*/<Esc>O
 inoremap <Leader>/* /*
 inoremap """<CR> """<CR>"""<Esc>O
-inoremap '''CR> '''<CR>'''<Esc>O
+inoremap '''<CR> '''<CR>'''<Esc>O
 
-let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/"]
+let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
 " Cursor marking
