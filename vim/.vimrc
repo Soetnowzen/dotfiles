@@ -168,8 +168,10 @@ function! MyFoldLevel( lineNumber )
 endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
-au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
+" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
+au FileType cpp,c set fdm=syntax
 au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
+au FileType python,plaintex set fdm=indent
 " set fdm=marker
 " set fmr={,}
 " set fdm=syntax
@@ -194,10 +196,14 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
-au BufRead,BufNewFile *.py,*.pyw,*.pl set shiftwidth=4
-au BufRead,BufNewFile *.py,*.pyw,*.pl set tabstop=4
+" au BufRead,BufNewFile *.py,*.pyw,*.pl,*.sh set shiftwidth=4
+" au BufRead,BufNewFile *.py,*.pyw,*.pl,*.sh set tabstop=4
+au FileType python,perl,sh set shiftwidth=4
+au FileType python,perl,sh set tabstop=4
 au BufRead,BufNewFile *.tex,*.txt set spell spelllang=en_us
-au BufRead,BufNewFile Makefile* set noexpandtab
+au FileType plaintex set spell spelllang=en_us
+" au BufRead,BufNewFile Makefile* set noexpandtab
+au FileType make set noexpandtab
 
 " Central directory for swap files
 set backup
@@ -460,8 +466,10 @@ colorscheme solarized
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
 set colorcolumn=81,82,83
-au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
-au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
+" au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
+au FileType python,perl set colorcolumn=121,122,123
+" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
+au FileType cpp,c set colorcolumn=121,122,123
 
 au BufRead,BufNewFile *.log set filetype=log
 
@@ -507,8 +515,9 @@ let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 " let bit_operations_after = "|[^\"].*[". bit_operations ."]{1,2}\\w.*[^\"]"
 " let bit_operations_before = "|[^\"].*\\w[". bit_operations ."]{1,2}.*[^\"]"
 
-let pattern = "\\s+$|\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
-au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
+let pattern = "\\t|\\s+$|\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
+" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
+au FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
