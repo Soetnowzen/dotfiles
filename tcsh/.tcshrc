@@ -17,6 +17,8 @@ alias tm 'tmux attach || tmux new'
 alias v vim
 alias vimr vim ~/.vimrc
 
+set color
+setenv LS_COLORS "di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:"
 setenv TERM xterm-256color
 
 # alias color_failure grep -i \'err\\w*\\\|warn\\w*\\\|info\\w*\\\|fail\\w*\\\|\$\'
