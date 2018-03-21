@@ -114,7 +114,8 @@ inoremap :wq<cr> <Esc>:wq<cr>
 inoremap jj <Esc>
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<Esc>O
-inoremap {{ {  " }}
+inoremap {{ {
+" }}
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
 inoremap < <><Left>
 inoremap <<space> <<space>
@@ -176,7 +177,56 @@ setlocal foldmethod=expr
 " au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
 au FileType cpp,c set fdm=syntax
 au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
-au FileType python,plaintex set fdm=indent
+au FileType python,plaintex,text set fdm=indent
+" au BufRead,BufNewFile *.txt
+au FileType plaintex,text call Inoremaps()
+fu! Inoremaps()
+  " inoremap alpha α
+  " inoremap beta β
+  " inoremap gamma γ
+  " inoremap delta δ
+  " inoremap epsilon ε
+  " inoremap zeta ζ
+  " inoremap eta η
+  " inoremap theta θ
+  inoremap lambda λ
+  " inoremap mu μ
+  inoremap pi π
+  " inoremap rho ρ
+  " inoremap sigma σ
+  " inoremap tau τ
+  " inoremap phi φ
+  " inoremap psi ψ
+  inoremap omega ω
+  " inoremap Gamma Γ
+  " inoremap Delta Δ
+  " inoremap Theta Θ
+  " inoremap Lambda Λ
+  " inoremap Pi Π
+  inoremap Sigma Σ
+  " inoremap Phi Φ
+  " inoremap Psi Ψ
+  inoremap Omega Ω
+  " inoremap forall ∀
+  " inoremap exists ∃
+  " inoremap notexists ∄
+  inoremap emptyset ∅
+  " inoremap \in ∈
+  " inoremap notin ∉
+  inoremap sqrt √
+  " inoremap infinit ∞
+  " inoremap && ∧
+  " inoremap || ∨
+  " inoremap intersection ∩
+  " inoremap union ∪
+  inoremap integral ∫
+  inoremap ~= ≃
+  inoremap != ≠
+  inoremap >= ≥
+  inoremap <= ≤
+  inoremap ... ⋯
+endfu
+
 " set fdm=marker
 " set fmr={,}
 " set fdm=syntax
