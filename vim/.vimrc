@@ -1,4 +1,5 @@
 set encoding=utf-8
+set fileencoding=utf-8
 set nocompatible
 filetype off
 source $VIMRUNTIME/vimrc_example.vim
@@ -100,10 +101,10 @@ nnoremap H gT
 nnoremap L gt
 
 " normal mode remap case switch
-nnoremap � ~
+nnoremap § ~
 
 " visual mode remap case switch
-vnoremap � ~
+vnoremap § ~
 
 nnoremap <space> :noh<cr>
 
@@ -338,12 +339,20 @@ noremap \ldo :LinediffReset<CR>
   " autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " augroup END
 
-" Arline
+" Airline
 " :AirlineTheme solarized
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
 let g:airline_detect_spelllang=1
+" let g:airline_left_sep='>'
+let g:airline_left_sep = '▶'
+" let g:airline_right_sep='<'
+let g:airline_right_sep = '◀'
+let g:airline_detect_modified=1
+let g:airline_detect_paste=1
+let g:airline_detect_crypt=1
+let g:airline_inactive_collapse=1
 function! AirlineInit()
   let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
   let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])

@@ -22,6 +22,9 @@ alias g_pl_stash='git stash && git pull && git stash pop'
 alias tm='tmux attach || tmux new'
 alias v='vim'
 alias vimr='vim ~/.vimrc'
+alias v-split='vim -o'
+alias v-vsplit='vim -O'
+alias v-tsplit='vim -p'
 
 function find()
 {

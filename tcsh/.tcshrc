@@ -16,6 +16,9 @@ alias g_pl_stash 'git stash && git pull && git stash pop'
 alias tm 'tmux attach || tmux new'
 alias v vim
 alias vimr vim ~/.vimrc
+alias v-split vim -o
+alias v-vsplit vim -O
+alias v-tsplit vim -p
 
 set color
 setenv LS_COLORS "di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:"
