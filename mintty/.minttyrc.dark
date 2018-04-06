@@ -9,6 +9,7 @@ Columns=80
 Rows=60
 Locale=sv_SE
 Charset=UTF-8
+AllowSetSelection=true
 
 Font=Consolas
 AllowBlinking=yes
