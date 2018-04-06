@@ -1,4 +1,5 @@
 set encoding=utf-8
+set fileencoding=utf-8
 set nocompatible
 filetype off
 source $VIMRUNTIME/vimrc_example.vim
@@ -100,10 +101,10 @@ nnoremap H gT
 nnoremap L gt
 
 " normal mode remap case switch
-nnoremap � ~
+nnoremap § ~
 
 " visual mode remap case switch
-vnoremap � ~
+vnoremap § ~
 
 nnoremap <space> :noh<cr>
 
@@ -116,6 +117,11 @@ inoremap {<CR> {<CR>}<Esc>O
 inoremap {{ {
 " }}
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
+inoremap < <><Left>
+inoremap <<space> <<space>
+inoremap << <
+inoremap <<<space> <<<space>
+inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
@@ -123,11 +129,16 @@ inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")
 inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
 inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
 inoremap /* /**/<Left><Left>
+inoremap /*<BS> <NOP>
+inoremap /*<BS><BS> <NOP>
 inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
 inoremap /*<CR> /*<CR>*/<Esc>O
 inoremap <Leader>/* /*
 inoremap """<CR> """<CR>"""<Esc>O
-inoremap '''CR> '''<CR>'''<Esc>O
+inoremap '''<CR> '''<CR>'''<Esc>O
+
+let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
+inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
 " Cursor marking
 set cursorline
@@ -163,16 +174,67 @@ function! MyFoldLevel( lineNumber )
 endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
-au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
+" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set fdm=syntax
+au FileType cpp,c set fdm=syntax
 au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
+au FileType python,plaintex,text set fdm=indent
+" au BufRead,BufNewFile *.txt
+au FileType plaintex,text call Inoremaps()
+fu! Inoremaps()
+  " inoremap alpha α
+  " inoremap beta β
+  " inoremap gamma γ
+  " inoremap delta δ
+  " inoremap epsilon ε
+  " inoremap zeta ζ
+  " inoremap eta η
+  " inoremap theta θ
+  inoremap lambda λ
+  " inoremap mu μ
+  inoremap pi π
+  " inoremap rho ρ
+  " inoremap sigma σ
+  " inoremap tau τ
+  " inoremap phi φ
+  " inoremap psi ψ
+  inoremap omega ω
+  " inoremap Gamma Γ
+  " inoremap Delta Δ
+  " inoremap Theta Θ
+  " inoremap Lambda Λ
+  " inoremap Pi Π
+  inoremap Sigma Σ
+  " inoremap Phi Φ
+  " inoremap Psi Ψ
+  inoremap Omega Ω
+  " inoremap forall ∀
+  " inoremap exists ∃
+  " inoremap notexists ∄
+  inoremap emptyset ∅
+  " inoremap \in ∈
+  " inoremap notin ∉
+  inoremap sqrt √
+  " inoremap infinit ∞
+  " inoremap && ∧
+  " inoremap || ∨
+  " inoremap intersection ∩
+  " inoremap union ∪
+  inoremap integral ∫
+  inoremap ~= ≃
+  inoremap != ≠
+  inoremap >= ≥
+  inoremap <= ≤
+  inoremap ... ⋯
+endfu
+
 " set fdm=marker
 " set fmr={,}
 " set fdm=syntax
 " syn region csFold start="{" end="}" transparent fold
 
 " Regular Expressions set to very magic
-nnoremap / /\v
-vnoremap / /\v
+nnoremap / /\v\c
+vnoremap / /\v\c
 cnoremap %s %s/\v
 cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v
@@ -189,10 +251,14 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
-au BufRead,BufNewFile *.py,*.pyw,*.pl set shiftwidth=4
-au BufRead,BufNewFile *.py,*.pyw,*.pl set tabstop=4
+" au BufRead,BufNewFile *.py,*.pyw,*.pl,*.sh set shiftwidth=4
+" au BufRead,BufNewFile *.py,*.pyw,*.pl,*.sh set tabstop=4
+au FileType python,perl,sh set shiftwidth=4
+au FileType python,perl,sh set tabstop=4
 au BufRead,BufNewFile *.tex,*.txt set spell spelllang=en_us
-au BufRead,BufNewFile Makefile* set noexpandtab
+au FileType plaintex set spell spelllang=en_us
+" au BufRead,BufNewFile Makefile* set noexpandtab
+au FileType make set noexpandtab
 
 " Central directory for swap files
 set backup
@@ -323,12 +389,20 @@ noremap \ldo :LinediffReset<CR>
   " autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
 " augroup END
 
-" Arline
+" Airline
 " :AirlineTheme solarized
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_detect_spell=1
 let g:airline_detect_spelllang=1
+" let g:airline_left_sep='>'
+let g:airline_left_sep = '▶'
+" let g:airline_right_sep='<'
+let g:airline_right_sep = '◀'
+let g:airline_detect_modified=1
+let g:airline_detect_paste=1
+let g:airline_detect_crypt=1
+let g:airline_inactive_collapse=1
 function! AirlineInit()
   let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
   let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
@@ -455,10 +529,13 @@ colorscheme solarized
 " Error tokens after 80 tokens
 " let &colorcolumn=join(range(81,999),",")
 set colorcolumn=81,82,83
-au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
-au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
+" au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
+au FileType python,perl set colorcolumn=121,122,123
+" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
+au FileType cpp,c set colorcolumn=121,122,123
 
 au BufRead,BufNewFile *.log set filetype=log
+au BufRead,BufNewFile *.txt set filetype=text
 
 " Highlight trailing spaces
 " augroup trailing
@@ -495,6 +572,30 @@ au BufRead,BufNewFile *.log set filetype=log
 " hi User4 guifg=#a0ee40 guibg=#222222
 " hi User5 guifg=#eeee40 guibg=#222222
 
+" Highlights
+highlight Black ctermfg=Black guifg=Black
+highlight Blue ctermfg=DarkBlue guifg=DarkBlue
+highlight Green ctermfg=DarkGreen guifg=DarkGreen
+highlight Cyan ctermfg=DarkCyan guifg=DarkCyan
+highlight Red ctermfg=DarkRed guifg=DarkRed
+highlight Magenta ctermfg=DarkMagenta guifg=DarkMagenta
+highlight Brown ctermfg=Brown guifg=Brown
+highlight Grey ctermfg=Grey guifg=Grey
+highlight DarkGrey ctermfg=DarkGrey guifg=DarkGrey
+highlight BrightBlue ctermfg=Blue guifg=Blue
+highlight BrightGreen ctermfg=Green guifg=Green
+highlight BrightCyan ctermfg=Cyan guifg=Cyan
+highlight Orange ctermfg=Red guifg=Red
+highlight Violet ctermfg=Magenta guifg=Magenta
+highlight Yellow ctermfg=Yellow guifg=Yellow
+highlight White ctermfg=White guifg=White
+
+au FileType plaintex,text,log call MultipleMatches()
+fu! MultipleMatches()
+  " let m = matchadd("Orange", '\d\+[0-9\.:-]*')
+  " let m = matchadd("Green", '\cManagedElement=1,NodeSupport=1,pimcancellationfunction=1')
+endfu
+
 " let bit_operations="\\/\\*\\-\\+\\&\\%\\<\\>\\=\\|"
 let bit_operations = "*&|"
 let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
@@ -502,8 +603,9 @@ let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 " let bit_operations_after = "|[^\"].*[". bit_operations ."]{1,2}\\w.*[^\"]"
 " let bit_operations_before = "|[^\"].*\\w[". bit_operations ."]{1,2}.*[^\"]"
 
-let pattern = "\\s+$|\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
-au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
+let pattern = "\\t|\\s+$|\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
+" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
+au FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
