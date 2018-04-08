@@ -7,11 +7,11 @@ source $VIMRUNTIME/mswin.vim
 behave mswin
 
 " if &term =~ "xterm\\|urxvt"
-"   let &t_SI .= "\<Esc>[5 q"
-"   let &t_EI .= "\<Esc>[1 q"
+"   let &t_SI .= "\<Esc>[5 q" " ]
+"   let &t_EI .= "\<Esc>[1 q" " ]
 " endif
-let &t_SI .= "\<Esc>[5 q"
-let &t_EI .= "\<Esc>[1 q"
+let &t_SI .= "\<Esc>[5 q" " ]
+let &t_EI .= "\<Esc>[1 q" " ]
 
 " vimdiff opens in vertical mode now
 " set diffopt=vertical
@@ -123,6 +123,7 @@ inoremap << <
 inoremap <<<space> <<<space>
 inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
+" ]
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
@@ -163,11 +164,11 @@ set cursorcolumn
 function! MyFoldLevel( lineNumber )
   let thisLine = getline( a:lineNumber )
   " Don't create fold if entire comment or {} pair is on one line.
-  if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)' )
+  if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)\|\%(\[.*\]\)' )
     return '='
-  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{' )
+  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{\|\[\|\(#if\(def\|ndef\)\)' )
     return "a1"
-  elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}' )
+  elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}\|\]\|\(#endif\)' )
     return "s1"
   endif
   return '='
