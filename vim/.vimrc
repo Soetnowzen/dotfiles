@@ -166,7 +166,7 @@ function! MyFoldLevel( lineNumber )
   " Don't create fold if entire comment or {} pair is on one line.
   if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)\|\%(\[.*\]\)' )
     return '='
-  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{\|\[\|\(#if\(def\|ndef\)\)' )
+  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{\|\[\|\(#if\(def\|ndef\)\?\)' )
     return "a1"
   elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}\|\]\|\(#endif\)' )
     return "s1"
@@ -308,6 +308,9 @@ call vundle#end()
 filetype plugin indent on
 
 let g:python_highlight_all = 1
+
+" vim-json
+let g:vim_json_syntax_conceal = 0
 
 " vim-windowswap
 nnoremap <C-y>w :call WindowSwap#MarkWindowSwap()<CR>

@@ -39,8 +39,8 @@ alias sol.dark='source ~/dotfiles/mintty/sol.dark'
 alias sol.light='source ~/dotfiles/mintty/sol.light'
 
 # Autocomple searches when using up and down
-bind '"\e[A":history-search-backward'
-bind '"\e[B":history-search-forward'
+bind '"\e[A":history-search-backward' # ]
+bind '"\e[B":history-search-forward' # ]
 
 lst()
 {
@@ -97,7 +97,7 @@ RESET="\[$(tput sgr0)\]"
 
 export DISPLAY=:0.0
 
-export PS1="${CYAN}\A ${BLUE}\u@\h${RESET}:${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
+export PS1="${CYAN}\A ${BLUE}\u@\h${RESET} ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
 
 # bd = (BLOCK, BLK)   Block device (buffered) special file
 # cd = (CHAR, CHR)    Character device (unbuffered) special file
