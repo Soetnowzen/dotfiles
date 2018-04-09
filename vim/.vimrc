@@ -294,6 +294,7 @@ call vundle#begin()
 Plugin 'AndrewRadev/linediff.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'elzr/vim-json'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'scrooloose/nerdtree'
@@ -456,7 +457,8 @@ let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 
-let g:syntastic_python_checkers = ['python', 'flake8']
+" let g:syntastic_python_checkers = ['python', 'flake8']
+let g:syntastic_python_checkers = ['python3', 'pylint']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 " let g:syntastic_cpp_checkers = ['clang_cpp', 'gcc']
 let g:syntastic_cpp_checkers = ['cppcheck', 'cpplint']
@@ -537,6 +539,7 @@ au FileType cpp,c set colorcolumn=121,122,123
 
 au BufRead,BufNewFile *.log set filetype=log
 au BufRead,BufNewFile *.txt set filetype=text
+au BufRead,BufNewFile *.json set filetype=json
 
 " Highlight trailing spaces
 " augroup trailing

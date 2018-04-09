@@ -7,12 +7,13 @@
 [push]
   default = tracking
 [merge]
-  tool = vimdiff
   conflictsyle = diff3
   prompt = false
+  tool = vimdiff
 [diff]
-  renames = copies
+  tool = vimdiff
   mnemonicprefix = true
+  renames = copies
 [alias]
   a = add
   br = branch
