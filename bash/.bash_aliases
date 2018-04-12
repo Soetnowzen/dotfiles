@@ -165,6 +165,27 @@ colors_and_formatting()
   done
 }
 
+# countdown 60              60 seconds
+# countdown 60*30           30 minutes
+# countdown $((24*60*60))   1 day
+function countdown()
+{
+    date1=$((`date +%s` + $1));
+    while [ "$date1" -ge `date +%s` ]; do
+        echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+        sleep 0.1
+    done
+}
+
+function stopwatch()
+{
+    date1=`date +%s`;
+    while true; do
+        echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
+        sleep 0.1
+    done
+}
+
 if [ -r ~/.bashrc.work ]
 then
   . ~/.bashrc.work

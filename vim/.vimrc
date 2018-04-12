@@ -100,6 +100,9 @@ nnoremap <Down> <C-W>-
 nnoremap H gT
 nnoremap L gt
 
+" Command-line mode remaps
+cnoremap jj <Esc>
+
 " normal mode remap case switch
 nnoremap § ~
 
@@ -136,7 +139,9 @@ inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
 inoremap /*<CR> /*<CR>*/<Esc>O
 inoremap <Leader>/* /*
 inoremap """<CR> """<CR>"""<Esc>O
+inoremap """<Space> """<Space><Space>"""<Left><Left><Left><Left>
 inoremap '''<CR> '''<CR>'''<Esc>O
+inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
@@ -182,56 +187,51 @@ au FileType python,plaintex,text set fdm=indent
 " au BufRead,BufNewFile *.txt
 au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
-  " inoremap alpha α
-  " inoremap beta β
-  " inoremap gamma γ
-  " inoremap delta δ
-  " inoremap epsilon ε
-  " inoremap zeta ζ
-  " inoremap eta η
-  " inoremap theta θ
-  inoremap lambda λ
-  " inoremap mu μ
-  inoremap pi π
-  " inoremap rho ρ
-  " inoremap sigma σ
-  " inoremap tau τ
-  " inoremap phi φ
-  " inoremap psi ψ
-  inoremap omega ω
-  " inoremap Gamma Γ
-  " inoremap Delta Δ
-  " inoremap Theta Θ
-  " inoremap Lambda Λ
-  " inoremap Pi Π
-  inoremap Sigma Σ
-  " inoremap Phi Φ
-  " inoremap Psi Ψ
-  inoremap Omega Ω
-  " inoremap forall ∀
-  " inoremap exists ∃
-  " inoremap notexists ∄
-  inoremap emptyset ∅
-  " inoremap \in ∈
-  " inoremap notin ∉
-  inoremap sqrt √
-  " inoremap infinit ∞
-  " inoremap && ∧
-  " inoremap || ∨
-  " inoremap intersection ∩
-  " inoremap union ∪
-  inoremap integral ∫
+  inoremap <Space>alpha<Space> α
+  inoremap <Space>beta<Space> β
+  inoremap <Space>gamma<Space> γ
+  inoremap <Space>delta<Space> δ
+  inoremap <Space>epsilon<Space> ε
+  inoremap <Space>zeta<Space> ζ
+  inoremap <Space>eta<Space> η
+  inoremap <Space>theta<Space> θ
+  inoremap <Space>lambda<Space> λ
+  inoremap <Space>mu<Space> μ
+  inoremap <Space>pi<Space> π
+  inoremap <Space>rho<Space> ρ
+  inoremap <Space>sigma<Space> σ
+  inoremap <Space>tau<Space> τ
+  inoremap <Space>phi<Space> φ
+  inoremap <Space>psi<Space> ψ
+  inoremap <Space>omega<Space> ω
+  inoremap <Space>Gamma<Space> Γ
+  inoremap <Space>Delta<Space> Δ
+  inoremap <Space>Theta<Space> Θ
+  inoremap <Space>Lambda<Space> Λ
+  inoremap <Space>Pi<Space> Π
+  inoremap <Space>Sigma<Space> Σ
+  inoremap <Space>Phi<Space> Φ
+  inoremap <Space>Psi<Space> Ψ
+  inoremap <Space>Omega<Space> Ω
+  inoremap <Space>forall<Space> ∀
+  inoremap <Space>exists<Space> ∃
+  inoremap <Space>notexists<Space> ∄
+  inoremap <Space>emptyset<Space> ∅
+  inoremap <Space>in<Space> ∈
+  inoremap <Space>notin<Space> ∉
+  inoremap <Space>sqrt<Space> √
+  inoremap <Space>infinit<Space> ∞
+  inoremap && ∧
+  inoremap || ∨
+  inoremap <Space>intersection<Space> ∩
+  inoremap <Space>union<Space> ∪
+  inoremap <Space>integral<Space> ∫
   inoremap ~= ≃
   inoremap != ≠
   inoremap >= ≥
   inoremap <= ≤
   inoremap ... ⋯
 endfu
-
-" set fdm=marker
-" set fmr={,}
-" set fdm=syntax
-" syn region csFold start="{" end="}" transparent fold
 
 " Regular Expressions set to very magic
 nnoremap / /\v\c
@@ -279,12 +279,8 @@ set switchbuf +=useopen
 set switchbuf +=usetab
 set switchbuf +=split
 
-" Doesn't save swp-files after each session
-" set nobackup
-" set noundofile
-
 " :e ignores files
-"set wildignore=*.o, *.exe, *.hi, *.swp
+set wildignore=*.o,*.exe,*.hi,*.swp
 
 " Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -473,7 +469,7 @@ let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
 let g:syntastic_enable_signs = 1
-let g:syntastic_quiet_messages = {'level': 'warnings'}
+" let g:syntastic_quiet_messages = {'level': 'warnings'}
 
 function! FindConfig(prefix, what, where)
   let cfg = findfile(a:what, escape(a:where, ' ') . ';')
@@ -536,7 +532,7 @@ colorscheme solarized
 " let &colorcolumn=join(range(81,999),",")
 set colorcolumn=81,82,83
 " au BufRead,BufNewFile *.py,*.pyw,*.pl set colorcolumn=121,122,123
-au FileType python,perl set colorcolumn=121,122,123
+" au FileType python,perl set colorcolumn=121,122,123
 " au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
 au FileType cpp,c set colorcolumn=121,122,123
 
