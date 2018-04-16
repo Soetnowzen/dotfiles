@@ -101,11 +101,11 @@ nnoremap § ~
 " visual mode remap case switch
 vnoremap § ~
 
-nnoremap <space> :noh<cr>
+nnoremap <Space> :noh<cr>
 
 " Insertion mode remaps
-inoremap :w<cr> <Esc>:w<cr>a
-inoremap :wq<cr> <Esc>:wq<cr>
+inoremap :w<CR> <Esc>:w<CR>a
+inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<Esc>O
@@ -113,12 +113,12 @@ inoremap {{ {
 " }}
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
 inoremap < <><Left>
-inoremap <<space> <<space>
+inoremap <<Space> <<Space>
 inoremap << <
-inoremap <<<space> <<<space>
+inoremap <<<Space> <<<Space>
 inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
-" ]
+inoremap [<Space> [<Space><Space>]<Left><Left>
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
@@ -129,7 +129,6 @@ inoremap /*<BS> <NOP>
 inoremap /*<BS><BS> <NOP>
 inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
 inoremap /*<CR> /*<CR>*/<Esc>O
-inoremap <Leader>/* /*
 inoremap """<CR> """<CR>"""<Esc>O
 inoremap """<Space> """<Space><Space>"""<Left><Left><Left><Left>
 inoremap '''<CR> '''<CR>'''<Esc>O
@@ -226,8 +225,8 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
-au FileType python,perl,sh set shiftwidth=4
-au FileType python,perl,sh set tabstop=4
+au FileType python,perl set shiftwidth=4
+au FileType python,perl set tabstop=4
 au BufRead,BufNewFile *.tex,*.txt set spell spelllang=en_us
 au FileType plaintex set spell spelllang=en_us
 au FileType make set noexpandtab
@@ -401,6 +400,8 @@ let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
 let NERDTreeDirArrowsExpandable = '+'
 let NERDTreeDirArrowsCollapsible = '~'
+let NERDTreeMapOpenSplit='s'
+let NERDTreeMapOpenVSplit='v'
 " let NERDTreeMapOpenSplit='-'
 " let NERDTreeMapOpenVSplit='|'
 
