@@ -161,45 +161,45 @@ au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
 au FileType python,plaintex,text set fdm=indent
 au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
-  inoremap <Space>alpha<Space> α
-  inoremap <Space>beta<Space> β
-  inoremap <Space>gamma<Space> γ
-  inoremap <Space>delta<Space> δ
-  inoremap <Space>epsilon<Space> ε
-  inoremap <Space>zeta<Space> ζ
-  inoremap <Space>eta<Space> η
-  inoremap <Space>theta<Space> θ
-  inoremap <Space>lambda<Space> λ
-  inoremap <Space>mu<Space> μ
-  inoremap <Space>pi<Space> π
-  inoremap <Space>rho<Space> ρ
-  inoremap <Space>sigma<Space> σ
-  inoremap <Space>tau<Space> τ
-  inoremap <Space>phi<Space> φ
-  inoremap <Space>psi<Space> ψ
-  inoremap <Space>omega<Space> ω
-  inoremap <Space>Gamma<Space> Γ
-  inoremap <Space>Delta<Space> Δ
-  inoremap <Space>Theta<Space> Θ
-  inoremap <Space>Lambda<Space> Λ
-  inoremap <Space>Pi<Space> Π
-  inoremap <Space>Sigma<Space> Σ
-  inoremap <Space>Phi<Space> Φ
-  inoremap <Space>Psi<Space> Ψ
-  inoremap <Space>Omega<Space> Ω
-  inoremap <Space>forall<Space> ∀
-  inoremap <Space>exists<Space> ∃
-  inoremap <Space>notexists<Space> ∄
-  inoremap <Space>emptyset<Space> ∅
-  inoremap <Space>in<Space> ∈
-  inoremap <Space>notin<Space> ∉
-  inoremap <Space>sqrt<Space> √
-  inoremap <Space>infinit<Space> ∞
+  inoremap <Space>alpha<Space> <Space>α<Space>
+  inoremap <Space>beta<Space> <Space>Β<Space>
+  inoremap <Space>gamma<Space> <Space>γ<Space>
+  inoremap <Space>delta<Space> <Space>δ<Space>
+  inoremap <Space>epsilon<Space> <Space>ε<Space>
+  inoremap <Space>zeta<Space> <Space>ζ<Space>
+  inoremap <Space>eta<Space> <Space>η<Space>
+  inoremap <Space>theta<Space> <Space>θ<Space>
+  inoremap <Space>lambda<Space> <Space>λ<Space>
+  inoremap <Space>mu<Space> <Space>μ<Space>
+  inoremap <Space>pi<Space> <Space>π<Space>
+  inoremap <Space>rho<Space> <Space>ρ<Space>
+  inoremap <Space>sigma<Space> <Space>σ<Space>
+  inoremap <Space>tau<Space> <Space>τ<Space>
+  inoremap <Space>phi<Space> <Space>φ<Space>
+  inoremap <Space>psi<Space> <Space>ψ<Space>
+  inoremap <Space>omega<Space> <Space>ω<Space>
+  inoremap <Space>Gamma<Space> <Space>Γ<Space>
+  inoremap <Space>Delta<Space> <Space>Δ<Space>
+  inoremap <Space>Theta<Space> <Space>Θ<Space>
+  inoremap <Space>Lambda<Space> <Space>Λ<Space>
+  inoremap <Space>Pi<Space> <Space>Π<Space>
+  inoremap <Space>Sigma<Space> <Space>Σ<Space>
+  inoremap <Space>Phi<Space> <Space>Φ<Space>
+  inoremap <Space>Psi<Space> <Space>Ψ<Space>
+  inoremap <Space>Omega<Space> <Space>Ω<Space>
+  inoremap <Space>forall<Space> <Space>∀<Space>
+  inoremap <Space>exists<Space> <Space>∃<Space>
+  inoremap <Space>notexists<Space> <Space>∄<Space>
+  inoremap <Space>emptyset<Space> <Space>∅<Space>
+  inoremap <Space>in<Space> <Space>∈<Space>
+  inoremap <Space>notin<Space> <Space>∉<Space>
+  inoremap <Space>sqrt<Space> <Space>√<Space>
+  inoremap <Space>infinit<Space> <Space>∞<Space>
   inoremap && ∧
   inoremap || ∨
-  inoremap <Space>intersection<Space> ∩
-  inoremap <Space>union<Space> ∪
-  inoremap <Space>integral<Space> ∫
+  inoremap <Space>intersection<Space> <Space>∩<Space>
+  inoremap <Space>union<Space> <Space>∪<Space>
+  inoremap <Space>integral<Space> <Space>∫<Space>
   inoremap ~= ≃
   inoremap != ≠
   inoremap >= ≥
