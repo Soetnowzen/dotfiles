@@ -9,7 +9,6 @@ behave mswin
 let &t_SI .= "\<Esc>[5 q" " ]
 let &t_EI .= "\<Esc>[1 q" " ]
 
-
 " Sets row numbers
 set number
 
@@ -66,7 +65,6 @@ function! ToggleComment()
     end
   end
 endfunction
-
 
 nnoremap <leader><Space> :call ToggleComment()<cr>
 vnoremap <C-m> :call ToggleComment()<cr>
@@ -245,9 +243,9 @@ set guioptions-=T
 set guioptions-=m
 set guioptions-=r
 
-set switchbuf +=useopen
-set switchbuf +=usetab
-set switchbuf +=split
+set switchbuf+=useopen
+set switchbuf+=usetab
+set switchbuf+=split
 
 " :e ignores files
 set wildignore=*.o,*.exe,*.hi,*.swp
@@ -256,7 +254,6 @@ set wildignore=*.o,*.exe,*.hi,*.swp
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" Plugin 'rhysd/vim-clang-format'
 Plugin 'AndrewRadev/linediff.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
@@ -286,79 +283,6 @@ nnoremap <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
 " linediff
 noremap \ldt :Linediff<CR>
 noremap \ldo :LinediffReset<CR>
-
-" vim-clang-format
-" your favorite style options
-" let g:clang_format#style_options = {
-      " \ "AccessModifierOffset" : -4,
-      " \ "AllowShortIfStatementsOnASingleLine" : "false",
-      " \ "AlwaysBreakTemplateDeclarations" : "true",
-      " \ "Standard" : "C++11",
-      " \ "TabWidth" : 2,
-      " \ "AlignAfterOpenBracket" : "Align",
-      " \ "AlignOperands" : "true",
-      " \ "AllowAllParametersOfDeclarationOnNextLine" : "false",
-      " \ "AllowShortCaseLabelsOnASingleLine" : "false",
-      " \ "AllowShortFunctionsOnASingleLine" : "None",
-      " \ "AllowShortLoopsOnASingleLine" : "false",
-      " \ "AlwaysBreakBeforeMultilineStrings" : "false",
-      " \ "BinPackArguments" : "false",
-      " \ "BinPackParameters" : "false",
-      " \ "AfterClass" : "true",
-      " \ "AfterControlStatement" : "true",
-      " \ "AfterEnum" : "true",
-      " \ "AfterFunction" : "true",
-      " \ "AfterNamespace" : "true",
-      " \ "AfterStruct" : "true",
-      " \ "AfterUnion" : "true",
-      " \ "AfterExternBlock" : "true",
-      " \ "BeforeCatch" : "true",
-      " \ "BeforeElse" : "true",
-      " \ "SplitEmptyFunction" : "true",
-      " \ "SplitEmptyRecord" : "true",
-      " \ "SplitEmptyNamespace" : "true",
-      " \ "BreakBeforeBinaryOperators" : "NonAssignment",
-      " \ "BreakConstructorInitializers" : "AfterColon",
-      " \ "BreakStringLiterals" : "true",
-      " \ "ColumnLimit" : 150,
-      " \ "CompactNamespaces" : "false",
-      " \ "ConstructorInitializerAllOnOneLineOrOnePerLine" : "false",
-      " \ "ContinuationIndentWidth" : 2,
-      " \ "FixNamespaceComments" : "false",
-      " \ "IndentCaseLabels" : "true",
-      " \ "IndentPPDirectives" : "None",
-      " \ "IndentWidth" : 2,
-      " \ "IndentWrappedFunctionNames" : "true",
-      " \ "KeepEmptyLinesAtTheStartOfBlocks" : "false",
-      " \ "MaxEmptyLinesToKeep" : 1,
-      " \ "NamespaceIndentation" : "All",
-      " \ "DerivePointerAlignment" : "true",
-      " \ "PointerAlignment" : "Middle",
-      " \ "SortIncludes" : "true",
-      " \ "SortUsingDeclarations" : "true",
-      " \ "SpaceAfterCStyleCast" : "false",
-      " \ "SpaceAfterTemplateKeyword" : "false",
-      " \ "SpaceBeforeAssignmentOperators" : "true",
-      " \ "SpaceBeforeParens" : "ControlStatements",
-      " \ "SpaceInEmptyParentheses" : "false",
-      " \ "SpacesBeforeTrailingComments" : 1,
-      " \ "SpacesInAngles" : "false",
-      " \ "SpacesInCStyleCastParentheses" : "false",
-      " \ "SpacesInContainerLiterals" : "false",
-      " \ "SpacesInParentheses" : "false",
-      " \ "SpacesInSquareBrackets" : "false",
-      " \ "UseTab" : "Never",
-      " \ "BreakBeforeBraces" : "GNU"}
-" SBPO_Never | SBPO_ControlStatements | SBPO_Always
-
-" map to = in C++ code
-" augroup ClangFormatSettings
-  " autocmd!
-  " autocmd FileType c,cpp,objc nnoremap = :<C-u>ClangFormat<CR>
-  " autocmd FileType c,cpp,objc vnoremap = :ClangFormat<CR>
-  " if you install vim-operator-user
-  " autocmd FileType c,cpp,objc map <buffer><Leader>x <Plug>(operator-clang-format)
-" augroup END
 
 " Airline
 " :AirlineTheme solarized
@@ -433,7 +357,11 @@ let g:syntastic_cpp_checkers = ['cppcheck', 'cpplint']
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
 
-let g:syntastic_cpp_include_dirs = ['../include', 'include', 'includes', 'headers', '/\*\*/inc', '../../inc', '../inc', 'inc', '/\*\*/export', '../../export', '../export', 'export', '../../src', '../src', 'src', '../test/bin', 'test/bin']
+let g:syntastic_cpp_include_dirs =
+      \ ['../include', 'include', 'includes', 'headers', '/\*\*/inc',
+      \ '../../inc', '../inc', 'inc', '/\*\*/export', '../../export',
+      \ '../export', 'export', '../../src', '../src', 'src', '../test/bin',
+      \ 'test/bin']
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = 'clang++'
 let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
@@ -489,7 +417,6 @@ colorscheme solarized
 
 set colorcolumn=81,82,83
 " au FileType python,perl set colorcolumn=121,122,123
-" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp set colorcolumn=161,162,163
 au FileType cpp,c set colorcolumn=121,122,123
 
 au BufRead,BufNewFile *.log set filetype=log
@@ -517,7 +444,6 @@ highlight White ctermfg=White guifg=White
 au FileType plaintex,text,log call MultipleMatches()
 fu! MultipleMatches()
   " let m = matchadd("Orange", '\d\+[0-9\.:-]*')
-  " let m = matchadd("Green", '\cManagedElement=1,NodeSupport=1,pimcancellationfunction=1')
 endfu
 
 let bit_operations = "*&|"
@@ -525,7 +451,6 @@ let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
 let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 
 let pattern = "\\t|\\s+$|\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
-" au BufRead,BufNewFile *.cpp,*.h,*.cc,*.c,*.hpp let pattern = pattern.bit_operations_after.bit_operations_before
 au FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
