@@ -28,7 +28,7 @@ alias v-tsplit='vim -p'
 
 function find()
 {
-  find $@ | grep '[^/]*$';
+  find "$@" | grep '[^/]*$';
 }
 
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
@@ -41,11 +41,6 @@ alias sol.light='source ~/dotfiles/mintty/sol.light'
 # Autocomple searches when using up and down
 bind '"\e[A":history-search-backward' # ]
 bind '"\e[B":history-search-forward' # ]
-
-lst()
-{
-  ls -Rog $1 | grep '^-\|:$'
-}
 
 # Bash Prompt
 parse_git_branch()
@@ -61,12 +56,14 @@ git-uplift()
   git fetch --all
   # echo "git fetch --all"
   # [[ $(parse_git_branch) =~ \((.+)\) ]] && current_branch=${BASH_REMATCH[1]};
-  [[ $(git status -sb) =~ \#\#\ ([^\.]+)\s*\.+origin\/(.+) ]] && current_branch=${BASH_REMATCH[1]} && remote_branch=${BASH_REMATCH[2]};
+  [[ $(git status -sb) =~ \#\#\ ([^\.]+)\\s*\.+origin/(.+) ]] \
+    && current_branch=${BASH_REMATCH[1]} \
+    && remote_branch=${BASH_REMATCH[2]};
   echo "current_branch: '$current_branch'"
   echo "remote_branch: '$remote_branch'"
   echo "Press enter."
   read
-  git checkout -b $temp_branch origin/$remote_branch --no-track
+  git checkout -b "$temp_branch" "origin/$remote_branch" --no-track
   # echo "git checkout -b $temp_branch origin/$remote_branch --no-track"
   echo "Press enter."
   read
@@ -79,9 +76,9 @@ git-uplift()
   echo "git push origin tmp:ref/for/$remote_branch"
   echo "Press enter."
   read
-  git checkout $current_branch
+  git checkout "$current_branch"
   # echo "git checkout $current_branch"
-  git branch -D $temp_branch
+  git branch -D "$temp_branch"
   # echo "git branch -D $temp_branch"
 }
 
@@ -129,7 +126,7 @@ alias mage_static='$magento_path/bin/magento setup:static-content:deploy en_US s
 alias mage_clear_var='rm -rf $magento_path/var/* && cp $magento_path/.htaccess-var $magento_path/var/.htaccess'
 
 # Solr
-solr_path='~/lucene-solr/solr'
+solr_path="${HOME}/lucene-solr/solr"
 alias solar_start='$solr_path/bin/solr start'
 alias solar_stop='$solr_path/bin/solr stop'
 
@@ -157,7 +154,7 @@ colors_and_formatting()
       # Display the color
       printf "\e[${fgbg};5;%sm  %3s  \e[0m" $color $color
       # Display 6 colors per lines
-      if [ $((($color + 1) % 6)) == 4 ] ; then
+      if [ $(((color + 1) % 6)) == 4 ] ; then
         echo # New line
       fi
     done
@@ -170,20 +167,20 @@ colors_and_formatting()
 # countdown $((24*60*60))   1 day
 function countdown()
 {
-    date1=$((`date +%s` + $1));
-    while [ "$date1" -ge `date +%s` ]; do
-        echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
-        sleep 0.1
-    done
+  date1=$($(date +%s) + "$1");
+  while [ "$date1" -ge "$(date +%s)" ]; do
+    echo -ne "$(date -u --date @$((date1 - $(date +%s))) +%H:%M:%S)\r";
+    sleep 0.1
+  done
 }
 
 function stopwatch()
 {
-    date1=`date +%s`;
-    while true; do
-        echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r";
-        sleep 0.1
-    done
+  date1=$(date +%s);
+  while true; do
+    echo -ne "$(date -u --date @$(($(date +%s) - date1)) +%H:%M:%S)\r";
+    sleep 0.1
+  done
 }
 
 if [ -r ~/.bashrc.work ]
