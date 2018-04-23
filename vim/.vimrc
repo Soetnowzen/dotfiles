@@ -225,8 +225,7 @@ set shiftwidth=2
 
 au FileType python,perl set shiftwidth=4
 au FileType python,perl set tabstop=4
-au BufRead,BufNewFile *.tex,*.txt set spell spelllang=en_us
-au FileType plaintex set spell spelllang=en_us
+au FileType text,plaintex,sh,cpp set spell spelllang=en_us
 au FileType make set noexpandtab
 
 " Central directory for swap files

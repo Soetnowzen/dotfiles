@@ -1,4 +1,9 @@
 [color]
+  diff = auto
+  status = auto
+  branch = auto
+  interactive = auto
+  pager = true
   ui = auto
 [core]
   editor = vim

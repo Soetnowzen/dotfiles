@@ -51,7 +51,7 @@ parse_git_branch()
 git-uplift()
 {
   temp_branch="tmp"
-  [[ $1 != "" ]] && temp_branch=$1;
+  [[ "${1}" != "" ]] && temp_branch=$1;
 
   git fetch --all
   # echo "git fetch --all"
@@ -59,11 +59,11 @@ git-uplift()
   [[ $(git status -sb) =~ \#\#\ ([^\.]+)\\s*\.+origin/(.+) ]] \
     && current_branch=${BASH_REMATCH[1]} \
     && remote_branch=${BASH_REMATCH[2]};
-  echo "current_branch: '$current_branch'"
-  echo "remote_branch: '$remote_branch'"
+  echo "current_branch: '${current_branch}'"
+  echo "remote_branch: '${remote_branch}'"
   echo "Press enter."
   read
-  git checkout -b "$temp_branch" "origin/$remote_branch" --no-track
+  git checkout -b "${temp_branch}" "origin/${remote_branch}" --no-track
   # echo "git checkout -b $temp_branch origin/$remote_branch --no-track"
   echo "Press enter."
   read
@@ -71,26 +71,29 @@ git-uplift()
   echo "git merge origin/master --no-ff"
   echo "Press enter."
   read
-  error_code=$?; [[ $error_code != 0 ]] && echo "git mt";
+  error_code="${?}"; [[ "${error_code}" != 0 ]] && echo "git mt";
   # git push origin tmp:ref/for/$current_branch
-  echo "git push origin tmp:ref/for/$remote_branch"
+  echo "git push origin tmp:ref/for/${remote_branch}"
   echo "Press enter."
   read
-  git checkout "$current_branch"
+  git checkout "${current_branch}"
   # echo "git checkout $current_branch"
-  git branch -D "$temp_branch"
+  git branch -D "${temp_branch}"
   # echo "git branch -D $temp_branch"
 }
 
 # PS1='$(whoami)@$(hostname):$(pwd)>'
-RED="\[$(tput setaf 1)\]"
-GREEN="\[$(tput setaf 2)\]"
-YELLOW="\[$(tput setaf 3)\]"
-BLUE="\[$(tput setaf 4)\]"
-MAGENTA="\[$(tput setaf 5)\]"
-CYAN="\[$(tput setaf 6)\]"
-WHITE="\[$(tput setaf 7)\]"
-RESET="\[$(tput sgr0)\]"
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
+GREY="$(tput setaf 9)"
+VIOLET="$(tput setaf 13)"
+BLACK="$(tput setaf 16)"
+RESET="$(tput sgr0)"
 
 export DISPLAY=:0.0
 
@@ -117,32 +120,32 @@ export PS1="${CYAN}\A ${BLUE}\u@\h${RESET} ${GREEN}\w${YELLOW}\$(parse_git_branc
 LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:' ; export LS_COLORS
 
 # Magento
-magento_path='/var/www/html/magento-trial'
-alias mage_root='cd $magento_path'
-alias mage_theme='mage_root && cd app/design/frontend/Venustheme/'
-alias mage_module='mage_root && cd app/code/Ves'
-alias mage_build='$magento_path/bin/magento setup:upgrade --keep-generated'
-alias mage_static='$magento_path/bin/magento setup:static-content:deploy en_US sv_SE'
-alias mage_clear_var='rm -rf $magento_path/var/* && cp $magento_path/.htaccess-var $magento_path/var/.htaccess'
+magento_path="/var/www/html/magento-trial"
+alias mage_root="cd ${magento_path}"
+alias mage_theme="mage_root && cd app/design/frontend/Venustheme/"
+alias mage_module="mage_root && cd app/code/Ves"
+alias mage_build="${magento_path}/bin/magento setup:upgrade --keep-generated"
+alias mage_static="${magento_path}/bin/magento setup:static-content:deploy en_US sv_SE"
+alias mage_clear_var="rm -rf ${magento_path}/var/* && cp ${magento_path}/.htaccess-var ${magento_path}/var/.htaccess"
 
 # Solr
 solr_path="${HOME}/lucene-solr/solr"
-alias solar_start='$solr_path/bin/solr start'
-alias solar_stop='$solr_path/bin/solr stop'
+alias solar_start="${solr_path}/bin/solr start"
+alias solar_stop="${solr_path}/bin/solr stop"
 
 # Color script
 colors_and_formatting()
 {
   # Background
   for clbg in {40..47} {100..107} 49 ; do
-    #Foreground
+    # Foreground
     for clfg in {30..37} {90..97} 39 ; do
-      #Formatting
+      # Formatting
       for attr in 0 1 2 4 5 7 ; do
-        #Print the result
+        # Print the result
         echo -en "\e[${attr};${clbg};${clfg}m ^[${attr};${clbg};${clfg}m \e[0m"
       done
-      echo #Newline
+      echo # Newline
     done
   done
 }
