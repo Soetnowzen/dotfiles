@@ -29,6 +29,7 @@ let s:comment_map = {
       \   "javascript": '\/\/',
       \   "lua": '--',
       \   "mail": '>',
+      \   "make": '#',
       \   "php": '\/\/',
       \   "profile": '#',
       \   "python": '#',
@@ -269,6 +270,7 @@ Plugin 'wesQ3/vim-windowswap'
 call vundle#end()
 filetype plugin indent on
 
+" python-syntax
 let g:python_highlight_all = 1
 
 " vim-json
