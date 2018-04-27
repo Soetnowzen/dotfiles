@@ -444,7 +444,14 @@ highlight White ctermfg=White guifg=White
 
 au FileType plaintex,text,log call MultipleMatches()
 fu! MultipleMatches()
-  " let m = matchadd("Orange", '\d\+[0-9\.:-]*')
+  let m = matchadd("Cyan", '<[^>]\+>')
+  let m = matchadd("Cyan", '([^)]*)')
+  let m = matchadd("Orange", '\d\+:\d\+\(:\d\+\.\d\+\)*')
+  let m = matchadd("Orange", '\d\+-\d\+-\d\+')
+  let m = matchadd("Orange", '0x[0-9a-fA-F]\+')
+  let m = matchadd("White", '\w\+\.[a-zA-Z]\+\(:\d\+\)')
+  let m = matchadd("Blue", '\w\+=')
+  let m = matchadd("Cyan", '"[^\"]\+"')
 endfu
 
 let bit_operations = "*&|"
