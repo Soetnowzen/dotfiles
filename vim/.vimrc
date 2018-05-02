@@ -226,7 +226,7 @@ set shiftwidth=2
 
 au FileType python,perl set shiftwidth=4
 au FileType python,perl set tabstop=4
-au FileType text,plaintex,sh,cpp set spell spelllang=en_us
+au FileType text,plaintex,sh,cpp,vim set spell spelllang=en_us
 au FileType make set noexpandtab
 
 " Central directory for swap files
@@ -458,7 +458,7 @@ let bit_operations = "*&|"
 let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
 let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 
-let pattern = "\\t|\\s+$|\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
+let pattern = "\\s+$|\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
 au FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
@@ -474,6 +474,8 @@ set incsearch
 set wildmenu
 set wildmode=list:longest,full
 
+set list
+set listchars=tab:>-
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)
 command RemoveSpaces %s/\s\+$/
