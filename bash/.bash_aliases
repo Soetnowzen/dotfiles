@@ -93,11 +93,23 @@ WHITE="$(tput setaf 7)"
 GREY="$(tput setaf 9)"
 VIOLET="$(tput setaf 13)"
 BLACK="$(tput setaf 16)"
+BOLD="$(tput bold)"
+UNDERLINE="$(tput smul)"
+EXIT_UNDERLINE="$(tput rmul)"
 RESET="$(tput sgr0)"
 
 export DISPLAY=:0.0
 
-export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
+color_current_directory()
+{
+  relative_path="${1}"
+  relative_path="$(echo "${relative_path}" | sed -e "s/\([^\/]\+$\)/${UNDERLINE}\1${EXIT_UNDERLINE}/")"
+  echo -e "${relative_path}"
+}
+
+# export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
+export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\$(color_current_directory \w)${YELLOW}\$(parse_git_branch)${RESET}\$ "
+# export PS1='$(dirname \w)/\[$(tput bold)\]$(basename \w)\[$(tput sgr0)\]'
 
 # bd = (BLOCK, BLK)   Block device (buffered) special file
 # cd = (CHAR, CHR)    Character device (unbuffered) special file

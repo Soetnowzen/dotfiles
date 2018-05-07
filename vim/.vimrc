@@ -194,7 +194,7 @@ fu! Inoremaps()
   inoremap <Space>sqrt<Space> <Space>√<Space>
   inoremap <Space>infinit<Space> <Space>∞<Space>
   inoremap && ∧
-  inoremap || ∨
+  " inoremap || ∨
   inoremap <Space>intersection<Space> <Space>∩<Space>
   inoremap <Space>union<Space> <Space>∪<Space>
   inoremap <Space>integral<Space> <Space>∫<Space>
@@ -452,6 +452,9 @@ fu! MultipleMatches()
   let m = matchadd("White", '\w\+\.[a-zA-Z]\+\(:\d\+\)')
   let m = matchadd("Blue", '\w\+=')
   let m = matchadd("Cyan", '"[^\"]\+"')
+  let m = matchadd("RED", '\cwarn\w*')
+  let m = matchadd("RED", '\cfail\w*')
+  let m = matchadd("RED", '\cinfo\w*')
 endfu
 
 let bit_operations = "*&|"
@@ -474,11 +477,22 @@ set incsearch
 set wildmenu
 set wildmode=list:longest,full
 
+" Show hidden characters with given characters
+" highlight NonText ctermfg=Magenta guifg=Magenta
+highlight SpecialKey ctermfg=Magenta guifg=Magenta
 set list
 set listchars=tab:>-
 set listchars+=trail:-
 set listchars+=conceal:C  " conceallevel is set to 1
 set listchars+=nbsp:%  " Non-breakable space
+set listchars+=extends:>,precedes:<
+
+set linebreak
+set showbreak=->
+au FileType python,perl set showbreak=--->
+set cpoptions+=n
+set breakindent
+set breakat+=>
 
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)

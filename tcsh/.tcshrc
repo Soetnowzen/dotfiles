@@ -35,13 +35,14 @@ set CYAN="%{\033[36m%}"
 set WHITE="%{\033[37m%}"
 # set VIOLET="%{\033[313m%}"
 # set BLACK="%{\033[316m%}"
-alias getCurrentGitBranch "git branch |& grep \* | sed 's/\* \(.*\)/(\1)/'"
-# alias precmd set "prompt = '${CYAN}%T ${BLUE}%n${RESET}@${BLUE}%m ${GREEN}%~${YELLOW}\`getCurrentGitBranch\`${RESET}%# '"
-alias precmd set 'prompt = "${CYAN}%T ${BLUE}%n${RESET}@${BLUE}%m ${GREEN}%~${YELLOW}`getCurrentGitBranch`${RESET}%# "'
+alias get_current_git_branch "git branch |& grep \* | sed 's/\* \(.*\)/(\1)/'"
+# alias color_current_directory "echo $1 | sed -e \"s/\([^\/]\+\)/(${MAGENTA}\1)/\""
+alias precmd set 'prompt = "${CYAN}%T ${BLUE}%n${RESET}@${BLUE}%m ${GREEN}%~${YELLOW}`get_current_git_branch`${RESET}%# "'
+# alias precmd set 'prompt = "${CYAN}%T ${BLUE}%n${RESET}@${BLUE}%m ${GREEN}`colorCurrentDirectory %~`${YELLOW}`get_current_git_branch`${RESET}%# "'
 
 # bindkey -v
 
-# Autocomple searches when using up and down
+# Auto complete searches when using up and down
 bindkey "^[[A" history-search-backward # ]
 bindkey "^[[B" history-search-forward # ]
 
