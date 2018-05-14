@@ -76,7 +76,14 @@ set switchbuf+=usetab
 set switchbuf+=split
 
 " :e ignores files
-set wildignore=*.o,*.exe,*.hi,*.swp,*.bak,*.pyc,*.class
+set wildignore+=*.bak
+set wildignore+=*.class
+set wildignore+=*.exe
+set wildignore+=*.hi
+set wildignore+=*.o
+set wildignore+=*.pyc
+set wildignore+=*.swp
+set wildignore+=tags
 
 au BufRead,BufNewFile *.log set filetype=log
 au BufRead,BufNewFile *.txt set filetype=text
@@ -312,7 +319,6 @@ endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
 au FileType cpp,c set fdm=syntax
-au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
 au FileType python,plaintex,text set fdm=indent
 " }
 
@@ -443,7 +449,8 @@ let g:cpp_no_function_highlight = 1
 
 " NERDTree {
 map <C-n> :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$', '\.exe$', '\.swp$', '\.bak$', '\.pyc$', '\.class$', '\~$']
+let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$',
+      \ '\.exe$', '\.swp$', '\.bak$', '\.pyc$', '\.class$', '\~$']
 let NERDTreeWinSize = 42
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
@@ -538,7 +545,9 @@ else
 endif
 colorscheme solarized
 
-set colorcolumn=81,82,83
+set colorcolumn+=81
+set colorcolumn+=82
+set colorcolumn+=83
 " au FileType python,perl set colorcolumn=121,122,123
 au FileType cpp,c set colorcolumn=121,122,123
 
