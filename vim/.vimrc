@@ -9,9 +9,81 @@ behave mswin
 let &t_SI .= "\<Esc>[5 q" " ]
 let &t_EI .= "\<Esc>[1 q" " ]
 
+" Misc {
 " Sets row numbers
 set number
 
+set tags+=/
+
+" Cursor marking
+set cursorline
+set cursorcolumn
+
+" Leave a few lines when scrolling
+set scrolloff=3
+set sidescrolloff=5
+
+" Bell
+set noerrorbells
+set visualbell
+
+" Set the window's title, reflecting the file currently being edited.
+set title
+
+" Automatically re-read files if unmodified inside Vim
+set autoread
+
+" Delete coment characters when joining lines.
+set formatoptions+=j
+
+" Change the mapleader from \ to ,
+let mapleader=","
+
+" set System clipboard
+set clipboard=unnamed
+
+" more autocomplete <Ctrl>-P options
+set completeopt=menu,longest,preview
+
+set wildchar=<Tab> wildmenu wildmode=full
+
+set splitbelow
+set splitright
+
+" Show autocompletion options
+set wildmenu
+set wildmode=list:longest,full
+
+" Show hidden characters with given characters
+" highlight NonText ctermfg=Magenta guifg=Magenta
+highlight SpecialKey ctermfg=Magenta guifg=Magenta
+set list
+set listchars=tab:>-
+set listchars+=trail:-
+set listchars+=conceal:C  " conceallevel is set to 1
+set listchars+=nbsp:%  " Non-breakable space
+set listchars+=extends:>,precedes:<
+
+set linebreak
+set showbreak=->
+au FileType python,perl set showbreak=--->
+set cpoptions+=n
+set breakindent
+set breakat+=>
+
+set switchbuf+=useopen
+set switchbuf+=usetab
+set switchbuf+=split
+
+" :e ignores files
+set wildignore=*.o,*.exe,*.hi,*.swp,*.bak,*.pyc,*.class
+
+au BufRead,BufNewFile *.log set filetype=log
+au BufRead,BufNewFile *.txt set filetype=text
+au BufRead,BufNewFile *.json set filetype=json
+" }
+
+" ToggleComment {
 let s:comment_map = {
       \   "ahk": ';',
       \   "bash_profile": '#',
@@ -70,7 +142,9 @@ endfunction
 nnoremap <leader><Space> :call ToggleComment()<cr>
 vnoremap <C-m> :call ToggleComment()<cr>
 nnoremap <C-m> :call ToggleComment()<cr>
+" }
 
+" Mapping {
 " unmap ctrl + Y
 iunmap <C-Y>
 
@@ -90,15 +164,33 @@ nnoremap <Up> <C-W>+
 nnoremap <Down> <C-W>-
 nnoremap H gT
 nnoremap L gt
+nnoremap Q gqap
+" move to beginning/end of line
+nnoremap B ^
+nnoremap E $
+
+map Y y$
 
 " Command-line mode remaps
 cnoremap jj <Esc>
+cnoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
+cnoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+cnoremap { {}<Left>
+cnoremap < <><Left>
+cnoremap <<Space> <<Space>
+cnoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
+cnoremap [ []<Left>
+" [
+cnoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+cnoremap ( ()<Left>
+cnoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
 
 " normal mode remap case switch
 nnoremap § ~
 
 " visual mode remap case switch
 vnoremap § ~
+vnoremap Q gq
 
 nnoremap <Space> :noh<cr>
 
@@ -106,10 +198,12 @@ nnoremap <Space> :noh<cr>
 inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
+nnoremap <C-CR> <Esc>o
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<Esc>O
 inoremap {{ {
 " }}
+" {
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
 inoremap < <><Left>
 inoremap <<Space> <<Space>
@@ -118,6 +212,7 @@ inoremap <<<Space> <<<Space>
 inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
 inoremap [<Space> [<Space><Space>]<Left><Left>
+" [
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
@@ -132,31 +227,13 @@ inoremap """<CR> """<CR>"""<Esc>O
 inoremap """<Space> """<Space><Space>"""<Left><Left><Left><Left>
 inoremap '''<CR> '''<CR>'''<Esc>O
 inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
+inoremap ,, <End>,
+inoremap ;; <End>;
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
+cnoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
-" Cursor marking
-set cursorline
-set cursorcolumn
-
-function! MyFoldLevel( lineNumber )
-  let thisLine = getline( a:lineNumber )
-  " Don't create fold if entire comment or {} pair is on one line.
-  if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)\|\%(\[.*\]\)' )
-    return '='
-  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{\|\[\|\(#if\(def\|ndef\)\?\)' )
-    return "a1"
-  elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}\|\]\|\(#endif\)' )
-    return "s1"
-  endif
-  return '='
-endfunction
-setlocal foldexpr=MyFoldLevel(v:lnum)
-setlocal foldmethod=expr
-au FileType cpp,c set fdm=syntax
-au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
-au FileType python,plaintex,text set fdm=indent
 au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
   inoremap <Space>alpha<Space> <Space>α<Space>
@@ -204,12 +281,50 @@ fu! Inoremaps()
   inoremap <= ≤
   inoremap ... ⋯
 endfu
+" }
 
+" Spelling {
+iab anf and
+iab adn and
+iab ans and
+iab teh the
+iab thre there
+
+au FileType text,plaintex,sh,cpp,vim set spell spelllang=en_us
+" }
+
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+
+" Folding {
+function! MyFoldLevel( lineNumber )
+  let thisLine = getline( a:lineNumber )
+  " Don't create fold if entire comment or {} pair is on one line.
+  if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)\|\%(\[.*\]\)' )
+    return '='
+  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{\|\[\|\(#if\(def\|ndef\)\?\)' )
+    return "a1"
+  elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}\|\]\|\(#endif\)' )
+    return "s1"
+  endif
+  return '='
+endfunction
+setlocal foldexpr=MyFoldLevel(v:lnum)
+setlocal foldmethod=expr
+au FileType cpp,c set fdm=syntax
+au BufRead,BufNewFile *.py,*.pyw,*.tex,*.txt set fdm=indent
+au FileType python,plaintex,text set fdm=indent
+" }
+
+" Searching {
 " Highlight search matches
 set hlsearch
 
 " Ignore case when searching
 set ignorecase
+
+" Show search matches while typing
+set incsearch
 
 " Regular Expressions set to very magic
 nnoremap / /\v
@@ -219,10 +334,9 @@ cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
+" }
 
-" Leave a few lines when scrolling
-set scrolloff=3
-
+" Spaces & Tabs {
 " Changes tabulary to spaces
 set expandtab
 
@@ -232,9 +346,10 @@ set shiftwidth=2
 
 au FileType python,perl set shiftwidth=4
 au FileType python,perl set tabstop=4
-au FileType text,plaintex,sh,cpp,vim set spell spelllang=en_us
 au FileType make set noexpandtab
+" }
 
+" Backups {
 " Central directory for swap files
 set backup
 set directory=$HOME/.vim/.backup//
@@ -242,21 +357,17 @@ set backupdir=$HOME/.vim/.backup//
 set undodir=$HOME/.vim/.backup//
 set writebackup
 set undofile
+" }
 
+" UI Layout {
 " Removes useless gui crap
 set guioptions-=M
 set guioptions-=T
 set guioptions-=m
 set guioptions-=r
+" }
 
-set switchbuf+=useopen
-set switchbuf+=usetab
-set switchbuf+=split
-
-" :e ignores files
-set wildignore=*.o,*.exe,*.hi,*.swp
-
-" Vundle
+" Vundle {
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -275,23 +386,28 @@ Plugin 'wesQ3/vim-windowswap'
 
 call vundle#end()
 filetype plugin indent on
+" }
 
-" python-syntax
+" python-syntax {
 let g:python_highlight_all = 1
+" }
 
-" vim-json
+" vim-json {
 let g:vim_json_syntax_conceal = 0
+" }
 
-" vim-windowswap
+" vim-windowswap {
 nnoremap <C-y>w :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <C-p>w :call WindowSwap#DoWindowSwap()<CR>
 nnoremap <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
+" }
 
-" linediff
+" linediff {
 noremap \ldt :Linediff<CR>
 noremap \ldo :LinediffReset<CR>
+" }
 
-" Airline
+" Airline {
 " :AirlineTheme solarized
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled = 1
@@ -314,18 +430,20 @@ function! AirlineInit()
   let g:airline_section_z = airline#section#create_right(['%l', '%c'])
 endfunction
 autocmd VimEnter * call AirlineInit()
+" }
 
-" vim-cpp-enhanced-highlight
+" vim-cpp-enhanced-highlight {
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
 " let g:cpp_experimental_simple_template_highlight = 1  " Or
 let g:cpp_experimental_template_highlight = 1
 let g:cpp_no_function_highlight = 1
+" }
 
-" Map Ctrl-n to open the NERDTree
+" NERDTree {
 map <C-n> :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$']
+let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$', '\.exe$', '\.swp$', '\.bak$', '\.pyc$', '\.class$', '\~$']
 let NERDTreeWinSize = 42
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
@@ -335,8 +453,9 @@ let NERDTreeMapOpenSplit='s'
 let NERDTreeMapOpenVSplit='v'
 " let NERDTreeMapOpenSplit='-'
 " let NERDTreeMapOpenVSplit='|'
+" }
 
-" Syntastic stuff
+" Syntastic stuff {
 function! s:get_cabal_sandbox()
   if filereadable('cabal.sandbox.config')
     let l:output = system('cat cabal.sandbox.config | grep local-repo')
@@ -386,12 +505,9 @@ autocmd FileType c,cpp,objc let b:syntastic_cpp_cpplint_args =
 autocmd FileType javascript let b:syntastic_javascript_jscs_args =
       \ get(g:, 'syntastic_javascript_jscs_args', '') .
       \ FindConfig('-c', '.jscsrc', expand('<afile>:p:h', 1))
+" }
 
-set wildchar=<Tab> wildmenu wildmode=full
-
-set splitbelow
-set splitright
-
+" Colors {
 " Sets colors based on a dark background
 syntax enable
 let g:solarized_bold=1 " 0 | 1
@@ -426,10 +542,6 @@ set colorcolumn=81,82,83
 " au FileType python,perl set colorcolumn=121,122,123
 au FileType cpp,c set colorcolumn=121,122,123
 
-au BufRead,BufNewFile *.log set filetype=log
-au BufRead,BufNewFile *.txt set filetype=text
-au BufRead,BufNewFile *.json set filetype=json
-
 " Highlights
 highlight Black ctermfg=Black guifg=Black
 highlight Blue ctermfg=DarkBlue guifg=DarkBlue
@@ -462,7 +574,9 @@ fu! MultipleMatches()
   let m = matchadd("RED", '\cfail\w*')
   let m = matchadd("RED", '\cinfo\w*')
 endfu
+" }
 
+" Highlighting Errors {
 let bit_operations = "*&|"
 let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
 let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
@@ -476,31 +590,8 @@ execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd BufWinLeave * call clearmatches()
 
-" Show search matches while typing
-set incsearch
-
-" Show autocompletion options
-set wildmenu
-set wildmode=list:longest,full
-
-" Show hidden characters with given characters
-" highlight NonText ctermfg=Magenta guifg=Magenta
-highlight SpecialKey ctermfg=Magenta guifg=Magenta
-set list
-set listchars=tab:>-
-set listchars+=trail:-
-set listchars+=conceal:C  " conceallevel is set to 1
-set listchars+=nbsp:%  " Non-breakable space
-set listchars+=extends:>,precedes:<
-
-set linebreak
-set showbreak=->
-au FileType python,perl set showbreak=--->
-set cpoptions+=n
-set breakindent
-set breakat+=>
-
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)
 command RemoveSpaces %s/\s\+$/
 command AddSpaces %s/ \(if\|for\|while\)(/ \1 (/
+" }
