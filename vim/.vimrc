@@ -205,9 +205,15 @@ fu! Inoremaps()
   inoremap ... ⋯
 endfu
 
+" Highlight search matches
+set hlsearch
+
+" Ignore case when searching
+set ignorecase
+
 " Regular Expressions set to very magic
-nnoremap / /\v\c
-vnoremap / /\v\c
+nnoremap / /\v
+vnoremap / /\v
 cnoremap %s %s/\v
 cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v

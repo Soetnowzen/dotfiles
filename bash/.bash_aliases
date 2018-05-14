@@ -26,9 +26,23 @@ alias v-split='vim -o'
 alias v-vsplit='vim -O'
 alias v-tsplit='vim -p'
 
-function find()
+alias fi_="find $$ | grep '[^\/]*$'"
+fi__()
 {
-  find "$@" | grep '[^/]*$';
+  arguments="${@}"
+  echo "'${arguments}'"
+  for line in $(find $arguments | grep '[^\/]*$'); do
+    # line = grep '[^\/]*$' "${line}"
+    echo "${line}"
+  done
+  # find "${arguments}" -print0 | while IFS= read -r -d $'\0' line; do
+    # | grep '[^\/]*$'
+    # echo "${line}"
+  # done
+  # find . -type f -iname "*.txt" -print0 | while IFS= read -r -d $'\0' line; do
+    # echo "$line"
+    # ls -l "$line"
+  # done
 }
 
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"

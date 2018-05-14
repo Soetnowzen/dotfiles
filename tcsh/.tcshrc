@@ -6,7 +6,8 @@ alias ls ls -F --color --group-directories-first
 alias la ls -A
 alias ll la -l
 alias :q exit
-alias find find \!* | grep '[^/]*$'
+alias fi "find \!* | grep '[^/]*'\"\$"''"
+# " to escape $ I need to '\"\$"'
 alias g git
 alias grep grep --color
 alias grepc grep -Rin --color --include=*.{cc,h}
@@ -19,6 +20,10 @@ alias vimr vim ~/.vimrc
 alias v-split vim -o
 alias v-vsplit vim -O
 alias v-tsplit vim -p
+alias h history
+alias psu ps -U \$USER
+alias cat cat -nv
+alias rm rm -I
 
 set color
 setenv LS_COLORS "di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:"
