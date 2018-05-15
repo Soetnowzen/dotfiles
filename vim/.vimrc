@@ -1,13 +1,106 @@
 set encoding=utf-8
 set fileencoding=utf-8
-set nocompatible
-filetype off
 source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
 
 let &t_SI .= "\<Esc>[5 q" " ]
 let &t_EI .= "\<Esc>[1 q" " ]
+
+" Vundle {
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'AndrewRadev/linediff.vim'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'elzr/vim-json'
+Plugin 'gmarik/Vundle.vim'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'vim-python/python-syntax'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'wesQ3/vim-windowswap'
+
+call vundle#end()
+filetype plugin indent on
+" }
+
+" Colors {
+" Sets colors based on a dark background
+syntax enable
+let g:solarized_bold=1 " 0 | 1
+let g:solarized_hitrail=1 " 0 | 1
+let g:solarized_italic=1 " 0 | 1
+let g:solarized_termcolors=16 " 16 | 256
+let g:solarized_termtrans=1 " 0 | 1
+let g:solarized_underline=1 " 0 | 1
+if has('gui_running')
+  " if gvim else vim
+  let g:solarized_contrast="high" " low | normal | high
+  let g:solarized_visibility="high" " low | normal | high
+  " set background=light
+  set background=dark
+
+  " Window Size
+  if exists("+columns")
+    set columns=90
+  endif
+  if exists("+lines")
+    set lines = 64
+  endif
+else
+  set t_Co=256
+  let g:solarized_contrast = "high" " low | normal | high
+  let g:solarized_visibility = "high" " low | normal | high
+  set background=dark
+endif
+colorscheme solarized
+
+set colorcolumn+=81
+set colorcolumn+=82
+set colorcolumn+=83
+" au FileType python,perl set colorcolumn=121,122,123
+au FileType cpp,c set colorcolumn=121,122,123
+
+" Highlights
+highlight Black ctermfg=Black guifg=Black
+highlight Blue ctermfg=DarkBlue guifg=DarkBlue
+highlight Green ctermfg=DarkGreen guifg=DarkGreen
+highlight Cyan ctermfg=DarkCyan guifg=DarkCyan
+highlight Red ctermfg=DarkRed guifg=DarkRed
+highlight Magenta ctermfg=DarkMagenta guifg=DarkMagenta
+highlight Brown ctermfg=Brown guifg=Brown
+highlight Grey ctermfg=Grey guifg=Grey
+highlight DarkGrey ctermfg=DarkGrey guifg=DarkGrey
+highlight BrightBlue ctermfg=Blue guifg=Blue
+highlight BrightGreen ctermfg=Green guifg=Green
+highlight BrightCyan ctermfg=Cyan guifg=Cyan
+highlight Orange ctermfg=Red guifg=Red
+highlight Violet ctermfg=Magenta guifg=Magenta
+highlight Yellow ctermfg=Yellow guifg=Yellow
+highlight White ctermfg=White guifg=White
+
+au FileType plaintex,text,log call MultipleMatches()
+fu! MultipleMatches()
+  let m = matchadd("Cyan", '<[^>]\+>')
+  let m = matchadd("Cyan", '([^)]*)')
+  let m = matchadd("Orange", '\d\+:\d\+\(:\d\+\.\d\+\)*')
+  let m = matchadd("Orange", '\d\+-\d\+-\d\+')
+  let m = matchadd("Orange", '0x[0-9a-fA-F]\+')
+  let m = matchadd("White", '\w\+\.[a-zA-Z]\+\(:\d\+\)')
+  let m = matchadd("Blue", '\w\+=')
+  let m = matchadd("Cyan", '"[^\"]\+"')
+  let m = matchadd("RED", '\cwarn\w*')
+  let m = matchadd("RED", '\cfail\w*')
+  let m = matchadd("RED", '\cinfo\w*')
+endfu
+" }
 
 " Misc {
 " Sets row numbers
@@ -373,25 +466,8 @@ set guioptions-=m
 set guioptions-=r
 " }
 
-" Vundle {
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'AndrewRadev/linediff.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'elzr/vim-json'
-Plugin 'gmarik/Vundle.vim'
-Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'vim-python/python-syntax'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'wesQ3/vim-windowswap'
-
-call vundle#end()
-filetype plugin indent on
+" vim-fugitive {
+autocmd QuickFixCmdPost *grep* cwindow
 " }
 
 " python-syntax {
@@ -418,7 +494,10 @@ nnoremap <Leader>r :LinediffReset<CR>
 " Airline {
 " :AirlineTheme solarized
 let g:airline_solarized_bg='dark'
+" let g:airline_extensions = ['branch']
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_detect_spell=1
 let g:airline_detect_spelllang=1
 " let g:airline_left_sep='>'
@@ -514,77 +593,6 @@ autocmd FileType c,cpp,objc let b:syntastic_cpp_cpplint_args =
 autocmd FileType javascript let b:syntastic_javascript_jscs_args =
       \ get(g:, 'syntastic_javascript_jscs_args', '') .
       \ FindConfig('-c', '.jscsrc', expand('<afile>:p:h', 1))
-" }
-
-" Colors {
-" Sets colors based on a dark background
-syntax enable
-let g:solarized_bold=1 " 0 | 1
-let g:solarized_hitrail=1 " 0 | 1
-let g:solarized_italic=1 " 0 | 1
-let g:solarized_termcolors=16 " 16 | 256
-let g:solarized_termtrans=1 " 0 | 1
-let g:solarized_underline=1 " 0 | 1
-if has('gui_running')
-  " if gvim else vim
-  let g:solarized_contrast="high" " low | normal | high
-  let g:solarized_visibility="high" " low | normal | high
-  " set background=light
-  set background=dark
-
-  " Window Size
-  if exists("+columns")
-    set columns=90
-  endif
-  if exists("+lines")
-    set lines = 64
-  endif
-else
-  set t_Co=256
-  let g:solarized_contrast = "high" " low | normal | high
-  let g:solarized_visibility = "high" " low | normal | high
-  set background=dark
-endif
-colorscheme solarized
-
-set colorcolumn+=81
-set colorcolumn+=82
-set colorcolumn+=83
-" au FileType python,perl set colorcolumn=121,122,123
-au FileType cpp,c set colorcolumn=121,122,123
-
-" Highlights
-highlight Black ctermfg=Black guifg=Black
-highlight Blue ctermfg=DarkBlue guifg=DarkBlue
-highlight Green ctermfg=DarkGreen guifg=DarkGreen
-highlight Cyan ctermfg=DarkCyan guifg=DarkCyan
-highlight Red ctermfg=DarkRed guifg=DarkRed
-highlight Magenta ctermfg=DarkMagenta guifg=DarkMagenta
-highlight Brown ctermfg=Brown guifg=Brown
-highlight Grey ctermfg=Grey guifg=Grey
-highlight DarkGrey ctermfg=DarkGrey guifg=DarkGrey
-highlight BrightBlue ctermfg=Blue guifg=Blue
-highlight BrightGreen ctermfg=Green guifg=Green
-highlight BrightCyan ctermfg=Cyan guifg=Cyan
-highlight Orange ctermfg=Red guifg=Red
-highlight Violet ctermfg=Magenta guifg=Magenta
-highlight Yellow ctermfg=Yellow guifg=Yellow
-highlight White ctermfg=White guifg=White
-
-au FileType plaintex,text,log call MultipleMatches()
-fu! MultipleMatches()
-  let m = matchadd("Cyan", '<[^>]\+>')
-  let m = matchadd("Cyan", '([^)]*)')
-  let m = matchadd("Orange", '\d\+:\d\+\(:\d\+\.\d\+\)*')
-  let m = matchadd("Orange", '\d\+-\d\+-\d\+')
-  let m = matchadd("Orange", '0x[0-9a-fA-F]\+')
-  let m = matchadd("White", '\w\+\.[a-zA-Z]\+\(:\d\+\)')
-  let m = matchadd("Blue", '\w\+=')
-  let m = matchadd("Cyan", '"[^\"]\+"')
-  let m = matchadd("RED", '\cwarn\w*')
-  let m = matchadd("RED", '\cfail\w*')
-  let m = matchadd("RED", '\cinfo\w*')
-endfu
 " }
 
 " Highlighting Errors {
