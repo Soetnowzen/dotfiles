@@ -45,12 +45,11 @@ set clipboard=unnamed
 " more autocomplete <Ctrl>-P options
 set completeopt=menu,longest,preview
 
-set wildchar=<Tab> wildmenu wildmode=full
-
 set splitbelow
 set splitright
 
 " Show autocompletion options
+set wildchar=<Tab>
 set wildmenu
 set wildmode=list:longest,full
 
@@ -297,7 +296,8 @@ iab ans and
 iab teh the
 iab thre there
 
-au FileType text,plaintex,sh,cpp,vim set spell spelllang=en_us
+set spell spelllang=en_us
+" au FileType text,plaintex,sh,cpp,vim,python set spell spelllang=en_us
 " }
 
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
@@ -343,7 +343,7 @@ nnoremap :g// :g//
 " }
 
 " Spaces & Tabs {
-" Changes tabulary to spaces
+" Changes tabularly to spaces
 set expandtab
 
 " Tabs only two spaces
@@ -411,6 +411,8 @@ nnoremap <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
 " linediff {
 noremap \ldt :Linediff<CR>
 noremap \ldo :LinediffReset<CR>
+vnoremap <Leader>d :Linediff<CR>
+nnoremap <Leader>r :LinediffReset<CR>
 " }
 
 " Airline {
