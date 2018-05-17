@@ -126,6 +126,8 @@ set title
 " Automatically re-read files if unmodified inside Vim
 set autoread
 
+set mouse=a
+
 " Delete coment characters when joining lines.
 set formatoptions+=j
 
@@ -272,17 +274,19 @@ map Y y$
 
 " Command-line mode remaps
 cnoremap jj <Esc>
-cnoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
-cnoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+cnoremap ' ''<Left>
+cnoremap '' ''
+cnoremap " ""<Left>
+cnoremap "" ""
 cnoremap { {}<Left>
+cnoremap {} {}
 cnoremap < <><Left>
 cnoremap <<Space> <<Space>
-cnoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
+cnoremap <> <>
 cnoremap [ []<Left>
-" [
-cnoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+cnoremap [] []
 cnoremap ( ()<Left>
-cnoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+cnoremap () ()
 
 " normal mode remap case switch
 nnoremap § ~
@@ -308,6 +312,7 @@ inoremap < <><Left>
 inoremap <<Space> <<Space>
 inoremap << <
 inoremap <<<Space> <<<Space>
+inoremap =<<Space> =<<Space>
 inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
 inoremap [<Space> [<Space><Space>]<Left><Left>
@@ -333,7 +338,7 @@ let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", " 
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 cnoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
-au FileType plaintex,text call Inoremaps()
+" au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
   inoremap <Space>alpha<Space> <Space>α<Space>
   inoremap <Space>beta<Space> <Space>Β<Space>
@@ -390,6 +395,7 @@ iab teh the
 iab thre there
 
 set spell spelllang=en_us
+set spellfile=$HOME/.vim/spell/en.utf-8.add
 " au FileType text,plaintex,sh,cpp,vim,python set spell spelllang=en_us
 " }
 
