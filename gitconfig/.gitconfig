@@ -12,8 +12,8 @@
 [push]
   default = tracking
 [merge]
-  conflictsyle = diff3
-  prompt = false
+  # conflictsyle = diff3
+  # prompt = false
   tool = vimdiff
 [diff]
   tool = vimdiff

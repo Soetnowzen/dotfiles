@@ -11,22 +11,27 @@
 alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
+alias ..='cd ..'
 alias :q='exit'
+alias c='clear'
 alias ccat='pygmentize -g'
+alias fi_="find $$ | grep '[^\/]*$'"
 alias g='git'
+alias g_pl_stash='git stash && git pull && git stash pop'
 alias grep='grep --color'
 alias grepc='grep -Rin --color --include=*.{cc,h}'
+alias h='history'
 alias less='less -r'
+alias mkdir='mkdir -pv'
+alias mount='mount | column -t'
 alias print_path='echo $PATH | tr : "\n"'
-alias g_pl_stash='git stash && git pull && git stash pop'
+alias rm='rm -I'
 alias tm='tmux attach || tmux new'
+alias v-split='vim -o'
+alias v-tsplit='vim -p'
+alias v-vsplit='vim -O'
 alias v='vim'
 alias vimr='vim ~/.vimrc'
-alias v-split='vim -o'
-alias v-vsplit='vim -O'
-alias v-tsplit='vim -p'
-alias rm='rm -i'
-alias fi_="find $$ | grep '[^\/]*$'"
 # alias most_used="history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] \" \" CMD[a]/count*100 \"% \" a;}' | grep -v \"./\" | column -c3 -s \" \" -t | sort -nr | nl |  head -n10"
 
 mcd()
@@ -71,7 +76,7 @@ function extract {
   fi
 }
 
-fi_()
+fi_a ()
 {
   arguments="${@}"
   echo "'${arguments}'"

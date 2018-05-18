@@ -5,25 +5,28 @@ set autoexpand
 alias ls ls -F --color --group-directories-first
 alias la ls -A
 alias ll la -l
+alias .. cd ..
 alias :q exit
+alias c clear
+alias cat cat -nv
 alias fi "find \!* | grep '[^/]*'\"\$"''"
 # " to escape $ I need to '\"\$"'
 alias g git
+alias g_pl_stash 'git stash && git pull && git stash pop'
 alias grep grep --color
 alias grepc grep -Rin --color --include=*.{cc,h}
+alias h history
 alias less less -r
+alias mkdir mkdir -pv
 alias print_path 'echo $PATH | tr : "\n"'
-alias g_pl_stash 'git stash && git pull && git stash pop'
+alias psu ps -U \$USER
+alias rm rm -I
 alias tm 'tmux attach || tmux new'
 alias v vim
-alias vimr vim ~/.vimrc
 alias v-split vim -o
-alias v-vsplit vim -O
 alias v-tsplit vim -p
-alias h history
-alias psu ps -U \$USER
-alias cat cat -nv
-alias rm rm -I
+alias v-vsplit vim -O
+alias vimr vim ~/.vimrc
 
 set color
 setenv LS_COLORS "di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:"

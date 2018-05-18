@@ -417,7 +417,7 @@ function! MyFoldLevel( lineNumber )
 endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
-au FileType cpp,c set fdm=syntax
+" au FileType cpp,c set fdm=syntax
 au FileType python,plaintex,text set fdm=indent
 " }
 
