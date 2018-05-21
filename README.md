@@ -3,10 +3,10 @@ Linux configuration files
 
 # Installation
 Makes symlinks from relevant directories.
- * bash
- * vim
- * vimperator
- * git
- * mintty
- * tcsh
- * tmux
+ * Bash
+ * Vim
+ * Vimperator
+ * Git
+ * Mintty
+ * Tcsh
+ * Tmux

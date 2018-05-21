@@ -7,7 +7,8 @@
 
 # set -o vi
 
-# unix
+# Aliases
+# {
 alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
@@ -33,46 +34,49 @@ alias v-vsplit='vim -O'
 alias v='vim'
 alias vimr='vim ~/.vimrc'
 # alias most_used="history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] \" \" CMD[a]/count*100 \"% \" a;}' | grep -v \"./\" | column -c3 -s \" \" -t | sort -nr | nl |  head -n10"
+# }
 
 mcd()
 {
-  mkdir -p $1
-  cd $1
+  directory="${1}"
+  mkdir -p $directory
+  cd $directory
 }
 
-function extract {
+extract()
+{
   if [ -z "$1" ]; then
     # display usage if no parameters given
     echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
     echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
     return 1
-  # else
-    # for n in $@
-    # do
-      # if [ -f "$n" ] ; then
-        # case "${n%,}" in
-          # *.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
-            # tar xvf "$n"        ] ];
-            # *.lzma)      unlzma ./"$n"      ;
-            # *.bz2)       bunzip2 ./"$n"     ;
-            # *.rar)       unrar x -ad ./"$n" ;
-            # *.gz)        gunzip ./"$n"      ;
-            # *.zip)       unzip ./"$n"       ;
-            # *.z)         uncompress ./"$n"  ;
-            # *.7z|*.arj|*.cab|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.rpm|*.udf|*.wim|*.xar)
-            # 7z x ./"$n"        ;
-            # *.xz)        unxz ./"$n"        ;
-            # *.exe)       cabextract ./"$n"  ;
-            # *)
-            # echo "extract: '$n' - unknown archive method"
-            # return 1
-            # ;
-        # esac
-      # else
-        # echo "'$n' - file does not exist"
-        # return 1
-      # fi
-    # done
+  else
+    for n in $@
+    do
+      if [ -f "$n" ] ; then
+        case "${n%,}" in
+          *.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar)
+                  tar xvf "$n"       ;;
+          *.lzma) unlzma ./"$n"      ;;
+          *.bz2)  bunzip2 ./"$n"     ;;
+          *.rar)  unrar x -ad ./"$n" ;;
+          *.gz)   gunzip ./"$n"      ;;
+          *.zip)  unzip ./"$n"       ;;
+          *.z)    uncompress ./"$n"  ;;
+          *.7z|*.arj|*.cab|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.rpm|*.udf|*.wim|*.xar)
+                  7z x ./"$n"        ;;
+          *.xz)   unxz ./"$n"        ;;
+          *.exe)  cabextract ./"$n"  ;;
+          *)
+                  echo "extract: '$n' - unknown archive method"
+                  return 1
+                  ;;
+        esac
+      else
+        echo "'$n' - file does not exist"
+        return 1
+      fi
+    done
   fi
 }
 
@@ -146,6 +150,8 @@ git-uplift()
 }
 
 # PS1='$(whoami)@$(hostname):$(pwd)>'
+# Colors
+# {
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 YELLOW="$(tput setaf 3)"
@@ -160,53 +166,6 @@ BOLD="$(tput bold)"
 UNDERLINE="$(tput smul)"
 EXIT_UNDERLINE="$(tput rmul)"
 RESET="$(tput sgr0)"
-
-export DISPLAY=:0.0
-
-color_current_directory()
-{
-  relative_path="${1}"
-  relative_path="$(echo "${relative_path}" | sed -e "s/\([^\/]\+$\)/${UNDERLINE}\1${EXIT_UNDERLINE}/")"
-  echo -e "${relative_path}"
-}
-
-# export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
-export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\$(color_current_directory \w)${YELLOW}\$(parse_git_branch)${RESET}\$ "
-# export PS1='$(dirname \w)/\[$(tput bold)\]$(basename \w)\[$(tput sgr0)\]'
-
-# bd = (BLOCK, BLK)   Block device (buffered) special file
-# cd = (CHAR, CHR)    Character device (unbuffered) special file
-# di = (DIR)  Directory
-# do = (DOOR) [Door][1]
-# ex = (EXEC) Executable file (ie. has 'x' set in permissions)
-# fi = (FILE) Normal file
-# ln = (SYMLINK, LINK, LNK)   Symbolic link. If you set this to ‘target’ instead of a numerical value, the color is as for the file pointed to.
-# mi = (MISSING)  Non-existent file pointed to by a symbolic link (visible when you type ls -l)
-# no = (NORMAL, NORM) Normal (non-filename) text. Global default, although everything should be something
-# or = (ORPHAN)   Symbolic link pointing to an orphaned non-existent file
-# ow = (OTHER_WRITABLE)   Directory that is other-writable (o+w) and not sticky
-# pi = (FIFO, PIPE)   Named pipe (fifo file)
-# sg = (SETGID)   File that is setgid (g+s)
-# so = (SOCK) Socket file
-# st = (STICKY)   Directory with the sticky bit set (+t) and not other-writable
-# su = (SETUID)   File that is setuid (u+s)
-# tw = (STICKY_OTHER_WRITABLE)    Directory that is sticky and other-writable (+t,o+w)
-# *.extension =   Every file using this extension e.g. *.rpm = files with the ending .rpm
-LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:' ; export LS_COLORS
-
-# Magento
-magento_path="/var/www/html/magento-trial"
-alias mage_root="cd ${magento_path}"
-alias mage_theme="mage_root && cd app/design/frontend/Venustheme/"
-alias mage_module="mage_root && cd app/code/Ves"
-alias mage_build="${magento_path}/bin/magento setup:upgrade --keep-generated"
-alias mage_static="${magento_path}/bin/magento setup:static-content:deploy en_US sv_SE"
-alias mage_clear_var="rm -rf ${magento_path}/var/* && cp ${magento_path}/.htaccess-var ${magento_path}/var/.htaccess"
-
-# Solr
-solr_path="${HOME}/lucene-solr/solr"
-alias solar_start="${solr_path}/bin/solr start"
-alias solar_stop="${solr_path}/bin/solr stop"
 
 # Color script
 colors_and_formatting()
@@ -240,6 +199,61 @@ colors_and_formatting()
   done
 }
 
+# ls description
+# {
+# bd = (BLOCK, BLK)   Block device (buffered) special file
+# cd = (CHAR, CHR)    Character device (unbuffered) special file
+# di = (DIR)  Directory
+# do = (DOOR) [Door][1]
+# ex = (EXEC) Executable file (ie. has 'x' set in permissions)
+# fi = (FILE) Normal file
+# ln = (SYMLINK, LINK, LNK)   Symbolic link. If you set this to ‘target’ instead of a numerical value, the color is as for the file pointed to.
+# mi = (MISSING)  Non-existent file pointed to by a symbolic link (visible when you type ls -l)
+# no = (NORMAL, NORM) Normal (non-filename) text. Global default, although everything should be something
+# or = (ORPHAN)   Symbolic link pointing to an orphaned non-existent file
+# ow = (OTHER_WRITABLE)   Directory that is other-writable (o+w) and not sticky
+# pi = (FIFO, PIPE)   Named pipe (fifo file)
+# sg = (SETGID)   File that is setgid (g+s)
+# so = (SOCK) Socket file
+# st = (STICKY)   Directory with the sticky bit set (+t) and not other-writable
+# su = (SETUID)   File that is setuid (u+s)
+# tw = (STICKY_OTHER_WRITABLE)    Directory that is sticky and other-writable (+t,o+w)
+# *.extension =   Every file using this extension e.g. *.rpm = files with the ending .rpm
+# }
+LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:' ; export LS_COLORS
+# }
+
+export DISPLAY=:0.0
+
+color_current_directory()
+{
+  relative_path="${1}"
+  relative_path="$(echo "${relative_path}" | sed -e "s/\([^\/]\+$\)/${UNDERLINE}\1${EXIT_UNDERLINE}/")"
+  echo -e "${relative_path}"
+}
+
+# export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
+export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\$(color_current_directory \w)${YELLOW}\$(parse_git_branch)${RESET}\$ "
+# export PS1='$(dirname \w)/\[$(tput bold)\]$(basename \w)\[$(tput sgr0)\]'
+
+# Magento
+# {
+magento_path="/var/www/html/magento-trial"
+alias mage_root="cd ${magento_path}"
+alias mage_theme="mage_root && cd app/design/frontend/Venustheme/"
+alias mage_module="mage_root && cd app/code/Ves"
+alias mage_build="${magento_path}/bin/magento setup:upgrade --keep-generated"
+alias mage_static="${magento_path}/bin/magento setup:static-content:deploy en_US sv_SE"
+alias mage_clear_var="rm -rf ${magento_path}/var/* && cp ${magento_path}/.htaccess-var ${magento_path}/var/.htaccess"
+# }
+
+# Solr
+# {
+solr_path="${HOME}/lucene-solr/solr"
+alias solar_start="${solr_path}/bin/solr start"
+alias solar_stop="${solr_path}/bin/solr stop"
+# }
+
 # countdown 60              60 seconds
 # countdown 60*30           30 minutes
 # countdown $((24*60*60))   1 day
@@ -261,7 +275,6 @@ function stopwatch()
   done
 }
 
-if [ -r ~/.bashrc.work ]
-then
+if [ -r ~/.bashrc.work ]; then
   . ~/.bashrc.work
 fi
