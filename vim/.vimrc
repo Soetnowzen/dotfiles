@@ -179,9 +179,9 @@ set wildignore+=*.pyc
 set wildignore+=*.swp
 set wildignore+=tags
 
+au BufRead,BufNewFile *.json set filetype=json
 au BufRead,BufNewFile *.log set filetype=log
 au BufRead,BufNewFile *.txt set filetype=text
-au BufRead,BufNewFile *.json set filetype=json
 " }
 
 " ToggleComment {
@@ -447,10 +447,10 @@ set expandtab
 
 " Tabs only two spaces
 set tabstop=2
-set shiftwidth=2
-
-au FileType python,perl set shiftwidth=4
 au FileType python,perl set tabstop=4
+set shiftwidth=2
+au FileType python,perl set shiftwidth=4
+
 au FileType make set noexpandtab
 " }
 
@@ -464,7 +464,7 @@ set writebackup
 set undofile
 " }
 
-" UI Layout {
+" GUI Layout {
 " Removes useless gui crap
 set guioptions-=M
 set guioptions-=T
@@ -536,8 +536,9 @@ let g:cpp_no_function_highlight = 1
 
 " NERDTree {
 map <C-n> :NERDTreeToggle<CR>
-let NERDTreeIgnore = ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$',
-      \ '\.exe$', '\.swp$', '\.bak$', '\.pyc$', '\.class$', '\~$']
+let NERDTreeIgnore =
+      \ ['\.pyc$', '\.hi$', '\.o$', '\.dyn_hi$', '\.dyn_o$', '\.exe$',
+      \ '\.swp$', '\.bak$', '\.pyc$', '\.class$', '\~$']
 let NERDTreeWinSize = 42
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
