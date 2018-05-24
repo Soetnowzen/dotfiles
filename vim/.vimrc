@@ -339,8 +339,10 @@ au FileType c,cpp inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
 " #endif
 au FileType c,cpp inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
 " #endif
-au FileType sh inoremap if<Space> if<CR>fi<Up><End><Space>
-au FileType sh inoremap elif elif
+au FileType sh inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+au FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
+au FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
+au FileType sh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
