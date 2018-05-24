@@ -301,6 +301,7 @@ nnoremap <Space> :noh<cr>
 inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
+inoremap JJ <Esc>o
 nnoremap <C-CR> <Esc>o
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<Esc>O
@@ -322,6 +323,7 @@ inoremap ( ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
 inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
 inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>" : " "
 inoremap /* /**/<Left><Left>
 inoremap /*<BS> <NOP>
 inoremap /*<BS><BS> <NOP>
@@ -333,6 +335,12 @@ inoremap '''<CR> '''<CR>'''<Esc>O
 inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
+au FileType c,cpp inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
+" #endif
+au FileType c,cpp inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
+" #endif
+au FileType sh inoremap if<Space> if<CR>fi<Up><End><Space>
+au FileType sh inoremap elif elif
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
