@@ -69,6 +69,7 @@ set colorcolumn+=83
 au FileType cpp,c set colorcolumn=121,122,123
 
 " Highlights
+" {
 highlight Black ctermfg=Black guifg=Black
 highlight Blue ctermfg=DarkBlue guifg=DarkBlue
 highlight Green ctermfg=DarkGreen guifg=DarkGreen
@@ -85,6 +86,7 @@ highlight Orange ctermfg=Red guifg=Red
 highlight Violet ctermfg=Magenta guifg=Magenta
 highlight Yellow ctermfg=Yellow guifg=Yellow
 highlight White ctermfg=White guifg=White
+" }
 
 au FileType plaintex,text,log call MultipleMatches()
 fu! MultipleMatches()
@@ -149,6 +151,7 @@ set wildmenu
 set wildmode=list:longest,full
 
 " Show hidden characters with given characters
+" {
 " highlight NonText ctermfg=Magenta guifg=Magenta
 highlight SpecialKey ctermfg=Magenta guifg=Magenta
 set list
@@ -157,19 +160,24 @@ set listchars+=trail:-
 set listchars+=conceal:C  " conceallevel is set to 1
 set listchars+=nbsp:%  " Non-breakable space
 set listchars+=extends:>,precedes:<
+" }
 
+" linebreak options
+" {
 set linebreak
 set showbreak=->
 au FileType python,perl set showbreak=--->
 set cpoptions+=n
 set breakindent
 set breakat+=>
+" }
 
 set switchbuf+=useopen
 set switchbuf+=usetab
 set switchbuf+=split
 
 " :e ignores files
+" {
 set wildignore+=*.bak
 set wildignore+=*.class
 set wildignore+=*.exe
@@ -178,6 +186,7 @@ set wildignore+=*.o
 set wildignore+=*.pyc
 set wildignore+=*.swp
 set wildignore+=tags
+" }
 
 au BufRead,BufNewFile *.json set filetype=json
 au BufRead,BufNewFile *.log set filetype=log
@@ -198,6 +207,7 @@ let s:comment_map = {
       \   "fstab": '#',
       \   "gitconfig": '#',
       \   "go": '\/\/',
+      \   "haskell": '--',
       \   "java": '\/\/',
       \   "javascript": '\/\/',
       \   "lua": '--',
@@ -253,6 +263,7 @@ iunmap <C-Y>
 noremap <C-v> <C-v>
 
 " Navigate wrapped lines
+" {
 nnoremap j gj
 nnoremap k gk
 nnoremap <C-h> <C-W>h
@@ -269,10 +280,12 @@ nnoremap Q gqap
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
+" }
 
 map Y y$
 
 " Command-line mode remaps
+" {
 cnoremap jj <Esc>
 cnoremap ' ''<Left>
 cnoremap '' ''
@@ -287,6 +300,7 @@ cnoremap [ []<Left>
 cnoremap [] []
 cnoremap ( ()<Left>
 cnoremap () ()
+" }
 
 " normal mode remap case switch
 nnoremap § ~
@@ -298,6 +312,7 @@ vnoremap Q gq
 nnoremap <Space> :noh<cr>
 
 " Insertion mode remaps
+" {
 inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
@@ -343,6 +358,8 @@ au FileType sh inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><L
 au FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
 au FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
 au FileType sh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+au FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
+" }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
@@ -350,6 +367,7 @@ cnoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2
 
 " au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
+  " {
   inoremap <Space>alpha<Space> <Space>α<Space>
   inoremap <Space>beta<Space> <Space>Β<Space>
   inoremap <Space>gamma<Space> <Space>γ<Space>
@@ -394,6 +412,7 @@ fu! Inoremaps()
   inoremap >= ≥
   inoremap <= ≤
   inoremap ... ⋯
+  " }
 endfu
 " }
 
@@ -442,6 +461,7 @@ set ignorecase
 set incsearch
 
 " Regular Expressions set to very magic
+" {
 nnoremap / /\v
 vnoremap / /\v
 cnoremap %s %s/\v
@@ -449,6 +469,7 @@ cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
+" }
 " }
 
 " Spaces & Tabs {
@@ -496,8 +517,11 @@ let g:vim_json_syntax_conceal = 0
 
 " vim-windowswap {
 nnoremap <C-y>w :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <Leader>y :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <C-p>w :call WindowSwap#DoWindowSwap()<CR>
+nnoremap <Leader>p :call WindowSwap#DoWindowSwap()<CR>
 nnoremap <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
+nnoremap <Leader>w :call WindowSwap#EasyWindowSwap()<CR>
 " }
 
 " linediff {
