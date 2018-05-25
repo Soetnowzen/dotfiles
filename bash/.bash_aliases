@@ -112,7 +112,15 @@ bind '"\e[B":history-search-forward' # ]
 # Bash Prompt
 parse_git_branch()
 {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+  number_of_files=$(git status -s 2> /dev/null | wc -l)
+  branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  if [ ${branch} != "" ]; then
+    if [ $number_of_files != 0 ]; then
+      echo "${YELLOW}(${branch}${MAGENTA}+${number_of_files}${YELLOW})"
+    else
+      echo "${YELLOW}(${branch})"
+    fi
+  fi
 }
 
 git-uplift()
@@ -232,9 +240,38 @@ color_current_directory()
   echo -e "${relative_path}"
 }
 
-# export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\w${YELLOW}\$(parse_git_branch)${RESET}\$ "
-export PS1="${CYAN}\A ${BLUE}\u${RESET}@${BLUE}\h${RESET} ${GREEN}\$(color_current_directory \w)${YELLOW}\$(parse_git_branch)${RESET}\$ "
-# export PS1='$(dirname \w)/\[$(tput bold)\]$(basename \w)\[$(tput sgr0)\]'
+print_failing_code()
+{
+  exit_code="${1}"
+  echo "exit_code = ${exit_code}"
+  # if [ "${exit_code}" -ne 0 ]; then
+  if [[ $exit_code != 0 ]]; then
+    echo " ${exit_code}"
+  fi
+}
+
+PROMPT_COMMAND=__prompt_command # Func to gen PS1 after CMDs
+
+__prompt_command()
+{
+  local EXIT="$?"             # This needs to be first
+  PS1="["
+
+  # Time
+  PS1+="${CYAN}\A "
+  # user@pc
+  PS1+="${BLUE}\u${RESET}@${BLUE}\h${RESET} "
+  # Path with underlined current directory
+  PS1+="${GREEN}\$(color_current_directory \w)"
+  # Get current git branch
+  PS1+="\$(parse_git_branch)"
+  if [ $EXIT != 0 ]; then
+    # Print exit code if not 0
+    PS1+=" ${RED}${EXIT}"
+  fi
+
+  PS1+="${RESET}]\$ "
+}
 
 # Magento
 # {
