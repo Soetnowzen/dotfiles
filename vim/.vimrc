@@ -195,36 +195,37 @@ au BufRead,BufNewFile *.txt set filetype=text
 
 " ToggleComment {
 let s:comment_map = {
-      \   "ahk": ';',
-      \   "bash_profile": '#',
-      \   "bashrc": '#',
-      \   "bat": 'REM',
-      \   "c": '\/\/',
-      \   "conf": '#',
-      \   "cpp": '\/\/',
-      \   "desktop": '#',
-      \   "eml": '>',
-      \   "fstab": '#',
-      \   "gitconfig": '#',
-      \   "go": '\/\/',
-      \   "haskell": '--',
-      \   "java": '\/\/',
-      \   "javascript": '\/\/',
-      \   "lua": '--',
-      \   "mail": '>',
-      \   "make": '#',
-      \   "php": '\/\/',
-      \   "profile": '#',
-      \   "python": '#',
-      \   "ruby": '#',
-      \   "rust": '\/\/',
-      \   "scala": '\/\/',
-      \   "sh": '#',
-      \   "spec": '#',
-      \   "tcsh": '#',
-      \   "tex": '%',
-      \   "tmux": "#",
-      \   "vim": '"',
+      \ "ahk": ';',
+      \ "bash_profile": '#',
+      \ "bashrc": '#',
+      \ "bat": 'REM',
+      \ "c": '\/\/',
+      \ "conf": '#',
+      \ "cpp": '\/\/',
+      \ "desktop": '#',
+      \ "eml": '>',
+      \ "erlang": '%',
+      \ "fstab": '#',
+      \ "gitconfig": '#',
+      \ "go": '\/\/',
+      \ "haskell": '--',
+      \ "java": '\/\/',
+      \ "javascript": '\/\/',
+      \ "lua": '--',
+      \ "mail": '>',
+      \ "make": '#',
+      \ "php": '\/\/',
+      \ "profile": '#',
+      \ "python": '#',
+      \ "ruby": '#',
+      \ "rust": '\/\/',
+      \ "scala": '\/\/',
+      \ "sh": '#',
+      \ "spec": '#',
+      \ "tcsh": '#',
+      \ "tex": '%',
+      \ "tmux": "#",
+      \ "vim": '"',
       \ }
 
 function! ToggleComment()
@@ -317,11 +318,9 @@ inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
 inoremap JJ <Esc>o
-nnoremap <C-CR> <Esc>o
 inoremap { {}<Left>
 inoremap {<CR> {<CR>}<Esc>O
-inoremap {{ {
-" }}
+inoremap {- {--}<Left><Left>
 " {
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
 inoremap < <><Left>
@@ -361,7 +360,7 @@ au FileType sh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><
 au FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
 " }
 
-let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  "]
+let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 cnoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
