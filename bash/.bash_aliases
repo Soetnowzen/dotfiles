@@ -114,8 +114,8 @@ parse_git_branch()
 {
   number_of_files=$(git status -s 2> /dev/null | wc -l)
   branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-  if [ ${branch} != "" ]; then
-    if [ $number_of_files != 0 ]; then
+  if [[ ${branch} != "" ]]; then
+    if [[ $number_of_files != 0 ]]; then
       echo "${YELLOW}(${branch}${MAGENTA}+${number_of_files}${YELLOW})"
     else
       echo "${YELLOW}(${branch})"
@@ -265,7 +265,7 @@ __prompt_command()
   PS1+="${GREEN}\$(color_current_directory \w)"
   # Get current git branch
   PS1+="\$(parse_git_branch)"
-  if [ $EXIT != 0 ]; then
+  if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
     PS1+=" ${RED}${EXIT}"
   fi

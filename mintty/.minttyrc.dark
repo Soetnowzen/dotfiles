@@ -3,6 +3,7 @@ BoldAsColour=yes
 Transparency=low
 FontHeight=8
 Term=xterm-256color
+Term=cygwin
 Scrollbar=none
 RightClickAction=paste
 Columns=80
