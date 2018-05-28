@@ -112,14 +112,23 @@ bind '"\e[B":history-search-forward' # ]
 # Bash Prompt
 parse_git_branch()
 {
-  number_of_files=$(git status -s -uno 2> /dev/null | wc -l)
+  # number_of_files=$(git status -s -uno 2> /dev/null | wc -l)
   branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-  if [[ ${branch} != "" ]]; then
-    if [[ $number_of_files != 0 ]]; then
-      echo "(${branch}, +${number_of_files})"
-    else
-      echo "(${branch})"
-    fi
+  echo "${branch}"
+  # if [[ ${branch} != "" ]]; then
+    # if [[ $number_of_files != 0 ]]; then
+      # echo "(${branch}, +${number_of_files})"
+    # else
+      # echo "(${branch})"
+    # fi
+  # fi
+}
+
+modified_git_count()
+{
+  number_of_changes=$(git status -s -uno 2> /dev/null | wc -l)
+  if [[ ${number_of_changes} != 0 ]]; then
+    echo "+${number_of_changes}"
   fi
 }
 
@@ -255,7 +264,7 @@ PROMPT_COMMAND=__prompt_command # Func to gen PS1 after CMDs
 __prompt_command()
 {
   local EXIT="$?"             # This needs to be first
-  PS1="["
+  PS1="[" # ]
 
   # Time
   PS1+="\[${CYAN}\]\A "
@@ -264,7 +273,15 @@ __prompt_command()
   # Path
   PS1+="\[${GREEN}\]\w"
   # Get current git branch
-  PS1+="\[${YELLOW}\]\$(parse_git_branch)"
+  branch=$(parse_git_branch)
+  git_count=$(modified_git_count)
+  if [[ ${branch} != "" ]]; then
+    if [[ ${git_count} == "" ]]; then
+      PS1+="\[${YELLOW}\](${branch})"
+    else
+      PS1+="\[${YELLOW}\](${branch}, \[${MAGENTA}\]${git_count}\[${YELLOW}\])"
+    fi
+  fi
   if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
     PS1+=" \[${RED}\]${EXIT}"

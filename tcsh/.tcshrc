@@ -56,8 +56,18 @@ alias get_number_of_git_changes "git status -s -uno | wc -l"
 alias print_addition_if_not_zero '[ \!:1 != 0 ] && echo ", +\!:1" || echo ""'
 alias print_number_of_git_changes 'print_addition_if_not_zero `get_number_of_git_changes`'
 alias get_current_git_branch "git branch |& grep \* | sed 's/\* \(.*\)/\1/'"
-alias precmd 'set exit_code=" $?"; set branch=`get_current_git_branch`; set git_changes=`print_number_of_git_changes`; set FOO="($branch$git_changes)"; if "$exit_code" == " 0" set exit_code=""; if "$FOO" == "()" set FOO=""'
-set prompt='[%{\033[36m%}%T %{\033[34m%}%n%{\033[0m%}@%{\033[34m%}%m %{\033[32m%}%~%{\033[33m%}%$FOO%{\033[31m%}%$exit_code%{\033[0m%}]%# '
+alias precmd 'set exit_code=" $?"; \\
+  set branch=`get_current_git_branch`; \\
+    set git_changes=`print_number_of_git_changes`; \\
+      if "$exit_code" == " 0" set exit_code=""; \\
+        if "$get_changes" != "" set branch="$branch, "'
+set prompt='[\\
+  %{\033[36m%}%T \\
+    %{\033[34m%}%n%{\033[0m%}@%{\033[34m%}%m \\
+      %{\033[32m%}%~\\
+        %{\033[33m%}(%$branch{\033[35m%}$git_changes{\033[33m%})\\
+          %{\033[31m%}%$exit_code%{\033[0m%}\\
+            ]%# '
 # }
 
 # bindkey -v
