@@ -112,13 +112,13 @@ bind '"\e[B":history-search-forward' # ]
 # Bash Prompt
 parse_git_branch()
 {
-  number_of_files=$(git status -s 2> /dev/null | wc -l)
+  number_of_files=$(git status -s -uno 2> /dev/null | wc -l)
   branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
   if [[ ${branch} != "" ]]; then
     if [[ $number_of_files != 0 ]]; then
-      echo "${YELLOW}(${branch}${MAGENTA}+${number_of_files}${YELLOW})"
+      echo "(${branch}, +${number_of_files})"
     else
-      echo "${YELLOW}(${branch})"
+      echo "(${branch})"
     fi
   fi
 }
@@ -258,19 +258,19 @@ __prompt_command()
   PS1="["
 
   # Time
-  PS1+="${CYAN}\A "
+  PS1+="\[${CYAN}\]\A "
   # user@pc
-  PS1+="${BLUE}\u${RESET}@${BLUE}\h${RESET} "
-  # Path with underlined current directory
-  PS1+="${GREEN}\$(color_current_directory \w)"
+  PS1+="\[${BLUE}\]\u\[${RESET}\]@\[${BLUE}\]\h\[${RESET}\] "
+  # Path
+  PS1+="\[${GREEN}\]\w"
   # Get current git branch
-  PS1+="\$(parse_git_branch)"
+  PS1+="\[${YELLOW}\]\$(parse_git_branch)"
   if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
-    PS1+=" ${RED}${EXIT}"
+    PS1+=" \[${RED}\]${EXIT}"
   fi
 
-  PS1+="${RESET}]\$ "
+  PS1+="\[${RESET}\]]\$ "
 }
 
 # Magento
