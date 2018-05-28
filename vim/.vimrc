@@ -65,7 +65,7 @@ colorscheme solarized
 set colorcolumn+=81
 set colorcolumn+=82
 set colorcolumn+=83
-" au FileType python,perl set colorcolumn=121,122,123
+au FileType python,perl set colorcolumn=101,102,103
 au FileType cpp,c set colorcolumn=121,122,123
 
 " Highlights
@@ -355,7 +355,7 @@ inoremap '''<CR> '''<CR>'''<Esc>O
 inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
-au FileType c,cpp inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
+au FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
 " #endif
 au FileType c,cpp inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
 " #endif

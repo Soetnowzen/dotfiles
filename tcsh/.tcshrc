@@ -50,10 +50,13 @@ set WHITE="%{\033[37m%}"
 # set BLACK="%{\033[316m%}"
 # }
 
-alias get_current_git_branch "git branch |& grep \* | sed 's/\* \(.*\)/(\1)/'"
-alias get_number_of_git_changes "git status -s | wc -l"
+alias get_number_of_git_changes "git status -s -uno | wc -l"
+alias print_addition_if_not_zero '[ \!:1 != 0 ] && echo "${MAGENTA}+\!:1${YELLOW}"'
+alias print_number_of_git_changes 'print_addition_if_not_zero `get_number_of_git_changes`'
+alias get_current_git_branch "git branch |& grep \* | sed 's/\* \(.*\)/(\1`print_number_of_git_changes`)/'"
+alias print_if_not_zero '[ \!:1 != 0 ] && echo " \!:1" || echo ""'
 # alias color_current_directory "echo $1 | sed -e \"s/\([^\/]\+\)/(${MAGENTA}\1)/\""
-alias precmd set 'prompt = "[${CYAN}%T ${BLUE}%n${RESET}@${BLUE}%m ${GREEN}%~${YELLOW}`get_current_git_branch` ${RED}%? ${RESET}g=%g, l=%l, L=%L, S=%S]%# "'
+alias precmd set 'prompt = "[${CYAN}%T ${BLUE}%n${RESET}@${BLUE}%m ${GREEN}%~${YELLOW}`get_current_git_branch`${RED}`print_if_not_zero %?`${RESET}]%# "'
 # alias precmd set 'prompt = "${CYAN}%T ${BLUE}%n${RESET}@${BLUE}%m ${GREEN}`colorCurrentDirectory %~`${YELLOW}`get_current_git_branch`${RESET}%# "'
 
 # bindkey -v
