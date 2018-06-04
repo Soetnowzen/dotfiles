@@ -293,6 +293,7 @@ cnoremap '' ''
 cnoremap " ""<Left>
 cnoremap "" ""
 cnoremap { {}<Left>
+" }
 cnoremap {} {}
 cnoremap < <><Left>
 cnoremap <<Space> <<Space>
@@ -318,6 +319,8 @@ vnoremap <S-Tab> <gv
 
 nnoremap <Space> :noh<cr>
 
+inoremap </ </<C-X><C-O>
+
 " Insertion mode remaps
 " {
 inoremap :w<CR> <Esc>:w<CR>a
@@ -325,6 +328,7 @@ inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
 inoremap JJ <Esc>o
 inoremap { {}<Left>
+" }
 inoremap {<CR> {<CR>}<Esc>O
 inoremap {- {--}<Left><Left>
 " {
@@ -337,7 +341,6 @@ inoremap =<<Space> =<<Space>
 inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
 inoremap [<Space> [<Space><Space>]<Left><Left>
-" [
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
@@ -356,19 +359,17 @@ inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
 au FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
-" #endif
 au FileType c,cpp inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
-" #endif
 au FileType sh inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 au FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
 au FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
 au FileType sh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 au FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
+au FileType vim inoremap elseif<Space> elseif<Space>
 " }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
-cnoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
 " au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
@@ -440,19 +441,50 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 function! MyFoldLevel( lineNumber )
   let thisLine = getline( a:lineNumber )
   " Don't create fold if entire comment or {} pair is on one line.
-  if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)\|\%(\[.*\]\)' )
+  if (thisLine =~ '\%(/\*.*\*/\)')
     return '='
-  elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{\|\[\|\(#if\(def\|ndef\)\?\)' )
+  elseif ( thisLine =~ '/\*')
     return "a1"
-  elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}\|\]\|\(#endif\)' )
+  elseif ( thisLine =~ '\*/')
+    return "s1"
+  elseif ( thisLine =~ '\%({.*}\)')
+    return '='
+  elseif ( thisLine =~ '{')
+    return "a1"
+  elseif (thisLine =~ '}')
+    return "s1"
+  elseif ( thisLine =~ '\%(\[.*\]\)' )
+    return '='
+  elseif ( thisLine =~ '\[')
+    return "a1"
+  elseif (thisLine =~ '\]')
+    return "s1"
+  elseif ( thisLine =~ '\(#if\(def\|ndef\)\?\)' )
+    return "a1"
+  elseif (thisLine =~ '\(#endif\)' )
     return "s1"
   endif
   return '='
 endfunction
+
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
-" au FileType cpp,c set fdm=syntax
+au FileType cpp,c set fdm=syntax
+au FileType vim set foldmethod=marker
+au FileType vim set foldmarker={,}
 au FileType python,plaintex,text set fdm=indent
+
+set foldtext=MyFoldText()
+function MyFoldText()
+  let line = getline(v:foldstart)
+  " let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
+  " }}}
+  let sub = substitute(line, '/^\s\+', '', 'g')
+  let number_of_lines = v:foldend - v:foldstart + 1
+  return  '+' . number_of_lines . ' lines ' . v:folddashes . ' ' . sub . ' '
+endfunction
+
+set fillchars=vert:\|,fold:-
 " }
 
 " Searching {
@@ -581,8 +613,8 @@ let NERDTreeIgnore =
 let NERDTreeWinSize = 42
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
-let NERDTreeDirArrowsExpandable = '+'
-let NERDTreeDirArrowsCollapsible = '~'
+" let NERDTreeDirArrowsExpandable = '+'
+" let NERDTreeDirArrowsCollapsible = '~'
 let NERDTreeMapOpenSplit='s'
 let NERDTreeMapOpenVSplit='v'
 " let NERDTreeMapOpenSplit='-'
@@ -614,6 +646,9 @@ let g:syntastic_python_checkers = ['python3', 'pylint']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 " let g:syntastic_cpp_checkers = ['clang_cpp', 'gcc']
 let g:syntastic_cpp_checkers = ['cppcheck', 'cpplint']
+let g:syntastic_erl_checkers = ['Dialyzer'] " untested
+let g:syntastic_js_checkers = ['JSHint'] " untested
+let g:syntastic_java_checkers = ['PMD'] " untested
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
 
@@ -624,7 +659,9 @@ let g:syntastic_cpp_include_dirs =
       \ 'test/bin']
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -D_FORTIFY_SOURCE=1'
+" let g:syntastic_cpp_compiler = 'gcc'
+" let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -D_FORTIFY_SOURCE=1'
 let g:syntastic_enable_signs = 1
 
 function! FindConfig(prefix, what, where)
