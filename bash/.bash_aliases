@@ -17,7 +17,7 @@ alias :q='exit'
 alias c='clear'
 alias cat='cat -nv'
 alias ccat='pygmentize -g'
-alias fi_="find $$ | grep '[^\/]*$'"
+alias fi_="find \$$ | grep \'[^\\/]*$\'"
 alias g='git'
 alias g_pl_stash='git stash && git pull && git stash pop'
 alias grep='grep --color'
@@ -41,8 +41,8 @@ alias vimr='vim ~/.vimrc'
 mcd()
 {
   directory="${1}"
-  mkdir -p $directory
-  cd $directory
+  mkdir -p "$directory"
+  cd "$directory" || exit
 }
 
 extract()
@@ -53,7 +53,7 @@ extract()
     echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
     return 1
   else
-    for n in $@
+    for n in "$@"
     do
       if [ -f "$n" ] ; then
         case "${n%,}" in
@@ -84,9 +84,9 @@ extract()
 
 fi_a ()
 {
-  arguments="${@}"
+  arguments="${*}"
   echo "'${arguments}'"
-  for line in $(find $arguments | grep '[^\/]*$'); do
+  for line in $(find "$arguments" | grep '[^\/]*$'); do
     # line = grep '[^\/]*$' "${line}"
     echo "${line}"
   done
@@ -128,40 +128,6 @@ modified_git_count()
   fi
 }
 
-git-uplift()
-{
-  temp_branch="tmp"
-  [[ "${1}" != "" ]] && temp_branch=$1;
-
-  git fetch --all
-  # echo "git fetch --all"
-  # [[ $(parse_git_branch) =~ \((.+)\) ]] && current_branch=${BASH_REMATCH[1]};
-  [[ $(git status -sb) =~ \#\#\ ([^\.]+)\\s*\.+origin/(.+) ]] \
-    && current_branch=${BASH_REMATCH[1]} \
-    && remote_branch=${BASH_REMATCH[2]};
-  echo "current_branch: '${current_branch}'"
-  echo "remote_branch: '${remote_branch}'"
-  echo "Press enter."
-  read
-  git checkout -b "${temp_branch}" "origin/${remote_branch}" --no-track
-  # echo "git checkout -b $temp_branch origin/$remote_branch --no-track"
-  echo "Press enter."
-  read
-  # git merge origin/master --no-ff
-  echo "git merge origin/master --no-ff"
-  echo "Press enter."
-  read
-  error_code="${?}"; [[ "${error_code}" != 0 ]] && echo "git mt";
-  # git push origin tmp:ref/for/$current_branch
-  echo "git push origin tmp:ref/for/${remote_branch}"
-  echo "Press enter."
-  read
-  git checkout "${current_branch}"
-  # echo "git checkout $current_branch"
-  git branch -D "${temp_branch}"
-  # echo "git branch -D $temp_branch"
-}
-
 # Colors
 # {
 RED="$(tput setaf 1)"
@@ -189,7 +155,7 @@ colors_and_formatting()
       # Formatting
       for attr in 0 1 2 4 5 7 ; do
         # Print the result
-        echo -en "\e[${attr};${clbg};${clfg}m ^[${attr};${clbg};${clfg}m \e[0m"
+        echo -en "\\e[${attr};${clbg};${clfg}m ^[${attr};${clbg};${clfg}m \\e[0m"
       done
       echo # Newline
     done
@@ -201,7 +167,7 @@ colors_and_formatting()
   for fgbg in 38 48 ; do # Foreground / Background
     for color in {0..255} ; do # Colors
       # Display the color
-      printf "\e[${fgbg};5;%sm  %3s  \e[0m" $color $color
+      printf "\\e[${fgbg};5;%sm  %3s  \\e[0m" $color $color
       # Display 6 colors per lines
       if [ $(((color + 1) % 6)) == 4 ] ; then
         echo # New line
@@ -240,7 +206,7 @@ export DISPLAY=:0.0
 color_current_directory()
 {
   relative_path="${1}"
-  relative_path="$(echo "${relative_path}" | sed -e "s/\([^\/]\+$\)/\[${UNDERLINE}\]\1\[${EXIT_UNDERLINE}\]/")"
+  relative_path="$(echo "${relative_path}" | sed -e "s/\\([^\\/]\\+$\\)/\\[${UNDERLINE}\\]\\1\\[${EXIT_UNDERLINE}\\]/")"
   echo -e "${relative_path}"
 }
 
@@ -252,46 +218,46 @@ __prompt_command()
   PS1="[" # ]
 
   # Time
-  PS1+="\[${CYAN}\]\A "
+  PS1+="\\[${CYAN}\\]\\A "
   # user@pc
-  PS1+="\[${BLUE}\]\u\[${RESET}\]@\[${BLUE}\]\h\[${RESET}\] "
+  PS1+="\\[${BLUE}\\]\\u\\[${RESET}\\]@\\[${BLUE}\\]\\h\\[${RESET}\\] "
   # Path
-  PS1+="\[${GREEN}\]\w"
+  PS1+="\\[${GREEN}\\]\\w"
   # Get current git branch
   branch=$(parse_git_branch)
   git_count=$(modified_git_count)
   if [[ ${branch} != "" ]]; then
     if [[ ${git_count} == "" ]]; then
-      PS1+="\[${YELLOW}\](${branch})"
+      PS1+="\\[${YELLOW}\\](${branch})"
     else
-      PS1+="\[${YELLOW}\](${branch}, \[${MAGENTA}\]${git_count}\[${YELLOW}\])"
+      PS1+="\\[${YELLOW}\\](${branch}, \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\])"
     fi
   fi
   if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
-    PS1+=" \[${RED}\]${EXIT}"
+    PS1+=" \\[${RED}\\]${EXIT}"
   fi
 
-  PS1+="\[${RESET}\]]\$ "
+  PS1+="\\[${RESET}\\]]\\$ "
 }
 
 # Magento
 # {
-magento_path="/var/www/html/magento-trial"
-alias mage_root="cd ${magento_path}"
+MAGENTO_PATH="/var/www/html/magento-trial"
+alias mage_root="cd \${MAGENTO_PATH}"
 alias mage_theme="mage_root && cd app/design/frontend/Venustheme/"
 alias mage_module="mage_root && cd app/code/Ves"
-alias mage_build="${magento_path}/bin/magento setup:upgrade --keep-generated"
-alias mage_static="${magento_path}/bin/magento setup:static-content:deploy en_US sv_SE"
-alias mage_clear_var="rm -rf ${magento_path}/var/* && cp ${magento_path}/.htaccess-var ${magento_path}/var/.htaccess"
+alias mage_build="\${MAGENTO_PATH}/bin/magento setup:upgrade --keep-generated"
+alias mage_static="\${MAGENTO_PATH}/bin/magento setup:static-content:deploy en_US sv_SE"
+alias mage_clear_var="rm -rf \${MAGENTO_PATH}/var/* && cp \${MAGENTO_PATH}/.htaccess-var \${MAGENTO_PATH}/var/.htaccess"
 # */
 # }
 
 # Solr
 # {
-solr_path="${HOME}/lucene-solr/solr"
-alias solar_start="${solr_path}/bin/solr start"
-alias solar_stop="${solr_path}/bin/solr stop"
+SOLR_PATH="${HOME}/lucene-solr/solr"
+alias solar_start="\${SOLR_PATH}/bin/solr start"
+alias solar_stop="\${SOLR_PATH}/bin/solr stop"
 # }
 
 # countdown 60              60 seconds
@@ -301,7 +267,7 @@ function countdown()
 {
   date1=$($(date +%s) + "$1");
   while [ "$date1" -ge "$(date +%s)" ]; do
-    echo -ne "$(date -u --date @$((date1 - $(date +%s))) +%H:%M:%S)\r";
+    echo -ne "$(date -u --date @$((date1 - $(date +%s))) +%H:%M:%S)\\r";
     sleep 0.1
   done
 }
@@ -310,7 +276,7 @@ function stopwatch()
 {
   date1=$(date +%s);
   while true; do
-    echo -ne "$(date -u --date @$(($(date +%s) - date1)) +%H:%M:%S)\r";
+    echo -ne "$(date -u --date @$(($(date +%s) - date1)) +%H:%M:%S)\\r";
     sleep 0.1
   done
 }
