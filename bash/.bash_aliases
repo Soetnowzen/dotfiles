@@ -15,6 +15,7 @@ alias ll='la -l'
 alias ..='cd ..'
 alias :q='exit'
 alias c='clear'
+alias cat='cat -nv'
 alias ccat='pygmentize -g'
 alias fi_="find $$ | grep '[^\/]*$'"
 alias g='git'
@@ -26,6 +27,7 @@ alias less='less -r'
 alias mkdir='mkdir -pv'
 alias mount='mount | column -t'
 alias print_path='echo $PATH | tr : "\n"'
+alias psu='ps -u --forest'
 alias rm='rm -I'
 alias tm='tmux attach || tmux new'
 alias v-split='vim -o'
@@ -105,7 +107,7 @@ alias find_broken_links='find -L . -type l'
 alias sol.dark='source ~/dotfiles/mintty/sol.dark'
 alias sol.light='source ~/dotfiles/mintty/sol.light'
 
-# Autocomple searches when using up and down
+# Auto complete searches when using up and down
 bind '"\e[A":history-search-backward' # ]
 bind '"\e[B":history-search-forward' # ]
 
@@ -114,14 +116,8 @@ parse_git_branch()
 {
   # number_of_files=$(git status -s -uno 2> /dev/null | wc -l)
   branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  # */
   echo "${branch}"
-  # if [[ ${branch} != "" ]]; then
-    # if [[ $number_of_files != 0 ]]; then
-      # echo "(${branch}, +${number_of_files})"
-    # else
-      # echo "(${branch})"
-    # fi
-  # fi
 }
 
 modified_git_count()
@@ -166,7 +162,6 @@ git-uplift()
   # echo "git branch -D $temp_branch"
 }
 
-# PS1='$(whoami)@$(hostname):$(pwd)>'
 # Colors
 # {
 RED="$(tput setaf 1)"
@@ -245,18 +240,8 @@ export DISPLAY=:0.0
 color_current_directory()
 {
   relative_path="${1}"
-  relative_path="$(echo "${relative_path}" | sed -e "s/\([^\/]\+$\)/${UNDERLINE}\1${EXIT_UNDERLINE}/")"
+  relative_path="$(echo "${relative_path}" | sed -e "s/\([^\/]\+$\)/\[${UNDERLINE}\]\1\[${EXIT_UNDERLINE}\]/")"
   echo -e "${relative_path}"
-}
-
-print_failing_code()
-{
-  exit_code="${1}"
-  echo "exit_code = ${exit_code}"
-  # if [ "${exit_code}" -ne 0 ]; then
-  if [[ $exit_code != 0 ]]; then
-    echo " ${exit_code}"
-  fi
 }
 
 PROMPT_COMMAND=__prompt_command # Func to gen PS1 after CMDs
@@ -299,6 +284,7 @@ alias mage_module="mage_root && cd app/code/Ves"
 alias mage_build="${magento_path}/bin/magento setup:upgrade --keep-generated"
 alias mage_static="${magento_path}/bin/magento setup:static-content:deploy en_US sv_SE"
 alias mage_clear_var="rm -rf ${magento_path}/var/* && cp ${magento_path}/.htaccess-var ${magento_path}/var/.htaccess"
+# */
 # }
 
 # Solr

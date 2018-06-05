@@ -41,18 +41,18 @@ let g:solarized_termcolors=16 " 16 | 256
 let g:solarized_termtrans=1 " 0 | 1
 let g:solarized_underline=1 " 0 | 1
 if has('gui_running')
-  " if gvim else vim
+  " if GVim else Vim
   let g:solarized_contrast="high" " low | normal | high
   let g:solarized_visibility="high" " low | normal | high
-  " set background=light
-  set background=dark
+  set background=light
+  " set background=dark
 
   " Window Size
   if exists("+columns")
     set columns=90
   endif
   if exists("+lines")
-    set lines = 64
+    set lines=64
   endif
 else
   set t_Co=256
@@ -130,22 +130,22 @@ set autoread
 
 set mouse=a
 
-" Delete coment characters when joining lines.
+" Delete comment characters when joining lines.
 set formatoptions+=j
 
-" Change the mapleader from \ to ,
+" Change the map of <leader> from \ to ,
 let mapleader=","
 
 " set System clipboard
 set clipboard=unnamed
 
-" more autocomplete <Ctrl>-P options
+" more auto complete <Ctrl>-P options
 set completeopt=menu,longest,preview
 
 set splitbelow
 set splitright
 
-" Show autocompletion options
+" Show auto completion options
 set wildchar=<Tab>
 set wildmenu
 set wildmode=list:longest,full
@@ -162,7 +162,7 @@ set listchars+=nbsp:%  " Non-breakable space
 set listchars+=extends:>,precedes:<
 " }
 
-" linebreak options
+" line break options
 " {
 set linebreak
 set showbreak=->
@@ -193,7 +193,7 @@ au BufRead,BufNewFile *.log set filetype=log
 au BufRead,BufNewFile *.txt set filetype=text
 " }
 
-" ToggleComment {
+" Toggle Comments {
 let s:comment_map = {
       \ "ahk": ';',
       \ "bash_profile": '#',
@@ -257,10 +257,13 @@ nnoremap <C-m> :call ToggleComment()<cr>
 " }
 
 " Mapping {
-" unmap ctrl + Y
+" unmaps Ctrl + Y to be able to write the same character as above while mswim.vim is imported
 iunmap <C-Y>
 
-" Avoid mswin.vim making Ctrl-v ac as paste
+" unmaps <Ctrl> + Z to be able to suspend while mswim.vim is imported
+unmap <C-Z>
+
+" Avoid mswin.vim making Ctrl-v act as paste
 noremap <C-v> <C-v>
 
 " Navigate wrapped lines
@@ -533,7 +536,7 @@ set undofile
 " }
 
 " GUI Layout {
-" Removes useless gui crap
+" Removes useless GUI crap
 set guioptions-=M
 set guioptions-=T
 set guioptions-=m
