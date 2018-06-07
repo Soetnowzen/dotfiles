@@ -361,12 +361,14 @@ inoremap '''<CR> '''<CR>'''<Esc>O
 inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
+inoremap ;;<CR> ;;<CR>
 au FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
 au FileType c,cpp inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
 au FileType sh inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+au FileType sh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+au FileType sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
 au FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
 au FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
-au FileType sh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 au FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
 au FileType vim inoremap elseif<Space> elseif<Space>
 " }

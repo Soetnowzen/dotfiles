@@ -111,6 +111,14 @@ alias sol.light='source ~/dotfiles/mintty/sol.light'
 bind '"\e[A":history-search-backward' # ]
 bind '"\e[B":history-search-forward' # ]
 
+my_pylint()
+{
+  VERSION="${1}"
+  PYTHON_FILE="${2}"
+  MY_PYLINT="python${VERSION} -m pylint $PYTHON_FILE"
+  eval "$MY_PYLINT"
+}
+
 # Bash Prompt
 parse_git_branch()
 {
@@ -265,7 +273,8 @@ alias solar_stop="\${SOLR_PATH}/bin/solr stop"
 # countdown $((24*60*60))   1 day
 function countdown()
 {
-  date1=$($(date +%s) + "$1");
+  now=$(date +%s)
+  date1=$(${now} + "$1");
   while [ "$date1" -ge "$(date +%s)" ]; do
     echo -ne "$(date -u --date @$((date1 - $(date +%s))) +%H:%M:%S)\\r";
     sleep 0.1
