@@ -12,7 +12,7 @@ bash:
 	ln -fsn $(here)/bash/my.bashrc $(HOME)/.bashrc
 
 vim:
-	ln -fsn $(here)/vim/.vimrc $(HOME)/.vimrc
+	ln -fsn $(here)/vim/my.vimrc $(HOME)/.vimrc
 	if [ -d $(HOME)/.vim/bundle/Vundle.vim ]; \
 		then echo "Vundle exists"; \
 		else git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
@@ -23,7 +23,7 @@ vim:
 	vim +PluginInstall +qall
 
 vimperator:
-	ln -fsn $(here)/vimperator/.vimperatorrc $(HOME)/.vimperatorrc
+	ln -fsn $(here)/vimperator/my.vimperatorrc $(HOME)/.vimperatorrc
 	mkdir -p $(HOME)/.vimperator/colors
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
@@ -31,12 +31,12 @@ git:
 	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
 
 mintty:
-	ln -fsn $(here)/mintty/.minttyrc.dark $(HOME)/.minttyrc
+	ln -fsn $(here)/mintty/dark.minttyrc $(HOME)/.minttyrc
 
 tcsh:
 	ln -fsn $(here)/tcsh/my.tcshrc $(HOME)/.tcshrc
 
 tmux:
-	ln -fsn $(here)/tmux/.tmux.conf $(HOME)/.tmux.conf
+	ln -fsn $(here)/tmux/my-tmux.conf $(HOME)/.tmux.conf
 
 .PHONY: bash vim vimperator git mintty tcsh tmux

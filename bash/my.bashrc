@@ -232,7 +232,7 @@ __prompt_command()
   # Get current git branch
   branch=$(parse_git_branch)
   git_count=$(modified_git_count)
-  git_tag=$(git tag -l --contains HEAD 2> /dev/null)
+  git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
   if [[ ${branch} != "" ]]; then
     PS1+="\\[${YELLOW}\\](${branch}"
     if [[ ${git_tag} != "" ]]; then
