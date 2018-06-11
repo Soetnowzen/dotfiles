@@ -9,6 +9,7 @@
   editor = vim
   pager = less -RFX
   whitespace = trailing-space,space-before-tab
+  autocrlf = input
 [push]
   default = tracking
 [merge]
@@ -21,11 +22,14 @@
   renames = copies
 [alias]
   a = add
+  bi = bisect run # <my_script> <arguments>
   br = branch
   c = commit
+  ca = clean -xdf # clean all untracked files
   ci = commit
   co = checkout
   d = diff
+  discard = reset --hard
   dw = diff --word-diff
   f = fetch
   filelog = log -u
@@ -37,9 +41,15 @@
   lg3 = log --graph --abbrev-commit --decorate --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
   ll = log --graph --decorate --numstat --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s\\ %C(blue)[%cn]%C(green)(%ar)"
   mt = mergetool
+  ours = checkout --ours --
   pl = pull
   ps = push
+  r = revert
+  restore = checkout -m --
   s = status
   sh = show
   t = tag
+  theirs = checkout --theirs --
+  zip = archive --format=zip HEAD
+  zip-latest = archive -o latest.zip HEAD
   undo = reset --soft HEAD~1
