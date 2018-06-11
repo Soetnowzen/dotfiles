@@ -1,11 +1,10 @@
 #!/bin/bash
 
-# Make sure .bashrc has:
-# if [ -f ~/.bash_aliases ]; then
-#     . ~/.bash_aliases
-# fi
-
 # set -o vi
+
+if [ -r ~/.bashrc.work ]; then
+  . ~/.bashrc.work
+fi
 
 # Aliases
 # {
@@ -14,10 +13,10 @@ alias la='ls -A'
 alias ll='la -l'
 alias ..='cd ..'
 alias :q='exit'
-alias c='clear'
-alias cat='cat -nv'
+alias c='cat -nv'
 alias ccat='pygmentize -g'
-alias fi_="find \$$ | grep \'[^\\/]*$\'"
+alias clr='clear'
+alias fi_="find \$$ | grep '[^\\/]*$'"
 alias g='git'
 alias g_pl_stash='git stash && git pull && git stash pop'
 alias grep='grep --color'
@@ -122,7 +121,6 @@ my_pylint()
 # Bash Prompt
 parse_git_branch()
 {
-  # number_of_files=$(git status -s -uno 2> /dev/null | wc -l)
   branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
   # */
   echo "${branch}"
@@ -234,12 +232,16 @@ __prompt_command()
   # Get current git branch
   branch=$(parse_git_branch)
   git_count=$(modified_git_count)
+  git_tag=$(git tag -l --contains HEAD 2> /dev/null)
   if [[ ${branch} != "" ]]; then
-    if [[ ${git_count} == "" ]]; then
-      PS1+="\\[${YELLOW}\\](${branch})"
-    else
-      PS1+="\\[${YELLOW}\\](${branch}, \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\])"
+    PS1+="\\[${YELLOW}\\](${branch}"
+    if [[ ${git_tag} != "" ]]; then
+      PS1+=", \\[${VIOLET}\\]${git_tag}\\[${YELLOW}\\]"
     fi
+    if [[ ${git_count} != "" ]]; then
+      PS1+=", \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\]"
+    fi
+    PS1+=")"
   fi
   if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
@@ -289,7 +291,3 @@ function stopwatch()
     sleep 0.1
   done
 }
-
-if [ -r ~/.bashrc.work ]; then
-  . ~/.bashrc.work
-fi

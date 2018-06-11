@@ -7,7 +7,7 @@
   ui = auto
 [core]
   editor = vim
-  pager = less -R
+  pager = less -RFX
   whitespace = trailing-space,space-before-tab
 [push]
   default = tracking
@@ -40,4 +40,6 @@
   pl = pull
   ps = push
   s = status
+  sh = show
+  t = tag
   undo = reset --soft HEAD~1

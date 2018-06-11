@@ -7,6 +7,13 @@ behave mswin
 let &t_SI .= "\<Esc>[5 q" " ]
 let &t_EI .= "\<Esc>[1 q" " ]
 
+augroup Shebang
+  autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
+  autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
+  autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
+  autocmd BufNewFile *.\(cc\|hh\) 0put =\"//\<nl>// \".expand(\"<afile>:t\").\" -- \<nl>//\<nl>\"|2|start!
+augroup END
+
 " Vundle {
 set nocompatible
 filetype off
@@ -202,6 +209,7 @@ let s:comment_map = {
       \ "c": '\/\/',
       \ "conf": '#',
       \ "cpp": '\/\/',
+      \ "csh": '#',
       \ "desktop": '#',
       \ "eml": '>',
       \ "erlang": '%',
@@ -349,6 +357,7 @@ inoremap ( ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
 inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
 inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
+inoremap <expr> ` strpart(getline('.'), col('.')-1, 1) == "\`" ? "\<Right>" : "\`\`\<Left>"
 inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>" : " "
 inoremap /* /**/<Left><Left>
 inoremap /*<BS> <NOP>
@@ -371,9 +380,10 @@ au FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><L
 au FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
 au FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
 au FileType vim inoremap elseif<Space> elseif<Space>
+au FileType tcsh inoremap if<Space> if<CR>endif<Up><End><Space>()<Space>then<Left><Left><Left><Left><Left><Left>
 " }
 
-let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--"]
+let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 
 " au FileType plaintex,text call Inoremaps()

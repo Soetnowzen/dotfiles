@@ -9,9 +9,7 @@ all:
 	bash vim vimperator git mintty tcsh tmux
 
 bash:
-	ln -fsn $(here)/bash/.bash_aliases $(HOME)/.bash_aliases
-	#ln -fsn $(here)/bash/bash_profile $(HOME)/.bash_profile
-	#ln -fsn $(here)/bash/bashrc $(HOME)/.bashrc
+	ln -fsn $(here)/bash/my.bashrc $(HOME)/.bashrc
 
 vim:
 	ln -fsn $(here)/vim/.vimrc $(HOME)/.vimrc
@@ -36,7 +34,7 @@ mintty:
 	ln -fsn $(here)/mintty/.minttyrc.dark $(HOME)/.minttyrc
 
 tcsh:
-	ln -fsn $(here)/tcsh/.tcshrc $(HOME)/.tcshrc
+	ln -fsn $(here)/tcsh/my.tcshrc $(HOME)/.tcshrc
 
 tmux:
 	ln -fsn $(here)/tmux/.tmux.conf $(HOME)/.tmux.conf
