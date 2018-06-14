@@ -10,3 +10,4 @@ Makes symlinks from relevant directories.
  * Mintty
  * Tcsh
  * Tmux
+ * GDB

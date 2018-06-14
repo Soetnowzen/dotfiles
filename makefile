@@ -6,7 +6,7 @@ help:
 	@echo "Choose a platform (debian/windows)"
 
 all:
-	bash vim vimperator git mintty tcsh tmux
+	bash vim vimperator git mintty tcsh tmux gdb
 
 bash:
 	ln -fsn $(here)/bash/my.bashrc $(HOME)/.bashrc
@@ -39,4 +39,7 @@ tcsh:
 tmux:
 	ln -fsn $(here)/tmux/my-tmux.conf $(HOME)/.tmux.conf
 
-.PHONY: bash vim vimperator git mintty tcsh tmux
+gdb:
+	ln -fsn $(here)/gdb/.gdbinit $(HOME)/.gdbinit
+
+.PHONY: bash vim vimperator git mintty tcsh tmux gdb
