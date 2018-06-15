@@ -1,4 +1,4 @@
-set prompt \033[0;32m(gdb) \033[0m
+set prompt \001\033[0;32m\002(gdb)\001\033[0m\002\040
 
 set python print-stack full
 set confirm off
