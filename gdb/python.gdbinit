@@ -40,16 +40,16 @@ The list of all the available styles can be obtained with (from GDB itself):
             # prompt
             'prompt': {
                 'doc': """Command prompt.
-This value is parsed as a Python format string in which `{status}` is expanded
-with the substitution of either `prompt_running` or `prompt_not_running`
-attributes, according to the target program status. The resulting string must be
-a valid GDB prompt, see the command `python print(gdb.prompt.prompt_help())`""",
+                    This value is parsed as a Python format string in which `{status}` is expanded
+                    with the substitution of either `prompt_running` or `prompt_not_running`
+                    attributes, according to the target program status. The resulting string must be
+                    a valid GDB prompt, see the command `python print(gdb.prompt.prompt_help())`""",
                 'default': '{status}'
             },
             'prompt_running': {
                 'doc': """`{status}` when the target program is running.
-See the `prompt` attribute. This value is parsed as a Python format string in
-which `{pid}` is expanded with the process identifier of the target program.""",
+                    See the `prompt` attribute. This value is parsed as a Python format string in
+                    which `{pid}` is expanded with the process identifier of the target program.""",
                 'default': '\[\e[1;35m\]>>>\[\e[0m\]'
             },
             'prompt_not_running': {
@@ -589,9 +589,11 @@ class Dashboard(gdb.Command):
             self.redisplay()
 
     class ConfigurationCommand(gdb.Command):
-        """Dump the dashboard configuration (layout, styles, outputs).
-With an optional argument the configuration will be written to the specified
-file."""
+        """
+        Dump the dashboard configuration (layout, styles, outputs).
+        With an optional argument the configuration will be written to the specified
+        file.
+        """
 
         def __init__(self, dashboard):
             gdb.Command.__init__(self, 'dashboard -configuration',
@@ -641,14 +643,16 @@ file."""
                 fs.write('{} -output {}\n'.format(prefix, output))
 
     class OutputCommand(gdb.Command):
-        """Set the output file/TTY for both the dashboard and modules.
-The dashboard/module will be written to the specified file, which will be
-created if it does not exist. If the specified file identifies a terminal then
-its width will be used to format the dashboard, otherwise falls back to the
-width of the main GDB terminal. Without argument the dashboard, the
-output/messages and modules which do not specify the output will be printed on
-standard output (default). Without argument the module will be printed where the
-dashboard will be printed."""
+        """
+        Set the output file/TTY for both the dashboard and modules.
+        The dashboard/module will be written to the specified file, which will be
+        created if it does not exist. If the specified file identifies a terminal then
+        its width will be used to format the dashboard, otherwise falls back to the
+        width of the main GDB terminal. Without argument the dashboard, the
+        output/messages and modules which do not specify the output will be printed on
+        standard output (default). Without argument the module will be printed where the
+        dashboard will be printed.
+        """
 
         def __init__(self, dashboard, prefix=None, obj=None):
             if not prefix:
@@ -684,8 +688,10 @@ dashboard will be printed."""
             self.dashboard.redisplay()
 
     class EnabledCommand(gdb.Command):
-        """Enable or disable the dashboard [on|off].
-The current status is printed if no argument is present."""
+        """
+        Enable or disable the dashboard [on|off].
+        The current status is printed if no argument is present.
+        """
 
         def __init__(self, dashboard):
             gdb.Command.__init__(self, 'dashboard -enabled', gdb.COMMAND_USER)
@@ -709,14 +715,16 @@ The current status is printed if no argument is present."""
             return Dashboard.complete(word, ['on', 'off'])
 
     class LayoutCommand(gdb.Command):
-        """Set or show the dashboard layout.
-Accepts a space-separated list of directive. Each directive is in the form
-"[!]<module>". Modules in the list are placed in the dashboard in the same order
-as they appear and those prefixed by "!" are disabled by default. Omitted
-modules are hidden and placed at the bottom in alphabetical order. Without
-arguments the current layout is shown where the first line uses the same form
-expected by the input while the remaining depict the current status of output
-files."""
+        """
+        Set or show the dashboard layout.
+        Accepts a space-separated list of directive. Each directive is in the form
+        "[!]<module>". Modules in the list are placed in the dashboard in the same order
+        as they appear and those prefixed by "!" are disabled by default. Omitted
+        modules are hidden and placed at the bottom in alphabetical order. Without
+        arguments the current layout is shown where the first line uses the same form
+        expected by the input while the remaining depict the current status of output
+        files.
+        """
 
         def __init__(self, dashboard):
             gdb.Command.__init__(self, 'dashboard -layout', gdb.COMMAND_USER)
@@ -791,9 +799,11 @@ files."""
             return Dashboard.complete(word, all_modules)
 
     class StyleCommand(gdb.Command):
-        """Access the stylable attributes.
-Without arguments print all the stylable attributes. Subcommands are used to set
-or print (when the value is omitted) individual attributes."""
+        """
+        Access the stylable attributes.
+        Without arguments print all the stylable attributes. Subcommands are used to set
+        or print (when the value is omitted) individual attributes.
+        """
 
         def __init__(self, dashboard, prefix, obj, attributes):
             self.prefix = prefix + ' -style'
@@ -946,8 +956,10 @@ class Source(Dashboard.Module):
         }
 
 class Assembly(Dashboard.Module):
-    """Show the disassembled code surrounding the program counter. The
-instructions constituting the current statement are marked, if available."""
+    """
+    Show the disassembled code surrounding the program counter. The
+    instructions constituting the current statement are marked, if available.
+    """
 
     def label(self):
         return 'Assembly'
@@ -1089,8 +1101,10 @@ instructions constituting the current statement are marked, if available."""
         }
 
 class Stack(Dashboard.Module):
-    """Show the current stack trace including the function name and the file
-location, if available. Optionally list the frame arguments and locals too."""
+    """
+    Show the current stack trace including the function name and the file
+    location, if available. Optionally list the frame arguments and locals too.
+    """
 
     def label(self):
         return 'Stack'
