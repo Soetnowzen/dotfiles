@@ -207,7 +207,7 @@ colors_and_formatting()
 LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:' ; export LS_COLORS
 # }
 
-export DISPLAY=:0.0
+# export DISPLAY=:0.0
 
 color_current_directory()
 {
@@ -236,7 +236,7 @@ __prompt_command()
   if [[ ${branch} != "" ]]; then
     PS1+="\\[${YELLOW}\\](${branch}"
     if [[ ${git_tag} != "" ]]; then
-      PS1+=", \\[${VIOLET}\\]${git_tag}\\[${YELLOW}\\]"
+      PS1+=", \\[${WHITE}\\]\\[${VIOLET}\\]${git_tag}\\[${YELLOW}\\]"
     fi
     if [[ ${git_count} != "" ]]; then
       PS1+=", \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\]"

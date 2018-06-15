@@ -371,16 +371,23 @@ inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
+inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
 au FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
 au FileType c,cpp inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
-au FileType sh inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-au FileType sh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+au FileType make inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
+au FileType make inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
+au FileType make inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
+au FileType make inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
+au FileType sh,make inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+au FileType sh,make inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 au FileType sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
 au FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
 au FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
 au FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
 au FileType vim inoremap elseif<Space> elseif<Space>
 au FileType tcsh inoremap if<Space> if<CR>endif<Up><End><Space>()<Space>then<Left><Left><Left><Left><Left><Left>
+au FileType gdb inoremap define<Space> define<CR>end<Up><End><Space>
+au FileType gdb inoremap document<Space> document<CR>end<Up><End><Space>
 " }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
@@ -487,14 +494,14 @@ setlocal foldmethod=expr
 au FileType cpp,c set fdm=syntax
 au FileType vim set foldmethod=marker
 au FileType vim set foldmarker={,}
-au FileType python,plaintex,text set fdm=indent
+au FileType python,plaintex,text,gdb set fdm=indent
 
 set foldtext=MyFoldText()
 function MyFoldText()
   let line = getline(v:foldstart)
   " let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
   " }}}
-  let sub = substitute(line, '/^\s\+', '', 'g')
+  let sub = substitute(line, '^\s\+', '', 'g')
   let number_of_lines = v:foldend - v:foldstart + 1
   return  '+' . number_of_lines . ' lines ' . v:folddashes . ' ' . sub . ' '
 endfunction
