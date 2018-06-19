@@ -22,6 +22,7 @@
   renames = copies
 [alias]
   a = add
+  ap = add -p
   bi = bisect run # <my_script> <arguments>
   br = branch
   c = commit

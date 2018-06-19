@@ -75,8 +75,7 @@ set colorcolumn+=83
 au FileType python,perl set colorcolumn=101,102,103
 au FileType cpp,c set colorcolumn=121,122,123
 
-" Highlights
-" {
+" Highlights {
 highlight Black ctermfg=Black guifg=Black
 highlight Blue ctermfg=DarkBlue guifg=DarkBlue
 highlight Green ctermfg=DarkGreen guifg=DarkGreen
@@ -157,8 +156,7 @@ set wildchar=<Tab>
 set wildmenu
 set wildmode=list:longest,full
 
-" Show hidden characters with given characters
-" {
+" Show hidden characters with given characters {
 " highlight NonText ctermfg=Magenta guifg=Magenta
 highlight SpecialKey ctermfg=Magenta guifg=Magenta
 set list
@@ -169,8 +167,7 @@ set listchars+=nbsp:%  " Non-breakable space
 set listchars+=extends:>,precedes:<
 " }
 
-" line break options
-" {
+" line break options {
 set linebreak
 set showbreak=->
 au FileType python,perl set showbreak=--->
@@ -183,8 +180,7 @@ set switchbuf+=useopen
 set switchbuf+=usetab
 set switchbuf+=split
 
-" :e ignores files
-" {
+" :e ignores files {
 set wildignore+=*.bak
 set wildignore+=*.class
 set wildignore+=*.exe
@@ -225,6 +221,7 @@ let s:comment_map = {
       \ "make": '#',
       \ "php": '\/\/',
       \ "profile": '#',
+      \ "proto": '\/\/',
       \ "python": '#',
       \ "ruby": '#',
       \ "rust": '\/\/',
@@ -297,8 +294,7 @@ nnoremap E $
 
 map Y y$
 
-" Command-line mode remaps
-" {
+" Command-line mode remaps {
 cnoremap jj <Esc>
 cnoremap ' ''<Left>
 cnoremap '' ''
@@ -333,8 +329,7 @@ nnoremap <Space> :noh<cr>
 
 inoremap </ </<C-X><C-O>
 
-" Insertion mode remaps
-" {
+" Insertion mode remaps {
 inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
@@ -530,8 +525,7 @@ set ignorecase
 " Show search matches while typing
 set incsearch
 
-" Regular Expressions set to very magic
-" {
+" Regular Expressions set to very magic {
 nnoremap / /\v
 vnoremap / /\v
 cnoremap %s %s/\v
