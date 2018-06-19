@@ -374,7 +374,7 @@ inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
 inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
 au FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
-au FileType c,cpp inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
+au FileType c,cpp,sh inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
 au FileType make inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
 au FileType make inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
 au FileType make inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
@@ -389,6 +389,13 @@ au FileType vim inoremap elseif<Space> elseif<Space>
 au FileType tcsh inoremap if<Space> if<CR>endif<Up><End><Space>()<Space>then<Left><Left><Left><Left><Left><Left>
 au FileType gdb inoremap define<Space> define<CR>end<Up><End><Space>
 au FileType gdb inoremap document<Space> document<CR>end<Up><End><Space>
+au FileType markdown inoremap & &;<Left>
+au FileType markdown inoremap <expr> ;  strpart(getline('.'), col('.')-1, 1) == ";" ? "\<Right>" : ";"
+au FileType python inoremap if<Space> if<Space>:<Left>
+au FileType python inoremap elif<Space> elif<Space>:<Left>
+au FileType python inoremap for<Space> for<Space>:<Left>
+au FileType python inoremap while<Space> while<Space>:<Left>
+au FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
 " }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
@@ -461,6 +468,9 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
 " Folding {
+highlight clear Folded
+highlight Folded cterm=Bold gui=Bold
+
 function! MyFoldLevel( lineNumber )
   let thisLine = getline( a:lineNumber )
   " Don't create fold if entire comment or {} pair is on one line.
@@ -533,6 +543,11 @@ nnoremap :g// :g//
 " }
 
 " Spaces & Tabs {
+set smartindent
+
+" Present file labels in a easy to read way
+set guitablabel=\[%N\]\ %t\ %M
+
 " Changes tabularly to spaces
 set expandtab
 
@@ -699,6 +714,28 @@ autocmd FileType c,cpp,objc let b:syntastic_cpp_cpplint_args =
 autocmd FileType javascript let b:syntastic_javascript_jscs_args =
       \ get(g:, 'syntastic_javascript_jscs_args', '') .
       \ FindConfig('-c', '.jscsrc', expand('<afile>:p:h', 1))
+" }
+
+" vim-gitgutter {
+nnoremap <Leader>j <Plug>GitGutterNextHunk
+nnoremap <Leader>k <Plug>GitGutterPrevHunk
+nnoremap <Leader>ha <Plug>GitGutterStageHunk
+nnoremap <Leader>hr <Plug>GitGutterUndoHunk
+nnoremap <Leader>hv <Plug>GitGutterPreviewHunk
+
+if exists('&signcolumn') " Vim 7.4.2201
+  set signcolumn=yes
+else
+  let g:gitgutter_sign_column_always = 1
+endif
+
+" let g:gitgutter_sign_added = 'xx'
+" let g:gitgutter_sign_modified = 'yy'
+" let g:gitgutter_sign_removed = 'zz'
+let g:gitgutter_sign_removed_first_line = '^^'
+let g:gitgutter_sign_modified_removed = 'ww'
+
+let g:gitgutter_diff_args = '-w'
 " }
 
 " Highlighting Errors {

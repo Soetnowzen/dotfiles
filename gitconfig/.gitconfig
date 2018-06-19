@@ -48,6 +48,7 @@
   restore = checkout -m --
   s = status
   sh = show
+  ss = status -s
   t = tag
   theirs = checkout --theirs --
   zip = archive --format=zip HEAD
