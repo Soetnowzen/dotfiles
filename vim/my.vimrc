@@ -507,9 +507,10 @@ function MyFoldText()
   let line = getline(v:foldstart)
   " let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
   " }}}
-  let sub = substitute(line, '^\s\+', '', 'g')
+  " let sub = substitute(line, '^\s\+', '', 'g')
   let number_of_lines = v:foldend - v:foldstart + 1
-  return  '+' . number_of_lines . ' lines ' . v:folddashes . ' ' . sub . ' '
+  " return  '+' . number_of_lines . ' lines ' . v:folddashes . ' ' . sub . ' '
+  return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' lines '
 endfunction
 
 set fillchars=vert:\|,fold:-
