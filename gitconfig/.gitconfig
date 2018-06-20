@@ -28,6 +28,7 @@
   c = commit
   ca = clean -xdf # clean all untracked files
   ci = commit
+  cm = commit -m
   co = checkout
   d = diff
   discard = reset --hard
