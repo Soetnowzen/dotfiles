@@ -9,8 +9,8 @@ alias la ls -A
 alias ll la -l
 alias .. cd ..
 alias :q exit
-alias c clear
-alias cat cat -nv
+alias c cat -nv
+alias clr clear
 alias fi "find \!* | grep '[^/]*'\"\$"''"
 # " to escape $ I need to '\"\$"'
 alias g git
