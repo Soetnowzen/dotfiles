@@ -37,6 +37,18 @@ alias vimr='vim ~/.vimrc'
 # alias most_used="history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] \" \" CMD[a]/count*100 \"% \" a;}' | grep -v \"./\" | column -c3 -s \" \" -t | sort -nr | nl |  head -n10"
 # }
 
+most_used_cmd()
+{
+  # history | awk 'BEGIN {FS="[ \t]+|\\|"} {print $3}' | sort | uniq -c | sort -nr
+  # history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl
+  history | tr -s ' ' | cut -d ' ' -f3 | sort | uniq -c | sort -n | tail | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
+}
+
+most_used_cmd_arguments()
+{
+  history | tr -s ' ' | cut -d ' ' -f3,4,5,6,7,8,9,10,11 | sort | uniq -c | sort -n # | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
+}
+
 mcd()
 {
   directory="${1}"
@@ -220,7 +232,8 @@ PROMPT_COMMAND=__prompt_command # Func to gen PS1 after CMDs
 
 __prompt_command()
 {
-  local EXIT="$?"             # This needs to be first
+  # This needs to be first
+  local EXIT="$?"
   PS1="[" # ]
 
   # Time
@@ -231,13 +244,13 @@ __prompt_command()
   PS1+="\\[${GREEN}\\]\\w"
   # Get current git branch
   branch=$(parse_git_branch)
-  git_count=$(modified_git_count)
-  git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
   if [[ ${branch} != "" ]]; then
     PS1+="\\[${YELLOW}\\](${branch}"
+    git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
     if [[ ${git_tag} != "" ]]; then
       PS1+=", \\[${WHITE}\\]\\[${VIOLET}\\]${git_tag}\\[${YELLOW}\\]"
     fi
+    git_count=$(modified_git_count)
     if [[ ${git_count} != "" ]]; then
       PS1+=", \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\]"
     fi
