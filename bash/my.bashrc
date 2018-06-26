@@ -18,7 +18,7 @@ alias ccat='pygmentize -g'
 alias clr='clear'
 alias fi_="find \$$ | grep '[^\\/]*$'"
 alias g='git'
-alias g_pl_stash='git stash && git pull && git stash pop'
+alias g_pl_stash='git stash && git pull --rebase && git stash pop'
 alias grep='grep --color'
 alias grepc='grep -Rin --color --include=*.{cc,h}'
 alias h='history'
