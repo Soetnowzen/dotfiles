@@ -156,17 +156,6 @@ set wildchar=<Tab>
 set wildmenu
 set wildmode=list:longest,full
 
-" Show hidden characters with given characters {
-" highlight NonText ctermfg=Magenta guifg=Magenta
-highlight SpecialKey ctermfg=Magenta guifg=Magenta
-set list
-set listchars=tab:>-
-set listchars+=trail:-
-set listchars+=conceal:C  " conceallevel is set to 1
-set listchars+=nbsp:%  " Non-breakable space
-set listchars+=extends:>,precedes:<
-" }
-
 " line break options {
 set linebreak
 set showbreak=->
@@ -336,7 +325,7 @@ inoremap jj <Esc>
 inoremap JJ <Esc>o
 inoremap { {}<Left>
 " }
-inoremap {<CR> {<CR>}<Esc>O
+" inoremap {<CR> {<CR>}<Esc>O
 inoremap {- {--}<Left><Left>
 " {
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
@@ -359,7 +348,7 @@ inoremap /* /**/<Left><Left>
 inoremap /*<BS> <NOP>
 inoremap /*<BS><BS> <NOP>
 inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
-inoremap /*<CR> /*<CR>*/<Esc>O
+" inoremap /*<CR> /*<CR>*/<Esc>O
 inoremap """<CR> """<CR>"""<Esc>O
 inoremap """<Space> """<Space><Space>"""<Left><Left><Left><Left>
 inoremap '''<CR> '''<CR>'''<Esc>O
@@ -395,6 +384,7 @@ au FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left>
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
+inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
 
 " au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
@@ -538,6 +528,19 @@ nnoremap :g// :g//
 " }
 
 " Spaces & Tabs {
+
+" Show hidden characters with given characters {
+" highlight NonText ctermfg=Magenta guifg=Magenta
+" highlight clear SpecialKey
+highlight SpecialKey ctermfg=Magenta guifg=Magenta
+set list
+set listchars=tab:>-
+set listchars+=trail:-
+set listchars+=conceal:C  " conceallevel is set to 1
+set listchars+=nbsp:%  " Non-breakable space
+set listchars+=extends:>,precedes:<
+" }
+
 set smartindent
 
 " Present file labels in a easy to read way
@@ -552,7 +555,7 @@ au FileType python,perl set tabstop=4
 set shiftwidth=2
 au FileType python,perl set shiftwidth=4
 
-au FileType make set noexpandtab
+au FileType make,gitconfig set noexpandtab
 " }
 
 " Backups {

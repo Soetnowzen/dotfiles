@@ -13,12 +13,14 @@ alias la='ls -A'
 alias ll='la -l'
 alias ..='cd ..'
 alias :q='exit'
+alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
 alias ccat='pygmentize -g'
 alias clr='clear'
 alias fi_="find \$$ | grep '[^\\/]*$'"
 alias g='git'
 alias g_pl_stash='git stash && git pull --rebase && git stash pop'
+alias gitr='vim ~/.gitconfig'
 alias grep='grep --color'
 alias grepc='grep -Rin --color --include=*.{cc,h}'
 alias h='history'
@@ -253,6 +255,10 @@ __prompt_command()
     git_count=$(modified_git_count)
     if [[ ${git_count} != "" ]]; then
       PS1+=", \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\]"
+    fi
+    git_stash_count=$(git stash list 2> /dev/null | wc -l)
+    if [[ ${git_stash_count} != "" ]]; then
+      PS1+=", \\[${GREY}\\]+${git_stash_count}\\[${YELLOW}\\]"
     fi
     PS1+=")"
   fi

@@ -30,6 +30,7 @@
   ci = commit
   cm = commit -m
   co = checkout
+  cs = commit -s
   d = diff
   discard = reset --hard
   dw = diff --word-diff
