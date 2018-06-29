@@ -257,8 +257,8 @@ __prompt_command()
       PS1+=", \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\]"
     fi
     git_stash_count=$(git stash list 2> /dev/null | wc -l)
-    if [[ ${git_stash_count} != "" ]]; then
-      PS1+=", \\[${GREY}\\]+${git_stash_count}\\[${YELLOW}\\]"
+    if [[ ${git_stash_count} != "0" ]]; then
+      PS1+=", stash@{\\[${GREY}\\]${git_stash_count}\\[${YELLOW}\\]}"
     fi
     PS1+=")"
   fi

@@ -311,8 +311,6 @@ vnoremap Q gq
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
 inoremap <S-Tab> <C-D>
-vnoremap <Tab> >gv
-vnoremap <S-Tab> <gv
 
 nnoremap <Space> :noh<cr>
 
@@ -325,7 +323,6 @@ inoremap jj <Esc>
 inoremap JJ <Esc>o
 inoremap { {}<Left>
 " }
-" inoremap {<CR> {<CR>}<Esc>O
 inoremap {- {--}<Left><Left>
 " {
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
@@ -348,7 +345,6 @@ inoremap /* /**/<Left><Left>
 inoremap /*<BS> <NOP>
 inoremap /*<BS><BS> <NOP>
 inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
-" inoremap /*<CR> /*<CR>*/<Esc>O
 inoremap """<CR> """<CR>"""<Esc>O
 inoremap """<Space> """<Space><Space>"""<Left><Left><Left><Left>
 inoremap '''<CR> '''<CR>'''<Esc>O
@@ -453,7 +449,7 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
 " Folding {
-highlight clear Folded
+" highlight clear Folded
 highlight Folded cterm=Bold gui=Bold
 
 function! MyFoldLevel( lineNumber )
@@ -495,11 +491,7 @@ au FileType python,plaintex,text,gdb set fdm=indent
 set foldtext=MyFoldText()
 function MyFoldText()
   let line = getline(v:foldstart)
-  " let sub = substitute(line, '/\*\|\*/\|{{{\d\=', '', 'g')
-  " }}}
-  " let sub = substitute(line, '^\s\+', '', 'g')
   let number_of_lines = v:foldend - v:foldstart + 1
-  " return  '+' . number_of_lines . ' lines ' . v:folddashes . ' ' . sub . ' '
   return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' lines '
 endfunction
 
@@ -607,7 +599,6 @@ nnoremap <Leader>r :LinediffReset<CR>
 " Airline {
 " :AirlineTheme solarized
 let g:airline_solarized_bg='dark'
-" let g:airline_extensions = ['branch']
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
