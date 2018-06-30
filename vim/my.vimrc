@@ -11,8 +11,17 @@ augroup Shebang
   autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
-  autocmd BufNewFile *.\(cc\|h\) 0put =\"//\<nl>// \".expand(\"<afile>:t\").\" -- \<nl>//\<nl>\"|2|start!
+  autocmd BufNewFile *.sh 0put =\"#!/bin/bash\"|$
 augroup END
+
+function! s:insert_gates()
+  let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+  execute "normal! i#ifndef " . gatename
+  execute "normal! o#define " . gatename
+  execute "normal! Go#endif /* " . gatename . " */"
+  normal! kk
+endfunction
+autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 " Vundle {
 set nocompatible
@@ -258,8 +267,28 @@ iunmap <C-Y>
 " unmaps <Ctrl> + Z to be able to suspend while mswim.vim is imported
 unmap <C-Z>
 
+" unmaps <Ctrl> + a to be able to increment numbers while mswin.vim is imported
+nunmap <C-a>
+
 " Avoid mswin.vim making Ctrl-v act as paste
 noremap <C-v> <C-v>
+
+noremap <LeftRelease> "+y<LeftRelease>
+set guioptions+=a
+
+" Vertically split the screen into two windows with scrollbind set, <C-W>o to quit
+noremap <Leader>ac :execute AddColumn()<CR>
+function! AddColumn()
+  execute "norm \<C-u>"
+  let @z=&so
+  set noscb so=0
+  botright vsplit
+  execute "norm \<PageDown>"
+  setlocal scrollbind
+  wincmd p
+  setlocal scrollbind
+  let &so=@z
+endfunction
 
 " Navigate wrapped lines
 " {
@@ -279,6 +308,10 @@ nnoremap Q gqap
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
+nnoremap <Leader>p :put "<CR>
+nnoremap <Leader>P :put! "<CR>
+nnoremap p ]p
+nnoremap <C-p> p
 " }
 
 map Y y$
@@ -306,7 +339,12 @@ nnoremap § ~
 
 " visual mode remap case switch
 vnoremap § ~
+
+" Visual mode remaps {
 vnoremap Q gq
+vnoremap B ^
+vnoremap E $
+" }
 
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
@@ -317,6 +355,9 @@ nnoremap <Space> :noh<cr>
 inoremap </ </<C-X><C-O>
 
 " Insertion mode remaps {
+" Search for next '#'
+" inoremap <Tab> <C-O>f#s
+" inoremap <CR> <C-O>"tpf#s
 inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
@@ -487,6 +528,16 @@ au FileType cpp,c set fdm=syntax
 au FileType vim set foldmethod=marker
 au FileType vim set foldmarker={,}
 au FileType python,plaintex,text,gdb set fdm=indent
+au FileType java set foldmethod=syntax
+au FileType java set foldenable
+" au FileType java syntax clear javaBraces
+" au FileType java syntax clear javaDocComment
+" au FileType java syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+au FileType java syntax region foldJavadoc start=+/\*+ end=+\*/+ transparent fold keepend
+au FileType java syntax region foldBrackets start="\[" end="]" transparent fold keepend
+au FileType java syntax region foldParenthesis start="(" end=")" transparent fold keepend
+au FileType java set foldlevel=0
+au FileType java set foldnestmax=10
 
 set foldtext=MyFoldText()
 function MyFoldText()

@@ -30,13 +30,13 @@ alias mount='mount | column -t'
 alias print_path='echo $PATH | tr : "\n"'
 alias psu='ps -u --forest'
 alias rm='rm -I'
+alias tcshr='vim ~/.tcshrc'
 alias tm='tmux attach || tmux new'
 alias v-split='vim -o'
 alias v-tsplit='vim -p'
 alias v-vsplit='vim -O'
 alias v='vim'
 alias vimr='vim ~/.vimrc'
-# alias most_used="history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] \" \" CMD[a]/count*100 \"% \" a;}' | grep -v \"./\" | column -c3 -s \" \" -t | sort -nr | nl |  head -n10"
 # }
 
 most_used_cmd()
@@ -218,7 +218,8 @@ colors_and_formatting()
 # tw = (STICKY_OTHER_WRITABLE)    Directory that is sticky and other-writable (+t,o+w)
 # *.extension =   Every file using this extension e.g. *.rpm = files with the ending .rpm
 # }
-LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:' ; export LS_COLORS
+LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:'
+export LS_COLORS
 # }
 
 # export DISPLAY=:0.0
@@ -289,11 +290,11 @@ alias solar_start="\${SOLR_PATH}/bin/solr start"
 alias solar_stop="\${SOLR_PATH}/bin/solr stop"
 # }
 
-# countdown 60              60 seconds
-# countdown 60*30           30 minutes
-# countdown $((24*60*60))   1 day
 function countdown()
 {
+  # countdown 60              60 seconds
+  # countdown 60*30           30 minutes
+  # countdown $((24*60*60))   1 day
   now=$(date +%s)
   date1=$(${now} + "$1");
   while [ "$date1" -ge "$(date +%s)" ]; do
