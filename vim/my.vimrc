@@ -4,8 +4,9 @@ source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
 
-let &t_SI .= "\<Esc>[5 q" " ]
-let &t_EI .= "\<Esc>[1 q" " ]
+let &t_EI = "\<Esc>[1 q"
+let &t_SR = "\<Esc>[3 q"
+let &t_SI = "\<Esc>[5 q"
 
 augroup Shebang
   autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
@@ -103,6 +104,7 @@ highlight Yellow ctermfg=Yellow guifg=Yellow
 highlight White ctermfg=White guifg=White
 " }
 
+" Text file highlights {
 au FileType plaintex,text,log call MultipleMatches()
 fu! MultipleMatches()
   let m = matchadd("Cyan", '<[^>]\+>')
@@ -117,6 +119,7 @@ fu! MultipleMatches()
   let m = matchadd("RED", '\cfail\w*')
   let m = matchadd("RED", '\cinfo\w*')
 endfu
+" }
 " }
 
 " Misc {
@@ -290,8 +293,8 @@ function! AddColumn()
   let &so=@z
 endfunction
 
-" Navigate wrapped lines
-" {
+" Normal mode remap {
+" Navigate wrapped lines {
 nnoremap j gj
 nnoremap k gk
 nnoremap <C-h> <C-W>h
@@ -304,6 +307,7 @@ nnoremap <Up> <C-W>+
 nnoremap <Down> <C-W>-
 nnoremap H gT
 nnoremap L gt
+" }
 nnoremap Q gqap
 " move to beginning/end of line
 nnoremap B ^
@@ -312,6 +316,14 @@ nnoremap <Leader>p :put "<CR>
 nnoremap <Leader>P :put! "<CR>
 nnoremap p ]p
 nnoremap <C-p> p
+
+" normal mode remap case switch
+nnoremap § ~
+
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+
+nnoremap <Space> :noh<cr>
 " }
 
 map Y y$
@@ -334,27 +346,20 @@ cnoremap ( ()<Left>
 cnoremap () ()
 " }
 
-" normal mode remap case switch
-nnoremap § ~
-
+" Visual mode remaps {
 " visual mode remap case switch
 vnoremap § ~
 
-" Visual mode remaps {
 vnoremap Q gq
 vnoremap B ^
 vnoremap E $
 " }
 
-nnoremap <Tab> >>_
-nnoremap <S-Tab> <<_
+" Insertion mode remaps {
 inoremap <S-Tab> <C-D>
-
-nnoremap <Space> :noh<cr>
 
 inoremap </ </<C-X><C-O>
 
-" Insertion mode remaps {
 " Search for next '#'
 " inoremap <Tab> <C-O>f#s
 " inoremap <CR> <C-O>"tpf#s
@@ -365,7 +370,7 @@ inoremap JJ <Esc>o
 inoremap { {}<Left>
 " }
 inoremap {- {--}<Left><Left>
-" {
+" {{
 inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
 inoremap < <><Left>
 inoremap <<Space> <<Space>
@@ -417,11 +422,11 @@ au FileType python inoremap elif<Space> elif<Space>:<Left>
 au FileType python inoremap for<Space> for<Space>:<Left>
 au FileType python inoremap while<Space> while<Space>:<Left>
 au FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
-" }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
+" }
 
 " au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
@@ -543,7 +548,7 @@ set foldtext=MyFoldText()
 function MyFoldText()
   let line = getline(v:foldstart)
   let number_of_lines = v:foldend - v:foldstart + 1
-  return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' lines '
+  return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' ☰ '
 endfunction
 
 set fillchars=vert:\|,fold:-
@@ -772,8 +777,8 @@ endif
 " let g:gitgutter_sign_added = 'xx'
 " let g:gitgutter_sign_modified = 'yy'
 " let g:gitgutter_sign_removed = 'zz'
-let g:gitgutter_sign_removed_first_line = '^^'
-let g:gitgutter_sign_modified_removed = 'ww'
+" let g:gitgutter_sign_removed_first_line = '^^'
+" let g:gitgutter_sign_modified_removed = 'ww'
 
 let g:gitgutter_diff_args = '-w'
 " }
