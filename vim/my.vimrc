@@ -8,6 +8,7 @@ let &t_EI = "\<Esc>[1 q"
 let &t_SR = "\<Esc>[3 q"
 let &t_SI = "\<Esc>[5 q"
 
+" Auto startups {
 augroup Shebang
   autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
@@ -23,6 +24,7 @@ function! s:insert_gates()
   normal! kk
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+" }
 
 " Vundle {
 set nocompatible
