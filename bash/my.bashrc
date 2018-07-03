@@ -37,6 +37,9 @@ alias v-tsplit='vim -p'
 alias v-vsplit='vim -O'
 alias v='vim'
 alias vimr='vim ~/.vimrc'
+
+# Remove broken links by: "findBrokenLinks | exec rm {} \;"
+alias find_broken_links='find -L . -type l'
 # }
 
 most_used_cmd()
@@ -112,9 +115,6 @@ fi_a ()
     # ls -l "$line"
   # done
 }
-
-# Remove broken links by: "findBrokenLinks | exec rm {} \;"
-alias find_broken_links='find -L . -type l'
 
 # Solarized
 alias sol.dark='source ~/dotfiles/mintty/sol.dark'

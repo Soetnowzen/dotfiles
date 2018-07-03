@@ -13,6 +13,7 @@ alias c cat -nv
 alias clr clear
 alias fi "find \!* | grep '[^/]*'\"\$"''"
 # " to escape $ I need to '\"\$"'
+alias find -L . -type l
 alias g git
 alias g_pl_stash 'git stash && git pull --rebase && git stash pop'
 alias gitr vim ~/.gitconfig
@@ -72,8 +73,10 @@ set prompt='[%{\033[36m%}%T %{\033[34m%}%n%{\033[0m%}@%{\033[34m%}%m %{\033[32m%
 # bindkey -v
 
 # Auto complete searches when using up and down
+# {
 bindkey "^[[A" history-search-backward # ]
 bindkey "^[[B" history-search-forward # ]
+# }
 
 if (-r ~/.cshrc.work) source ~/.cshrc.work
 

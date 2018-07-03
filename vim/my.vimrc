@@ -532,7 +532,7 @@ setlocal foldmethod=expr
 au FileType cpp,c set fdm=syntax
 au FileType vim set foldmethod=marker
 au FileType vim set foldmarker={,}
-au FileType python,plaintex,text,gdb set fdm=indent
+au FileType python,plaintex,text,gdb,make,gitconfig set fdm=indent
 au FileType java set foldmethod=syntax
 au FileType java set foldenable
 " au FileType java syntax clear javaBraces
@@ -599,9 +599,9 @@ set expandtab
 
 " Tabs only two spaces
 set tabstop=2
-au FileType python,perl set tabstop=4
+au FileType python,perl,make,gitconfig set tabstop=4
 set shiftwidth=2
-au FileType python,perl set shiftwidth=4
+au FileType python,perl,make,gitconfig set shiftwidth=4
 
 au FileType make,gitconfig set noexpandtab
 " }
