@@ -206,6 +206,7 @@ let s:comment_map = {
       \ "bashrc": '#',
       \ "bat": 'REM',
       \ "c": '\/\/',
+      \ "cfg": '#',
       \ "conf": '#',
       \ "cpp": '\/\/',
       \ "csh": '#',
@@ -260,9 +261,21 @@ function! ToggleComment()
   end
 endfunction
 
-nnoremap <leader><Space> :call ToggleComment()<cr>
-vnoremap <C-m> :call ToggleComment()<cr>
-nnoremap <C-m> :call ToggleComment()<cr>
+let s:block_comment_map = {
+      \ "xml": ['<!--', '-->'],
+      \ }
+
+function! ToggleBlockComment()
+  if has_key(s:block_comment_map, &filetype)
+    let comment_character = s:comment_map[&filetype]
+    execute "normal! c" . comment_character[0] . "\<CR>" . comment_character[1] . "\<Esc>\<Up>p"
+  endif
+endfunction
+
+nnoremap <Leader><Space> :call ToggleComment()<CR>
+vnoremap <C-m> :call ToggleComment()<CR>
+nnoremap <C-m> :call ToggleComment()<CR>
+vnoremap <Leader>m :call ToggleBlockComment()<CR>
 " }
 
 " Mapping {
@@ -405,8 +418,8 @@ au FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
 au FileType c,cpp,sh inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
 au FileType make inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
 au FileType make inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
-au FileType make inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
-au FileType make inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
+au FileType make,spec inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
+au FileType make,spec inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
 au FileType sh,make inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 au FileType sh,make inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 au FileType sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
@@ -424,6 +437,8 @@ au FileType python inoremap elif<Space> elif<Space>:<Left>
 au FileType python inoremap for<Space> for<Space>:<Left>
 au FileType python inoremap while<Space> while<Space>:<Left>
 au FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
+au FileType xml inoremap <! <!----><Left><Left><Left>
+au FileType xml inoremap <expr> - strpart(getline('.'), col('.')-1, 1) == "-" ? "\<Right>" : "-"
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
@@ -497,6 +512,7 @@ autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 
 " Folding {
+set foldcolumn=1
 " highlight clear Folded
 highlight Folded cterm=Bold gui=Bold
 
@@ -532,8 +548,9 @@ endfunction
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
 au FileType cpp,c set fdm=syntax
-au FileType vim set foldmethod=marker
+au FileType vim,xml set foldmethod=marker
 au FileType vim set foldmarker={,}
+au FileType xml set foldmarker=<!--,-->
 au FileType python,plaintex,text,gdb,make,gitconfig set fdm=indent
 au FileType java set foldmethod=syntax
 au FileType java set foldenable
@@ -581,8 +598,9 @@ nnoremap :g// :g//
 
 " Show hidden characters with given characters {
 " highlight NonText ctermfg=Magenta guifg=Magenta
-" highlight clear SpecialKey
-highlight SpecialKey ctermfg=Magenta guifg=Magenta
+highlight clear SpecialKey
+" highlight SpecialKey ctermfg=Magenta guifg=Magenta
+highlight SpecialKey ctermfg=Green guifg=Green
 set list
 set listchars=tab:>-
 set listchars+=trail:-
@@ -601,9 +619,9 @@ set expandtab
 
 " Tabs only two spaces
 set tabstop=2
-au FileType python,perl,make,gitconfig set tabstop=4
+au FileType python,perl,xml,make,gitconfig set tabstop=4
 set shiftwidth=2
-au FileType python,perl,make,gitconfig set shiftwidth=4
+au FileType python,perl,xml,make,gitconfig set shiftwidth=4
 
 au FileType make,gitconfig set noexpandtab
 " }
