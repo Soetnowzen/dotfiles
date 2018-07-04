@@ -5,7 +5,8 @@ source $VIMRUNTIME/mswin.vim
 behave mswin
 
 let &t_EI = "\<Esc>[1 q"
-let &t_SR = "\<Esc>[3 q"
+let &t_ke = "\<Esc>[1 q"
+let &t_ks = "\<Esc>[3 q"
 let &t_SI = "\<Esc>[5 q"
 
 " Auto startups {
@@ -149,6 +150,8 @@ set title
 set autoread
 
 set mouse=a
+
+set showcmd
 
 " Delete comment characters when joining lines.
 set formatoptions+=j

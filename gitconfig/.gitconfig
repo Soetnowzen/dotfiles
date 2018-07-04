@@ -30,6 +30,7 @@
 	co = checkout
 	cs = commit -s
 	d = diff
+	dc = diff --cached
 	discard = reset --hard
 	dw = diff --word-diff
 	f = fetch
