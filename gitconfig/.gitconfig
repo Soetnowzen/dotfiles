@@ -45,11 +45,13 @@
 	mt = mergetool
 	ours = checkout --ours --
 	pl = pull
+	pr = pull --rebase
 	ps = push
 	r = revert
 	restore = checkout -m --
 	s = status
 	sh = show
+	sl = stash list
 	sp = stash pop
 	ss = status -s
 	st = stash

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -o vi
+set -o vi
 
 if [ -r ~/.bashrc.work ]; then
   . ~/.bashrc.work
@@ -255,7 +255,12 @@ __prompt_command()
     fi
     git_count=$(modified_git_count)
     if [[ ${git_count} != "" ]]; then
-      PS1+=", \\[${MAGENTA}\\]${git_count}\\[${YELLOW}\\]"
+      PS1+=", \\[${MAGENTA}\\]${git_count}"
+      git_add_rows=$(git diff 2> /dev/null | grep -c '^+[^+]\{2\}')
+      PS1+=" \\[${GREEN}\\]+${git_add_rows}"
+      git_removed_rows=$(git diff 2> /dev/null | grep -c '^-[^-]\{2\}')
+      PS1+=" \\[${RED}\\]-${git_removed_rows}"
+      PS1+="\\[${YELLOW}\\]"
     fi
     git_stash_count=$(git stash list 2> /dev/null | wc -l)
     if [[ ${git_stash_count} != "0" ]]; then
