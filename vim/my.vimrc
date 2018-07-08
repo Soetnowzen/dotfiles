@@ -820,6 +820,30 @@ execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd BufWinLeave * call clearmatches()
 
+" Show search matches while typing
+set incsearch
+
+" Show autocompletion options
+set wildmenu
+set wildmode=list:longest,full
+
+" Show hidden characters with given characters
+" highlight NonText ctermfg=Magenta guifg=Magenta
+highlight SpecialKey ctermfg=Magenta guifg=Magenta
+set list
+set listchars=tab:>-
+set listchars+=trail:-
+set listchars+=conceal:C  " conceallevel is set to 1
+set listchars+=nbsp:%  " Non-breakable space
+set listchars+=extends:>,precedes:<
+
+set linebreak
+set showbreak=->  " -> will now indicate line breaks
+au FileType python,perl set showbreak=--->
+set cpoptions+=n  " Added the flag to show line break character at row number
+set breakindent   " Line breaks will now use indent.
+set breakat+=>
+
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)
 command RemoveSpaces %s/\s\+$/
