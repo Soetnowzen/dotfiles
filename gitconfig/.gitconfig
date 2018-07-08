@@ -31,12 +31,13 @@
 	cs = commit -s
 	d = diff
 	dc = diff --cached
-	discard = reset --hard
+	dt = difftool
 	dw = diff --word-diff
 	f = fetch
 	filelog = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = log -u
+	la = "!git config -l | grep alias | cut -c 7-"
 	lg = !"git lg3"
 	lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ar)%C(reset)' --all
 	lg2 = log --decorate --graph --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s\\ %C(blue)[%cn]"
@@ -49,6 +50,12 @@
 	ps = push
 	r = revert
 	restore = checkout -m --
+	r = reset
+	r1 = reset HEAD^
+	r2 = reset HEAD~2
+	rh = reset --hard
+	rh1 = reset HEAD^ --hard
+	rh2 = reset HEAD~2 --hard
 	s = status
 	sh = show
 	sl = stash list
@@ -57,6 +64,6 @@
 	st = stash
 	t = tag
 	theirs = checkout --theirs --
+	undo = reset --soft HEAD~1
 	zip = archive --format=zip HEAD
 	zip-latest = archive -o latest.zip HEAD
-	undo = reset --soft HEAD~1

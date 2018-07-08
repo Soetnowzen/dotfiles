@@ -15,7 +15,6 @@ alias ..='cd ..'
 alias :q='exit'
 alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
-alias ccat='pygmentize -g'
 alias clr='clear'
 alias fi_="find \$$ | grep '[^\\/]*$'"
 alias g='git'

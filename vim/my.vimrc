@@ -88,7 +88,7 @@ set colorcolumn+=83
 au FileType python,perl set colorcolumn=101,102,103
 au FileType cpp,c set colorcolumn=121,122,123
 
-" Highlights {
+"   Highlights {
 highlight Black ctermfg=Black guifg=Black
 highlight Blue ctermfg=DarkBlue guifg=DarkBlue
 highlight Green ctermfg=DarkGreen guifg=DarkGreen
@@ -105,9 +105,9 @@ highlight Orange ctermfg=Red guifg=Red
 highlight Violet ctermfg=Magenta guifg=Magenta
 highlight Yellow ctermfg=Yellow guifg=Yellow
 highlight White ctermfg=White guifg=White
-" }
+"   }
 
-" Text file highlights {
+"   Text file highlights {
 au FileType plaintex,text,log call MultipleMatches()
 fu! MultipleMatches()
   let m = matchadd("Cyan", '<[^>]\+>')
@@ -122,7 +122,7 @@ fu! MultipleMatches()
   let m = matchadd("RED", '\cfail\w*')
   let m = matchadd("RED", '\cinfo\w*')
 endfu
-" }
+"   }
 " }
 
 " Misc {
@@ -173,20 +173,20 @@ set wildchar=<Tab>
 set wildmenu
 set wildmode=list:longest,full
 
-" line break options {
+"   line break options {
 set linebreak
 set showbreak=->
 au FileType python,perl set showbreak=--->
 set cpoptions+=n
 set breakindent
 set breakat+=>
-" }
+"   }
 
 set switchbuf+=useopen
 set switchbuf+=usetab
 set switchbuf+=split
 
-" :e ignores files {
+"   :e ignores files {
 set wildignore+=*.bak
 set wildignore+=*.class
 set wildignore+=*.exe
@@ -195,8 +195,9 @@ set wildignore+=*.o
 set wildignore+=*.pyc
 set wildignore+=*.swp
 set wildignore+=tags
-" }
+"   }
 
+set diffopt+=iwhite
 au BufRead,BufNewFile *.json set filetype=json
 au BufRead,BufNewFile *.log set filetype=log
 au BufRead,BufNewFile *.txt set filetype=text
@@ -282,6 +283,7 @@ vnoremap <Leader>m :call ToggleBlockComment()<CR>
 " }
 
 " Mapping {
+"   mswim.vim {
 " unmaps Ctrl + Y to be able to write the same character as above while mswim.vim is imported
 iunmap <C-Y>
 
@@ -293,6 +295,7 @@ nunmap <C-a>
 
 " Avoid mswin.vim making Ctrl-v act as paste
 noremap <C-v> <C-v>
+"   }
 
 noremap <LeftRelease> "+y<LeftRelease>
 set guioptions+=a
@@ -311,8 +314,8 @@ function! AddColumn()
   let &so=@z
 endfunction
 
-" Normal mode remap {
-" Navigate wrapped lines {
+"   Normal mode remap {
+"     Navigate wrapped lines {
 nnoremap j gj
 nnoremap k gk
 nnoremap <C-h> <C-W>h
@@ -325,7 +328,7 @@ nnoremap <Up> <C-W>+
 nnoremap <Down> <C-W>-
 nnoremap H gT
 nnoremap L gt
-" }
+"     }
 nnoremap Q gqap
 " move to beginning/end of line
 nnoremap B ^
@@ -342,11 +345,11 @@ nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
 
 nnoremap <Space> :noh<cr>
-" }
+"   }
 
 map Y y$
 
-" Command-line mode remaps {
+"   Command-line mode remaps {
 cnoremap jj <Esc>
 cnoremap ' ''<Left>
 cnoremap '' ''
@@ -362,18 +365,18 @@ cnoremap [ []<Left>
 cnoremap [] []
 cnoremap ( ()<Left>
 cnoremap () ()
-" }
+"   }
 
-" Visual mode remaps {
+"   Visual mode remaps {
 " visual mode remap case switch
 vnoremap § ~
 
 vnoremap Q gq
 vnoremap B ^
 vnoremap E $
-" }
+"   }
 
-" Insertion mode remaps {
+"   Insertion mode remaps {
 inoremap <S-Tab> <C-D>
 
 inoremap </ </<C-X><C-O>
@@ -446,7 +449,7 @@ au FileType xml inoremap <expr> - strpart(getline('.'), col('.')-1, 1) == "-" ? 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
-" }
+"   }
 
 " au FileType plaintex,text call Inoremaps()
 fu! Inoremaps()
@@ -569,6 +572,8 @@ au FileType java set foldnestmax=10
 set foldtext=MyFoldText()
 function MyFoldText()
   let line = getline(v:foldstart)
+  let tabStop = repeat(' ', &tabstop)
+  let line = substitute(line, '\t', tabStop, 'g')
   let number_of_lines = v:foldend - v:foldstart + 1
   return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' ☰ '
 endfunction
@@ -586,7 +591,7 @@ set ignorecase
 " Show search matches while typing
 set incsearch
 
-" Regular Expressions set to very magic {
+"   Regular Expressions set to very magic {
 nnoremap / /\v
 vnoremap / /\v
 cnoremap %s %s/\v
@@ -594,12 +599,12 @@ cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v
 nnoremap :g/ :g/\v
 nnoremap :g// :g//
-" }
+"   }
 " }
 
 " Spaces & Tabs {
 
-" Show hidden characters with given characters {
+"   Show hidden characters with given characters {
 " highlight NonText ctermfg=Magenta guifg=Magenta
 highlight clear SpecialKey
 " highlight SpecialKey ctermfg=Magenta guifg=Magenta
@@ -610,7 +615,7 @@ set listchars+=trail:-
 set listchars+=conceal:C  " conceallevel is set to 1
 set listchars+=nbsp:%  " Non-breakable space
 set listchars+=extends:>,precedes:<
-" }
+"   }
 
 set smartindent
 
