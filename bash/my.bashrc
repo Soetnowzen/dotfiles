@@ -259,9 +259,13 @@ __prompt_command()
     if [[ ${git_count} != "" ]]; then
       PS1+=", \\[${MAGENTA}\\]${git_count}"
       git_add_rows=$(git diff 2> /dev/null | grep -c '^+[^+]\{2\}')
-      PS1+=" \\[${GREEN}\\]+${git_add_rows}"
+      if [[ ${git_add_rows} != "0" ]]; then
+        PS1+=" \\[${GREEN}\\]+${git_add_rows}"
+      fi
       git_removed_rows=$(git diff 2> /dev/null | grep -c '^-[^-]\{2\}')
-      PS1+=" \\[${RED}\\]-${git_removed_rows}"
+      if [[ ${git_removed_rows} != "0" ]]; then
+        PS1+=" \\[${RED}\\]-${git_removed_rows}"
+      fi
       PS1+="\\[${YELLOW}\\]"
     fi
     git_stash_count=$(git stash list 2> /dev/null | wc -l)
