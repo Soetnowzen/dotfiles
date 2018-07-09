@@ -9,7 +9,7 @@ fi
 # Aliases
 # {
 alias ls='ls -F --color --group-directories-first'
-alias l='ls'
+alias l='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
 alias ..='cd ..'
