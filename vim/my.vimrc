@@ -11,18 +11,22 @@ let &t_SI = "\<Esc>[5 q"
 
 " Auto startups {
 augroup Shebang
+  " {
   autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
   autocmd BufNewFile *.sh 0put =\"#!/bin/bash\"|$
+  " }
 augroup END
 
 function! s:insert_gates()
+  " {
   let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
   execute "normal! i#ifndef " . gatename
   execute "normal! o#define " . gatename
   execute "normal! Go#endif /* " . gatename . " */"
   normal! kk
+  " }
 endfunction
 autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 " }
@@ -303,6 +307,7 @@ set guioptions+=a
 " Vertically split the screen into two windows with scrollbind set, <C-W>o to quit
 noremap <Leader>ac :execute AddColumn()<CR>
 function! AddColumn()
+  " {
   execute "norm \<C-u>"
   let @z=&so
   set noscb so=0
@@ -312,6 +317,7 @@ function! AddColumn()
   wincmd p
   setlocal scrollbind
   let &so=@z
+  " }
 endfunction
 
 "   Normal mode remap {
@@ -347,13 +353,11 @@ nnoremap <S-Tab> <<_
 nnoremap <Space> :noh<CR>
 
 "     The glorious & dear vim leader declarations {
-nnoremap <Leader>w :w<CR>
+" nnoremap <Leader>w :w<CR>
 nnoremap <Leader>e :e<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>j :
 nnoremap <Leader>i <C-]>
-nnoremap <Leader>u gU
-nnoremap <Leader>l gu
 nnoremap <Leader>v :tabe ~/.vimrc<CR>
 nnoremap <Leader>sp [s
 nnoremap <Leader>sn ]s
@@ -389,6 +393,9 @@ vnoremap § ~
 vnoremap Q gq
 vnoremap B ^
 vnoremap E $
+
+vnoremap <Leader>u gU
+vnoremap <Leader>l gu
 "   }
 
 "   Insertion mode remaps {
@@ -465,56 +472,6 @@ let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", " 
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
 "   }
-
-" au FileType plaintex,text call Inoremaps()
-fu! Inoremaps()
-  " {
-  inoremap <Space>alpha<Space> <Space>α<Space>
-  inoremap <Space>beta<Space> <Space>Β<Space>
-  inoremap <Space>gamma<Space> <Space>γ<Space>
-  inoremap <Space>delta<Space> <Space>δ<Space>
-  inoremap <Space>epsilon<Space> <Space>ε<Space>
-  inoremap <Space>zeta<Space> <Space>ζ<Space>
-  inoremap <Space>eta<Space> <Space>η<Space>
-  inoremap <Space>theta<Space> <Space>θ<Space>
-  inoremap <Space>lambda<Space> <Space>λ<Space>
-  inoremap <Space>mu<Space> <Space>μ<Space>
-  inoremap <Space>pi<Space> <Space>π<Space>
-  inoremap <Space>rho<Space> <Space>ρ<Space>
-  inoremap <Space>sigma<Space> <Space>σ<Space>
-  inoremap <Space>tau<Space> <Space>τ<Space>
-  inoremap <Space>phi<Space> <Space>φ<Space>
-  inoremap <Space>psi<Space> <Space>ψ<Space>
-  inoremap <Space>omega<Space> <Space>ω<Space>
-  inoremap <Space>Gamma<Space> <Space>Γ<Space>
-  inoremap <Space>Delta<Space> <Space>Δ<Space>
-  inoremap <Space>Theta<Space> <Space>Θ<Space>
-  inoremap <Space>Lambda<Space> <Space>Λ<Space>
-  inoremap <Space>Pi<Space> <Space>Π<Space>
-  inoremap <Space>Sigma<Space> <Space>Σ<Space>
-  inoremap <Space>Phi<Space> <Space>Φ<Space>
-  inoremap <Space>Psi<Space> <Space>Ψ<Space>
-  inoremap <Space>Omega<Space> <Space>Ω<Space>
-  inoremap <Space>forall<Space> <Space>∀<Space>
-  inoremap <Space>exists<Space> <Space>∃<Space>
-  inoremap <Space>notexists<Space> <Space>∄<Space>
-  inoremap <Space>emptyset<Space> <Space>∅<Space>
-  inoremap <Space>in<Space> <Space>∈<Space>
-  inoremap <Space>notin<Space> <Space>∉<Space>
-  inoremap <Space>sqrt<Space> <Space>√<Space>
-  inoremap <Space>infinit<Space> <Space>∞<Space>
-  inoremap && ∧
-  " inoremap || ∨
-  inoremap <Space>intersection<Space> <Space>∩<Space>
-  inoremap <Space>union<Space> <Space>∪<Space>
-  inoremap <Space>integral<Space> <Space>∫<Space>
-  inoremap ~= ≃
-  inoremap != ≠
-  inoremap >= ≥
-  inoremap <= ≤
-  inoremap ... ⋯
-  " }
-endfu
 " }
 
 " Spelling {
@@ -538,6 +495,7 @@ set foldcolumn=1
 highlight Folded cterm=Bold gui=Bold
 
 function! MyFoldLevel( lineNumber )
+  " {
   let thisLine = getline( a:lineNumber )
   " Don't create fold if entire comment or {} pair is on one line.
   if (thisLine =~ '\%(/\*.*\*/\)')
@@ -564,16 +522,16 @@ function! MyFoldLevel( lineNumber )
     return "s1"
   endif
   return '='
+  " }
 endfunction
 
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
-au FileType cpp,c set fdm=syntax
+au FileType cpp,c,java set foldmethod=syntax
 au FileType vim,xml set foldmethod=marker
 au FileType vim set foldmarker={,}
 au FileType xml set foldmarker=<!--,-->
-au FileType python,plaintex,text,gdb,make,gitconfig set fdm=indent
-au FileType java set foldmethod=syntax
+au FileType python,plaintex,text,gdb,make,gitconfig set foldmethod=indent
 au FileType java set foldenable
 " au FileType java syntax clear javaBraces
 " au FileType java syntax clear javaDocComment
@@ -586,11 +544,13 @@ au FileType java set foldnestmax=10
 
 set foldtext=MyFoldText()
 function MyFoldText()
+  " {
   let line = getline(v:foldstart)
   let tabStop = repeat(' ', &tabstop)
   let line = substitute(line, '\t', tabStop, 'g')
   let number_of_lines = v:foldend - v:foldstart + 1
   return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' ☰ '
+  " }
 endfunction
 
 set fillchars=vert:\|,fold:-
@@ -712,12 +672,14 @@ let g:airline_detect_paste=1
 let g:airline_detect_crypt=1
 let g:airline_inactive_collapse=1
 function! AirlineInit()
+  " {
   let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
   let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
   let g:airline_section_c = airline#section#create(['filetype'])
   let g:airline_section_x = airline#section#create(['%P'])
   let g:airline_section_y = airline#section#create(['%B'])
   let g:airline_section_z = airline#section#create_right(['%l', '%c'])
+  " }
 endfunction
 autocmd VimEnter * call AirlineInit()
 " }
@@ -805,11 +767,11 @@ autocmd FileType javascript let b:syntastic_javascript_jscs_args =
 " }
 
 " vim-gitgutter {
-nnoremap <Leader>j <Plug>GitGutterNextHunk
-nnoremap <Leader>k <Plug>GitGutterPrevHunk
-nnoremap <Leader>ha <Plug>GitGutterStageHunk
-nnoremap <Leader>hr <Plug>GitGutterUndoHunk
-nnoremap <Leader>hv <Plug>GitGutterPreviewHunk
+" nnoremap <Leader>j <Plug>GitGutterNextHunk
+" nnoremap <Leader>k <Plug>GitGutterPrevHunk
+" nnoremap <Leader>ha <Plug>GitGutterStageHunk
+" nnoremap <Leader>hr <Plug>GitGutterUndoHunk
+" nnoremap <Leader>hv <Plug>GitGutterPreviewHunk
 
 if exists('&signcolumn') " Vim 7.4.2201
   set signcolumn=yes
@@ -839,30 +801,6 @@ execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd BufWinLeave * call clearmatches()
-
-" Show search matches while typing
-set incsearch
-
-" Show autocompletion options
-set wildmenu
-set wildmode=list:longest,full
-
-" Show hidden characters with given characters
-" highlight NonText ctermfg=Magenta guifg=Magenta
-highlight SpecialKey ctermfg=Magenta guifg=Magenta
-set list
-set listchars=tab:>-
-set listchars+=trail:-
-set listchars+=conceal:C  " conceallevel is set to 1
-set listchars+=nbsp:%  " Non-breakable space
-set listchars+=extends:>,precedes:<
-
-set linebreak
-set showbreak=->  " -> will now indicate line breaks
-au FileType python,perl set showbreak=--->
-set cpoptions+=n  " Added the flag to show line break character at row number
-set breakindent   " Line breaks will now use indent.
-set breakat+=>
 
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)
