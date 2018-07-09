@@ -357,6 +357,8 @@ nnoremap <Leader>l gu
 nnoremap <Leader>v :tabe ~/.vimrc<CR>
 nnoremap <Leader>sp [s
 nnoremap <Leader>sn ]s
+nnoremap <Leader>cp [c
+nnoremap <Leader>cn ]c
 "     }
 "   }
 
