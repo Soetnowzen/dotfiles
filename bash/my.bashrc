@@ -244,7 +244,12 @@ __prompt_command()
   # Time
   PS1+="\\[${CYAN}\\]\\A "
   # user@pc
-  PS1+="\\[${BLUE}\\]\\u\\[${RESET}\\]@\\[${BLUE}\\]\\h\\[${RESET}\\] "
+  if [[ $EXIT != 0 ]]; then
+    PS1+="\\[${RED}\\]"
+  else
+    PS1+="\\[${BLUE}\\]"
+  fi
+  PS1+="\\u\\[${RESET}\\]@\\[${BLUE}\\]\\h\\[${RESET}\\] "
   # Path
   PS1+="\\[${GREEN}\\]\\w"
   # Get current git branch
