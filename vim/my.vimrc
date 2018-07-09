@@ -344,7 +344,20 @@ nnoremap § ~
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
 
-nnoremap <Space> :noh<cr>
+nnoremap <Space> :noh<CR>
+
+"     The glorious & dear vim leader declarations {
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>e :e<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>j :
+nnoremap <Leader>i <C-]>
+nnoremap <Leader>u gU
+nnoremap <Leader>l gu
+nnoremap <Leader>v :tabe ~/.vimrc<CR>
+nnoremap <Leader>sp [s
+nnoremap <Leader>sn ]s
+"     }
 "   }
 
 map Y y$

@@ -5,12 +5,14 @@ set autoexpand
 # Aliases
 # {
 alias ls ls -F --color --group-directories-first
+alias l ls
 alias la ls -A
 alias ll la -l
 alias .. cd ..
 alias :q exit
 alias c cat -nv
 alias clr clear
+alias df df -h
 alias fi "find \!* | grep '[^/]*'\"\$"''"
 # " to escape $ I need to '\"\$"'
 alias find -L . -type l
@@ -27,7 +29,7 @@ alias psu ps -U \$USER
 alias rm rm -I
 alias tcshr vim ~/.tcshrc
 alias tm 'tmux attach || tmux new'
-alias v vim
+alias v vim -p
 alias v-split vim -o
 alias v-tsplit vim -p
 alias v-vsplit vim -O

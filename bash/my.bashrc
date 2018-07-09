@@ -9,6 +9,7 @@ fi
 # Aliases
 # {
 alias ls='ls -F --color --group-directories-first'
+alias l='ls'
 alias la='ls -A'
 alias ll='la -l'
 alias ..='cd ..'
@@ -16,10 +17,12 @@ alias :q='exit'
 alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
 alias clr='clear'
+alias df="df -h"
 alias fi_="find \$$ | grep '[^\\/]*$'"
 alias g='git'
 alias g_pl_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
+alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
 alias grep='grep --color'
 alias grepc='grep -Rin --color --include=*.{cc,h}'
 alias h='history'
@@ -34,7 +37,7 @@ alias tm='tmux attach || tmux new'
 alias v-split='vim -o'
 alias v-tsplit='vim -p'
 alias v-vsplit='vim -O'
-alias v='vim'
+alias v='vim -p'
 alias vimr='vim ~/.vimrc'
 
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"

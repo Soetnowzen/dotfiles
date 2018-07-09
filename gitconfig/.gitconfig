@@ -28,6 +28,8 @@
 	ci = commit
 	cm = commit -m
 	co = checkout
+	coh = checkout HEAD
+	com = checkout master
 	cs = commit -s
 	d = diff
 	dc = diff --cached
