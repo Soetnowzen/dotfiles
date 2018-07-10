@@ -4,6 +4,10 @@ set python print-stack full
 set confirm off
 set print pretty
 
+define exit
+  quit
+end
+
 # Breakpoint aliases
 define bpl
   info breakpoints

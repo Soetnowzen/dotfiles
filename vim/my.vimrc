@@ -283,6 +283,7 @@ endfunction
 nnoremap <Leader><Space> :call ToggleComment()<CR>
 vnoremap <C-m> :call ToggleComment()<CR>
 nnoremap <C-m> :call ToggleComment()<CR>
+" vnoremap <Leader>m c(s:block_comment_map[&filetype][0])<CR>(s:block_comment_map[&filetype][1])<Esc><Up>p
 vnoremap <Leader>m :call ToggleBlockComment()<CR>
 " }
 
@@ -541,6 +542,8 @@ au FileType java syntax region foldBrackets start="\[" end="]" transparent fold 
 au FileType java syntax region foldParenthesis start="(" end=")" transparent fold keepend
 au FileType java set foldlevel=0
 au FileType java set foldnestmax=10
+au FileType cpp,c syntax region foldIfNotDef start="#ifndef" end="#endif" transparent fold keepend
+au FileType cpp,c syntax region foldIfDef start="#ifdef" end="#endif" transparent fold keepend
 
 set foldtext=MyFoldText()
 function MyFoldText()
