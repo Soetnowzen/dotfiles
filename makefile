@@ -29,6 +29,8 @@ vimperator:
 
 git:
 	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
+	mkdir -p $(HOME)/bin
+	ln -fsn $(here)/gitconfig/diffconflicts $(HOME)/bin/.
 
 mintty:
 	ln -fsn $(here)/mintty/dark.minttyrc $(HOME)/.minttyrc

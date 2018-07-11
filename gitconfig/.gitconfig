@@ -13,11 +13,20 @@
 [push]
 	default = tracking
 [merge]
-	tool = vimdiff
+	# tool = vimdiff
+	tool = diffconflicts
+[hooks]
+	dir = ~/git/hooks
+[mergetool "diffconflicts"]
+	cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
+	trustExitCode = true
+[mergetool]
+	keepBackup = false
 [diff]
 	tool = vimdiff
 	mnemonicprefix = true
 	renames = copies
+	conflictstyle = diff3
 [alias]
 	a = add
 	ap = add -p

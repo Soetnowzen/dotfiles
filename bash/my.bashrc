@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o vi
+# set -o vi
 
 if [ -r ~/.bashrc.work ]; then
   . ~/.bashrc.work
