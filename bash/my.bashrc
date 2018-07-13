@@ -25,6 +25,7 @@ alias gitr='vim ~/.gitconfig'
 alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
 alias grep='grep --color'
 alias grepc='grep -Rin --color --include=*.{cc,h}'
+alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
 alias h='history'
 alias less='less -r'
 alias mkdir='mkdir -pv'

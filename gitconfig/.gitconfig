@@ -13,13 +13,9 @@
 [push]
 	default = tracking
 [merge]
-	# tool = vimdiff
-	tool = diffconflicts
+	tool = vimdiff
 [hooks]
 	dir = ~/git/hooks
-[mergetool "diffconflicts"]
-	cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
-	trustExitCode = true
 [mergetool]
 	keepBackup = false
 [diff]

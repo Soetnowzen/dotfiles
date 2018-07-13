@@ -89,8 +89,12 @@ colorscheme solarized
 set colorcolumn+=81
 set colorcolumn+=82
 set colorcolumn+=83
-au FileType python,perl set colorcolumn=101,102,103
-au FileType cpp,c set colorcolumn=121,122,123
+set colorcolumn+=101
+set colorcolumn+=102
+set colorcolumn+=103
+set colorcolumn+=121
+set colorcolumn+=122
+set colorcolumn+=123
 
 "   Highlights {
 highlight Black ctermfg=Black guifg=Black
