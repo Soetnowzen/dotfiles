@@ -99,42 +99,6 @@ set colorcolumn+=103
 set colorcolumn+=121
 set colorcolumn+=122
 set colorcolumn+=123
-
-"   Highlights {
-highlight Black ctermfg=Black guifg=Black
-highlight Blue ctermfg=DarkBlue guifg=DarkBlue
-highlight Green ctermfg=DarkGreen guifg=DarkGreen
-highlight Cyan ctermfg=DarkCyan guifg=DarkCyan
-highlight Red ctermfg=DarkRed guifg=DarkRed
-highlight Magenta ctermfg=DarkMagenta guifg=DarkMagenta
-highlight Brown ctermfg=Brown guifg=Brown
-highlight Grey ctermfg=Grey guifg=Grey
-highlight DarkGrey ctermfg=DarkGrey guifg=DarkGrey
-highlight BrightBlue ctermfg=Blue guifg=Blue
-highlight BrightGreen ctermfg=Green guifg=Green
-highlight BrightCyan ctermfg=Cyan guifg=Cyan
-highlight Orange ctermfg=Red guifg=Red
-highlight Violet ctermfg=Magenta guifg=Magenta
-highlight Yellow ctermfg=Yellow guifg=Yellow
-highlight White ctermfg=White guifg=White
-"   }
-
-"   Text file highlights {
-au FileType plaintex,text,log call MultipleMatches()
-fu! MultipleMatches()
-  let m = matchadd("Cyan", '<[^>]\+>')
-  let m = matchadd("Cyan", '([^)]*)')
-  let m = matchadd("Orange", '\d\+:\d\+\(:\d\+\.\d\+\)*')
-  let m = matchadd("Orange", '\d\+-\d\+-\d\+')
-  let m = matchadd("Orange", '0x[0-9a-fA-F]\+')
-  let m = matchadd("White", '\w\+\.[a-zA-Z]\+\(:\d\+\)')
-  let m = matchadd("Blue", '\w\+=')
-  let m = matchadd("Cyan", '"[^\"]\+"')
-  let m = matchadd("RED", '\cwarn\w*')
-  let m = matchadd("RED", '\cfail\w*')
-  let m = matchadd("RED", '\cinfo\w*')
-endfu
-"   }
 " }
 
 " Misc {
@@ -188,7 +152,7 @@ set wildmode=list:longest,full
 "   line break options {
 set linebreak
 set showbreak=->
-au FileType python,perl set showbreak=--->
+autocmd FileType python,perl set showbreak=--->
 set cpoptions+=n
 set breakindent
 set breakat+=>
@@ -210,9 +174,9 @@ set wildignore+=tags
 "   }
 
 set diffopt+=iwhite
-au BufRead,BufNewFile *.json set filetype=json
-au BufRead,BufNewFile *.log set filetype=log
-au BufRead,BufNewFile *.txt set filetype=text
+autocmd BufRead,BufNewFile *.json set filetype=json
+autocmd BufRead,BufNewFile *.log set filetype=log
+autocmd BufRead,BufNewFile *.txt set filetype=text
 " }
 
 " Toggle Comments {
@@ -523,7 +487,7 @@ iabbrev thre there
 
 set spell spelllang=en_us
 set spellfile=$HOME/.vim/spell/en.utf-8.add
-" au FileType text,plaintex,sh,cpp,vim,python set spell spelllang=en_us
+" autocmd FileType text,plaintex,sh,cpp,vim,python set spell spelllang=en_us
 " }
 
 augroup tag_completion
@@ -570,22 +534,22 @@ endfunction
 
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
-au FileType cpp,c,java set foldmethod=syntax
-au FileType vim,xml set foldmethod=marker
-au FileType vim set foldmarker={,}
-au FileType xml set foldmarker=<!--,-->
-au FileType python,plaintex,text,gdb,make,gitconfig set foldmethod=indent
-au FileType java set foldenable
-" au FileType java syntax clear javaBraces
-" au FileType java syntax clear javaDocComment
-" au FileType java syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-au FileType java syntax region foldJavadoc start=+/\*+ end=+\*/+ transparent fold keepend
-au FileType java syntax region foldBrackets start="\[" end="]" transparent fold keepend
-au FileType java syntax region foldParenthesis start="(" end=")" transparent fold keepend
-au FileType java set foldlevel=0
-au FileType java set foldnestmax=10
-au FileType cpp,c syntax region foldIfNotDef start="#ifndef" end="#endif" transparent fold keepend
-au FileType cpp,c syntax region foldIfDef start="#ifdef" end="#endif" transparent fold keepend
+autocmd FileType cpp,c,java set foldmethod=syntax
+autocmd FileType vim,xml set foldmethod=marker
+autocmd FileType vim set foldmarker={,}
+autocmd FileType xml set foldmarker=<!--,-->
+autocmd FileType python,plaintex,text,gdb,make,gitconfig set foldmethod=indent
+autocmd FileType java set foldenable
+" autocmd FileType java syntax clear javaBraces
+" autocmd FileType java syntax clear javaDocComment
+" autocmd FileType java syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+autocmd FileType java syntax region foldJavadoc start=+/\*+ end=+\*/+ transparent fold keepend
+autocmd FileType java syntax region foldBrackets start="\[" end="]" transparent fold keepend
+autocmd FileType java syntax region foldParenthesis start="(" end=")" transparent fold keepend
+autocmd FileType java set foldlevel=0
+autocmd FileType java set foldnestmax=10
+autocmd FileType cpp,c syntax region foldIfNotDef start="#ifndef" end="#endif" transparent fold keepend
+autocmd FileType cpp,c syntax region foldIfDef start="#ifdef" end="#endif" transparent fold keepend
 
 set foldtext=MyFoldText()
 function MyFoldText()
@@ -647,11 +611,11 @@ set expandtab
 
 " Tabs only two spaces
 set tabstop=2
-au FileType python,perl,xml,make,gitconfig set tabstop=4
+autocmd FileType python,perl,xml,make,gitconfig set tabstop=4
 set shiftwidth=2
-au FileType python,perl,xml,make,gitconfig set shiftwidth=4
+autocmd FileType python,perl,xml,make,gitconfig set shiftwidth=4
 
-au FileType make,gitconfig set noexpandtab
+autocmd FileType make,gitconfig set noexpandtab
 " }
 
 " Backups {
@@ -845,7 +809,7 @@ let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
 let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
 
 let pattern = "\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
-au FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
+autocmd FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
