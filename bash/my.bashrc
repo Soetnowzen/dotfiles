@@ -1,10 +1,18 @@
 #!/bin/bash
 
 # set -o vi
+# ctrl-k, ctrl-u, ctrl-w, ctrl-y - cutting and pasting text in the command line
+# !! to perform last command in this position
 
 if [ -r ~/.bashrc.work ]; then
   . ~/.bashrc.work
 fi
+
+# Variables
+#{
+EDITOR=vim
+export EDITOR
+# }
 
 # Aliases
 # {

@@ -12,6 +12,7 @@ let &t_SI = "\<Esc>[5 q"
 " Auto startups {
 augroup Shebang
   " {
+  autocmd!
   autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
@@ -28,7 +29,10 @@ function! s:insert_gates()
   normal! kk
   " }
 endfunction
-autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+augroup c_insert_gates
+  autocmd!
+  autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+augroup END
 " }
 
 " Vundle {
@@ -427,7 +431,6 @@ inoremap <<<Space> <<<Space>
 inoremap =<<Space> =<<Space>
 inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
-inoremap [<Space> [<Space><Space>]<Left><Left>
 inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
 inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
@@ -438,61 +441,96 @@ inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>"
 inoremap /* /**/<Left><Left>
 inoremap /*<BS> <NOP>
 inoremap /*<BS><BS> <NOP>
-inoremap /*<Space> /*<Space><Space>*/<Left><Left><Left>
-inoremap """<CR> """<CR>"""<Esc>O
-inoremap """<Space> """<Space><Space>"""<Left><Left><Left><Left>
-inoremap '''<CR> '''<CR>'''<Esc>O
-inoremap '''<Space> '''<Space><Space>'''<Left><Left><Left><Left>
+inoremap """ """"""<Left><Left><Left>
+inoremap ''' ''''''<Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
 inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
-au FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
-au FileType c,cpp,sh inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
-au FileType make inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
-au FileType make inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
-au FileType make,spec inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
-au FileType make,spec inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
-au FileType sh,make inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-au FileType sh,make inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-au FileType sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
-au FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
-au FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
-au FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
-au FileType vim inoremap elseif<Space> elseif<Space>
-au FileType tcsh inoremap if<Space> if<CR>endif<Up><End><Space>()<Space>then<Left><Left><Left><Left><Left><Left>
-au FileType gdb inoremap define<Space> define<CR>end<Up><End><Space>
-au FileType gdb inoremap document<Space> document<CR>end<Up><End><Space>
-au FileType markdown inoremap & &;<Left>
-au FileType markdown inoremap <expr> ;  strpart(getline('.'), col('.')-1, 1) == ";" ? "\<Right>" : ";"
-au FileType python inoremap if<Space> if<Space>:<Left>
-au FileType python inoremap elif<Space> elif<Space>:<Left>
-au FileType python inoremap for<Space> for<Space>:<Left>
-au FileType python inoremap while<Space> while<Space>:<Left>
-au FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
-au FileType xml inoremap <! <!----><Left><Left><Left>
-au FileType xml inoremap <expr> - strpart(getline('.'), col('.')-1, 1) == "-" ? "\<Right>" : "-"
+augroup c_insert_mapping
+  autocmd!
+  autocmd FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
+  autocmd FileType c,cpp,sh inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
+augroup END
+augroup make_insert_mapping
+  autocmd!
+  autocmd FileType make inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
+  autocmd FileType make inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
+  autocmd FileType make,spec inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
+  autocmd FileType make,spec inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
+  autocmd FileType sh,make inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+  autocmd FileType sh,make inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+augroup END
+augroup sh_insert_mapping
+  autocmd!
+  autocmd FileType sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
+  autocmd FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
+  autocmd FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
+augroup END
+augroup vim_insert_mapping
+  autocmd!
+  autocmd FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
+  autocmd FileType vim inoremap elseif<Space> elseif<Space>
+  autocmd FileType vim inoremap augroup<Space> augroup<CR><Tab>autocmd!<CR>augroup<Space>END<Up><Up><End><Space>
+augroup END
+augroup tcsh_insert_mapping
+  autocmd!
+  autocmd FileType tcsh inoremap if<Space> if<CR>endif<Up><End><Space>()<Space>then<Left><Left><Left><Left><Left><Left>
+augroup END
+augroup gdb_insert_mapping
+  autocmd!
+  autocmd FileType gdb inoremap define<Space> define<CR>end<Up><End><Space>
+  autocmd FileType gdb inoremap document<Space> document<CR>end<Up><End><Space>
+augroup END
+augroup markdown_insert_mapping
+  autocmd!
+  autocmd FileType markdown inoremap & &;<Left>
+  autocmd FileType markdown inoremap <expr> ;  strpart(getline('.'), col('.')-1, 1) == ";" ? "\<Right>" : ";"
+augroup END
+augroup python_insert_mapping
+  autocmd!
+  autocmd FileType python inoremap if<Space> if<Space>:<Left>
+  autocmd FileType python inoremap elif<Space> elif<Space>:<Left>
+  autocmd FileType python inoremap for<Space> for<Space>:<Left>
+  autocmd FileType python inoremap while<Space> while<Space>:<Left>
+  autocmd FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
+augroup END
+augroup xml_insert_mapping
+  autocmd!
+  autocmd FileType xml inoremap <! <!----><Left><Left><Left>
+  autocmd FileType xml inoremap <expr> - strpart(getline('.'), col('.')-1, 1) == "-" ? "\<Right>" : "-"
+augroup END
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
+inoremap <expr> <Space>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Space>\<Space>\<Left>" : "\<Space>"
+"   }
+
+"   Operator-Pending Mappings {
+onoremap p i(
+onoremap in( :<C-u>normal! f(vi(<CR>
+onoremap il( :<C-u>normal! F)vi(<CR>
 "   }
 " }
 
 " Spelling {
-iab anf and
-iab adn and
-iab ans and
-iab teh the
-iab thre there
+iabbrev anf and
+iabbrev adn and
+iabbrev ans and
+iabbrev teh the
+iabbrev thre there
 
 set spell spelllang=en_us
 set spellfile=$HOME/.vim/spell/en.utf-8.add
 " au FileType text,plaintex,sh,cpp,vim,python set spell spelllang=en_us
 " }
 
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+augroup tag_completion
+  autocmd!
+  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+augroup END
 
 " Folding {
 set foldcolumn=1
@@ -635,7 +673,10 @@ set guioptions-=r
 " }
 
 " vim-fugitive {
-autocmd QuickFixCmdPost *grep* cwindow
+augroup vim_fugitive
+  autocmd!
+  autocmd QuickFixCmdPost *grep* cwindow
+augroup END
 " }
 
 " python-syntax {
@@ -764,13 +805,16 @@ function! FindConfig(prefix, what, where)
   return cfg !=# '' ? ' ' . a:prefix . ' ' . shellescape(cfg) : ''
 endfunction
 
-autocmd FileType c,cpp,objc let b:syntastic_cpp_cpplint_args =
-      \ get(g:, 'syntastic_cpp_cpplint_args', '') .
-      \ FindConfig('-c', '.h', expand('<afile>:p:h', 1))
+augroup syntastic
+  autocmd!
+  autocmd FileType c,cpp,objc let b:syntastic_cpp_cpplint_args =
+        \ get(g:, 'syntastic_cpp_cpplint_args', '') .
+        \ FindConfig('-c', '.h', expand('<afile>:p:h', 1))
 
-autocmd FileType javascript let b:syntastic_javascript_jscs_args =
-      \ get(g:, 'syntastic_javascript_jscs_args', '') .
-      \ FindConfig('-c', '.jscsrc', expand('<afile>:p:h', 1))
+  autocmd FileType javascript let b:syntastic_javascript_jscs_args =
+        \ get(g:, 'syntastic_javascript_jscs_args', '') .
+        \ FindConfig('-c', '.jscsrc', expand('<afile>:p:h', 1))
+augroup END
 " }
 
 " vim-gitgutter {
