@@ -10,29 +10,27 @@ let &t_ks = "\<Esc>[3 q"
 let &t_SI = "\<Esc>[5 q"
 
 " Auto startups {
-augroup Shebang
-  " {
+augroup Shebang " {
   autocmd!
   autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
   autocmd BufNewFile *.sh 0put =\"#!/bin/bash\"|$
-  " }
 augroup END
+"   }
 
-function! s:insert_gates()
-  " {
+function! s:insert_gates() " {
   let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
   execute "normal! i#ifndef " . gatename
   execute "normal! o#define " . gatename
   execute "normal! Go#endif /* " . gatename . " */"
   normal! kk
-  " }
-endfunction
-augroup c_insert_gates
+endfunction " }
+augroup c_insert_gates " {
   autocmd!
   autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 augroup END
+"   }
 " }
 
 " Vundle {
@@ -152,7 +150,11 @@ set wildmode=list:longest,full
 "   line break options {
 set linebreak
 set showbreak=->
-autocmd FileType python,perl set showbreak=--->
+augroup showbreaker " {
+  autocmd!
+  autocmd FileType python,perl set showbreak=--->
+augroup END
+"     }
 set cpoptions+=n
 set breakindent
 set breakat+=>
@@ -174,9 +176,13 @@ set wildignore+=tags
 "   }
 
 set diffopt+=iwhite
-autocmd BufRead,BufNewFile *.json set filetype=json
-autocmd BufRead,BufNewFile *.log set filetype=log
-autocmd BufRead,BufNewFile *.txt set filetype=text
+augroup set_filetype " {
+  autocmd!
+  autocmd BufRead,BufNewFile *.json set filetype=json
+  autocmd BufRead,BufNewFile *.log set filetype=log
+  autocmd BufRead,BufNewFile *.txt set filetype=text
+augroup END
+"   }
 " }
 
 " Toggle Comments {
@@ -411,12 +417,13 @@ inoremap ,, <End>,
 inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
 inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
-augroup c_insert_mapping
+augroup c_insert_mapping " {
   autocmd!
   autocmd FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
   autocmd FileType c,cpp,sh inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
 augroup END
-augroup make_insert_mapping
+"     }
+augroup make_insert_mapping " {
   autocmd!
   autocmd FileType make inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
   autocmd FileType make inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
@@ -425,33 +432,39 @@ augroup make_insert_mapping
   autocmd FileType sh,make inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
   autocmd FileType sh,make inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 augroup END
-augroup sh_insert_mapping
+"     }
+augroup sh_insert_mapping " {
   autocmd!
   autocmd FileType sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
   autocmd FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
   autocmd FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
 augroup END
-augroup vim_insert_mapping
+"     }
+augroup vim_insert_mapping " {
   autocmd!
   autocmd FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
   autocmd FileType vim inoremap elseif<Space> elseif<Space>
   autocmd FileType vim inoremap augroup<Space> augroup<CR><Tab>autocmd!<CR>augroup<Space>END<Up><Up><End><Space>
 augroup END
-augroup tcsh_insert_mapping
+"     }
+augroup tcsh_insert_mapping " {
   autocmd!
   autocmd FileType tcsh inoremap if<Space> if<CR>endif<Up><End><Space>()<Space>then<Left><Left><Left><Left><Left><Left>
 augroup END
-augroup gdb_insert_mapping
+"     }
+augroup gdb_insert_mapping " {
   autocmd!
   autocmd FileType gdb inoremap define<Space> define<CR>end<Up><End><Space>
   autocmd FileType gdb inoremap document<Space> document<CR>end<Up><End><Space>
 augroup END
-augroup markdown_insert_mapping
+"     }
+augroup markdown_insert_mapping " {
   autocmd!
   autocmd FileType markdown inoremap & &;<Left>
   autocmd FileType markdown inoremap <expr> ;  strpart(getline('.'), col('.')-1, 1) == ";" ? "\<Right>" : ";"
 augroup END
-augroup python_insert_mapping
+"     }
+augroup python_insert_mapping " {
   autocmd!
   autocmd FileType python inoremap if<Space> if<Space>:<Left>
   autocmd FileType python inoremap elif<Space> elif<Space>:<Left>
@@ -459,11 +472,13 @@ augroup python_insert_mapping
   autocmd FileType python inoremap while<Space> while<Space>:<Left>
   autocmd FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
 augroup END
-augroup xml_insert_mapping
+"     }
+augroup xml_insert_mapping " {
   autocmd!
   autocmd FileType xml inoremap <! <!----><Left><Left><Left>
   autocmd FileType xml inoremap <expr> - strpart(getline('.'), col('.')-1, 1) == "-" ? "\<Right>" : "-"
 augroup END
+"     }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
@@ -487,14 +502,14 @@ iabbrev thre there
 
 set spell spelllang=en_us
 set spellfile=$HOME/.vim/spell/en.utf-8.add
-" autocmd FileType text,plaintex,sh,cpp,vim,python set spell spelllang=en_us
 " }
 
-augroup tag_completion
+augroup tag_completion " {
   autocmd!
   autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
   autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 augroup END
+" }
 
 " Folding {
 set foldcolumn=1
@@ -534,22 +549,26 @@ endfunction
 
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
-autocmd FileType cpp,c,java set foldmethod=syntax
-autocmd FileType vim,xml set foldmethod=marker
-autocmd FileType vim set foldmarker={,}
-autocmd FileType xml set foldmarker=<!--,-->
-autocmd FileType python,plaintex,text,gdb,make,gitconfig set foldmethod=indent
-autocmd FileType java set foldenable
-" autocmd FileType java syntax clear javaBraces
-" autocmd FileType java syntax clear javaDocComment
-" autocmd FileType java syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-autocmd FileType java syntax region foldJavadoc start=+/\*+ end=+\*/+ transparent fold keepend
-autocmd FileType java syntax region foldBrackets start="\[" end="]" transparent fold keepend
-autocmd FileType java syntax region foldParenthesis start="(" end=")" transparent fold keepend
-autocmd FileType java set foldlevel=0
-autocmd FileType java set foldnestmax=10
-autocmd FileType cpp,c syntax region foldIfNotDef start="#ifndef" end="#endif" transparent fold keepend
-autocmd FileType cpp,c syntax region foldIfDef start="#ifdef" end="#endif" transparent fold keepend
+augroup syntax_folding " {
+  autocmd!
+  autocmd FileType cpp,c,java set foldmethod=syntax
+  autocmd FileType vim,xml set foldmethod=marker
+  autocmd FileType vim set foldmarker={,}
+  autocmd FileType xml set foldmarker=<!--,-->
+  autocmd FileType python,plaintex,text,gdb,make,gitconfig set foldmethod=indent
+  autocmd FileType java set foldenable
+  " autocmd FileType java syntax clear javaBraces
+  " autocmd FileType java syntax clear javaDocComment
+  " autocmd FileType java syntax region foldBraces start=/{/ end=/}/ transparent fold keepend extend
+  autocmd FileType java syntax region foldJavadoc start=+/\*+ end=+\*/+ transparent fold keepend
+  autocmd FileType java syntax region foldBrackets start="\[" end="]" transparent fold keepend
+  autocmd FileType java syntax region foldParenthesis start="(" end=")" transparent fold keepend
+  autocmd FileType java set foldlevel=0
+  autocmd FileType java set foldnestmax=10
+  autocmd FileType cpp,c syntax region foldIfNotDef start="#ifndef" end="#endif" transparent fold keepend
+  autocmd FileType cpp,c syntax region foldIfDef start="#ifdef" end="#endif" transparent fold keepend
+augroup END
+"   }
 
 set foldtext=MyFoldText()
 function MyFoldText()
@@ -611,11 +630,15 @@ set expandtab
 
 " Tabs only two spaces
 set tabstop=2
-autocmd FileType python,perl,xml,make,gitconfig set tabstop=4
 set shiftwidth=2
-autocmd FileType python,perl,xml,make,gitconfig set shiftwidth=4
 
-autocmd FileType make,gitconfig set noexpandtab
+augroup indentaion_handling " {
+  autocmd!
+  autocmd FileType python,perl,xml,make,gitconfig set tabstop=4
+  autocmd FileType python,perl,xml,make,gitconfig set shiftwidth=4
+  autocmd FileType make,gitconfig set noexpandtab
+augroup END
+"   }
 " }
 
 " Backups {
@@ -637,10 +660,11 @@ set guioptions-=r
 " }
 
 " vim-fugitive {
-augroup vim_fugitive
+augroup vim_fugitive " {
   autocmd!
   autocmd QuickFixCmdPost *grep* cwindow
 augroup END
+"   }
 " }
 
 " python-syntax {
@@ -769,7 +793,7 @@ function! FindConfig(prefix, what, where)
   return cfg !=# '' ? ' ' . a:prefix . ' ' . shellescape(cfg) : ''
 endfunction
 
-augroup syntastic
+augroup syntastic " {
   autocmd!
   autocmd FileType c,cpp,objc let b:syntastic_cpp_cpplint_args =
         \ get(g:, 'syntastic_cpp_cpplint_args', '') .
@@ -779,6 +803,7 @@ augroup syntastic
         \ get(g:, 'syntastic_javascript_jscs_args', '') .
         \ FindConfig('-c', '.jscsrc', expand('<afile>:p:h', 1))
 augroup END
+"   }
 " }
 
 " vim-gitgutter {
