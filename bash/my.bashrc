@@ -282,6 +282,10 @@ __prompt_command()
       fi
       PS1+="\\[${YELLOW}\\]"
     fi
+    git_commits_behind=$(git status -uno | grep -i 'Your branch is behind' | grep -Eo '[0-9]+')
+    if [[ ${git_commits_behind} != "" ]]; then
+      PS1+=", \\[${BOLD}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
+    fi
     git_stash_count=$(git stash list 2> /dev/null | wc -l)
     if [[ ${git_stash_count} != "0" ]]; then
       PS1+=", stash@{\\[${GREY}\\]${git_stash_count}\\[${YELLOW}\\]}"
