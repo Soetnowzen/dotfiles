@@ -32,7 +32,7 @@ alias g_pl_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
 alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
 alias grep='grep --color'
-alias grepc='grep -Rin --color --include=*.{cc,h}'
+alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
 alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
 alias h='history'
 alias less='less -r'
@@ -159,6 +159,11 @@ modified_git_count()
   fi
 }
 
+commit_count()
+{
+  git_commits_behind=$(git status -uno | grep -i 'Your branch is' | grep -Eo '[0-9]+')
+}
+
 # Colors
 # {
 RED="$(tput setaf 1)"
@@ -230,7 +235,12 @@ colors_and_formatting()
 # *.extension =   Every file using this extension e.g. *.rpm = files with the ending .rpm
 # }
 LS_COLORS=$LS_COLORS:'di=0;35:ln=0;36:ex=0;33:pi=0;32:so=0;31:bd=0;37:mi=0;36:cd=1;35:tw=0;30:ow=0;34:'
+# LS_COLORS=$LS_COLORS:"di=${MAGENTA}:ln=${CYAN}:ex=${YELLOW}:pi=${GREEN}:so=${RED}:bd=${WHITE}:mi=${CYAN}:cd=1;35:tw=0;30:ow=${BLUE}:"
 export LS_COLORS
+
+GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01:fixit-insert=32:fixit-delete=31:diff-filename=01:diff-hunk=32:diff-delete=31:diff-insert=32:type-diff=01;32'
+# GCC_COLORS="error=${RED}:warning=${MAGENTA}:note=${CYAN}:caret=${GREEN}:locus=01:quote=01:fixit-insert=${GREEN}:fixit-delete=${RED}:diff-filename=${RED}:diff-hunk=${GREEN}:diff-delete=${RED}:diff-insert=${GREEN}:type-diff=${GREEN}"
+export GCC_COLORS
 # }
 
 # export DISPLAY=:0.0
@@ -282,7 +292,7 @@ __prompt_command()
       fi
       PS1+="\\[${YELLOW}\\]"
     fi
-    git_commits_behind=$(git status -uno | grep -i 'Your branch is behind' | grep -Eo '[0-9]+')
+    git_commits_behind=$(git status -uno | grep -i 'Your branch is' | grep -Eo '[0-9]+')
     if [[ ${git_commits_behind} != "" ]]; then
       PS1+=", \\[${BOLD}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
     fi

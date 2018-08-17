@@ -221,6 +221,7 @@ let s:comment_map = {
       \ "tcsh": '#',
       \ "tex": '%',
       \ "tmux": "#",
+      \ "text": '#',
       \ "vim": '"',
       \ }
 
