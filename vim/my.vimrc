@@ -330,7 +330,8 @@ nnoremap § ~
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
 
-nnoremap <Space> :noh<CR>
+" nnoremap <Space> :noh<CR>
+nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
 
 "     The glorious & dear vim leader declarations {
 " nnoremap <Leader>w :w<CR>
@@ -350,20 +351,20 @@ map Y y$
 
 "   Command-line mode remaps {
 cnoremap jj <Esc>
-cnoremap ' ''<Left>
-cnoremap '' ''
-cnoremap " ""<Left>
-cnoremap "" ""
-cnoremap { {}<Left>
+" cnoremap ' ''<Left>
+" cnoremap '' ''
+" cnoremap " ""<Left>
+" cnoremap "" ""
+" cnoremap { {}<Left>
 " }
-cnoremap {} {}
-cnoremap < <><Left>
-cnoremap <<Space> <<Space>
-cnoremap <> <>
-cnoremap [ []<Left>
-cnoremap [] []
-cnoremap ( ()<Left>
-cnoremap () ()
+" cnoremap {} {}
+" cnoremap < <><Left>
+" cnoremap <<Space> <<Space>
+" cnoremap <> <>
+" cnoremap [ []<Left>
+" cnoremap [] []
+" cnoremap ( ()<Left>
+" cnoremap () ()
 "   }
 
 "   Visual mode remaps {
@@ -614,7 +615,7 @@ highlight clear SpecialKey
 " highlight SpecialKey ctermfg=Magenta guifg=Magenta
 highlight SpecialKey ctermfg=Green guifg=Green
 set list
-set listchars=tab:>-
+set listchars=tab:>\ 
 set listchars+=trail:-
 set listchars+=conceal:C  " conceallevel is set to 1
 set listchars+=nbsp:%  " Non-breakable space

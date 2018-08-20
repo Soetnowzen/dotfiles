@@ -29,8 +29,9 @@
 	bi = bisect run # <my_script> <arguments>
 	br = branch
 	c = commit
-	ca = clean -xdf # clean all untracked files
+	ca = commit --amend
 	ci = commit
+	cla = clean -xdf # clean all untracked files
 	cm = commit -m
 	co = checkout
 	coh = checkout HEAD
