@@ -42,6 +42,7 @@
 	dt = difftool
 	dw = diff --word-diff
 	f = fetch
+	fa = fetch --all
 	filelog = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = log -u

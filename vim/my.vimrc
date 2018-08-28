@@ -149,10 +149,10 @@ set wildmode=list:longest,full
 
 "   line break options {
 set linebreak
-set showbreak=->
+set showbreak=\ \ 
 augroup showbreaker " {
   autocmd!
-  autocmd FileType python,perl set showbreak=--->
+  autocmd FileType python,perl set showbreak=\ \ \ \ 
 augroup END
 "     }
 set cpoptions+=n
