@@ -307,7 +307,7 @@ __prompt_command()
     PS1+=" \\[${RED}\\]${EXIT}"
   fi
 
-  PS1+="\\[${RESET}\\]]\\$ "
+  PS1+="\\[${RESET}\\]]\\n\\$ "
 }
 
 # Magento

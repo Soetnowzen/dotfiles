@@ -20,11 +20,11 @@ augroup END
 "   }
 
 function! s:insert_gates() " {
-  let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
+  let gatename = substitute(toupper(substitute(expand("%:t"), '\C\([A-Z]\)', '_\1','g')), "\\.", "_", "g")
   execute "normal! i#ifndef " . gatename
   execute "normal! o#define " . gatename
   execute "normal! Go#endif /* " . gatename . " */"
-  normal! kk
+  normal! k
 endfunction " }
 augroup c_insert_gates " {
   autocmd!
@@ -188,6 +188,7 @@ augroup END
 " Toggle Comments {
 let s:comment_map = {
       \ "ahk": ';',
+      \ "automake": '#',
       \ "bash_profile": '#',
       \ "bashrc": '#',
       \ "bat": 'REM',
@@ -220,8 +221,8 @@ let s:comment_map = {
       \ "spec": '#',
       \ "tcsh": '#',
       \ "tex": '%',
-      \ "tmux": "#",
       \ "text": '#',
+      \ "tmux": "#",
       \ "vim": '"',
       \ }
 
@@ -330,6 +331,11 @@ nnoremap § ~
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
 
+" Convert snake case to camel case
+nnoremap _ f_x~
+" Convert camel case to snake case
+nnoremap + /\C[A-Z]<CR>i_<Esc><Right>~:noh<CR>
+
 " nnoremap <Space> :noh<CR>
 nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
 
@@ -427,12 +433,12 @@ augroup END
 "     }
 augroup make_insert_mapping " {
   autocmd!
-  autocmd FileType make inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
-  autocmd FileType make inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
-  autocmd FileType make,spec inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
-  autocmd FileType make,spec inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
-  autocmd FileType sh,make inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-  autocmd FileType sh,make inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+  autocmd FileType make,automake inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
+  autocmd FileType make,automake inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
+  autocmd FileType make,automake,spec inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
+  autocmd FileType make,automake,spec inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
+  autocmd FileType sh,make,automake inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+  autocmd FileType sh,make,automake inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 augroup END
 "     }
 augroup sh_insert_mapping " {
@@ -557,7 +563,7 @@ augroup syntax_folding " {
   autocmd FileType vim,xml set foldmethod=marker
   autocmd FileType vim set foldmarker={,}
   autocmd FileType xml set foldmarker=<!--,-->
-  autocmd FileType python,plaintex,text,gdb,make,gitconfig set foldmethod=indent
+  autocmd FileType python,plaintex,text,gdb,make,automake,gitconfig set foldmethod=indent
   autocmd FileType java set foldenable
   " autocmd FileType java syntax clear javaBraces
   " autocmd FileType java syntax clear javaDocComment
@@ -636,9 +642,9 @@ set shiftwidth=2
 
 augroup indentaion_handling " {
   autocmd!
-  autocmd FileType python,perl,xml,make,gitconfig set tabstop=4
-  autocmd FileType python,perl,xml,make,gitconfig set shiftwidth=4
-  autocmd FileType make,gitconfig set noexpandtab
+  autocmd FileType python,perl,xml,make,automake,gitconfig set tabstop=4
+  autocmd FileType python,perl,xml,make,automake,gitconfig set shiftwidth=4
+  autocmd FileType make,automake,gitconfig set noexpandtab
 augroup END
 "   }
 " }
