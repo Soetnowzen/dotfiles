@@ -155,7 +155,11 @@ augroup showbreaker " {
   autocmd FileType python,perl set showbreak=\ \ \ \ 
 augroup END
 "     }
+set cindent
 set cpoptions+=n
+set cinoptions+=(0
+set cinoptions+=u0
+set cinoptions+=U0
 set breakindent
 set breakat+=>
 "   }
@@ -386,6 +390,9 @@ vnoremap <Leader>l gu
 "   }
 
 "   Insertion mode remaps {
+"     insert Leader mapping {
+inoremap <Leader>f <C-r>=expand("%:t:r")<CR>
+"     }
 inoremap <S-Tab> <C-D>
 
 inoremap </ </<C-X><C-O>
@@ -396,6 +403,7 @@ inoremap </ </<C-X><C-O>
 inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
 inoremap jj <Esc>
+inoremap jk <Esc>
 inoremap JJ <Esc>o
 inoremap { {}<Left>
 " }
