@@ -20,12 +20,12 @@ alias g git
 alias g_pl_stash 'git stash && git pull --rebase && git stash pop'
 alias gitr vim ~/.gitconfig
 alias grep grep --color
-alias grepc grep -Rin --color --include=*.{cc,h}
+alias grepc grep -Rin --color --include=*.{cc,h,hh,c}
 alias h history
 alias less less -r
 alias mkdir mkdir -pv
 alias print_path 'echo $PATH | tr : "\n"'
-alias psu ps -U \$USER
+alias psu ps u --forest
 alias rm rm -I
 alias tcshr vim ~/.tcshrc
 alias tm 'tmux attach || tmux new'
@@ -62,14 +62,21 @@ alias print_addition_if_not_zero '[ \!:1 != 0 ] && echo "+\!:1" || echo ""'
 alias print_number_of_git_changes 'print_addition_if_not_zero `get_number_of_git_changes`'
 alias get_current_git_branch "git branch |& grep \* | sed 's/\* \(.*\)/\1/'"
 alias get_current_tag "git tag -l --points-at HEAD"
+
 alias precmd 'set exit_code=" $?"; \\
-  set branch=`get_current_git_branch`; \\
-    set git_changes=`print_number_of_git_changes`; \\
-      set tag=`get_current_tag`; \\
-        if "$exit_code" == " 0" set exit_code=""; \\
-          if "$git_changes" != "" set tag="$tag, "; \\
-            if "$tag" != "" set branch="$branch, "'
-set prompt='[%{\033[36m%}%T %{\033[34m%}%n%{\033[0m%}@%{\033[34m%}%m %{\033[32m%}%~%{\033[33m%}(%$branch%{\033[37m%}%$tag%{\033[35m%}%$git_changes%{\033[33m%})%{\033[31m%}%$exit_code%{\033[0m%}]%# '
+  if "$exit_code" == " 0" set exit_code=""; \\
+    get_current_git_branch && \\
+      set branch=`get_current_git_branch` && \\
+        set git_changes=`print_number_of_git_changes` && \\
+          set tag=`get_current_tag` && \\
+            if "$tag" != "" set branch="$branch, " && \\
+              if "$git_changes" != "" set tag="$tag, " || \\
+                set branch="" && set tag="" && set git_changes=""'
+# alias super_awesome '[ $branch != "" ] && echo "hello" || echo "world"'
+# alias test 'if $branch != "" echo "hello" || echo "world"'
+# alias super_awesome 'if `get_current_git_branch` != "" then set branch1=`get_current_git_branch` else set branch1=""'
+# alias super_awesome "set branch1=`get_current_git_branch` && if $branch1 != "" then set git_changes1=`print_number_of_git_changes` else git_changes1="""
+set prompt='[%{\033[36m%}%T %{\033[34m%}%n%{\033[0m%}@%{\033[34m%}%m %{\033[32m%}%~%{\033[33m%}(%$branch%{\033[37m%}%$tag%{\033[35m%}%$git_changes%{\033[33m%})%{\033[31m%}%$exit_code%{\033[0m%}]\n%# '
 # }
 
 # bindkey -v
