@@ -68,8 +68,7 @@ if has('gui_running')
   " if GVim else Vim
   let g:solarized_contrast="high" " low | normal | high
   let g:solarized_visibility="high" " low | normal | high
-  set background=light
-  " set background=dark
+  set background=light " light | dark
 
   " Window Size
   if exists("+columns")
@@ -98,7 +97,7 @@ set colorcolumn+=123
 " }
 
 " Misc {
-" Sets row numbers
+" Sets show row numbers
 set number
 
 set tags+=/
@@ -108,7 +107,7 @@ set cursorline
 set cursorcolumn
 
 " Leave a few lines when scrolling
-set scrolloff=3
+set scrolloff=5
 set sidescrolloff=5
 
 " Bell
@@ -359,20 +358,12 @@ map Y y$
 
 "   Command-line mode remaps {
 cnoremap jj <Esc>
-" cnoremap ' ''<Left>
-" cnoremap '' ''
-" cnoremap " ""<Left>
-" cnoremap "" ""
-" cnoremap { {}<Left>
-" }
-" cnoremap {} {}
-" cnoremap < <><Left>
-" cnoremap <<Space> <<Space>
-" cnoremap <> <>
-" cnoremap [ []<Left>
-" cnoremap [] []
-" cnoremap ( ()<Left>
-" cnoremap () ()
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
+cnoremap <C-w> <C-Right>
+cnoremap <C-b> <C-Left>
 "   }
 
 "   Visual mode remaps {
@@ -622,9 +613,7 @@ nnoremap :g// :g//
 " Spaces & Tabs {
 
 "   Show hidden characters with given characters {
-" highlight NonText ctermfg=Magenta guifg=Magenta
 highlight clear SpecialKey
-" highlight SpecialKey ctermfg=Magenta guifg=Magenta
 highlight SpecialKey ctermfg=Green guifg=Green
 set list
 set listchars=tab:>\ 
@@ -713,16 +702,13 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_detect_spell=1
 let g:airline_detect_spelllang=1
-" let g:airline_left_sep='>'
 let g:airline_left_sep = '▶'
-" let g:airline_right_sep='<'
 let g:airline_right_sep = '◀'
 let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 let g:airline_detect_crypt=1
 let g:airline_inactive_collapse=1
-function! AirlineInit()
-  " {
+function! AirlineInit() " {
   let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
   let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
   let g:airline_section_c = airline#section#create(['filetype'])
@@ -751,12 +737,8 @@ let NERDTreeIgnore =
 let NERDTreeWinSize = 42
 let NERDTreeQuitOnOpen = 1
 let NERDTreeDirArrows = 0
-" let NERDTreeDirArrowsExpandable = '+'
-" let NERDTreeDirArrowsCollapsible = '~'
 let NERDTreeMapOpenSplit='s'
 let NERDTreeMapOpenVSplit='v'
-" let NERDTreeMapOpenSplit='-'
-" let NERDTreeMapOpenVSplit='|'
 " }
 
 " Syntastic stuff {
@@ -821,23 +803,11 @@ augroup END
 " }
 
 " vim-gitgutter {
-" nnoremap <Leader>j <Plug>GitGutterNextHunk
-" nnoremap <Leader>k <Plug>GitGutterPrevHunk
-" nnoremap <Leader>ha <Plug>GitGutterStageHunk
-" nnoremap <Leader>hr <Plug>GitGutterUndoHunk
-" nnoremap <Leader>hv <Plug>GitGutterPreviewHunk
-
 if exists('&signcolumn') " Vim 7.4.2201
   set signcolumn=yes
 else
   let g:gitgutter_sign_column_always = 1
 endif
-
-" let g:gitgutter_sign_added = 'xx'
-" let g:gitgutter_sign_modified = 'yy'
-" let g:gitgutter_sign_removed = 'zz'
-" let g:gitgutter_sign_removed_first_line = '^^'
-" let g:gitgutter_sign_modified_removed = 'ww'
 
 let g:gitgutter_diff_args = '-w'
 " }
