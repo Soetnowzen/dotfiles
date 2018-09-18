@@ -650,9 +650,9 @@ set shiftwidth=2
 
 augroup indentaion_handling " {
   autocmd!
-  autocmd FileType python,perl,xml,make,automake,gitconfig set tabstop=4
-  autocmd FileType python,perl,xml,make,automake,gitconfig set shiftwidth=4
-  autocmd FileType make,automake,gitconfig set noexpandtab
+  autocmd FileType python,perl,xml,make,automake,gitconfig,text set tabstop=4
+  autocmd FileType python,perl,xml,make,automake,gitconfig,text set shiftwidth=4
+  autocmd FileType make,automake,gitconfig,text set noexpandtab
 augroup END
 "   }
 " }

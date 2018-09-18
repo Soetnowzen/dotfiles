@@ -27,6 +27,7 @@
 	a = add
 	aa = add --all
 	ap = add -p
+	au = add -u
 	bi = bisect run # <my_script> <arguments>
 	br = branch
 	c = commit
