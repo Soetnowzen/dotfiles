@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set -o vi
-# ctrl-k, ctrl-u, ctrl-w, ctrl-y - cutting and pasting text in the command line
+# ctrl-k (until end), ctrl-u (until begin), ctrl-w (backward), ctrl-y (paste) - cutting and pasting text in the command line
 # !! to perform last command in this position
 
 if [ -r ~/.bashrc.work ]; then
@@ -292,8 +292,9 @@ __prompt_command()
       fi
       PS1+="\\[${YELLOW}\\]"
     fi
-    git_commits_behind=$(git status -uno | grep -i 'Your branch is' | grep -Eo '[0-9]+')
+    git_commits_behind=$(git status -uno | grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead')
     if [[ ${git_commits_behind} != "" ]]; then
+      git_commits_behind=$(echo "$git_commits_behind" | tr '\n' ' ' | xargs)
       PS1+=", \\[${BOLD}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
     fi
     git_stash_count=$(git stash list 2> /dev/null | wc -l)

@@ -182,8 +182,11 @@ augroup set_filetype " {
   autocmd BufRead,BufNewFile *.json set filetype=json
   autocmd BufRead,BufNewFile *.log set filetype=log
   autocmd BufRead,BufNewFile *.txt set filetype=text
+  autocmd BufRead,BufNewFile *.bb set filetype=sh
 augroup END
 "   }
+
+set textwidth=0
 " }
 
 " Toggle Comments {
@@ -196,6 +199,7 @@ let s:comment_map = {
       \ "c": '\/\/',
       \ "cfg": '#',
       \ "conf": '#',
+      \ "config": '#',
       \ "cpp": '\/\/',
       \ "csh": '#',
       \ "desktop": '#',
@@ -595,6 +599,9 @@ set hlsearch
 
 " Ignore case when searching
 set ignorecase
+
+nnoremap * /\C\<<C-R>=expand('<cword>')<CR>\><CR>
+nnoremap # ?\C\<<C-R>=expand('<cword>')<CR>\><CR>
 
 " Show search matches while typing
 set incsearch
