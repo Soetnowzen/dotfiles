@@ -497,6 +497,10 @@ inoremap <expr> <Space>  index(pairing_characters, strpart(getline('.'), col('.'
 
 "   Operator-Pending Mappings {
 onoremap p i(
+vnoremap p i(
+" Function argument selection (change "around argument", change "inside argument")
+onoremap ia :<c-u>execute "normal! ?[,(]\rwv/[),]\rh"<cr>
+vnoremap ia :<c-u>execute "normal! ?[,(]\rwv/[),]\rh"<cr>")])]" "
 onoremap in( :<C-u>normal! f(vi(<CR>
 onoremap il( :<C-u>normal! F)vi(<CR>
 "   }
