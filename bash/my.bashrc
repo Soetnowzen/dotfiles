@@ -155,7 +155,7 @@ modified_git_count()
 {
   number_of_changes=$(git status -s -uno 2> /dev/null | wc -l)
   if [[ ${number_of_changes} != 0 ]]; then
-    echo "+${number_of_changes}"
+    echo "${number_of_changes}"
   fi
 }
 
@@ -173,10 +173,9 @@ BLUE="$(tput setaf 4)"
 MAGENTA="$(tput setaf 5)"
 CYAN="$(tput setaf 6)"
 WHITE="$(tput setaf 7)"
-GREY="$(tput setaf 9)"
+ORANGE="$(tput setaf 9)"
 VIOLET="$(tput setaf 13)"
 BLACK="$(tput setaf 16)"
-BOLD="$(tput bold)"
 UNDERLINE="$(tput smul)"
 EXIT_UNDERLINE="$(tput rmul)"
 RESET="$(tput sgr0)"
@@ -277,29 +276,34 @@ __prompt_command()
     PS1+="\\[${YELLOW}\\](${branch}"
     git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
     if [[ ${git_tag} != "" ]]; then
-      PS1+=", \\[${WHITE}\\]\\[${VIOLET}\\]${git_tag}\\[${YELLOW}\\]"
+      PS1+=", \\[${WHITE}\\]${git_tag}\\[${YELLOW}\\]"
     fi
     git_count=$(modified_git_count)
     if [[ ${git_count} != "" ]]; then
       PS1+=", \\[${MAGENTA}\\]${git_count}"
-      git_add_rows=$(git diff 2> /dev/null | grep -c '^+[^+]\{2\}')
-      if [[ ${git_add_rows} != "0" ]]; then
-        PS1+=" \\[${GREEN}\\]+${git_add_rows}"
+      git_diff_word=$(git diff --word-diff 2> /dev/null | grep '\[-.*-\]\|{+.*+}')
+      change_rows=$(echo "${git_diff_word}" | grep -c '\[-.*-\]{+.*+}')
+      if [[ ${change_rows} != "0" ]]; then
+        PS1+=" \\[${YELLOW}\\]~${change_rows}"
       fi
-      git_removed_rows=$(git diff 2> /dev/null | grep -c '^-[^-]\{2\}')
-      if [[ ${git_removed_rows} != "0" ]]; then
-        PS1+=" \\[${RED}\\]-${git_removed_rows}"
+      plus_rows=$(echo "${git_diff_word}" | grep -cv '\[-.*-\]')
+      if [[ ${plus_rows} != "0" ]]; then
+        PS1+=" \\[${GREEN}\\]+${plus_rows}"
+      fi
+      minus_rows=$(echo "${git_diff_word}" | grep -cv '{+.*+}')
+      if [[ ${minus_rows} != "0" ]]; then
+        PS1+=" \\[${RED}\\]-${minus_rows}"
       fi
       PS1+="\\[${YELLOW}\\]"
     fi
     git_commits_behind=$(git status -uno | grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead')
     if [[ ${git_commits_behind} != "" ]]; then
       git_commits_behind=$(echo "$git_commits_behind" | tr '\n' ' ' | xargs)
-      PS1+=", \\[${BOLD}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
+      PS1+=", \\[${VIOLET}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
     fi
     git_stash_count=$(git stash list 2> /dev/null | wc -l)
     if [[ ${git_stash_count} != "0" ]]; then
-      PS1+=", stash@{\\[${GREY}\\]${git_stash_count}\\[${YELLOW}\\]}"
+      PS1+=", stash@{\\[${ORANGE}\\]${git_stash_count}\\[${YELLOW}\\]}"
     fi
     PS1+=")"
   fi
