@@ -58,25 +58,34 @@ set WHITE="%{\033[37m%}"
 # Prompt
 # {
 alias get_number_of_git_changes "git status -s -uno |& grep '^\s*M' | wc -l"
-alias print_addition_if_not_zero '[ \!:1 != 0 ] && echo "+\!:1" || echo ""'
-alias print_number_of_git_changes 'print_addition_if_not_zero `get_number_of_git_changes`'
+alias print_if_not_zero '[ \!:1 != 0 ] && echo "\!:1" || echo ""'
+alias print_number_of_git_changes 'print_if_not_zero `get_number_of_git_changes`'
 alias get_current_git_branch "git branch |& grep \* | sed 's/\* \(.*\)/\1/'"
 alias get_current_tag "git tag -l --points-at HEAD"
+alias my_commit_status "git status -uno |& grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead'"
+alias my_commit_status_one_row "my_commit_status | tr '\n' ' ' | xargs"
+alias my_stash_count "git stash list |& grep -i 'stash' | wc -l"
+alias get_stash_count 'print_if_not_zero `my_stash_count`'
 
 alias precmd 'set exit_code=" $?"; \\
   if "$exit_code" == " 0" set exit_code=""; \\
-    get_current_git_branch && \\
-      set branch=`get_current_git_branch` && \\
-        set git_changes=`print_number_of_git_changes` && \\
-          set tag=`get_current_tag` && \\
-            if "$tag" != "" set branch="$branch, " && \\
-              if "$git_changes" != "" set tag="$tag, " || \\
-                set branch="" && set tag="" && set git_changes=""'
+    set commit_status=`my_commit_status_one_row`; \\
+      set stash_count=`get_stash_count`; \\
+        if "$stash_count" != "" set stash_count="stash{$stash_count}"; \\
+          get_current_git_branch > /dev/null && \\
+            set branch=`get_current_git_branch` && \\
+              set git_changes=`print_number_of_git_changes` && \\
+                set tag=`get_current_tag` && \\
+                  if "$tag" != "" set branch="$branch, " && \\
+                    if "$commit_status" != "" set tag="$tag, " && \\
+                      if "$git_changes" != "" set commit_status="$commit_status, " && \\
+                        if "$stash_count" != "" set git_changes="$git_changes, " || \\
+                          set branch="" && set tag="" && set git_changes=""'
 # alias super_awesome '[ $branch != "" ] && echo "hello" || echo "world"'
 # alias test 'if $branch != "" echo "hello" || echo "world"'
 # alias super_awesome 'if `get_current_git_branch` != "" then set branch1=`get_current_git_branch` else set branch1=""'
 # alias super_awesome "set branch1=`get_current_git_branch` && if $branch1 != "" then set git_changes1=`print_number_of_git_changes` else git_changes1="""
-set prompt='[%{\033[36m%}%T %{\033[34m%}%n%{\033[0m%}@%{\033[34m%}%m %{\033[32m%}%~%{\033[33m%}(%$branch%{\033[37m%}%$tag%{\033[35m%}%$git_changes%{\033[33m%})%{\033[31m%}%$exit_code%{\033[0m%}]\n%# '
+set prompt='[%{\033[36m%}%T %{\033[34m%}%n%{\033[0m%}@%{\033[34m%}%m %{\033[32m%}%~%{\033[33m%}(%$branch%{\033[37m%}%$tag%{\033[1;35m%}%$commit_status%{\033[0;35m%}%$git_changes%{\033[1;31m%}%$stash_count%{\033[0;33m%})%{\033[31m%}%$exit_code%{\033[0m%}]\n%# '
 # }
 
 # bindkey -v

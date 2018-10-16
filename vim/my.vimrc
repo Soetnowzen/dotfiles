@@ -149,7 +149,7 @@ set linebreak
 set showbreak=\ \ 
 augroup showbreaker " {
   autocmd!
-  autocmd FileType python,perl set showbreak=\ \ \ \ 
+  autocmd FileType python,perl,xml,make,automake,gitconfig,text set showbreak=\ \ \ \ 
 augroup END
 "     }
 set cindent
@@ -343,6 +343,8 @@ nnoremap + /\C[A-Z]<CR>i_<Esc><Right>~:noh<CR>
 
 " nnoremap <Space> :noh<CR>
 nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
+
+nnoremap <Leader>c /\v[<=>]{4,}<CR>
 
 "     The glorious & dear vim leader declarations {
 " nnoremap <Leader>w :w<CR>
