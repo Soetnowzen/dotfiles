@@ -26,7 +26,7 @@ function! s:insert_gates() " {
 endfunction " }
 augroup c_insert_gates " {
   autocmd!
-  autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
+  autocmd BufNewFile *.{h,hpp,hh} call <SID>insert_gates()
 augroup END
 "   }
 " }
@@ -187,6 +187,10 @@ augroup END
 "   }
 
 set textwidth=0
+
+" Set g flag for search and replace
+set gdefault
+set hidden
 " }
 
 " Toggle Comments {
@@ -345,6 +349,7 @@ nnoremap + /\C[A-Z]<CR>i_<Esc><Right>~:noh<CR>
 nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
 
 nnoremap <Leader>c /\v[<=>]{4,}<CR>
+" }
 
 "     The glorious & dear vim leader declarations {
 " nnoremap <Leader>w :w<CR>
@@ -357,6 +362,9 @@ nnoremap <Leader>sp [s
 nnoremap <Leader>sn ]s
 nnoremap <Leader>cp [c
 nnoremap <Leader>cn ]c
+
+" Select block
+nnoremap <Leader>b {<S-V>}k
 "     }
 "   }
 
@@ -382,6 +390,14 @@ vnoremap E $
 
 vnoremap <Leader>u gU
 vnoremap <Leader>l gu
+
+" Yank to clipboard
+nnoremap <Leader><Leader>y "+y
+vnoremap <Leader><Leader>y "+y
+
+" Paste from clipboard
+nnoremap <Leader><Leader>p "+p
+vnoremap <Leader><Leader>p "+p"
 "   }
 
 "   Insertion mode remaps {

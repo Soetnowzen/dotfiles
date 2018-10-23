@@ -17,11 +17,16 @@ export EDITOR
 # Aliases
 # {
 alias ls='ls -F --color --group-directories-first'
-alias l='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
+alias l='ll'
 alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
 alias :q='exit'
+alias apt-get='sudo apt-get'
 alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
 alias clr='clear'
@@ -35,6 +40,7 @@ alias grep='grep --color'
 alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
 alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
 alias h='history'
+alias j='jobs -l'
 alias less='less -r'
 alias mkdir='mkdir -pv'
 alias mount='mount | column -t'
@@ -48,9 +54,15 @@ alias v-tsplit='vim -p'
 alias v-vsplit='vim -O'
 alias v='vim -p'
 alias vimr='vim ~/.vimrc'
+alias wget='wget -c'
 
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
+
+if [[ $UID != 0 ]]; then
+  alias reboot='sudo reboot'
+  alias update='sudo apt-get update && sudo apt-get upgrade'
+fi
 # }
 
 most_used_cmd()
@@ -274,14 +286,40 @@ __prompt_command()
   branch=$(parse_git_branch)
   if [[ ${branch} != "" ]]; then
     PS1+="\\[${YELLOW}\\](${branch}"
-    git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
-    if [[ ${git_tag} != "" ]]; then
-      PS1+=", \\[${WHITE}\\]${git_tag}\\[${YELLOW}\\]"
-    fi
-    git_count=$(modified_git_count)
-    if [[ ${git_count} != "" ]]; then
-      PS1+=", \\[${MAGENTA}\\]${git_count}"
-      git_diff_word=$(git diff --word-diff 2> /dev/null | grep '\[-.*-\]\|{+.*+}')
+    __git_prompt
+  fi
+  if [[ $EXIT != 0 ]]; then
+    # Print exit code if not 0
+    PS1+=" \\[${RED}\\]${EXIT}"
+  fi
+
+  PS1+="\\[${RESET}\\]]\\n\\$ "
+}
+
+function __git_prompt()
+{
+  __git_tag_prompt
+  __git_modifications_prompt
+  __git_commit_status
+  __git_stash_count
+  PS1+=")"
+}
+
+function __git_tag_prompt()
+{
+  git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
+  if [[ ${git_tag} != "" ]]; then
+    PS1+=", \\[${WHITE}\\]${git_tag}\\[${YELLOW}\\]"
+  fi
+}
+
+function __git_modifications_prompt()
+{
+  git_count=$(modified_git_count)
+  if [[ ${git_count} != "" ]]; then
+    PS1+=", \\[${MAGENTA}\\]${git_count}"
+    git_diff_word=$(git diff --word-diff 2> /dev/null | grep '\[-.*-\]\|{+.*+}')
+    if [[ ${git_diff_word} != "" ]]; then
       change_rows=$(echo "${git_diff_word}" | grep -c '\[-.*-\]{+.*+}')
       if [[ ${change_rows} != "0" ]]; then
         PS1+=" \\[${YELLOW}\\]~${change_rows}"
@@ -294,25 +332,26 @@ __prompt_command()
       if [[ ${minus_rows} != "0" ]]; then
         PS1+=" \\[${RED}\\]-${minus_rows}"
       fi
-      PS1+="\\[${YELLOW}\\]"
     fi
-    git_commits_behind=$(git status -uno | grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead')
-    if [[ ${git_commits_behind} != "" ]]; then
-      git_commits_behind=$(echo "$git_commits_behind" | tr '\n' ' ' | xargs)
-      PS1+=", \\[${VIOLET}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
-    fi
-    git_stash_count=$(git stash list 2> /dev/null | wc -l)
-    if [[ ${git_stash_count} != "0" ]]; then
-      PS1+=", stash@{\\[${ORANGE}\\]${git_stash_count}\\[${YELLOW}\\]}"
-    fi
-    PS1+=")"
+    PS1+="\\[${YELLOW}\\]"
   fi
-  if [[ $EXIT != 0 ]]; then
-    # Print exit code if not 0
-    PS1+=" \\[${RED}\\]${EXIT}"
-  fi
+}
 
-  PS1+="\\[${RESET}\\]]\\n\\$ "
+function __git_commit_status()
+{
+  git_commits_behind=$(git status -uno | grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead')
+  if [[ ${git_commits_behind} != "" ]]; then
+    git_commits_behind=$(echo "$git_commits_behind" | tr '\n' ' ' | xargs)
+    PS1+=", \\[${VIOLET}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
+  fi
+}
+
+function __git_stash_count()
+{
+  git_stash_count=$(git stash list 2> /dev/null | wc -l)
+  if [[ ${git_stash_count} != "0" ]]; then
+    PS1+=", stash@{\\[${ORANGE}\\]${git_stash_count}\\[${YELLOW}\\]}"
+  fi
 }
 
 # Magento

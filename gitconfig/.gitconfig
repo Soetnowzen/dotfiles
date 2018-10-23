@@ -55,6 +55,7 @@
 	lg2 = log --decorate --graph --pretty=format:"%C(Yellow)%h%C(red)%d\\ %C(reset)%s\\ %C(blue)[%cn]"
 	lg3 = log --graph --abbrev-commit --decorate --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
 	lg4 = log --format="%Cred%h%Creset\\ %s%Cgreen(%cr)%C(blue)<%an>%Creset%C(yellow)%d%Creset" --no-merges
+	lg5 = log --graph --abbrev-commit --decorate --format=format:"%C(red)%H\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
 	ll = log --graph --decorate --numstat --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s\\ %C(blue)[%cn]%C(green)(%ar)"
 	mt = mergetool
 	ours = checkout --ours --
@@ -63,7 +64,6 @@
 	ps = push
 	r = revert
 	restore = checkout -m --
-	r = reset
 	r1 = reset HEAD^
 	r2 = reset HEAD~2
 	rh = reset --hard
@@ -77,6 +77,5 @@
 	st = stash
 	t = tag
 	theirs = checkout --theirs --
-	undo = reset --soft HEAD~1
 	zip = archive --format=zip HEAD
 	zip-latest = archive -o latest.zip HEAD
