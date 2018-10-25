@@ -31,7 +31,6 @@ alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
 alias clr='clear'
 alias df="df -h"
-alias fi_="find \$$ | grep '[^\\/]*$'"
 alias g='git'
 alias g_pl_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
@@ -121,22 +120,10 @@ function extract()
   fi
 }
 
-fi_a ()
+function fi_()
 {
   arguments="${*}"
-  echo "'${arguments}'"
-  for line in $(find "$arguments" | grep '[^\/]*$'); do
-    # line = grep '[^\/]*$' "${line}"
-    echo "${line}"
-  done
-  # find "${arguments}" -print0 | while IFS= read -r -d $'\0' line; do
-    # | grep '[^\/]*$'
-    # echo "${line}"
-  # done
-  # find . -type f -iname "*.txt" -print0 | while IFS= read -r -d $'\0' line; do
-    # echo "$line"
-    # ls -l "$line"
-  # done
+  (find "${arguments}" | grep '[^\/]*$')
 }
 
 function up()

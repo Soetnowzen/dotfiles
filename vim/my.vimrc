@@ -22,7 +22,7 @@ function! s:insert_gates() " {
   execute "normal! i#ifndef " . gatename
   execute "normal! o#define " . gatename
   execute "normal! Go#endif /* " . gatename . " */"
-  normal! k
+  normal! ko
 endfunction " }
 augroup c_insert_gates " {
   autocmd!
@@ -297,8 +297,7 @@ set guioptions+=a
 
 " Vertically split the screen into two windows with scrollbind set, <C-W>o to quit
 noremap <Leader>ac :execute AddColumn()<CR>
-function! AddColumn()
-  " {
+function! AddColumn() " {
   execute "norm \<C-u>"
   let @z=&so
   set noscb so=0
@@ -348,8 +347,6 @@ nnoremap + /\C[A-Z]<CR>i_<Esc><Right>~:noh<CR>
 
 " nnoremap <Space> :noh<CR>
 nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
-
-nnoremap <Leader>c /\v[<=>]{4,}<CR>
 " }
 
 "     The glorious & dear vim leader declarations {
@@ -363,6 +360,7 @@ nnoremap <Leader>sp [s
 nnoremap <Leader>sn ]s
 nnoremap <Leader>cp [c
 nnoremap <Leader>cn ]c
+nnoremap <Leader>c /\v[<=>]{4,}<CR>
 
 " Select block
 nnoremap <Leader>b {<S-V>}k
@@ -518,8 +516,8 @@ inoremap <expr> <Space>  index(pairing_characters, strpart(getline('.'), col('.'
 onoremap p i(
 vnoremap p i(
 " Function argument selection (change "around argument", change "inside argument")
-onoremap ia :<c-u>execute "normal! ?[,(]\rwv/[),]\rh"<cr>
-vnoremap ia :<c-u>execute "normal! ?[,(]\rwv/[),]\rh"<cr>")])]" "
+onoremap ia :<C-u>execute "normal! ?[,(]\rwv/[),]\rh"<CR>
+vnoremap ia :<C-u>execute "normal! ?[,(]\rwv/[),]\rh"<CR>")])]" "
 onoremap in( :<C-u>normal! f(vi(<CR>
 onoremap il( :<C-u>normal! F)vi(<CR>
 "   }
@@ -548,8 +546,7 @@ set foldcolumn=1
 " highlight clear Folded
 highlight Folded cterm=Bold gui=Bold
 
-function! MyFoldLevel( lineNumber )
-  " {
+function! MyFoldLevel( lineNumber ) " {
   let thisLine = getline( a:lineNumber )
   " Don't create fold if entire comment or {} pair is on one line.
   if (thisLine =~ '\%(/\*.*\*/\)')
@@ -576,8 +573,8 @@ function! MyFoldLevel( lineNumber )
     return "s1"
   endif
   return '='
-  " }
 endfunction
+"   }
 
 setlocal foldexpr=MyFoldLevel(v:lnum)
 setlocal foldmethod=expr
@@ -603,15 +600,14 @@ augroup END
 "   }
 
 set foldtext=MyFoldText()
-function MyFoldText()
-  " {
+function MyFoldText() " {
   let line = getline(v:foldstart)
   let tabStop = repeat(' ', &tabstop)
   let line = substitute(line, '\t', tabStop, 'g')
   let number_of_lines = v:foldend - v:foldstart + 1
   return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' ☰ '
-  " }
 endfunction
+"   }
 
 set fillchars=vert:\|,fold:-
 " }
@@ -734,6 +730,14 @@ let g:airline_detect_spell=1
 let g:airline_detect_spelllang=1
 let g:airline_left_sep = '▶'
 let g:airline_right_sep = '◀'
+" old vim-powerline symbols
+" let g:airline_left_sep = '⮀'
+let g:airline_left_alt_sep = '⮁'
+" let g:airline_right_sep = '⮂'
+let g:airline_right_alt_sep = '⮃'
+" let g:airline_symbols.branch = '⭠'
+" let g:airline_symbols.readonly = '⭤'
+" let g:airline_symbols.linenr = '⭡'        "
 let g:airline_detect_modified=1
 let g:airline_detect_paste=1
 let g:airline_detect_crypt=1
@@ -745,8 +749,8 @@ function! AirlineInit() " {
   let g:airline_section_x = airline#section#create(['%P'])
   let g:airline_section_y = airline#section#create(['%B'])
   let g:airline_section_z = airline#section#create_right(['%l', '%c'])
-  " }
 endfunction
+"   }
 autocmd VimEnter * call AirlineInit()
 " }
 
@@ -772,7 +776,7 @@ let NERDTreeMapOpenVSplit='v'
 " }
 
 " Syntastic stuff {
-function! s:get_cabal_sandbox()
+function! s:get_cabal_sandbox() " {
   if filereadable('cabal.sandbox.config')
     let l:output = system('cat cabal.sandbox.config | grep local-repo')
     let l:dir = matchstr(substitute(l:output, '\n', ' ', 'g'), 'local-repo: \zs\S\+\ze\/packages')
@@ -781,6 +785,7 @@ function! s:get_cabal_sandbox()
     return ''
   endif
 endfunction
+"   }
 
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
@@ -814,10 +819,11 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -D_FORTIFY_SO
 " let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -D_FORTIFY_SOURCE=1'
 let g:syntastic_enable_signs = 1
 
-function! FindConfig(prefix, what, where)
+function! FindConfig(prefix, what, where) " {
   let cfg = findfile(a:what, escape(a:where, ' ') . ';')
   return cfg !=# '' ? ' ' . a:prefix . ' ' . shellescape(cfg) : ''
 endfunction
+"   }
 
 augroup syntastic " {
   autocmd!
