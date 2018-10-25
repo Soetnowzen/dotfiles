@@ -75,6 +75,7 @@
 	sp = stash pop
 	ss = status -s
 	st = stash
+	sw = show --word-diff
 	t = tag
 	theirs = checkout --theirs --
 	zip = archive --format=zip HEAD

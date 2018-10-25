@@ -220,6 +220,7 @@ let s:comment_map = {
       \ "mail": '>',
       \ "make": '#',
       \ "php": '\/\/',
+      \ "pov": '#',
       \ "profile": '#',
       \ "proto": '\/\/',
       \ "python": '#',

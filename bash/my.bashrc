@@ -65,26 +65,26 @@ if [[ $UID != 0 ]]; then
 fi
 # }
 
-most_used_cmd()
+function most_used_cmd()
 {
   # history | awk 'BEGIN {FS="[ \t]+|\\|"} {print $3}' | sort | uniq -c | sort -nr
   # history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl
   history | tr -s ' ' | cut -d ' ' -f3 | sort | uniq -c | sort -n | tail | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
 }
 
-most_used_cmd_arguments()
+function most_used_cmd_arguments()
 {
   history | tr -s ' ' | cut -d ' ' -f3,4,5,6,7,8,9,10,11 | sort | uniq -c | sort -n # | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
 }
 
-mcd()
+function mcd()
 {
   directory="${1}"
   mkdir -p "$directory"
   cd "$directory" || exit
 }
 
-extract()
+function extract()
 {
   if [ -z "$1" ]; then
     # display usage if no parameters given
@@ -139,6 +139,28 @@ fi_a ()
   # done
 }
 
+function up()
+{
+  LIMIT=$1
+  NEW_PWD=$PWD
+  for ((i=1; i <= LIMIT; i++)); do
+    NEW_PWD=$NEW_PWD/..
+  done
+  cd "$NEW_PWD" || exit
+  export MPWD=$NEW_PWD
+}
+
+function back()
+{
+  LIMIT=$1
+  NEW_PWD=$MPWD
+  for ((i=1; i<= LIMIT; i++)); do
+    NEW_PWD=${NEW_PWD%/..}
+  done
+  cd "$NEW_PWD" || exit
+  export MPWD=$NEW_PWD
+}
+
 # Solarized
 alias sol.dark='source ~/dotfiles/mintty/sol.dark'
 alias sol.light='source ~/dotfiles/mintty/sol.light'
@@ -147,33 +169,12 @@ alias sol.light='source ~/dotfiles/mintty/sol.light'
 bind '"\e[A":history-search-backward' # ]
 bind '"\e[B":history-search-forward' # ]
 
-my_pylint()
+function my_pylint()
 {
   VERSION="${1}"
   PYTHON_FILE="${2}"
   MY_PYLINT="python${VERSION} -m pylint $PYTHON_FILE"
   eval "$MY_PYLINT"
-}
-
-# Bash Prompt
-parse_git_branch()
-{
-  branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-  # */
-  echo "${branch}"
-}
-
-modified_git_count()
-{
-  number_of_changes=$(git status -s -uno 2> /dev/null | wc -l)
-  if [[ ${number_of_changes} != 0 ]]; then
-    echo "${number_of_changes}"
-  fi
-}
-
-commit_count()
-{
-  git_commits_behind=$(git status -uno | grep -i 'Your branch is' | grep -Eo '[0-9]+')
 }
 
 # Colors
@@ -193,7 +194,7 @@ EXIT_UNDERLINE="$(tput rmul)"
 RESET="$(tput sgr0)"
 
 # Color script
-colors_and_formatting()
+function colors_and_formatting()
 {
   # Background
   for clbg in {40..47} {100..107} 49 ; do
@@ -209,7 +210,7 @@ colors_and_formatting()
   done
 }
 
-256-colors()
+function 256-colors()
 {
   for fgbg in 38 48 ; do # Foreground / Background
     for color in {0..255} ; do # Colors
@@ -256,7 +257,7 @@ export GCC_COLORS
 
 # export DISPLAY=:0.0
 
-color_current_directory()
+function __color_current_directory()
 {
   relative_path="${1}"
   relative_path="$(echo "${relative_path}" | sed -e "s/\\([^\\/]\\+$\\)/\\[${UNDERLINE}\\]\\1\\[${EXIT_UNDERLINE}\\]/")"
@@ -283,10 +284,11 @@ __prompt_command()
   # Path
   PS1+="\\[${GREEN}\\]\\w"
   # Get current git branch
-  branch=$(parse_git_branch)
+  branch=$(__parse_git_branch)
   if [[ ${branch} != "" ]]; then
     PS1+="\\[${YELLOW}\\](${branch}"
     __git_prompt
+    PS1+=")"
   fi
   if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
@@ -296,13 +298,19 @@ __prompt_command()
   PS1+="\\[${RESET}\\]]\\n\\$ "
 }
 
+function __parse_git_branch()
+{
+  branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  # */
+  echo "${branch}"
+}
+
 function __git_prompt()
 {
   __git_tag_prompt
   __git_modifications_prompt
   __git_commit_status
   __git_stash_count
-  PS1+=")"
 }
 
 function __git_tag_prompt()
@@ -315,7 +323,7 @@ function __git_tag_prompt()
 
 function __git_modifications_prompt()
 {
-  git_count=$(modified_git_count)
+  git_count=$(__modified_git_count)
   if [[ ${git_count} != "" ]]; then
     PS1+=", \\[${MAGENTA}\\]${git_count}"
     git_diff_word=$(git diff --word-diff 2> /dev/null | grep '\[-.*-\]\|{+.*+}')
@@ -336,6 +344,15 @@ function __git_modifications_prompt()
     PS1+="\\[${YELLOW}\\]"
   fi
 }
+
+function __modified_git_count()
+{
+  number_of_changes=$(git status -s -uno 2> /dev/null | wc -l)
+  if [[ ${number_of_changes} != 0 ]]; then
+    echo "${number_of_changes}"
+  fi
+}
+
 
 function __git_commit_status()
 {
