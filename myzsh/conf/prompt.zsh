@@ -125,6 +125,39 @@ function prompt_sorin_setup {
   add-zsh-hook zshexit prompt_sorin_cleanup
 
   # Set editor-info parameters.
+  # zstyle ':prezto:module:editor:info:completing' format '%B%F{7}...%f%b'
+  # zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%F{1}❯%F{3}❯%F{2}❯%f%b'
+  # zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %F{3}♺%f'
+  # zstyle ':prezto:module:editor:info:keymap:alternate' format ' %B%F{2}❮%F{3}❮%F{1}❮%f%b'
+
+  # # Set git-info parameters.
+  # zstyle ':prezto:module:git:info' verbose 'yes'
+  # zstyle ':prezto:module:git:info:action' format '%F{7}:%f%%B%F{9}%s%f%%b'
+  # zstyle ':prezto:module:git:info:added' format ' %%B%F{2}✚%f%%b'
+  # zstyle ':prezto:module:git:info:ahead' format ' %%B%F{13}⬆%f%%b'
+  # zstyle ':prezto:module:git:info:behind' format ' %%B%F{13}⬇%f%%b'
+  # zstyle ':prezto:module:git:info:branch' format ' %%B%F{2}%b%f%%b'
+  # zstyle ':prezto:module:git:info:commit' format ' %%B%F{3}%.7c%f%%b'
+  # zstyle ':prezto:module:git:info:deleted' format ' %%B%F{1}✖%f%%b'
+  # zstyle ':prezto:module:git:info:modified' format ' %%B%F{4}✱%f%%b'
+  # zstyle ':prezto:module:git:info:position' format ' %%B%F{13}%p%f%%b'
+  # zstyle ':prezto:module:git:info:renamed' format ' %%B%F{5}➜%f%%b'
+  # zstyle ':prezto:module:git:info:stashed' format ' %%B%F{6}✭%f%%b'
+  # zstyle ':prezto:module:git:info:unmerged' format ' %%B%F{3}═%f%%b'
+  # zstyle ':prezto:module:git:info:untracked' format ' %%B%F{7}◼%f%%b'
+  # zstyle ':prezto:module:git:info:keys' format 'status' '%b %p %c:%s%A%B%S%a%d%m%r%U%u'
+
+  # # Set python-info parameters.
+  # zstyle ':prezto:module:python:info:virtualenv' format '%f%F{3}(%v)%F{7} '
+
+  # # Set up non-zero return value display
+  # local show_return="✘ "
+  # # Default is to show the return value
+  # if zstyle -T ':prezto:module:prompt' show-return-val; then
+  #   show_return+='%? '
+  # fi
+
+  # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%B%{$fg[default]%}...%{$reset_color%}%b'
   zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%{$fg[red]%}>%{$fg[yellow]%}>%{$fg[green]%}>%{$reset_color%}%b'
   zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %{$fg[yellow]%}!%{$reset_color%}'

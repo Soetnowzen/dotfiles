@@ -279,7 +279,7 @@ __prompt_command()
   fi
   if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
-    PS1+=" \\[${RED}\\]${EXIT}"
+    PS1+=" \\[${RED}\\]✘${EXIT}"
   fi
 
   PS1+="\\[${RESET}\\]]\\n\\$ "
@@ -310,10 +310,11 @@ function __git_tag_prompt()
 
 function __git_modifications_prompt()
 {
-  git_count=$(__modified_git_count)
+  __modified_files_count
+  git_count=$(git diff --word-diff 2> /dev/null)
   if [[ ${git_count} != "" ]]; then
-    PS1+=", \\[${MAGENTA}\\]${git_count}"
-    git_diff_word=$(git diff --word-diff 2> /dev/null | grep '\[-.*-\]\|{+.*+}')
+    PS1+=","
+    git_diff_word=$(echo "$git_count" | grep '\[-.*-\]\|{+.*+}')
     if [[ ${git_diff_word} != "" ]]; then
       change_rows=$(echo "${git_diff_word}" | grep -c '\[-.*-\]{+.*+}')
       if [[ ${change_rows} != "0" ]]; then
@@ -332,21 +333,55 @@ function __git_modifications_prompt()
   fi
 }
 
-function __modified_git_count()
+function __modified_files_count()
 {
-  number_of_changes=$(git status -s -uno 2> /dev/null | wc -l)
-  if [[ ${number_of_changes} != 0 ]]; then
-    echo "${number_of_changes}"
+  git_status=$(git status -s 2> /dev/null)
+  if [[ ${git_status} != "" ]]; then
+    PS1+=","
+    added_files=$(echo "${git_status}" | grep -c '^A ')
+    if [[ $added_files != 0 ]]; then
+      PS1+=" \\[${GREEN}\\]✚${added_files}"
+      # PS1+=" \\[${GREEN}\\]+${added_files}"
+    fi
+    deleted_files=$(echo "${git_status}" | grep -c '^D ')
+    if [[ $deleted_files != 0 ]]; then
+      PS1+=" \\[${RED}\\]✖${deleted_files}"
+      # PS1+=" \\[${RED}\\]-${deleted_files}"
+    fi
+    modified_files=$(echo "${git_status}" | grep -c '^ M')
+    if [[ $modified_files != 0 ]]; then
+      PS1+=" \\[${BLUE}\\]✱${modified_files}"
+      # PS1+=" \\[${BLUE}\\]~${modified_files}"
+    fi
+    renamed_files=$(echo "${git_status}" | grep -c '^R ')
+    if [[ $renamed_files != 0 ]]; then
+      PS1+=" \\[${MAGENTA}\\]➜${renamed_files}"
+      # PS1+=" \\[${MAGENTA}\\]R${renamed_files}"
+    fi
+    # '  ' unmerged: ═ YELLOW
+    untraced_files=$(echo "${git_status}" | grep -c '^??')
+    if [[ $untraced_files != 0 ]]; then
+      PS1+=" \\[${WHITE}\\]◼${untraced_files}"
+      # PS1+=" \\[${WHITE}\\]?${untraced_files}"
+    fi
+    PS1+="\\[${YELLOW}\\]"
   fi
 }
 
-
 function __git_commit_status()
 {
-  git_commits_behind=$(git status -uno | grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead')
-  if [[ ${git_commits_behind} != "" ]]; then
-    git_commits_behind=$(echo "$git_commits_behind" | tr '\n' ' ' | xargs)
-    PS1+=", \\[${VIOLET}\\]${git_commits_behind}\\[${RESET}${YELLOW}\\]"
+  git_commit_status=$(git status -uno | grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead')
+  if [[ ${git_commit_status} != "" ]]; then
+    PS1+=", \\[${VIOLET}\\]"
+    if [[ $(echo "$git_commit_status" | grep -Eo 'ahead') != "" ]]; then
+      PS1+="⬆"
+    elif [[ $(echo "$git_commit_status" | grep -Eo 'behind') != "" ]]; then
+      PS1+="⬇"
+    elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
+      PS1+="diverged"
+    fi
+    number_of_commits=$(echo "$git_commit_status" | grep -Eo '[0-9]+')
+    PS1+="${number_of_commits}\\[${YELLOW}\\]"
   fi
 }
 
@@ -354,7 +389,7 @@ function __git_stash_count()
 {
   git_stash_count=$(git stash list 2> /dev/null | wc -l)
   if [[ ${git_stash_count} != "0" ]]; then
-    PS1+=", stash@{\\[${ORANGE}\\]${git_stash_count}\\[${YELLOW}\\]}"
+    PS1+=", \\[${ORANGE}\\]✭${git_stash_count}\\[${YELLOW}\\]"
   fi
 }
 

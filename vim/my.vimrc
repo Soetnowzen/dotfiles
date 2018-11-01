@@ -621,8 +621,8 @@ set hlsearch
 " Ignore case when searching
 set ignorecase
 
-nnoremap * /\C\<<C-R>=expand('<cword>')<CR>\><CR>
-nnoremap # ?\C\<<C-R>=expand('<cword>')<CR>\><CR>
+nnoremap * /\v\C<<C-R>=expand('<cword>')<CR>><CR>
+nnoremap # ?\v\C<<C-R>=expand('<cword>')<CR>><CR>
 
 " Show search matches while typing
 set incsearch
@@ -724,7 +724,11 @@ nnoremap <Leader>r :LinediffReset<CR>
 
 " Airline {
 " :AirlineTheme solarized
-let g:airline_solarized_bg='dark'
+if has('gui_running')
+  let g:airline_solarized_bg='light'
+else
+  let g:airline_solarized_bg='dark'
+endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
