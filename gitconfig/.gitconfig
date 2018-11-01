@@ -56,7 +56,8 @@
 	lg3 = log --graph --abbrev-commit --decorate --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
 	lg4 = log --format="%Cred%h%Creset\\ %s%Cgreen(%cr)%C(blue)<%an>%Creset%C(yellow)%d%Creset" --no-merges
 	lg5 = log --graph --abbrev-commit --decorate --format=format:"%C(red)%H\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
-	ll = log --graph --decorate --numstat --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s\\ %C(blue)[%cn]%C(green)(%ar)"
+	ll = log --graph --decorate --numstat --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
+	ll2 = log --graph --decorate --numstat --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s\\ %C(blue)[%cn]%C(green)(%ar)"
 	mt = mergetool
 	ours = checkout --ours --
 	pl = pull

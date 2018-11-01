@@ -442,6 +442,8 @@ inoremap ''' ''''''<Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
+inoremap ;<CR> <End>;<CR>
+inoremap .<CR> <End>.<CR>
 inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
 augroup c_insert_mapping " {
   autocmd!

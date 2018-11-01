@@ -1,0 +1,45 @@
+ZSHHOME=$HOME/dotfiles/myzsh
+TMPDIR=$HOME/.zshtmp
+mkdir -p $TMPDIR
+
+fpath+=( $ZSHHOME/func )
+
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=1000
+setopt appendhistory autocd
+
+autoload -Uz colors && colors
+
+zstyle :compinstall filename '$HOME/.zshrc'
+
+unsetopt share_history
+setopt extended_glob
+setopt interactive_comments
+setopt prompt_subst
+
+source $ZSHHOME/conf/helper.zsh
+
+autoload -Uz git-branch-current
+autoload -Uz git-dir
+autoload -Uz git-info
+autoload -Uz add-zsh-trap
+
+zstyle ':prezto:*:*' color 'yes'
+zstyle ':prezto:module:terminal' auto-title 'yes'
+
+source $ZSHHOME/conf/completion.zsh
+source $ZSHHOME/conf/directory.zsh
+source $ZSHHOME/conf/editor.zsh
+source $ZSHHOME/conf/prompt.zsh
+source $ZSHHOME/conf/terminal.zsh
+source $ZSHHOME/conf/gitalias.zsh
+source $ZSHHOME/conf/bashrun.zsh
+
+chcd() { cd $($ZSHHOME/prog/chcd.py "$1") }
+
+bindkey -v
+
+if [[ -f $HOME/workplace.zsh ]]; then
+  source $HOME/workplace.zsh
+fi
