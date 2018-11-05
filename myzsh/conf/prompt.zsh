@@ -159,30 +159,31 @@ function prompt_sorin_setup {
 
   # Set editor-info parameters.
   zstyle ':prezto:module:editor:info:completing' format '%B%{$fg[default]%}...%{$reset_color%}%b'
-  zstyle ':prezto:module:editor:info:keymap:primary' format ' %B%{$fg[red]%}>%{$fg[yellow]%}>%{$fg[green]%}>%{$reset_color%}%b'
+  zstyle ':prezto:module:editor:info:keymap:primary' format ' %{$fg[red]%}>%{$fg[yellow]%}>%{$fg[green]%}>%{$reset_color%}'
   zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %{$fg[yellow]%}!%{$reset_color%}'
   zstyle ':prezto:module:editor:info:keymap:alternate' format ' %B%{$fg[green]%}<%{$fg[yellow]%}<%{$fg[red]%}<%{$reset_color%}%b'
 
   # Set git-info parameters.
   zstyle ':prezto:module:git:info' verbose 'yes'
-  zstyle ':prezto:module:git:info:action' format '%%{$fg[default]%}:%{$reset_color%}%%B%%{$fg_bold[red]%}%s%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:added' format ' %%B%{$fg[green]%}%a+%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:ahead' format ' %%B%%{$fg_bold[magenta]%}%A^%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:behind' format ' %%B%%{$fg_bold[magenta]%}%Bv%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:branch' format ' %%B%{$fg[green]%}%b%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:commit' format ' %%B%{$fg[yellow]%}%.7c%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:deleted' format ' %%B%{$fg[red]%}%dx%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:modified' format ' %%B%{$fg[blue]%}%m*%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:position' format ' %%B%%{$fg_bold[magenta]%}%p%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:renamed' format ' %%B%{$fg[green]%}%r>%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:stashed' format ' %%B%{$fg[cyan]%}%Ss%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:unmerged' format ' %%B%{$fg[yellow]%}%U=%{$reset_color%}%%b'
-  zstyle ':prezto:module:git:info:untracked' format ' %%B%%{$fg[default]%}%u?%{$reset_color%}%%b'
+  zstyle ':prezto:module:git:info:action' format '%%{$fg[default]%}:%{$reset_color%}%%{$fg[red]%}%s%{$reset_color%}'
+  zstyle ':prezto:module:git:info:added' format ' %{$fg[green]%}%a✚%{$reset_color%}'
+  zstyle ':prezto:module:git:info:ahead' format ' %%B%%{$fg[magenta]%}%A⬆%{$reset_color%}%%b'
+  zstyle ':prezto:module:git:info:behind' format ' %%B%%{$fg[magenta]%}%B⬇%{$reset_color%}%%b'
+  zstyle ':prezto:module:git:info:branch' format ' %{$fg[yellow]%}%b%{$reset_color%}'
+  zstyle ':prezto:module:git:info:commit' format ' %{$fg[yellow]%}%.7c%{$reset_color%}'
+  zstyle ':prezto:module:git:info:deleted' format ' %{$fg[red]%}%d✖%{$reset_color%}'
+  zstyle ':prezto:module:git:info:modified' format ' %{$fg[blue]%}%m✱%{$reset_color%}'
+  zstyle ':prezto:module:git:info:position' format ' %%{$fg[magenta]%}%p%{$reset_color%}'
+  zstyle ':prezto:module:git:info:renamed' format ' %{$fg[green]%}%r➜%{$reset_color%}'
+  zstyle ':prezto:module:git:info:stashed' format ' %%B%%{$fg[red]%}%S✭%{$reset_color%}%%b'
+  zstyle ':prezto:module:git:info:unmerged' format ' %{$fg[yellow]%}%U=%{$reset_color%}'
+  zstyle ':prezto:module:git:info:untracked' format ' %%{$fg[default]%}%u◼%{$reset_color%}'
   zstyle ':prezto:module:git:info:keys' format \
     'status' '$(coalesce "%b" "%p" "%c")%s%A%B%S%a%d%m%r%U%u'
 
   # Define prompts.
-  PROMPT='${SSH_TTY:+"%{$fg_bold[red]%}%n%{$reset_color%}%{$fg[default]%}@%{$reset_color%}%{$fg[yellow]%}%m%{$reset_color%} "}%{$fg[blue]%}${_prompt_sorin_pwd}%(!. %B%{$fg[red]%}#%{$reset_color%}%b.)${(e)editor_info[keymap]} '
+  # PROMPT='${SSH_TTY:+"%{$fg_bold[red]%}%n%{$reset_color%}%{$fg[default]%}@%{$reset_color%}%{$fg[yellow]%}%m%{$reset_color%} "}%{$fg[blue]%}${_prompt_sorin_pwd}%(!. %B%{$fg[red]%}#%{$reset_color%}%b.)${(e)editor_info[keymap]} '
+  PROMPT='${SSH_TTY:+"%{$fg[blue]%}%n%{$fg[default]%}@%{$fg[blue]%}%m "}%{$fg[green]%}${_prompt_sorin_pwd}%(!. %B%{$fg[red]%}#%{$fg[default]%}%b.)${(e)editor_info[keymap]} '
   RPROMPT=''
   SPROMPT='zsh: correct %{$fg[red]%}%R%{$reset_color%} to %{$fg[green]%}%r%{$reset_color%} [nyae]? '
 }

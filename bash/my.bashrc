@@ -288,6 +288,7 @@ __prompt_command()
 function __parse_git_branch()
 {
   branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+  # position="$(git describe --contains --all HEAD 2> /dev/null)"
   # */
   echo "${branch}"
 }
@@ -348,7 +349,7 @@ function __modified_files_count()
       PS1+=" \\[${RED}\\]✖${deleted_files}"
       # PS1+=" \\[${RED}\\]-${deleted_files}"
     fi
-    modified_files=$(echo "${git_status}" | grep -c '^ M')
+    modified_files=$(echo "${git_status}" | grep -c '^\s*M')
     if [[ $modified_files != 0 ]]; then
       PS1+=" \\[${BLUE}\\]✱${modified_files}"
       # PS1+=" \\[${BLUE}\\]~${modified_files}"
@@ -356,9 +357,12 @@ function __modified_files_count()
     renamed_files=$(echo "${git_status}" | grep -c '^R ')
     if [[ $renamed_files != 0 ]]; then
       PS1+=" \\[${MAGENTA}\\]➜${renamed_files}"
-      # PS1+=" \\[${MAGENTA}\\]R${renamed_files}"
+      # PS1+=" \\[${MAGENTA}\\]>${renamed_files}"
     fi
-    # '  ' unmerged: ═ YELLOW
+    unmerged_files=$(echo "${git_status}" | grep -c '^UU')
+    if [[ $unmerged_files != 0 ]]; then
+      PS1+=" \\[${YELLOW}\\]=${unmerged_files}"
+    fi
     untraced_files=$(echo "${git_status}" | grep -c '^??')
     if [[ $untraced_files != 0 ]]; then
       PS1+=" \\[${WHITE}\\]◼${untraced_files}"
@@ -375,8 +379,10 @@ function __git_commit_status()
     PS1+=", \\[${VIOLET}\\]"
     if [[ $(echo "$git_commit_status" | grep -Eo 'ahead') != "" ]]; then
       PS1+="⬆"
+      # PS1+="^"
     elif [[ $(echo "$git_commit_status" | grep -Eo 'behind') != "" ]]; then
       PS1+="⬇"
+      # PS1+="v"
     elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
       PS1+="diverged"
     fi

@@ -234,6 +234,7 @@ let s:comment_map = {
       \ "text": '#',
       \ "tmux": "#",
       \ "vim": '"',
+      \ "zsh": '#',
       \ }
 
 function! ToggleComment()
@@ -435,8 +436,8 @@ inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\
 inoremap <expr> ` strpart(getline('.'), col('.')-1, 1) == "\`" ? "\<Right>" : "\`\`\<Left>"
 inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>" : " "
 inoremap /* /**/<Left><Left>
-inoremap /*<BS> <NOP>
-inoremap /*<BS><BS> <NOP>
+inoremap <expr> *  strpart(getline('.'), col('.')-1, 1) == "*" ? "\<Right>" : "*"
+inoremap <expr> /  strpart(getline('.'), col('.')-1, 1) == "/" ? "\<Right>" : "/"
 inoremap """ """"""<Left><Left><Left>
 inoremap ''' ''''''<Left><Left><Left>
 inoremap ,, <End>,
@@ -457,15 +458,15 @@ augroup make_insert_mapping " {
   autocmd FileType make,automake inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
   autocmd FileType make,automake,spec inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
   autocmd FileType make,automake,spec inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
-  autocmd FileType sh,make,automake inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-  autocmd FileType sh,make,automake inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+  autocmd FileType zsh,sh,make,automake inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+  autocmd FileType zsh,sh,make,automake inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 augroup END
 "     }
 augroup sh_insert_mapping " {
   autocmd!
-  autocmd FileType sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
-  autocmd FileType sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
-  autocmd FileType sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
+  autocmd FileType zsh,sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
+  autocmd FileType zsh,sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
+  autocmd FileType zsh,sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
 augroup END
 "     }
 augroup vim_insert_mapping " {
@@ -665,8 +666,8 @@ set shiftwidth=2
 
 augroup indentaion_handling " {
   autocmd!
-  autocmd FileType python,perl,xml,make,automake,gitconfig,text set tabstop=4
-  autocmd FileType python,perl,xml,make,automake,gitconfig,text set shiftwidth=4
+  autocmd FileType python,perl,xml,make,automake,gitconfig,text,cpp,c set tabstop=4
+  autocmd FileType python,perl,xml,make,automake,gitconfig,text,cpp,c set shiftwidth=4
   autocmd FileType make,automake,gitconfig,text set noexpandtab
 augroup END
 "   }
