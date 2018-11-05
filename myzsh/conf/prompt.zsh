@@ -161,7 +161,7 @@ function prompt_sorin_setup {
   zstyle ':prezto:module:editor:info:completing' format '%B%{$fg[default]%}...%{$reset_color%}%b'
   zstyle ':prezto:module:editor:info:keymap:primary' format ' %{$fg[red]%}>%{$fg[yellow]%}>%{$fg[green]%}>%{$reset_color%}'
   zstyle ':prezto:module:editor:info:keymap:primary:overwrite' format ' %{$fg[yellow]%}!%{$reset_color%}'
-  zstyle ':prezto:module:editor:info:keymap:alternate' format ' %B%{$fg[green]%}<%{$fg[yellow]%}<%{$fg[red]%}<%{$reset_color%}%b'
+  zstyle ':prezto:module:editor:info:keymap:alternate' format ' %{$fg[green]%}<%{$fg[yellow]%}<%{$fg[red]%}<%{$reset_color%}'
 
   # Set git-info parameters.
   zstyle ':prezto:module:git:info' verbose 'yes'

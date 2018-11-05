@@ -436,6 +436,7 @@ inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\
 inoremap <expr> ` strpart(getline('.'), col('.')-1, 1) == "\`" ? "\<Right>" : "\`\`\<Left>"
 inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>" : " "
 inoremap /* /**/<Left><Left>
+inoremap /** /***/<Left><Left>
 inoremap <expr> *  strpart(getline('.'), col('.')-1, 1) == "*" ? "\<Right>" : "*"
 inoremap <expr> /  strpart(getline('.'), col('.')-1, 1) == "/" ? "\<Right>" : "/"
 inoremap """ """"""<Left><Left><Left>
@@ -859,9 +860,10 @@ let g:gitgutter_diff_args = '-w'
 let bit_operations = "*&|"
 let bit_operations_after = "|[". bit_operations ."]{1,2}\\w"
 let bit_operations_before = "|\\w[". bit_operations ."]{1,2}"
+let space_tab = "| +\t+|\t+ +"
 
-let pattern = "\\s(if|for|while)\\(" " . bit_operations_after . bit_operations_before
-autocmd FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
+let pattern = "\\s(if|for|while)\\(" . space_tab
+" autocmd FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
 execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'

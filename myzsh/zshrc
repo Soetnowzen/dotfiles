@@ -28,6 +28,24 @@ autoload -Uz add-zsh-trap
 zstyle ':prezto:*:*' color 'yes'
 zstyle ':prezto:module:terminal' auto-title 'yes'
 
+alias ls='ls -F --color --group-directories-first'
+alias la='ls -A'
+alias ll='la -l'
+alias l='ll'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+alias gitr='vim ~/.gitconfig'
+alias psu='ps u --forest'
+alias tm='tmux attach || tmux new'
+alias v-split='vim -o'
+alias v-tsplit='vim -p'
+alias v-vsplit='vim -O'
+alias v='vim -p'
+alias vimr='vim ~/.vimrc'
+
 source $ZSHHOME/conf/completion.zsh
 source $ZSHHOME/conf/directory.zsh
 source $ZSHHOME/conf/editor.zsh
