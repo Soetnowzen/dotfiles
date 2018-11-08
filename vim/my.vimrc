@@ -627,7 +627,7 @@ nnoremap * /\v\C<<C-R>=expand('<cword>')<CR>><CR>
 nnoremap # ?\v\C<<C-R>=expand('<cword>')<CR>><CR>
 " %s/\v<rhai_ilc_shutdown>/\=join(map(split(submatch(0), "_", 1), "toupper(v:val[:0]).tolower(v:val[1:])"), "")/gc
 nnoremap <Leader>sc :%s/\v\C(<<C-r>=expand('<cword>')<CR>>)/\=substitute("<C-r>=expand('<cword>')<CR>", "\\C\\([^A-Z]\\)\\([A-Z]\\)", "\\1_\\2", "g")/gc<CR>
-nnoremap <Leader>cc :%s/\v\C(<<C-r>=expand('<cword>')<CR>>)/\=substitute("<C-r>=expand('<cword>')<CR>", "\\C_\\([a-z]\\)", "\\u\\2", "g")/gc<CR>
+nnoremap <Leader>cc :%s/\v\C(<<C-r>=expand('<cword>')<CR>>)/\=substitute("<C-r>=expand('<cword>')<CR>", "\\C_\\([a-z]\\)", "\\u\\1", "g")/gc<CR>
 command! ToSnakeCase
       \ exec "norm \"xygn" |
       \ let @y = substitute(@x, "\\C\\([^A-Z]\\)\\([A-Z]\\)", "\\1_\\2", "g") |

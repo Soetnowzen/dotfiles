@@ -39,7 +39,8 @@ function prompt_sorin_pwd {
     _prompt_sorin_pwd="$MATCH"
     unset MATCH
   else
-    _prompt_sorin_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+    # _prompt_sorin_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+    _prompt_sorin_pwd="$pwd"
   fi
 }
 
