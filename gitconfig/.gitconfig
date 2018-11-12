@@ -49,6 +49,7 @@
 	filelog = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = log -u
+	head = rev-parse HEAD
 	la = "!git config -l | grep alias | cut -c 7-"
 	lg = !"git lg3"
 	lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(red)%h %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ar)%C(reset)' --all
@@ -64,9 +65,9 @@
 	pr = pull --rebase
 	ps = push
 	r = revert
-	restore = checkout -m --
 	r1 = reset HEAD^
 	r2 = reset HEAD~2
+	restore = checkout -m --
 	rh = reset --hard
 	rh1 = reset HEAD^ --hard
 	rh2 = reset HEAD~2 --hard
