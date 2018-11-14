@@ -8,6 +8,10 @@ if [ -r ~/.bashrc.work ]; then
   . ~/.bashrc.work
 fi
 
+dotfiles_dir="$HOME/dotfiles/bash"
+source "$dotfiles_dir/_known_hosts.bash"
+source "$dotfiles_dir/git-completion.bash"
+
 # Variables
 #{
 EDITOR=vim
