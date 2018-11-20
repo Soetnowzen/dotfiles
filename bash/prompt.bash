@@ -76,9 +76,9 @@ function __git_modifications_prompt()
   __modified_files_count
   git_count=$(git diff --word-diff 2> /dev/null)
   if [[ ${git_count} != "" ]]; then
-    PS1+=","
     git_diff_word=$(echo "$git_count" | grep '\[-.*-\]\|{+.*+}')
     if [[ ${git_diff_word} != "" ]]; then
+      PS1+=","
       change_rows=$(echo "${git_diff_word}" | grep -c '\[-.*-\]{+.*+}')
       if [[ ${change_rows} != "0" ]]; then
         PS1+=" $YELLOW~${change_rows}"

@@ -21,6 +21,8 @@ vim:
 	ln -fsn $(here)/vim/log.vim $(HOME)/.vim/syntax/log.vim
 	mkdir -p $(HOME)/.vim/.backup
 	vim +PluginInstall +qall
+	mkdir -p $(HOME)/.vim/custom
+	ln -fsn $(here)/vim/configurations/* $(HOME)/.vim/custom/.
 
 vimperator:
 	ln -fsn $(here)/vimperator/my.vimperatorrc $(HOME)/.vimperatorrc
