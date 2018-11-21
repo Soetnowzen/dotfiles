@@ -21,6 +21,10 @@ syntax region Cyan start='<' skip='\v\\.' end='>'
 syntax region Cyan start='(' skip='\v\\.' end=')'
 syntax region Cyan start='\"' skip='\v\\.' end='\"'
 
+syntax match Magenta '\cmakemake'
+syntax match Green '[a-zA-Z]\+=\w\+,\{0,1\}'
+syntax match Violet '\csfa'
+
 highlight link potionOperator Operator
 highlight Black ctermfg=Black guifg=Black
 highlight Blue ctermfg=DarkBlue guifg=DarkBlue

@@ -18,11 +18,11 @@ vim:
 		else git clone https://github.com/VundleVim/Vundle.vim.git $(HOME)/.vim/bundle/Vundle.vim; \
 	fi
 	mkdir -p $(HOME)/.vim/syntax
-	ln -fsn $(here)/vim/log.vim $(HOME)/.vim/syntax/log.vim
+	ln -fsn $(here)/vim/syntax/*.vim $(HOME)/.vim/syntax/.
 	mkdir -p $(HOME)/.vim/.backup
 	vim +PluginInstall +qall
 	mkdir -p $(HOME)/.vim/custom
-	ln -fsn $(here)/vim/configurations/* $(HOME)/.vim/custom/.
+	ln -fsn $(here)/vim/configurations/*.vim $(HOME)/.vim/custom/.
 
 vimperator:
 	ln -fsn $(here)/vimperator/my.vimperatorrc $(HOME)/.vimperatorrc

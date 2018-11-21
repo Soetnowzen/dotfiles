@@ -86,11 +86,7 @@ set wildmode=list:longest,full
 "   line break options {
 set linebreak
 set showbreak=\ \ 
-augroup showbreaker " {
-  autocmd!
-  autocmd FileType python,perl,xml,make,automake,gitconfig,text set showbreak=\ \ \ \ 
-augroup END
-"     }
+
 set cindent
 set cpoptions+=n
 set cinoptions+=(0
@@ -301,34 +297,17 @@ inoremap ;;<CR> ;;<CR>
 inoremap ;<CR> <End>;<CR>
 inoremap .<CR> <End>.<CR>
 inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
-augroup c_insert_mapping " {
-  autocmd!
-  autocmd FileType c,cpp,sh inoremap #ifdef<Space> #ifdef<CR>#endif<Up><End><Space>
-  autocmd FileType c,cpp,sh inoremap #ifndef<Space> #ifndef<CR>#endif<Up><End><Space>
-augroup END
-"     }
 augroup make_insert_mapping " {
   autocmd!
-  autocmd FileType make,automake inoremap ifdef<Space> ifdef<CR>endif<Up><End><Space>
-  autocmd FileType make,automake inoremap ifndef<Space> ifndef<CR>endif<Up><End><Space>
-  autocmd FileType make,automake,spec inoremap ifeq<Space> ifeq<CR>endif<Up><End><Space>(,)<Left><Left>
-  autocmd FileType make,automake,spec inoremap ifneq<Space> ifneq<CR>endif<Up><End><Space>(,)<Left><Left>
-  autocmd FileType zsh,sh,make,automake inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-  autocmd FileType zsh,sh,make,automake inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+  autocmd FileType zsh inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
+  autocmd FileType zsh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
 augroup END
 "     }
 augroup sh_insert_mapping " {
   autocmd!
-  autocmd FileType zsh,sh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
-  autocmd FileType zsh,sh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
-  autocmd FileType zsh,sh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
-augroup END
-"     }
-augroup vim_insert_mapping " {
-  autocmd!
-  autocmd FileType vim inoremap if<Space> if<CR>endif<Up><End><Space>
-  autocmd FileType vim inoremap elseif<Space> elseif<Space>
-  autocmd FileType vim inoremap augroup<Space> augroup<CR><Tab>autocmd!<CR>augroup<Space>END<Up><Up><End><Space>
+  autocmd FileType zsh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
+  autocmd FileType zsh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
+  autocmd FileType zsh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
 augroup END
 "     }
 augroup tcsh_insert_mapping " {
@@ -463,14 +442,6 @@ set expandtab
 " Tabs only two spaces
 set tabstop=2
 set shiftwidth=2
-
-augroup indentaion_handling " {
-  autocmd!
-  autocmd FileType python,perl,xml,make,automake,gitconfig,text,cpp,c set tabstop=4
-  autocmd FileType python,perl,xml,make,automake,gitconfig,text,cpp,c set shiftwidth=4
-  autocmd FileType make,automake,gitconfig,text set noexpandtab
-augroup END
-"   }
 " }
 
 " Backups {
