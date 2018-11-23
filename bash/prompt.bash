@@ -106,7 +106,7 @@ function __modified_files_count()
       PS1+=" $GREEN✚${added_files}"
       # PS1+=" $GREEN+${added_files}"
     fi
-    deleted_files=$(echo "${git_status}" | grep -c '^D ')
+    deleted_files=$(echo "${git_status}" | grep -c '^\s*D')
     if [[ $deleted_files != 0 ]]; then
       PS1+=" $RED✖${deleted_files}"
       # PS1+=" $RED-${deleted_files}"

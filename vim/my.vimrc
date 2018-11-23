@@ -327,21 +327,6 @@ augroup markdown_insert_mapping " {
   autocmd FileType markdown inoremap <expr> ;  strpart(getline('.'), col('.')-1, 1) == ";" ? "\<Right>" : ";"
 augroup END
 "     }
-augroup python_insert_mapping " {
-  autocmd!
-  autocmd FileType python inoremap if<Space> if<Space>:<Left>
-  autocmd FileType python inoremap elif<Space> elif<Space>:<Left>
-  autocmd FileType python inoremap for<Space> for<Space>:<Left>
-  autocmd FileType python inoremap while<Space> while<Space>:<Left>
-  autocmd FileType python inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
-augroup END
-"     }
-augroup xml_insert_mapping " {
-  autocmd!
-  autocmd FileType xml inoremap <! <!----><Left><Left><Left>
-  autocmd FileType xml inoremap <expr> - strpart(getline('.'), col('.')-1, 1) == "-" ? "\<Right>" : "-"
-augroup END
-"     }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
