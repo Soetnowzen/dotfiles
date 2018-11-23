@@ -9,9 +9,10 @@ if [ -r ~/.bashrc.work ]; then
 fi
 
 dotfiles_dir="$HOME/dotfiles/bash"
-source "$dotfiles_dir/scripts/_known_hosts.bash"
-source "$dotfiles_dir/scripts/git-completion.bash"
 source "$dotfiles_dir/configurations/prompt.bash"
+source "$dotfiles_dir/scripts/_known_hosts.bash"
+source "$dotfiles_dir/scripts/change_directory.bash"
+source "$dotfiles_dir/scripts/git-completion.bash"
 
 # Variables
 #{
@@ -25,11 +26,6 @@ alias ls='ls -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
 alias l='ll'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .4='cd ../../../..'
-alias .5='cd ../../../../..'
 alias :q='exit'
 alias apt-get='sudo apt-get'
 alias bashr='vim ~/.bashrc'
@@ -59,6 +55,8 @@ alias v-tsplit='vim -p'
 alias v-vsplit='vim -O'
 alias v='vim -p'
 alias vimr='vim ~/.vimrc'
+alias vs='vim -o'
+alias vv='vim -O'
 alias wget='wget -c'
 
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
@@ -130,28 +128,6 @@ function fi_()
 {
   arguments="${*}"
   (find "${arguments}" | grep '[^\/]*$')
-}
-
-function up()
-{
-  LIMIT=$1
-  NEW_PWD=$PWD
-  for ((i=1; i <= LIMIT; i++)); do
-    NEW_PWD=$NEW_PWD/..
-  done
-  cd "$NEW_PWD" || exit
-  export MPWD=$NEW_PWD
-}
-
-function back()
-{
-  LIMIT=$1
-  NEW_PWD=$MPWD
-  for ((i=1; i<= LIMIT; i++)); do
-    NEW_PWD=${NEW_PWD%/..}
-  done
-  cd "$NEW_PWD" || exit
-  export MPWD=$NEW_PWD
 }
 
 # Solarized
