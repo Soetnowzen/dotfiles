@@ -9,9 +9,9 @@ if [ -r ~/.bashrc.work ]; then
 fi
 
 dotfiles_dir="$HOME/dotfiles/bash"
-source "$dotfiles_dir/_known_hosts.bash"
-source "$dotfiles_dir/git-completion.bash"
-source "$dotfiles_dir/prompt.bash"
+source "$dotfiles_dir/scripts/_known_hosts.bash"
+source "$dotfiles_dir/scripts/git-completion.bash"
+source "$dotfiles_dir/configurations/prompt.bash"
 
 # Variables
 #{
