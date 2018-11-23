@@ -12,7 +12,7 @@ Locale=sv_SE
 Charset=UTF-8
 AllowSetSelection=true
 
-Font=LiterationMono NF
+Font=LiberationMono NF
 AllowBlinking=yes
 
 ForegroundColour=131, 148, 150
