@@ -26,6 +26,7 @@
 [alias]
 	a = add
 	aa = add --all
+	alias =  config --get-regexp alias
 	ap = add -p
 	au = add -u
 	bi = bisect run # <my_script> <arguments>
