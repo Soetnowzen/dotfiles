@@ -13,6 +13,7 @@ source "$dotfiles_dir/configurations/prompt.bash"
 source "$dotfiles_dir/scripts/_known_hosts.bash"
 source "$dotfiles_dir/scripts/change_directory.bash"
 source "$dotfiles_dir/scripts/git-completion.bash"
+source "$dotfiles_dir/scripts/output_color.bash"
 
 # Variables
 #{
