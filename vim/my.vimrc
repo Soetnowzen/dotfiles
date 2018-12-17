@@ -116,6 +116,7 @@ augroup set_filetype " {
   autocmd!
   autocmd BufRead,BufNewFile *.json set filetype=json
   autocmd BufRead,BufNewFile *.log set filetype=log
+  autocmd BufRead,BufNewFile log.* set filetype=log
   autocmd BufRead,BufNewFile *.txt set filetype=text
   autocmd BufRead,BufNewFile *.bb set filetype=sh
 augroup END

@@ -2,6 +2,7 @@
 
 # set -o vi
 # ctrl-k (until end), ctrl-u (until begin), ctrl-w (backward), ctrl-y (paste) - cutting and pasting text in the command line
+# ctrl-r search_term to search for previous command.
 # !! to perform last command in this position
 
 if [ -r ~/.bashrc.work ]; then
@@ -13,6 +14,8 @@ source "$dotfiles_dir/configurations/prompt.bash"
 source "$dotfiles_dir/scripts/_known_hosts.bash"
 source "$dotfiles_dir/scripts/change_directory.bash"
 source "$dotfiles_dir/scripts/git-completion.bash"
+source "$dotfiles_dir/scripts/kill-completion.bash"
+source "$dotfiles_dir/scripts/make-completion.bash"
 source "$dotfiles_dir/scripts/output_color.bash"
 
 # Variables
@@ -38,14 +41,16 @@ alias g_pl_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
 alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
 alias grep='grep --color'
-alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
 alias grepbb='grep -Rin --color --include=*.bb'
+alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
+alias grepdir="grep '[^\\/]*$'"
 alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
 alias h='history'
 alias j='jobs -l'
 alias less='less -r'
 alias mkdir='mkdir -pv'
 alias mount='mount | column -t'
+alias fi_reg="find . -type f -regex"
 alias print_path='echo $PATH | tr : "\n"'
 alias psu='ps u --forest'
 alias rm='rm -I'
