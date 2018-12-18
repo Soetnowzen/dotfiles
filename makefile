@@ -6,7 +6,7 @@ help:
 	@echo "Choose a platform (debian/windows)"
 
 all:
-	bash vim vimperator git mintty tcsh tmux gdb
+	bash vim vimperator git mintty tcsh tmux gdb input
 
 bash:
 	ln -fsn $(here)/bash/my.bashrc $(HOME)/.bashrc
@@ -44,4 +44,7 @@ tmux:
 gdb:
 	ln -fsn $(here)/gdb/.gdbinit $(HOME)/.gdbinit
 
-.PHONY: bash vim vimperator git mintty tcsh tmux gdb
+input:
+	ln -fsn $(here)/input/.inputrc $(HOME)/.inputrc
+
+.PHONY: bash vim vimperator git mintty tcsh tmux gdb input

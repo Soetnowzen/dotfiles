@@ -11,8 +11,11 @@ fi
 
 dotfiles_dir="$HOME/dotfiles/bash"
 source "$dotfiles_dir/configurations/prompt.bash"
+# source "$dotfiles_dir/script/_init_completion.bash"
 source "$dotfiles_dir/scripts/_known_hosts.bash"
 source "$dotfiles_dir/scripts/change_directory.bash"
+source "$dotfiles_dir/scripts/chmod-completion.bash"
+# source "$dotfiles_dir/scripts/find-completion.bash"
 source "$dotfiles_dir/scripts/git-completion.bash"
 source "$dotfiles_dir/scripts/kill-completion.bash"
 source "$dotfiles_dir/scripts/make-completion.bash"
