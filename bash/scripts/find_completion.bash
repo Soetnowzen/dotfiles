@@ -105,7 +105,86 @@ _find()
 
   _filedir
 
-} &&
-  complete -o default -F _find find
+}
+
+function _find_completion()
+{
+  local current previous
+  current=${COMP_WORDS[COMP_CWORD]}
+  previous=${COMP_WORDS[COMP_CWORD-1]}
+
+  case $previous in
+    -maxdepth|-mindepth)
+      COMPREPLY=( $( compgen -W '{0..9}' -- "$current" ) )
+      return
+      ;;
+      -newer|-anewer|-cnewer|-fls|-fprint|-fprint0|-fprintf|-name|-iname|\
+        -lname|-ilname|-wholename|-iwholename|-samefile)
+      _filedir
+      return
+      ;;
+    -fstype)
+      _fstypes
+      [[ $OSTYPE == *bsd* ]] && \
+        COMPREPLY+=( $( compgen -W 'local rdonly' -- "$current" ) )
+      return
+      ;;
+    -gid)
+      _gids
+      return
+      ;;
+    -group)
+      COMPREPLY=( $( compgen -g -- "$current" 2>/dev/null) )
+      return
+      ;;
+    -xtype|-type)
+      COMPREPLY=( $( compgen -W 'b c d p f l s' -- "$current" ) )
+      return
+      ;;
+    -uid)
+      _uids
+      return
+      ;;
+    -user)
+      COMPREPLY=( $( compgen -u -- "$current" ) )
+      return
+      ;;
+    -exec|-execdir|-ok|-okdir)
+      words=(words[0] "$current")
+      cword=1
+      _command
+      return
+      ;;
+      -[acm]min|-[acm]time|-iname|-lname|-wholename|-iwholename|-lwholename|\
+        -ilwholename|-inum|-path|-ipath|-regex|-iregex|-links|-perm|-size|\
+        -used|-printf|-context)
+      # do nothing, just wait for a parameter to be given
+      return
+      ;;
+    -regextype)
+      COMPREPLY=( $( compgen -W 'emacs posix-awk posix-basic posix-egrep
+      posix-extended' -- "$current" ) )
+      return
+      ;;
+  esac
+
+  local basic_options='-daystart -depth -follow -help
+  -ignore_readdir_race -maxdepth -mindepth -mindepth -mount
+  -noignore_readdir_race -noleaf -regextype -version -warn -nowarn -xdev
+  -amin -anewer -atime -cmin -cnewer -ctime -empty -executable -false
+  -fstype -gid -group -ilname -iname -inum -ipath -iregex -iwholename
+  -links -lname -mmin -mtime -name -newer -nogroup -nouser -path -perm
+  -readable -regex -samefile -size -true -type -uid -used -user
+  -wholename -writable -xtype -context -delete -exec -execdir -fls
+  -fprint -fprint0 -fprintf -ls -ok -okdir -print -print0 -printf -prune
+  -quit'
+  if [[ $current == -* ]]; then
+    COMPREPLY=( $( compgen -W "$basic_options" -- "$current" ) )
+    [[ $COMPREPLY == *= ]] && compopt -o nospace
+    return
+  fi
+}
+
+complete -o default -F _find_completion find
 
 # ex: filetype=sh
