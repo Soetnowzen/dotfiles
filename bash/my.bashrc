@@ -12,14 +12,16 @@ fi
 dotfiles_dir="$HOME/dotfiles/bash"
 source "$dotfiles_dir/configurations/prompt.bash"
 source "$dotfiles_dir/scripts/change_directory.bash"
-source "$dotfiles_dir/scripts/chmod-completion.bash"
-source "$dotfiles_dir/scripts/chown-completion.bash"
-# source "$dotfiles_dir/scripts/find-completion.bash"
-source "$dotfiles_dir/scripts/git-completion.bash"
-source "$dotfiles_dir/scripts/kill-completion.bash"
-source "$dotfiles_dir/scripts/make-completion.bash"
+source "$dotfiles_dir/scripts/chmod_completion.bash"
+source "$dotfiles_dir/scripts/chown_completion.bash"
+# source "$dotfiles_dir/scripts/find_completion.bash"
+source "$dotfiles_dir/scripts/git_completion.bash"
+source "$dotfiles_dir/scripts/kill_completion.bash"
+source "$dotfiles_dir/scripts/make_completion.bash"
+# source "$dotfiles_dir/scripts/mount_completion.bash"
 source "$dotfiles_dir/scripts/output_color.bash"
 source "$dotfiles_dir/scripts/ssh_completion.bash"
+# source "$dotfiles_dir/scripts/unmount_completion.bash"
 
 # Variables
 #{
