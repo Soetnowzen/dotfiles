@@ -7,10 +7,21 @@ inoremap <expr> - strpart(getline('.'), col('.')-1, 1) == "-" ? "\<Right>" : "-"
 
 function!  MyXmlFoldLevel( lineNumber ) " {
   let thisLine = getline( a:lineNumber )
-  if (thisLine =~ '<.*<\/')
+  " = No folding
+  " a1 Step in
+  " s1 Step out
+  if (thisLine =~ '<.*\/>')
+    return '='
+  elseif (thisLine =~ '<!.*>')
+    return '='
+  elseif (thisLine =~ '<.*<\/')
     return '='
   elseif ( thisLine =~ '<?')
     return '='
+  elseif (thisLine =~ '<!--')
+    return "a1"
+  elseif ( thisLine =~ '-->')
+    return "s1"
   elseif (thisLine =~ '<\/')
     return "s1"
   elseif ( thisLine =~ '<')
