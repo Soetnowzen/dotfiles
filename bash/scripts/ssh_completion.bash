@@ -1,4 +1,4 @@
-function _known_hosts()
+function _ssh_completion()
 {
   if [[ $COMP_CWORD -eq 1 ]]; then
     hosts=$(grep '\<Host\>' ~/.ssh/config)
@@ -12,4 +12,4 @@ function _known_hosts()
   fi
 }
 
-complete -F _known_hosts ssh
+complete -F _ssh_completion ssh
