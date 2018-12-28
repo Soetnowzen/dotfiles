@@ -45,10 +45,6 @@ set tags+=/
 set cursorline
 set cursorcolumn
 
-" Leave a few lines when scrolling
-set scrolloff=5
-set sidescrolloff=5
-
 " Bell
 set noerrorbells
 set visualbell
@@ -83,9 +79,16 @@ set wildchar=<Tab>
 set wildmenu
 set wildmode=list:longest,full
 
-"   line break options {
+" highlight strings inside C comments
+let c_comment_strings=1
+
+"   Text Rendering Options {
 set linebreak
 set showbreak=\ \ 
+"
+" Leave a few lines when scrolling
+set scrolloff=5
+set sidescrolloff=5
 
 set cindent
 set cpoptions+=n
@@ -99,6 +102,7 @@ set breakat+=>
 set switchbuf+=useopen
 set switchbuf+=usetab
 set switchbuf+=split
+set showtabline=2
 
 "   :e ignores files {
 set wildignore+=*.bak
@@ -127,6 +131,9 @@ set textwidth=0
 " Set g flag for search and replace
 set gdefault
 set hidden
+
+" Remove the Windows ^M - when the encodings gets messed up
+noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 " }
 
 " Mapping {
@@ -177,7 +184,9 @@ nnoremap <Down> <C-W>-
 nnoremap H gT
 nnoremap L gt
 "     }
+
 nnoremap Q gqap
+
 " move to beginning/end of line
 nnoremap B ^
 nnoremap E $
@@ -194,11 +203,14 @@ nnoremap <S-Tab> <<_
 
 " Convert snake case to camel case
 nnoremap _ f_x~
+
 " Convert camel case to snake case
 nnoremap + /\C[A-Z]<CR>i_<Esc><Right>~:noh<CR>
 
 " nnoremap <Space> :noh<CR>
 nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
+nnoremap <C-Space> :noh\<CR>
+nnoremap <Leader><CR> :noh\<CR>
 " }
 
 "     The glorious & dear vim leader declarations {
@@ -232,6 +244,13 @@ cnoremap <C-b> <C-Left>
 "   }
 
 "   Visual mode remaps {
+vnoremap " c"<C-r>""<Esc>''l
+vnoremap ' c'<C-r>"'<Esc>''l
+vnoremap ( c(<C-r>")<Esc>''l
+vnoremap [ c[<C-r>"]<Esc>''l
+vnoremap { c{<C-r>"}<Esc>''l
+" }
+
 " visual mode remap case switch
 vnoremap § ~
 
@@ -298,36 +317,6 @@ inoremap ;;<CR> ;;<CR>
 inoremap ;<CR> <End>;<CR>
 inoremap .<CR> <End>.<CR>
 inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
-augroup make_insert_mapping " {
-  autocmd!
-  autocmd FileType zsh inoremap if<Space> if<CR>fi<Up><End><Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-  autocmd FileType zsh inoremap elif<Space> elif<Space>[]; then<Left><Left><Left><Left><Left><Left><Left>
-augroup END
-"     }
-augroup sh_insert_mapping " {
-  autocmd!
-  autocmd FileType zsh inoremap case<Space> case<Space><CR>;;<CR><BS><BS>esac<Up><Up><End><Space>in<Left><Left><Left>
-  autocmd FileType zsh inoremap while<Space> while<CR>done<Up><End><Space>[]; do<Left><Left><Left><Left><Left>
-  autocmd FileType zsh inoremap for<Space> for<CR>done<Up><End><Space>; do<Left><Left><Left><Left>
-augroup END
-"     }
-augroup tcsh_insert_mapping " {
-  autocmd!
-  autocmd FileType tcsh inoremap if<Space> if<CR>endif<Up><End><Space>()<Space>then<Left><Left><Left><Left><Left><Left>
-augroup END
-"     }
-augroup gdb_insert_mapping " {
-  autocmd!
-  autocmd FileType gdb inoremap define<Space> define<CR>end<Up><End><Space>
-  autocmd FileType gdb inoremap document<Space> document<CR>end<Up><End><Space>
-augroup END
-"     }
-augroup markdown_insert_mapping " {
-  autocmd!
-  autocmd FileType markdown inoremap & &;<Left>
-  autocmd FileType markdown inoremap <expr> ;  strpart(getline('.'), col('.')-1, 1) == ";" ? "\<Right>" : ";"
-augroup END
-"     }
 
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
@@ -357,13 +346,6 @@ set spell spelllang=en_us
 set spellfile=$HOME/.vim/spell/en.utf-8.add
 " }
 
-augroup tag_completion " {
-  autocmd!
-  autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-augroup END
-" }
-
 " Searching {
 " Highlight search matches
 set hlsearch
@@ -387,8 +369,6 @@ command! ToCamelCase
       \ let @y = substitute(@x, "\\C_\\([a-z]\\)", "\\u\\1", "g") |
       \ exec "norm cgn\<C-r>y" |
       \ let @@ = ":ToCamelCase\n"
-" rhai_ilc_shutdown
-" rhaiIlcShutdown
 
 " Show search matches while typing
 set incsearch
@@ -412,6 +392,7 @@ highlight SpecialKey ctermfg=Green guifg=Green
 set list
 set listchars=tab:>\ 
 set listchars+=trail:-
+" set listchars+=trail:!
 set listchars+=conceal:C  " conceallevel is set to 1
 set listchars+=nbsp:%  " Non-breakable space
 set listchars+=extends:>,precedes:<
