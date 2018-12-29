@@ -25,6 +25,7 @@ let s:comment_map = {
       \ "mail": '>',
       \ "make": '#',
       \ "php": '\/\/',
+      \ "plaintex": '%',
       \ "pov": '#',
       \ "profile": '#',
       \ "proto": '\/\/',
