@@ -136,7 +136,7 @@ function __modified_files_count()
 
 function __git_commit_status()
 {
-  git_commit_status=$(git status -uno | grep -i 'Your branch' | grep -Eo '[0-9]+|diverged|behind|ahead')
+  git_commit_status=$(git status -uno | grep -i 'Your branch' | grep -Eo 'by [0-9]+|diverged|behind|ahead')
   if [[ ${git_commit_status} != "" ]]; then
     PS1+=", $VIOLET"
     if [[ $(echo "$git_commit_status" | grep -Eo 'ahead') != "" ]]; then

@@ -4,10 +4,11 @@ Linux configuration files
 # Installation
 Makes symlinks from relevant directories.
  * Bash
- * Vim
- * Vimperator
+ * GDB
  * Git
+ * Input
  * Mintty
  * Tcsh
  * Tmux
- * GDB
+ * Vim
+ * Vimperator
