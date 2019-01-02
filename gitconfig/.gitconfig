@@ -31,6 +31,7 @@
 	au = add -u
 	bi = bisect run # <my_script> <arguments>
 	br = branch
+	bs = branch -vv
 	c = commit
 	ca = commit --amend
 	ci = commit
@@ -65,6 +66,7 @@
 	ours = checkout --ours --
 	pl = pull
 	pr = pull --rebase
+	prb = pull --rebase origin master
 	ps = push
 	r = revert
 	r1 = reset HEAD^
