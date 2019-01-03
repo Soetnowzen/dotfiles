@@ -289,27 +289,16 @@ inoremap JJ <Esc>o
 inoremap { {}<Left>
 " }
 inoremap {- {--}<Left><Left>
-" {{
-inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
+" }
 inoremap < <><Left>
 inoremap <<Space> <<Space>
 inoremap << <
 inoremap <<<Space> <<<Space>
 inoremap =<<Space> =<<Space>
-inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">"
 inoremap [ []<Left>
-inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
 inoremap ( ()<Left>
-inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
-inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
-inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
-inoremap <expr> ` strpart(getline('.'), col('.')-1, 1) == "\`" ? "\<Right>" : "\`\`\<Left>"
-" Ruins the ability to use abbreviations since space is no longer space
-inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>" : "\<Space>"
 inoremap /* /**/<Left><Left>
 inoremap /** /***/<Left><Left>
-inoremap <expr> *  strpart(getline('.'), col('.')-1, 1) == "*" ? "\<Right>" : "*"
-inoremap <expr> /  strpart(getline('.'), col('.')-1, 1) == "/" ? "\<Right>" : "/"
 inoremap """ """"""<Left><Left><Left>
 inoremap ''' ''''''<Left><Left><Left>
 inoremap ,, <End>,
@@ -317,7 +306,37 @@ inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
 inoremap ;<CR> <End>;<CR>
 inoremap .<CR> <End>.<CR>
-inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
+
+function! s:ParingUp(char) " {
+  let line = getline('.')
+  let column = col('.')
+  return strpart(line, column-1, 1) == a:char ?
+        \ "\<Right>" :
+        \ a:char . a:char . "\<Left>"
+endfunction " }
+
+inoremap <expr> " <sid>ParingUp("\"")
+inoremap <expr> ' <sid>ParingUp("\'")
+inoremap <expr> ` <sid>ParingUp("\`")
+
+function! s:HandlingEndingPair(char) " {
+  let line = getline('.')
+  let column = col('.')
+  return strpart(line, column-1, 1) == a:char ?
+        \ "\<Right>" :
+        \ a:char
+endfunction " }
+
+" {{
+inoremap <expr> } <sid>HandlingEndingPair('}')
+inoremap <expr> ) <sid>HandlingEndingPair(')')
+inoremap <expr> * <sid>HandlingEndingPair('*')
+inoremap <expr> , <sid>HandlingEndingPair(',')
+inoremap <expr> / <sid>HandlingEndingPair('/')
+" Ruins the ability to use abbreviations since space is no longer space
+inoremap <expr> <Space> <sid>HandlingEndingPair(' ')
+inoremap <expr> > <sid>HandlingEndingPair('>')
+inoremap <expr> ] <sid>HandlingEndingPair(']')
 
 " Ruins the ability to use abbreviations
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
