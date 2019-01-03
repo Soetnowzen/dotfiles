@@ -231,7 +231,7 @@ nnoremap <Leader>b {<S-V>}k
 "     }
 "   }
 
-map Y y$
+nnoremap Y y$
 
 "   Command-line mode remaps {
 cnoremap jj <Esc>
@@ -304,7 +304,8 @@ inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")
 inoremap <expr> ' strpart(getline('.'), col('.')-1, 1) == "\'" ? "\<Right>" : "\'\'\<Left>"
 inoremap <expr> " strpart(getline('.'), col('.')-1, 1) == "\"" ? "\<Right>" : "\"\"\<Left>"
 inoremap <expr> ` strpart(getline('.'), col('.')-1, 1) == "\`" ? "\<Right>" : "\`\`\<Left>"
-inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>" : " "
+" Ruins the ability to use abbreviations since space is no longer space
+inoremap <expr> <Space> strpart(getline('.'), col('.')-1, 1) == " " ? "\<Right>" : "\<Space>"
 inoremap /* /**/<Left><Left>
 inoremap /** /***/<Left><Left>
 inoremap <expr> *  strpart(getline('.'), col('.')-1, 1) == "*" ? "\<Right>" : "*"
@@ -318,6 +319,7 @@ inoremap ;<CR> <End>;<CR>
 inoremap .<CR> <End>.<CR>
 inoremap <expr> ,  strpart(getline('.'), col('.')-1, 1) == "," ? "\<Right>" : ","
 
+" Ruins the ability to use abbreviations
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"

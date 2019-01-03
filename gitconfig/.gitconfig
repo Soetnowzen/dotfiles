@@ -5,6 +5,10 @@
 	interactive = auto
 	pager = true
 	ui = auto
+[color "branch"]
+	upstream = yellow
+	local = red
+	remote = blue
 [core]
 	editor = vim
 	pager = less -RFX
@@ -67,6 +71,7 @@
 	pl = pull
 	pr = pull --rebase
 	prb = pull --rebase origin master
+	plb = pull --no-ff origin master
 	ps = push
 	r = revert
 	r1 = reset HEAD^
