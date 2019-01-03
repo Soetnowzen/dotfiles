@@ -3,10 +3,10 @@ set showbreak=\ \ \ \
 set tabstop=4
 set shiftwidth=4
 
-inoremap if<Space> if<Space>:<Left>
-inoremap elif<Space> elif<Space>:<Left>
-inoremap for<Space> for<Space>:<Left>
-inoremap while<Space> while<Space>:<Left>
-inoremap def<Space> def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
+inoreabbrev if if<Space>:<Left>
+inoreabbrev elif elif<Space>:<Left>
+inoreabbrev for for<Space>:<Left>
+inoreabbrev while while<Space>:<Left>
+inoreabbrev def def<Space>(self):<Left><Left><Left><Left><Left><Left><Left>
 
 set foldmethod=indent

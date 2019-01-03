@@ -334,7 +334,7 @@ inoremap <expr> * <sid>HandlingEndingPair('*')
 inoremap <expr> , <sid>HandlingEndingPair(',')
 inoremap <expr> / <sid>HandlingEndingPair('/')
 " Ruins the ability to use abbreviations since space is no longer space
-inoremap <expr> <Space> <sid>HandlingEndingPair(' ')
+" inoremap <expr> <Space> <sid>HandlingEndingPair(' ')
 inoremap <expr> > <sid>HandlingEndingPair('>')
 inoremap <expr> ] <sid>HandlingEndingPair(']')
 
@@ -342,7 +342,7 @@ inoremap <expr> ] <sid>HandlingEndingPair(']')
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
-inoremap <expr> <Space>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Space>\<Space>\<Left>" : "\<Space>"
+" inoremap <expr> <Space>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Space>\<Space>\<Left>" : "\<Space>"
 
 
 " function! s:InsertExpr(char)
