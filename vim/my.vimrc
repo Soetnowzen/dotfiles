@@ -324,6 +324,19 @@ let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", " 
 inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
 inoremap <expr> <Space>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Space>\<Space>\<Left>" : "\<Space>"
+
+
+" function! s:InsertExpr(char)
+  " let line = getline('.')
+  " let col  = col('.')
+  " return 
+        " \   line[col-3] =~ '[=<>!~]' ? "\<bs>".a:char." "
+        " \ : line[col-2] =~ '\s\+'    ? a:char." "
+        " \ :                            a:char
+" endfunction
+" inoremap <buffer> <expr> = <sid>InsertExpr('=')
+" inoremap <buffer> <expr> < <sid>InsertExpr('<')
+" inoremap <buffer> <expr> > <sid>InsertExpr('>')
 "   }
 
 "   Operator-Pending Mappings {
