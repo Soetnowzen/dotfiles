@@ -32,6 +32,7 @@ __prompt_command()
   PS1+="\\u$RESET@$BLUE\\h$RESET "
   # Path
   PS1+="$GREEN\\w"
+  # __smaller_path
   # Get current git branch
   branch=$(__parse_git_branch)
   if [[ ${branch} != "" ]]; then
@@ -45,6 +46,23 @@ __prompt_command()
   fi
 
   PS1+="$RESET]\\n\\$ "
+}
+
+function __smaller_path()
+{
+  local directories
+  directories=$(pwd | tr '/' ' ')
+  local last_directory
+  last_directory=$(basename "$PWD")
+  local new_path=""
+  for directory in ${directories}; do
+    if [[ $directory == "$last_directory" ]]; then
+      new_path+="/$directory"
+    else
+      new_path+="/$(echo "$directory" | head -c1)"
+    fi
+  done
+  PS1+="$GREEN$new_path"
 }
 
 function __parse_git_branch()
@@ -136,7 +154,7 @@ function __modified_files_count()
 
 function __git_commit_status()
 {
-  git_commit_status=$(git status -uno | grep -i 'Your branch' | grep -Eo 'by [0-9]+|diverged|behind|ahead')
+  git_commit_status=$(git status -uno 2> /dev/null | grep -i 'Your branch' | grep -Eo 'by [0-9]+|diverged|behind|ahead')
   if [[ ${git_commit_status} != "" ]]; then
     PS1+=", $VIOLET"
     if [[ $(echo "$git_commit_status" | grep -Eo 'ahead') != "" ]]; then
