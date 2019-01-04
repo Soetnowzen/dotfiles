@@ -15,8 +15,8 @@ gdb:
 
 git:
 	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
-	mkdir -p $(HOME)/git/hooks
-	ln -fsn $(here)/gitconfig/pre-commit-conflict $(HOME)/git/hooks/.
+	mkdir -p $(HOME)/.git_template/hooks
+	ln -fsn $(here)/gitconfig/pre-commit-conflict $(HOME)/.git_template/hooks/pre-commit
 
 input:
 	ln -fsn $(here)/input/.inputrc $(HOME)/.inputrc

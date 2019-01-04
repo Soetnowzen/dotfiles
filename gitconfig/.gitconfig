@@ -18,8 +18,8 @@
 	default = tracking
 [merge]
 	tool = vimdiff
-[hooks]
-	dir = ~/git/hooks
+[init]
+	templatedir = ~/.git_template
 [mergetool]
 	keepBackup = false
 [diff]

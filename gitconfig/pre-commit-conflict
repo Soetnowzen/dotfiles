@@ -16,5 +16,7 @@ done
 
 if [[ ! -z $conflict_found ]]; then
 	echo -e "$conflict_found"
+  exit 1
 fi
 
+exit 0
