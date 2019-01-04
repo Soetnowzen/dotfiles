@@ -1,0 +1,20 @@
+#!/bin/sh
+
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+MAGENTA="$(tput setaf 5)"
+RESET="$(tput sgr0)"
+conflict_found=''
+
+for file in $(git diff --cached --name-only); do
+	file="$(git rev-parse --show-toplevel)/$file"
+	for row in $(grep -n "[<=>]\\{4,\\}" "$file"); do
+		row_number="$(echo "$row" | sed -e "s/\\([[:digit:]]\\+\\):.*/\\1/")"
+		conflict_found+="$MAGENTA$file$RESET:$GREEN$row_number$RESET contains ${RED}conflict${RESET} characters.\\n"
+	done
+done
+
+if [[ ! -z $conflict_found ]]; then
+	echo -e "$conflict_found"
+fi
+
