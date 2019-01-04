@@ -3,13 +3,33 @@ here := $(shell pwd)
 help:
 	@echo "Select a target"
 	@make -rpn | sed -n -e '/^$$/ { n ; /^[^ ]*:/p}' | egrep -v '^.PHONY' | egrep -v '^all'
-	@echo "Choose a platform (debian/windows)"
 
 all:
-	bash vim vimperator git mintty tcsh tmux gdb input
+	bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf
 
 bash:
 	ln -fsn $(here)/bash/my.bashrc $(HOME)/.bashrc
+
+gdb:
+	ln -fsn $(here)/gdb/.gdbinit $(HOME)/.gdbinit
+
+git:
+	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
+
+input:
+	ln -fsn $(here)/input/.inputrc $(HOME)/.inputrc
+
+mintty:
+	ln -fsn $(here)/mintty/dark.minttyrc $(HOME)/.minttyrc
+
+sumatra_pdf:
+	ln -fsn $(here)/sumatra_pdf/SumatraPDF-settings.txt $(HOME)/AppData/Roaming/SumatraPDF/.
+
+tcsh:
+	ln -fsn $(here)/tcsh/my.tcshrc $(HOME)/.tcshrc
+
+tmux:
+	ln -fsn $(here)/tmux/my-tmux.conf $(HOME)/.tmux.conf
 
 vim:
 	ln -fsn $(here)/vim/my.vimrc $(HOME)/.vimrc
@@ -29,22 +49,5 @@ vimperator:
 	mkdir -p $(HOME)/.vimperator/colors
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
-git:
-	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
-
-mintty:
-	ln -fsn $(here)/mintty/dark.minttyrc $(HOME)/.minttyrc
-
-tcsh:
-	ln -fsn $(here)/tcsh/my.tcshrc $(HOME)/.tcshrc
-
-tmux:
-	ln -fsn $(here)/tmux/my-tmux.conf $(HOME)/.tmux.conf
-
-gdb:
-	ln -fsn $(here)/gdb/.gdbinit $(HOME)/.gdbinit
-
-input:
-	ln -fsn $(here)/input/.inputrc $(HOME)/.inputrc
-
-.PHONY: bash vim vimperator git mintty tcsh tmux gdb input
+.PHONY:
+	bash gdb git input mintty sumatra_pdf tcsh tmux vim vimperator

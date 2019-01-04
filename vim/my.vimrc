@@ -251,6 +251,8 @@ vnoremap [ c[<C-r>"]<Esc>''l
 vnoremap { c{<C-r>"}<Esc>''l
 " }
 
+vnoremap <F2> d:execute 'normal i' . join(sort(split(getreg('"'))), ' ')<CR>
+
 " visual mode remap case switch
 vnoremap § ~
 

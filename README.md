@@ -8,6 +8,7 @@ Makes symlinks from relevant directories.
  * Git
  * Input
  * Mintty
+ * SumatraPDF
  * Tcsh
  * Tmux
  * Vim
