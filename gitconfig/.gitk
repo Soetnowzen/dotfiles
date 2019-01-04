@@ -35,14 +35,14 @@ set perfile_attrs 0
 set headbgcolor "#859900"
 set headfgcolor "#002b36"
 set headoutlinecolor "#93a1a1"
-set remotebgcolor #ffddaa
+set remotebgcolor "#b58900"
 set tagbgcolor "#b58900"
 set tagfgcolor "#93a1a1"
 set tagoutlinecolor "#93a1a1"
 set reflinecolor "#93a1a1"
-set filesepbgcolor #aaaaaa
+set filesepbgcolor "#002b36"
 set filesepfgcolor "#93a1a1"
-set linehoverbgcolor #ffff80
+set linehoverbgcolor "#859900"
 set linehoverfgcolor "#93a1a1"
 set linehoveroutlinecolor "#93a1a1"
 set mainheadcirclecolor "#b58900"
