@@ -17,6 +17,7 @@ git:
 	ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
 	mkdir -p $(HOME)/.git_template/hooks
 	ln -fsn $(here)/gitconfig/pre-commit-conflict $(HOME)/.git_template/hooks/pre-commit
+	ln -fsn $(here)/gitconfig/.gitk $(HOME)/.gitk
 
 input:
 	ln -fsn $(here)/input/.inputrc $(HOME)/.inputrc
