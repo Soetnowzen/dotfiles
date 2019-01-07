@@ -69,5 +69,4 @@ endfunction
 nnoremap <Leader><Space> :call ToggleComment()<CR>
 vnoremap <C-m> :call ToggleComment()<CR>
 nnoremap <C-m> :call ToggleComment()<CR>
-" vnoremap <Leader>m c(s:block_comment_map[&filetype][0])<CR>(s:block_comment_map[&filetype][1])<Esc><Up>p
 vnoremap <Leader>m :call ToggleBlockComment()<CR>

@@ -74,14 +74,9 @@
 	plb = pull --no-ff origin master
 	ps = push
 	r = revert
-	r1 = reset HEAD^
-	r2 = reset HEAD~2
 	rc = rebase --continue
 	restore = checkout -m --
 	rh = "!reset_hard_function() { git reset HEAD~$1 --hard; }; reset_hard_function"
-	# rh = reset --hard
-	rh1 = reset HEAD^ --hard
-	rh2 = reset HEAD~2 --hard
 	rs = "!reset_function() { git reset HEAD~$1; }; reset_function"
 	s = status
 	search = log --abbrev-commit --decorate --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all -S

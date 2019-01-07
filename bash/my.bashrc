@@ -10,7 +10,6 @@ if [ -r ~/.bashrc.work ]; then
 fi
 
 dotfiles_dir="$HOME/dotfiles/bash"
-source "$dotfiles_dir/configurations/prompt.bash"
 source "$dotfiles_dir/scripts/change_directory.bash"
 source "$dotfiles_dir/scripts/chmod_completion.bash"
 source "$dotfiles_dir/scripts/chown_completion.bash"
@@ -22,6 +21,9 @@ source "$dotfiles_dir/scripts/make_completion.bash"
 source "$dotfiles_dir/scripts/output_color.bash"
 source "$dotfiles_dir/scripts/ssh_completion.bash"
 # source "$dotfiles_dir/scripts/unmount_completion.bash"
+
+PROMPT_COMMAND="$dotfiles_dir/configurations/prompt.bash"
+PS1="\\$ "
 
 # Variables
 #{
@@ -41,6 +43,7 @@ alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
 alias clr='clear'
 alias df="df -h"
+alias fi_reg="find . -type f -regex"
 alias g='git'
 alias g_pl_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
@@ -55,7 +58,6 @@ alias j='jobs -l'
 alias less='less -r'
 alias mkdir='mkdir -pv'
 alias mount='mount | column -t'
-alias fi_reg="find . -type f -regex"
 alias print_path='echo $PATH | tr : "\n"'
 alias psu='ps u --forest'
 alias rm='rm -I'
@@ -65,6 +67,7 @@ alias v-split='vim -o'
 alias v-tsplit='vim -p'
 alias v-vsplit='vim -O'
 alias v='vim -p'
+alias vd='vimdiff'
 alias vimr='vim ~/.vimrc'
 alias vs='vim -o'
 alias vv='vim -O'

@@ -294,7 +294,6 @@ inoremap {- {--}<Left><Left>
 " }
 inoremap < <><Left>
 inoremap <<Space> <<Space>
-inoremap << <
 inoremap <<<Space> <<<Space>
 inoremap =<<Space> =<<Space>
 inoremap [ []<Left>
@@ -308,6 +307,7 @@ inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
 inoremap ;<CR> <End>;<CR>
 inoremap .<CR> <End>.<CR>
+inoremap :<CR> <End>:<CR>
 
 function! s:ParingUp(char) " {
   let line = getline('.')
