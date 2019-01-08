@@ -179,7 +179,7 @@ let g:syntastic_haskell_ghc_mod_args = s:get_cabal_sandbox()
 let g:syntastic_python_checkers = ['python3', 'pylint']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 " let g:syntastic_cpp_checkers = ['clang_cpp', 'gcc']
-let g:syntastic_cpp_checkers = ['cppcheck', 'cpplint']
+let g:syntastic_cpp_checkers = ['clang_check', 'gcc']
 let g:syntastic_erl_checkers = ['Dialyzer'] " untested
 let g:syntastic_js_checkers = ['JSHint'] " untested
 let g:syntastic_java_checkers = ['PMD'] " untested
@@ -187,15 +187,14 @@ let g:syntastic_java_checkers = ['PMD'] " untested
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
 
 let g:syntastic_cpp_include_dirs =
-	  \ ['../include', 'include', 'includes', 'headers', '/\*\*/inc',
-	  \ '../../inc', '../inc', 'inc', '/\*\*/export', '../../export',
-	  \ '../export', 'export', '../../src', '../src', 'src', '../test/bin',
-	  \ 'test/bin']
+      \ ['../include', 'include', 'includes', 'headers', '/\*\*/inc',
+      \ '../../inc', '../inc', 'inc', '/\*\*/export', '../../export',
+      \ '../export', 'export', '../../src', '../src', 'src', '../test/bin',
+      \ 'test/bin']
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -D_FORTIFY_SOURCE=1'
 " let g:syntastic_cpp_compiler = 'gcc'
-" let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -D_FORTIFY_SOURCE=1'
+let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++ -D_FORTIFY_SOURCE=1'
 let g:syntastic_enable_signs = 1
 
 function! FindConfig(prefix, what, where) " {

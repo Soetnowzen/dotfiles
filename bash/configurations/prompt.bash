@@ -61,6 +61,9 @@ function __smaller_path()
       new_path+="/$(echo "$directory" | head -c1)"
     fi
   done
+  if [[ $new_path == "" ]]; then
+    new_path="/"
+  fi
   printf "%s%s" "$GREEN" "$new_path"
 }
 

@@ -18,8 +18,8 @@ augroup Shebang " {
   autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
   autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
   autocmd BufNewFile *.sh 0put =\"#!/bin/bash\"|$
-augroup END
-"   }
+  autocmd BufNewFile *.bash 0put =\"#!/bin/bash\"|$
+augroup END " }
 
 function! s:insert_gates() " {
   let gatename = substitute(toupper(substitute(expand("%:t"), '\C\([A-Z]\)', '_\1','g')), "\\.", "_", "g")
@@ -28,11 +28,11 @@ function! s:insert_gates() " {
   execute "normal! Go#endif /* " . gatename . " */"
   normal! ko
 endfunction " }
+
 augroup c_insert_gates " {
   autocmd!
   autocmd BufNewFile *.{h,hpp,hh} call <SID>insert_gates()
-augroup END
-"   }
+augroup END " }
 " }
 
 " Misc {
