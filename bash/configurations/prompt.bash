@@ -143,12 +143,13 @@ function __modified_files_count()
     fi
     unmerged_files=$(echo "${git_status}" | grep -c '^UU')
     if [[ $unmerged_files != 0 ]]; then
-      printf " %s=%s" "$YELLOW" "$unmerged_files"
+      # printf " %s=%s" "$YELLOW" "$unmerged_files"
+      printf " %s≠%s" "$YELLOW" "$unmerged_files"
     fi
     untraced_files=$(echo "${git_status}" | grep -c '^??')
     if [[ $untraced_files != 0 ]]; then
-      printf " %s◼%s" "$WHITE" "$untraced_files"
-      # printf " %s?%s" "$WHITE" "$untraced_files"
+      # printf " %s◼%s" "$WHITE" "$untraced_files"
+      printf " %s?%s" "$WHITE" "$untraced_files"
     fi
     printf "%s" "$YELLOW"
   fi

@@ -431,6 +431,8 @@ set listchars+=trail:-
 set listchars+=conceal:C  " conceallevel is set to 1
 set listchars+=nbsp:%  " Non-breakable space
 set listchars+=extends:>,precedes:<
+" set listchars+=eol:¶
+" set listchars+=space:•
 "   }
 
 set smartindent
