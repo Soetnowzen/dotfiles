@@ -7,6 +7,7 @@ call vundle#begin()
 Plugin 'AndrewRadev/linediff.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'eagletmt/ghcmod-vim'
 Plugin 'elzr/vim-json'
 Plugin 'gmarik/Vundle.vim'
 Plugin 'octol/vim-cpp-enhanced-highlight'
