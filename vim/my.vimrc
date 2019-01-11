@@ -171,35 +171,36 @@ endfunction
 
 "   Normal mode remap {
 "     Navigate wrapped lines {
-nnoremap j gj
-nnoremap k gk
 nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
+nnoremap <Down> <C-W>-
 nnoremap <Left> <C-W><
 nnoremap <Right> <C-W>>
 nnoremap <Up> <C-W>+
-nnoremap <Down> <C-W>-
 nnoremap H gT
 nnoremap L gt
+nnoremap j gj
+nnoremap k gk
 "     }
 
+" Align paragraph
 nnoremap Q gqap
 
 " move to beginning/end of line
+nnoremap <C-p> p
+nnoremap <Leader>P :put! "<CR>
+nnoremap <Leader>p :put "<CR>
 nnoremap B ^
 nnoremap E $
-nnoremap <Leader>p :put "<CR>
-nnoremap <Leader>P :put! "<CR>
 nnoremap p ]p
-nnoremap <C-p> p
 
 " normal mode remap case switch
 nnoremap § ~
 
-nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
+nnoremap <Tab> >>_
 
 " Convert snake case to camel case
 nnoremap _ f_x~
@@ -208,39 +209,38 @@ nnoremap _ f_x~
 nnoremap + /\C[A-Z]<CR>i_<Esc><Right>~:noh<CR>
 
 " nnoremap <Space> :noh<CR>
-nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
 nnoremap <C-Space> :noh\<CR>
 nnoremap <Leader><CR> :noh\<CR>
-" }
+nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
 
 "     The glorious & dear vim leader declarations {
-" nnoremap <Leader>w :w<CR>
-nnoremap <Leader>e :e<CR>
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>j :
-nnoremap <Leader>i <C-]>
-nnoremap <Leader>v :tabe ~/.vimrc<CR>
-nnoremap <Leader>sp [s
-nnoremap <Leader>sn ]s
-nnoremap <Leader>cp [c
-nnoremap <Leader>cn ]c
 nnoremap <Leader>c /\v[<=>]{4,}<CR>
+nnoremap <Leader>cn ]c
+nnoremap <Leader>cp [c
+nnoremap <Leader>e :e<CR>
+nnoremap <Leader>i <C-]>
+nnoremap <Leader>j :
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>sn ]s
+nnoremap <Leader>sp [s
+nnoremap <Leader>v :tabe ~/.vimrc<CR>
+" nnoremap <Leader>w :w<CR>
 
 " Select block
 nnoremap <Leader>b {<S-V>}k
 "     }
-"   }
 
 nnoremap Y y$
+"   }
 
 "   Command-line mode remaps {
-cnoremap jj <Esc>
+cnoremap <C-b> <C-Left>
+cnoremap <C-h> <Left>
 cnoremap <C-j> <Down>
 cnoremap <C-k> <Up>
-cnoremap <C-h> <Left>
 cnoremap <C-l> <Right>
 cnoremap <C-w> <C-Right>
-cnoremap <C-b> <C-Left>
+cnoremap jj <Esc>
 "   }
 
 "   Visual mode remaps {
@@ -256,12 +256,12 @@ vnoremap <F2> d:execute 'normal i' . join(sort(split(getreg('"'))), ' ')<CR>
 " visual mode remap case switch
 vnoremap § ~
 
-vnoremap Q gq
 vnoremap B ^
 vnoremap E $
+vnoremap Q gq
 
-vnoremap <Leader>u gU
 vnoremap <Leader>l gu
+vnoremap <Leader>u gU
 
 " Yank to clipboard
 nnoremap <Leader><Leader>y "+y
@@ -285,29 +285,29 @@ inoremap </ </<C-X><C-O>
 " inoremap <CR> <C-O>"tpf#s
 inoremap :w<CR> <Esc>:w<CR>a
 inoremap :wq<CR> <Esc>:wq<CR>
+inoremap JJ <Esc>o
 inoremap jj <Esc>
 inoremap jk <Esc>
-inoremap JJ <Esc>o
+inoremap < <><Left>
+inoremap <<<Space> <<<Space>
+inoremap <<Space> <<Space>
+inoremap =<<Space> =<<Space>
+inoremap ( ()<Left>
+inoremap /* /**/<Left><Left>
+inoremap /** /***/<Left><Left>
+inoremap [ []<Left>
 inoremap { {}<Left>
 " }
 inoremap {- {--}<Left><Left>
 " }
-inoremap < <><Left>
-inoremap <<Space> <<Space>
-inoremap <<<Space> <<<Space>
-inoremap =<<Space> =<<Space>
-inoremap [ []<Left>
-inoremap ( ()<Left>
-inoremap /* /**/<Left><Left>
-inoremap /** /***/<Left><Left>
 inoremap """ """"""<Left><Left><Left>
 inoremap ''' ''''''<Left><Left><Left>
 inoremap ,, <End>,
 inoremap ;; <End>;
 inoremap ;;<CR> ;;<CR>
-inoremap ;<CR> <End>;<CR>
 inoremap .<CR> <End>.<CR>
 inoremap :<CR> <End>:<CR>
+inoremap ;<CR> <End>;<CR>
 
 function! s:ParingUp(char) " {
   let line = getline('.')
