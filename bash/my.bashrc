@@ -44,6 +44,7 @@ alias c='cat -nv'
 alias clr='clear'
 alias df="df -h"
 alias ex="emacs -nw"
+alias exc="emacsclient -nw -c"
 alias fi_reg="find . -type f -regex"
 alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'

@@ -21,6 +21,7 @@ let s:comment_map = {
       \ "haskell": '--',
       \ "java": '\/\/',
       \ "javascript": '\/\/',
+      \ "lisp": ';;',
       \ "lua": '--',
       \ "mail": '>',
       \ "make": '#',
