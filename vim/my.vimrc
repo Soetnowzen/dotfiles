@@ -322,6 +322,8 @@ endfunction " }
 inoremap <expr> " <sid>ParingUp("\"")
 inoremap <expr> ' <sid>ParingUp("\'")
 inoremap <expr> ` <sid>ParingUp("\`")
+inoremap \" \"
+inoremap \' \'
 
 function! s:HandlingEndingPair(char) " {
   let line = getline('.')
@@ -350,12 +352,12 @@ function! s:BackSpaceHandling() " {
     return "\<Right>\<BS>\<BS>"
   else
     " {
-    let ending_characters = ["]", "}", ")", ">"]
-    if index(ending_characters, strpart(line, column-1, 1)) >= 0
-      return "\<Esc>%v%c"
-    else
+    " let ending_characters = ["]", "}", ")", ">"]
+    " if index(ending_characters, strpart(line, column-1, 1))
+      " return "\<Esc>%v%c"
+    " else
       return "\<BS>"
-    endif
+    " endif
   endif
 endfunction " }
 
