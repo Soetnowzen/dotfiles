@@ -10,10 +10,10 @@ inoremap {-# {-##-}<Left><Left><Left>
 " }
 
 " ghc-mod {
-nnoremap tw :GhcModeTypeInsert<CR>
-nnoremap ts :GhcModeSplitFunCase<CR>
-nnoremap tq :GhcModeType<CR>
 nnoremap te :GhcModeTypeClear<CR>
+nnoremap tq :GhcModeType<CR>
+nnoremap ts :GhcModeSplitFunCase<CR>
+nnoremap tw :GhcModeTypeInsert<CR>
 " }
 
 let g:haskellmode_completion_ghc = 1

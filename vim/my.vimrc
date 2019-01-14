@@ -134,6 +134,8 @@ set hidden
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+set matchpairs+=<:>
 " }
 
 " Mapping {
@@ -340,9 +342,26 @@ inoremap <expr> / <sid>HandlingEndingPair('/')
 inoremap <expr> > <sid>HandlingEndingPair('>')
 inoremap <expr> ] <sid>HandlingEndingPair(']')
 
+function! s:BackSpaceHandling() " {
+  let column = col('.')
+  let line = getline('.')
+  let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
+  if index(pairing_characters, strpart(line, column-2, 2)) >= 0
+    return "\<Right>\<BS>\<BS>"
+  else
+    " {
+    let ending_characters = ["]", "}", ")", ">"]
+    if index(ending_characters, strpart(line, column-1, 1)) >= 0
+      return "\<Esc>%v%c"
+    else
+      return "\<BS>"
+    endif
+  endif
+endfunction " }
+
 " Ruins the ability to use abbreviations
 let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
-inoremap <expr> <BS>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Right>\<BS>\<BS>" : "\<BS>"
+inoremap <expr> <BS> <sid>BackSpaceHandling()
 inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<CR>\<Esc>O" : "\<CR>"
 " inoremap <expr> <Space>  index(pairing_characters, strpart(getline('.'), col('.')-2, 2)) >= 0 ? "\<Space>\<Space>\<Left>" : "\<Space>"
 
