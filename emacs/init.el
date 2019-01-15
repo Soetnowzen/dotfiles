@@ -7,8 +7,10 @@
 
 (require 'init-use-package)
 (require 'init-evil)
+(require 'init-keybindings)
 (require 'init-magit)
 (require 'init-org)
+(require 'init-projectile)
 (require 'init-theme)
 
 (defun mp-display-message ()
@@ -18,6 +20,22 @@
   )
 
 ;; (server-start)
+
+;; save backups in separate directory
+(setq backup-directory-alist `(("." . "~/.emacs.d/.backups")))
+;; save auto saves in separate directory
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs.d/.auto-saves" t)))
+
+;; follow symlinks
+(setq vc-follow-symlinks t)
+
+;; disable lock files
+(setq create-lockfiles nil)
+
+;; show matching parens
+(show-paren-mode 1)
+(setq show-paren-delay 0)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
