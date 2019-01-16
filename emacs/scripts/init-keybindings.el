@@ -1,15 +1,5 @@
 (provide 'init-keybindings)
 
-;; make PC keyboard's Win key or other to type Super or Hyper, for emacs running on Windows.
-;; (setq w32-pass-lwindow-to-system nil)
-;; (setq w32-lwindow-modifier 'super) ; Left Windows key
-
-;; (setq w32-pass-rwindow-to-system nil)
-;; (setq w32-rwindow-modifier 'super) ; Right Windows key
-
-;; (setq w32-pass-apps-to-system nil)
-;; (setq w32-apps-modifier 'hyper) ; Menu/App key
-
 (defun my/setup-magit-keys ()
   "Setup keybindings for magit"
   (interactive)
@@ -19,10 +9,12 @@
     "g" 'magit-status))
 
 (defun my/setup-evil-keys ()
-  (general-define-key
-    :pefix "j"
-    :status '(insert)
-    "j" 'evil-force-normal-state))
+  ;;Exit insert mode by pressing j and then j quickly
+  (require 'key-chord)
+  (setq key-chord-two-keys-delay 1)
+  (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+  (key-chord-mode 1)
+  )
 
 (defun my/setup-projectile-keys ()
   "Setup keybindings for projectile"
