@@ -6,6 +6,8 @@
 (add-to-list 'load-path "~/.emacs.d/scripts")
 
 (require 'init-use-package)
+(require 'init-autopair)
+(require 'init-elfeed)
 (require 'init-evil)
 (require 'init-keybindings)
 (require 'init-magit)
