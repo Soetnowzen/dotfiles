@@ -79,6 +79,7 @@
              :config
              (setq leader "<SPC>")
              (my/setup-elfeed-keys)
+             (my/setup-elisp-keys)
              (my/setup-evil-keys)
              (my/setup-magit-keys)
              (my/setup-projectile-keys)
