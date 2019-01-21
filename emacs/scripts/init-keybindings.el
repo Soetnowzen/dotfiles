@@ -4,29 +4,29 @@
   "Setup keybindings for magit"
   (interactive)
   (general-define-key
-    :prefix leader
-    :keymaps '(normal visual emacs)
-    "g" 'magit-status))
+   :prefix leader
+   :keymaps '(normal visual emacs)
+   "g" 'magit-status))
 
 (defun my/setup-evil-keys ()
   ;;Exit insert mode by pressing j and then j quickly
   (use-package key-chord
-               :ensure t
-               :config
-               (setq key-chord-two-keys-delay 1)
-               (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
-               (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-               ;; (key-chord-define evil-insert-state-map "JJ" ('evil-normal-state "o"))
-               (key-chord-mode 1)))
+    :ensure t
+    :config
+    (setq key-chord-two-keys-delay 1)
+    (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+    (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+    ;; (key-chord-define evil-insert-state-map "JJ" ('evil-normal-state "o"))
+    (key-chord-mode 1)))
 
 (defun my/setup-projectile-keys ()
   "Setup keybindings for projectile"
   (interactive)
   (general-define-key
-    :prefix leader
-    :keymaps '(normal visual emacs)
-    "p" 'projectile-find-file
-    "P" 'projectile-switch-project))
+   :prefix leader
+   :keymaps '(normal visual emacs)
+   "p" 'projectile-find-file
+   "P" 'projectile-switch-project))
 
 (defun my/setup-elfeed-keys ()
   "Setup keybindings for elfeed"
@@ -74,14 +74,14 @@
    "ee" 'eval-expression))
 
 (use-package general
-             :ensure t
-             :after (evil magit elfeed projectile)
-             :config
-             (setq leader "<SPC>")
-             (my/setup-elfeed-keys)
-             (my/setup-elisp-keys)
-             (my/setup-evil-keys)
-             (my/setup-magit-keys)
-             (my/setup-projectile-keys)
-             (my/setup-window-keys)
-             )
+  :ensure t
+  :after (evil magit elfeed projectile)
+  :config
+  (setq leader "<SPC>")
+  (my/setup-elfeed-keys)
+  (my/setup-elisp-keys)
+  (my/setup-evil-keys)
+  (my/setup-magit-keys)
+  (my/setup-projectile-keys)
+  (my/setup-window-keys)
+  )
