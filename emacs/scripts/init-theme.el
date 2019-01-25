@@ -1,19 +1,13 @@
 (provide 'init-theme)
 
-;; load main emacs theme
-;; (use-package solarized-theme
-;;              :ensure t)
-
-;; (add-to-list 'load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
-;; (load-theme 'solarized t)
-
 (if (< emacs-major-version 24)
     (progn
-      (add-to-list 'load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
+      ;; (add-to-list 'load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
       (require 'color-theme-solarized)
       (color-theme-solarized))
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
-  (load-theme 'solarized t))
+  ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
+  (load-theme 'solarized t)
+  )
 
 (add-hook 'after-make-frame-functions
 	  (lambda (frame)
@@ -21,44 +15,6 @@
 	      (set-frame-parameter frame 'background-mode mode)
 	      (set-terminal-parameter frame 'background-mode mode))
 	    (enable-theme 'solarized)))
-
-;; (load-theme 'solarized-dark)
-;; (set-background-color "black")
-;; (enable-theme 'solarized-dark)
-
-;; (setq solarized-termcolors 256)
-;; (add-hook 'after-make-frame-functions
-;;           (lambda (frame)
-;;             (set-frame-parameter frame 'background-mode 'dark))
-;;           (enable-theme 'solarized)))
-;; (load-theme 'solarized)
-
-;; (set-background-color "black")
-;; (add-hook 'after-make-frame-functions
-;;           (setq solarized-termcolors (if window-system '256 '16))
-;;           (lambda (frame)
-;;             (set-frame-parameter frame
-;;                                  'background-mode
-;;                                  'dark)
-;;             (enable-theme 'solarized))
-;; 
-;;           )
-;; (load-theme 'solarized)
-
-;; (set-background-color "black")
-;;(load-theme 'solarized)
-;; (unless window-system
-;;   (setq solarized-termcolors '256)
-;;   )
-
-;; (unless window-system
-;;   (setq solarized-degrade nil)
-;;   )
-;; (load-theme 'solarized-dark)
-;; (load-theme 'solarized-light)
-
-;; margin stuff
-;;(set-frame-parameter nil 'internal-border-width 10)
 
 ;; disable gui fluff
 (scroll-bar-mode -1)

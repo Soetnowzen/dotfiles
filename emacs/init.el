@@ -42,6 +42,13 @@
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 
+;; Enable folding
+(defun my-hide-all ()
+  (interactive)
+  (hs-minor-mode)
+  (hs-hide-all))
+(add-hook 'prog-mode-hook 'my-hide-all)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -55,7 +62,7 @@
     ("http://feeds.feedburner.com/Explosm" "https://www.mmo-champion.com/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10")))
  '(package-selected-packages
    (quote
-    (elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil))))
+    (color-theme-solarized elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

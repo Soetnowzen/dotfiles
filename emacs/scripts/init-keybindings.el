@@ -59,7 +59,6 @@
    "wf" 'delete-other-windows
    "wd" 'evil-delete-buffer))
 
-
 (defun my/setup-elisp-keys ()
   "Setup keybindings for emacs-lisp-mode"
   (interactive)
@@ -73,6 +72,16 @@
    "es" 'eval-last-sexp
    "ee" 'eval-expression))
 
+(defun my/setup-folding-keys ()
+  "Setup keybindings for folding"
+  (interactive)
+  (general-define-key
+   :prefix leader
+   :keymaps '(normal visual emacs)
+   "zR" 'hs-hide-all
+   "zM" 'hs-show-all
+   "za" 'hs-toggle-hiding))
+
 (use-package general
   :ensure t
   :after (evil magit elfeed projectile)
@@ -81,6 +90,7 @@
   (my/setup-elfeed-keys)
   (my/setup-elisp-keys)
   (my/setup-evil-keys)
+  (my/setup-folding-keys)
   (my/setup-magit-keys)
   (my/setup-projectile-keys)
   (my/setup-window-keys)
