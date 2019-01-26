@@ -5,7 +5,8 @@
 tmux-*.log
 
 # Emacs
+\#*#
 emacs/elpa
 emacs/history
 emacs/projectile-bookmarks.eld
-\#*#
+emacs/url
