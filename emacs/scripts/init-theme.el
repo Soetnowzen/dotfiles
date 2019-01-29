@@ -26,3 +26,26 @@
 
 ;; highlight the current line
 (global-hl-line-mode +1)
+
+;; setup modeline
+(telephone-line-defsegment telephone-line-file-name-absolute-path-segment ()
+  buffer-file-name)
+
+(use-package telephone-line
+  :ensure t
+  :after (evil)
+  :config
+  (setq telephone-line-lhs
+        '((evil   . (telephone-line-evil-tag-segment))
+          (accent . (telephone-line-vc-segment
+                     telephone-line-process-segment))
+          (nil    . (telephone-line-file-name-absolute-path-segment
+		     ;; telephone-line-minor-mode-segment
+		     ))
+	  ))
+  (setq telephone-line-rhs
+        '((nil    . (telephone-line-misc-info-segment))
+          (accent . (telephone-line-major-mode-segment))
+          (evil   . (telephone-line-airline-position-segment))))
+  
+(telephone-line-mode t))
