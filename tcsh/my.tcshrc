@@ -58,7 +58,7 @@ set WHITE="%{\033[37m%}"
 # Prompt
 # {
 setenv dotfiles_dir "$HOME/dotfiles/bash"
-alias precmd "${dotfiles_dir}/configurations/prompt.bash"
+alias precmd 'set EXIT="$?" && ${dotfiles_dir}/configurations/prompt.bash "$EXIT"'
 set prompt='%# '
 # }
 

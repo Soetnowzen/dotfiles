@@ -22,8 +22,14 @@ source "$dotfiles_dir/scripts/output_color.bash"
 source "$dotfiles_dir/scripts/ssh_completion.bash"
 # source "$dotfiles_dir/scripts/unmount_completion.bash"
 
-PROMPT_COMMAND="$dotfiles_dir/configurations/prompt.bash"
+PROMPT_COMMAND=_prompt
 PS1="\\$ "
+
+function _prompt()
+{
+  local EXIT="$?"
+  "$dotfiles_dir/configurations/prompt.bash" "$EXIT"
+}
 
 # Variables
 #{

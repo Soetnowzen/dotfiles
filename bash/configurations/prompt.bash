@@ -16,7 +16,7 @@ RESET="$(tput sgr0)"
 __prompt_command()
 {
   # This needs to be first
-  local EXIT="$?"
+  local EXIT="$1"
   printf "[" # ]
 
   # Time
@@ -182,4 +182,4 @@ function __git_stash_count()
   fi
 }
 
-__prompt_command
+__prompt_command "$1"
