@@ -1,11 +1,14 @@
 (provide 'init-theme)
 
+;; (add-to-list 'load-path "~/.emacs.d/scripts")
+(require 'color-theme-solarized)
 (if (< emacs-major-version 24)
     (progn
-      ;; (add-to-list 'load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
+      ; (add-to-list 'load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
       (require 'color-theme-solarized)
       (color-theme-solarized))
   ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
+  (setq solarized-termcolors 256)
   (load-theme 'solarized t)
   )
 

@@ -20,7 +20,7 @@
     (require 'solarized-definitions)))
 
 (eval-when-compile
-  (require 'color-theme))
+  (use-package color-theme))
 
 ;;;###autoload
 (defun color-theme-solarized ()
