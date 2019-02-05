@@ -37,7 +37,7 @@
 	((outline-mode outline-minor-mode org-mode markdown-mode)
 	 :open-all show-all :close-all
 	 #[nil "\300\301!\207"
-	       [hide-sublevels 1]
+	       [hide-sublevels 3]
 	       2]
 	 :toggle outline-toggle-children :open
 	 #[nil "\300 \210\301 \207"

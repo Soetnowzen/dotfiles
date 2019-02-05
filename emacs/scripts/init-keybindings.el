@@ -82,11 +82,20 @@
    "zM" 'hs-show-all
    "za" 'hs-toggle-hiding))
 
+(defun my/setup-comment-keys ()
+  "Setup keybindings for commenting"
+  (interactive)
+  (general-define-key
+   :prefix leader
+   :keymaps '(normal visual emacs)
+   "c" 'comment-line))
+
 (use-package general
   :ensure t
   :after (evil magit elfeed projectile)
   :config
   (setq leader "<SPC>")
+  (my/setup-comment-keys)
   (my/setup-elfeed-keys)
   (my/setup-elisp-keys)
   (my/setup-evil-keys)
