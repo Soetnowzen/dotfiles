@@ -46,3 +46,11 @@
 	 :open-rec show-subtree :close hide-subtree :close-level hide-leaves)
 	)
       )
+
+(defun complete-next (arg)
+  (company-complete-common-or-cycle))
+(defun complete-previous (arg)
+  (company-complete-common-or-cycle -1))
+
+(setq evil-complete-next-func 'complete-next)
+(setq evil-complete-previous-func 'complete-previous)

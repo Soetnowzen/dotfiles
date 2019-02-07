@@ -48,6 +48,10 @@
   (hs-hide-all))
 (add-hook 'prog-mode-hook 'my-hide-all)
 
+;; indent with spaces by default
+(setq-default indent-tabs-mode nil)
+(setq-default tabs-width 4)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
