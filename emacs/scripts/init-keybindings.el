@@ -34,7 +34,22 @@
   (general-define-key
    :prefix leader
    :keymaps '(normal visual emacs)
-   "r" 'elfeed))
+   "r" 'elfeed)
+  (add-to-list 'evil-motion-state-modes 'elfeed-search-mode)
+  (add-to-list 'evil-motion-state-modes 'elfeed-show-mode)
+  (evil-define-key* 'motion elfeed-search-mode-map
+                    "gb" #'elfeed-search-browse-url
+                    "gr" #'elfeed-search-update--force
+                    "gR" #'elfeed-search-fetch
+                    "go" #'elfeed-search-show-entry
+                    )
+  (evil-define-key* 'motion elfeed-show-mode-map
+                    "gb" #'elfeed-show-visit
+                    "gj" #'elfeed-show-next
+                    "gk" #'elfeed-show-prev
+                    "go" #'elfeed-show-entry
+                    )
+  )
 
 (defun my/setup-window-keys ()
   "Setup keybindings for window management"
