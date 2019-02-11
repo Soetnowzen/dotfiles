@@ -43,7 +43,7 @@
           (accent . (telephone-line-vc-segment
                      telephone-line-erc-modified-channels-segment
                      telephone-line-process-segment))
-          (nil    . (telephone-line-file-name-absolute-path-segment
+          (nil    . (;; telephone-line-file-name-absolute-path-segment
 		     ;; telephone-line-minor-mode-segment
                      telephone-line-buffer-segment
 		     ))
