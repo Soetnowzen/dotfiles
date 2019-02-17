@@ -65,7 +65,7 @@
     ("http://feeds.feedburner.com/Explosm" "https://www.mmo-champion.com/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10")))
  '(package-selected-packages
    (quote
-    (color-theme-solarized elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil))))
+    (telephone-line color-theme-solarized elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -30,14 +30,14 @@
 ;; highlight the current line
 (global-hl-line-mode +1)
 
-;; setup modeline
-(telephone-line-defsegment telephone-line-file-name-absolute-path-segment ()
-  buffer-file-name)
 
 (use-package telephone-line
   :ensure t
   :after (evil)
   :config
+  ;; setup modeline
+  (telephone-line-defsegment telephone-line-file-name-absolute-path-segment ()
+			     buffer-file-name)
   (setq telephone-line-lhs
         '((evil   . (telephone-line-evil-tag-segment))
           (accent . (telephone-line-vc-segment

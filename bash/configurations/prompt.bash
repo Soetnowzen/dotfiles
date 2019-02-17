@@ -31,6 +31,7 @@ __prompt_command()
   # Path
   # printf "%s%s" "$GREEN" "$(pwd)"
   __smaller_path
+  __count_dirs_stack
   # Get current git branch
   branch=$(__parse_git_branch)
   if [[ ${branch} != "" ]]; then
@@ -65,6 +66,14 @@ function __smaller_path()
     new_path="/"
   fi
   printf "%s%s" "$GREEN" "$new_path"
+}
+
+function __count_dirs_stack()
+{
+  dirs_count=$(dirs -v 2> /dev/null | wc -l)
+  if [[ $dirs_count != "1" ]]; then
+    printf "[%s%s%s]" "$ORANGE" "$dirs_count" "$GREEN"
+  fi
 }
 
 function __parse_git_branch()

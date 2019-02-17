@@ -31,6 +31,12 @@ function _prompt()
   "$dotfiles_dir/configurations/prompt.bash" "$EXIT"
 }
 
+# Shell options
+# {
+shopt -s direxpand
+shopt -s expand_aliases
+# }
+
 # Variables
 #{
 EDITOR=vim
@@ -48,6 +54,7 @@ alias apt-get='sudo apt-get'
 alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
 alias clr='clear'
+alias d='dirs -v'
 alias df="df -h"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
@@ -66,10 +73,14 @@ alias j='jobs -l'
 alias less='less -r'
 alias mkdir='mkdir -pv'
 alias mount='mount | column -t'
+alias o='popd'
+alias p='pushd'
 alias pd='pushd'
 alias po='popd'
+alias popdd='popd >/dev/null'
 alias print_path='echo $PATH | tr : "\n"'
 alias psu='ps u --forest'
+alias pushdd="pushd \$PWD > /dev/null"
 alias rm='rm -I'
 alias tcshr='vim ~/.tcshrc'
 alias tm='tmux attach || tmux new'
@@ -82,15 +93,6 @@ alias vimr='vim ~/.vimrc'
 alias vs='vim -o'
 alias vv='vim -O'
 alias wget='wget -c'
-alias pushdd="pushd \$PWD > /dev/null"
-alias cd='pushdd;cd'
-alias popdd='popd >/dev/null'
-alias cd.='popdd'
-alias cd..='popdd;popdd'
-alias cd...='popdd;popdd;popdd'
-alias cd....='popdd;popdd;popdd;popdd'
-alias .cd='popd -n +0'
-alias ..cd='popd -n +0;popd -n +0;popd -n +0;popd -n +0;popd -n +0;popd -n +0;popd -n +0;popd -n +0;popd -n +0;popd -n +0'
 
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='find -L . -type l'
@@ -100,6 +102,14 @@ if [[ $UID != 0 ]]; then
   alias update='sudo apt-get update && sudo apt-get upgrade'
 fi
 # }
+
+function cdd()
+{
+  # Not working yet.
+  local directory
+  directory="$1"
+  cd "~$1"
+}
 
 function most_used_cmd()
 {
