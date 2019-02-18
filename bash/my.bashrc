@@ -27,8 +27,11 @@ PS1="\\$ "
 
 function _prompt()
 {
+  # This needs to be first
   local EXIT="$?"
-  "$dotfiles_dir/configurations/prompt.bash" "$EXIT"
+  local dirs_count
+  dirs_count=$(dirs -v 2> /dev/null | wc -l)
+  "$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count"
 }
 
 # Shell options

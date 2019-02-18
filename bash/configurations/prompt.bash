@@ -15,8 +15,9 @@ RESET="$(tput sgr0)"
 
 __prompt_command()
 {
-  # This needs to be first
-  local EXIT="$1"
+  local args=("$@")
+  local EXIT="${args[0]}"
+  local dirs_count="${args[1]}"
   printf "[" # ]
 
   # Time
@@ -31,7 +32,7 @@ __prompt_command()
   # Path
   # printf "%s%s" "$GREEN" "$(pwd)"
   __smaller_path
-  __count_dirs_stack
+  __count_dirs_stack "$dirs_count"
   # Get current git branch
   branch=$(__parse_git_branch)
   if [[ ${branch} != "" ]]; then
@@ -70,9 +71,11 @@ function __smaller_path()
 
 function __count_dirs_stack()
 {
-  dirs_count=$(dirs -v 2> /dev/null | wc -l)
-  if [[ $dirs_count != "1" ]]; then
-    printf "[%s%s%s]" "$ORANGE" "$dirs_count" "$GREEN"
+  local dirs_count="$1"
+  if [[ $dirs_count != "" ]]; then
+    if [[ $dirs_count != 1 ]]; then
+      printf "[%s%s%s]" "$ORANGE" "$dirs_count" "$GREEN"
+    fi
   fi
 }
 
@@ -191,4 +194,4 @@ function __git_stash_count()
   fi
 }
 
-__prompt_command "$1"
+__prompt_command "$@"
