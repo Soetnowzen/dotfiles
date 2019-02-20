@@ -84,7 +84,7 @@
 	sl = stash list
 	sp = stash pop
 	ss = status -s
-	st = stash
+	st = stash save
 	sts = stash show -p
 	sw = show --word-diff
 	t = tag

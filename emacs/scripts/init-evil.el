@@ -47,6 +47,9 @@
 	)
       )
 
+(with-eval-after-load 'evil
+    (defalias #'forward-evil-word #'forward-evil-symbol))
+
 (defun complete-next (arg)
   (company-complete-common-or-cycle))
 (defun complete-previous (arg)
