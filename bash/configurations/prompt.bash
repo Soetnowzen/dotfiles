@@ -18,6 +18,7 @@ __prompt_command()
   local args=("$@")
   local EXIT="${args[0]}"
   local dirs_count="${args[1]}"
+  local jobs_count="${args[2]}"
   printf "[" # ]
 
   # Time
@@ -33,6 +34,7 @@ __prompt_command()
   # printf "%s%s" "$GREEN" "$(pwd)"
   __smaller_path
   __count_dirs_stack "$dirs_count"
+  __count_jobs_stack "$jobs_count"
   # Get current git branch
   branch=$(__parse_git_branch)
   if [[ ${branch} != "" ]]; then
@@ -74,7 +76,17 @@ function __count_dirs_stack()
   local dirs_count="$1"
   if [[ $dirs_count != "" ]]; then
     if [[ $dirs_count != 1 ]]; then
-      printf "[%s%s%s]" "$ORANGE" "$dirs_count" "$GREEN"
+      printf "[%sd%s%s]" "$ORANGE" "$dirs_count" "$GREEN"
+    fi
+  fi
+}
+
+function __count_jobs_stack()
+{
+  local jobs_count="$1"
+  if [[ $jobs_count != "" ]]; then
+    if [[ $jobs_count != 0 ]]; then
+      printf "[%sj%s%s]" "$VIOLET" "$jobs_count" "$GREEN"
     fi
   fi
 }

@@ -57,6 +57,7 @@ function MyFoldText() " {
   let line = substitute(line, '\t', tabStop, 'g')
   let number_of_lines = v:foldend - v:foldstart + 1
   return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' ☰ '
+  " return  line . ' ' . v:folddashes . ' +' . number_of_lines . ' lines '
 endfunction
 " }
 

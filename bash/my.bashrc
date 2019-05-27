@@ -31,7 +31,9 @@ function _prompt()
   local EXIT="$?"
   local dirs_count
   dirs_count=$(dirs -v 2> /dev/null | wc -l)
-  "$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count"
+  local jobs_count
+  jobs_count=$(jobs -l 2> /dev/null | wc -l)
+  "$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$jobs_count"
 }
 
 # Shell options
