@@ -23,6 +23,7 @@ syntax region Cyan start='(' skip='\v\\.' end=')'
 syntax region Cyan start='\"' skip='\v\\.' end='\"'
 
 syntax match Magenta '\cmakemake'
+syntax match Magenta '\cmkmk'
 syntax match Green '[a-zA-Z]\+=\w\+,\{0,1\}'
 syntax match Violet '\csfa'
 

@@ -432,6 +432,8 @@ set incsearch
 "   Regular Expressions set to very magic {
 nnoremap / /\v
 vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
 cnoremap %s %s/\v
 cnoremap s/ s/\v
 cnoremap \>s/ \>s/\v
