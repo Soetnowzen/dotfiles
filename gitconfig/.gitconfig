@@ -38,6 +38,7 @@
 	bs = branch -vv
 	c = commit
 	ca = commit --amend
+	can = commit --amend --no-edit
 	ci = commit
 	cla = clean -xdf # clean all untracked files
 	cm = commit -m
