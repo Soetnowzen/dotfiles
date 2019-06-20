@@ -54,6 +54,7 @@
 	dw = diff --word-diff
 	f = fetch
 	fa = fetch --all
+	fb = featureBranch
 	featureBranch = "!feature_branch() { git checkout -b $1 origin/master; }; feature_branch"
 	filelog = log -u
 	files = diff-tree --no-commit-id --name-only -r
