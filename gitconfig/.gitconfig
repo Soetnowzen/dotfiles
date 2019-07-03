@@ -76,6 +76,8 @@
 	prb = pull --rebase origin master
 	plb = pull --no-ff origin master
 	ps = push
+	psd = push origin HEAD:refs/drafts/master
+	psf = push origin HEAD:refs/for/master
 	r = revert
 	rc = rebase --continue
 	restore = checkout -m --

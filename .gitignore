@@ -10,3 +10,5 @@ emacs/elpa
 emacs/history
 emacs/projectile-bookmarks.eld
 emacs/url
+emacs/games
+emacs/transient

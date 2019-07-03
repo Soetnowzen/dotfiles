@@ -8,24 +8,23 @@ syntax match potionOperator "\v/\="
 syntax match potionOperator "\v\+\="
 syntax match potionOperator "\v-\="
 
-syntax match Orange '\d\+:\d\+\(:\d\+\.\d\+\)*'
-syntax match Orange '\d\+-\d\+-\d\+'
-syntax match Orange '0x[0-9a-fA-F]\+'
-syntax match White '\w\+\.[a-zA-Z]\+\(:\d\+\)'
-syntax match Blue '\w\+='
-syntax match RED '\c\<warn\w*'
+" syntax match Orange '\d\+:\d\+\(:\d\+\.\d\+\)*'
+" syntax match Orange '\d\+-\d\+-\d\+'
+" syntax match Orange '0x[0-9a-fA-F]\+'
+syntax match Blue '\w\+\.[a-zA-Z]\+\(:\d\+\)'
+" syntax match Blue '\w\+='
+syntax match Yellow '\c\<warn\w*'
 syntax match RED '\c\<fail\w*'
-syntax match RED '\c\<info\w*'
+syntax match White '\c\<info\w*'
 syntax match RED '\c\<err\w*'
 
-syntax region Cyan start='<' skip='\v\\.' end='>'
-syntax region Cyan start='(' skip='\v\\.' end=')'
-syntax region Cyan start='\"' skip='\v\\.' end='\"'
+" syntax region Cyan start='<' skip='\v\\.' end='>'
+" syntax region Cyan start='(' skip='\v\\.' end=')'
+" syntax region Cyan start='\"' skip='\v\\.' end='\"'
 
-syntax match Magenta '\cmakemake'
-syntax match Magenta '\cmkmk'
-syntax match Green '[a-zA-Z]\+=\w\+,\{0,1\}'
-syntax match Violet '\csfa'
+syntax match Magenta '\c\<makemake\>'
+syntax match Magenta '\c\<mkmk\>'
+" syntax match Green '[a-zA-Z]\+=\w\+,\{0,1\}'
 
 highlight link potionOperator Operator
 highlight Black ctermfg=Black guifg=Black

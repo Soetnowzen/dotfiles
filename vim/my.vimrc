@@ -371,7 +371,7 @@ inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2
 " function! s:InsertExpr(char)
   " let line = getline('.')
   " let col  = col('.')
-  " return 
+  " return
         " \   line[col-3] =~ '[=<>!~]' ? "\<bs>".a:char." "
         " \ : line[col-2] =~ '\s\+'    ? a:char." "
         " \ :                            a:char

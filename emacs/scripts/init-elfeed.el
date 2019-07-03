@@ -16,6 +16,12 @@
                        ("https://feed.khz.se/nordigt" podcasts)
                        ("http://www.ilikeradio.se/podcasts/nordigt/feed" podcasts)
                        ("https://darklegacycomics.com/feed.xml" comics)
+                       ("http://feeds.feedburner.com/blogspot/hsDu" android) ;; Android Developers Blog
+                       ("http://oremacs.com/atom.xml" emacs)                 ;; (or emacs)
+                       ("http://pragmaticemacs.com/feed/" emacs)             ;; Pragmatic Emacs
+                       ("http://planet.emacsen.org/atom.xml" emacs)          ;; Planet Emacsen
+                       ("http://feeds.bbci.co.uk/news/science_and_environment/rss.xml" news) ;; BBC News - Science & Environment
+                       ("https://www.theverge.com/rss/index.xml" news) ;; The Verge
                        ))
   (elfeed-search-set-filter "@6-months-ago")
   )

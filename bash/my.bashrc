@@ -202,9 +202,9 @@ function tail_color()
   RED="$(tput setaf 1)"
   GREEN="$(tput setaf 2)"
   YELLOW="$(tput setaf 3)"
-  # BLUE="$(tput setaf 4)"
+  BLUE="$(tput setaf 4)"
   MAGENTA="$(tput setaf 5)"
-  # CYAN="$(tput setaf 6)"
+  CYAN="$(tput setaf 6)"
   WHITE="$(tput setaf 7)"
   # ORANGE="$(tput setaf 9)"
   # VIOLET="$(tput setaf 13)"
@@ -213,7 +213,9 @@ function tail_color()
                          s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
                          s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
                          s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
-                         s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI"
+                         s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
+                         s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
+                         s/\(\<\w\+.\w\+:\d\+\>\)/$BLUE\1$RESET/gI"
 }
 
 # Colors
