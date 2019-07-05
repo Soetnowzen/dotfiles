@@ -7,8 +7,8 @@ tmux-*.log
 # Emacs
 \#*#
 emacs/elpa
+emacs/games
 emacs/history
 emacs/projectile-bookmarks.eld
-emacs/url
-emacs/games
 emacs/transient
+emacs/url
