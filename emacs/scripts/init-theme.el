@@ -1,23 +1,9 @@
 (provide 'init-theme)
 
-;; (add-to-list 'load-path "~/.emacs.d/scripts")
-(require 'color-theme-solarized)
-(if (< emacs-major-version 24)
-    (progn
-      ; (add-to-list 'load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
-      (require 'color-theme-solarized)
-      (color-theme-solarized))
-  ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/emacs-color-theme-solarized")
-  (setq solarized-termcolors 256)
-  (load-theme 'solarized t)
-  )
-
-(add-hook 'after-make-frame-functions
-	  (lambda (frame)
-	    (let ((mode (if (display-graphic-p frame) 'light 'dark)))
-	      (set-frame-parameter frame 'background-mode mode)
-	      (set-terminal-parameter frame 'background-mode mode))
-	    (enable-theme 'solarized)))
+(use-package solarized-theme
+  :ensure t
+  :config
+  (load-theme 'solarized-dark t))
 
 ;; disable gui fluff
 (scroll-bar-mode -1)
