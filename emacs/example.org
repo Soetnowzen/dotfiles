@@ -1,0 +1,28 @@
+* Title with astrisk and space.
+This can be temporary or not?
+** Subtitle created with multiple astrix
+fjskalf
+1. hej
+2. 
+
+** skapar tabbeler med pipe & dash
+opern and close and format using tabs
+| hej   | basj            |
+|-------+-----------------|
+| table | helt automagisk |
+| s;jj  |                 |
+
+** References
+org-store-link
+org-insert-last-stored-link
+[[*%09][Reference to sub-header References]]
+** Source code block
+execute using org-babel-execute-src-block
+#+BEGIN_SRC bash
+
+echo "Hello World!"
+
+#+END_SRC
+
+#+RESULTS:
+: Hello World!

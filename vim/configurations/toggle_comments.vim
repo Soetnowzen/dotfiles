@@ -25,6 +25,7 @@ let s:comment_map = {
       \ "lua": '--',
       \ "mail": '>',
       \ "make": '#',
+      \ "markdown": '[//]: #',
       \ "php": '\/\/',
       \ "plaintex": '%',
       \ "pov": '#',

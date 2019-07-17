@@ -103,6 +103,14 @@
    :keymaps '(normal visual emacs)
    "c" 'comment-line))
 
+(defun my/setup-ivy-keys ()
+  "Setup keybindings for ivy"
+  (interactive)
+  (general-define-key
+   :prefix leader
+   :keymaps '(normal visual emacs)
+   "f" 'counsel-find-file))
+
 (use-package general
   :ensure t
   :after (evil magit elfeed projectile)
@@ -116,4 +124,5 @@
   (my/setup-magit-keys)
   (my/setup-projectile-keys)
   (my/setup-window-keys)
+  (my/setup-ivy-keys)
   )
