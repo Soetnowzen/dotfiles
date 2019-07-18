@@ -323,3 +323,40 @@ function stopwatch()
     sleep 0.1
   done
 }
+
+function git-find()
+{
+    local word=$1
+    local RED="$(tput setaf 1)"
+    local GREEN="$(tput setaf 2)"
+    local YELLOW="$(tput setaf 3)"
+    local BLUE="$(tput setaf 4)"
+    local MAGENTA="$(tput setaf 5)"
+    local CYAN="$(tput setaf 6)"
+    local WHITE="$(tput setaf 7)"
+    local GREY="$(tput setaf 9)"
+    local VIOLET="$(tput setaf 13)"
+    local BLACK="$(tput setaf 16)"
+    local BOLD="$(tput bold)"
+    local UNDERLINE="$(tput smul)"
+    local EXIT_UNDERLINE="$(tput rmul)"
+    local RESTORE="$(tput sgr0)"
+    for file in $(git show --name-only); do
+        ROWS=$(git show -- ":/${file}" 2> /dev/null | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
+    /^(---|\+\+\+|[^-+ ])/{print;next};\
+    {line=substr($0,2)};\
+      /^-/{print "-" minus_count++ ":" line;next};\
+      /^[+]/{print "+" plus_count++ ":" line;next};\
+      {print "(" minus_count++ "," plus_count++ "):"line}' | grep -E "^\\+[^\\+]" | grep -i "\\<${word}\\>")
+        local EXIT_STATUS="$?"
+        if [[ $EXIT_STATUS == 0 ]]; then
+            ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
+            EXIT_STATUS="$?"
+            if [[ $EXIT_STATUS == 0 ]]; then
+                for ROW in $ROW_NUMBERS; do
+                    echo -e "${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains${CYAN} $1${RESTORE}"
+                done
+            fi
+        fi
+    done
+}
