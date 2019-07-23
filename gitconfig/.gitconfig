@@ -71,6 +71,7 @@
 	lg5 = log --graph --abbrev-commit --decorate --format=format:"%C(red)%H\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
 	ll = log --graph --decorate --numstat --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)" --all
 	ll2 = log --graph --decorate --numstat --pretty=format:"%C(red)%h%C(yellow)%d\\ %C(reset)%s\\ %C(blue)[%cn]%C(green)(%ar)"
+	ls = diff-tree --no-commit-id --name-only -r HEAD
 	mt = mergetool
 	ours = checkout --ours --
 	pl = pull

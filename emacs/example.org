@@ -7,10 +7,31 @@ fjskalf
 
 ** skapar tabbeler med pipe & dash
 opern and close and format using tabs
-| hej   | basj            |
-|-------+-----------------|
-| table | helt automagisk |
-| s;jj  |                 |
+|        hej |            basj | formula |     |        |
+|------------+-----------------+---------+-----+--------|
+|      table | helt automagisk |     100 | 100 | #ERROR |
+|       s;jj |                 |     100 | 100 | #ERROR |
+|          1 |               2 |     100 | 100 | #ERROR |
+|          3 |               4 |     100 | 100 | #ERROR |
+| -6.9999983 |                 |     100 | 100 | #ERROR |
+|  3.1415927 |                 |     100 | 100 | #ERROR |
+|            |                 |     100 | 100 | #ERROR |
+#+TBLFM: $3=@1$4+@2$4::$4=100::$5='(substring (number-to-string $pi) (round $4) (1+(round $4)));N::@6$1=2 + 3*4*5 / 6*7^8 - 9::@7$1=$pi
+#+TBLFM: $3=@1$4+@2$4::$4=100::$5='(substring (number-to-string $pi) (round $4) (1+(round $4)));N::@6$1=2 + 3*4*5 / 6*7^8 - 9::@7$1=$pi
+#+CONSTANTS: pi=3.14159265358979323846
+
+| !      | Student                         | Maths |                               Physics | Mean                                                                          | Means again                                                                   |
+|--------+---------------------------------+-------+---------------------------------------+-------------------------------------------------------------------------------+-------------------------------------------------------------------------------|
+| #      | Bertrand                        |    13 |                                     9 | 6.5 + Bertrand / 4 + 3.25                                                     | 6.5 + Bertrand / 4 + 3.25                                                     |
+| #      | Henri                           |    15 |                                    12 | 7.5 + Henri / 4 + 3.75                                                        | 7.5 + Henri / 4 + 3.75                                                        |
+| #      | Arnold                          |    17 |                                    15 | 8.5 + Arnold / 4 + 4.25                                                       | 8.5 + Arnold / 4 + 4.25                                                       |
+|--------+---------------------------------+-------+---------------------------------------+-------------------------------------------------------------------------------+-------------------------------------------------------------------------------|
+| #      | (Bertrand + Henri + Arnold) / 3 |    15 | (Bertrand + Henri + Arnold) / 6 + 7.5 | 7.5 + (Bertrand + Henri + Arnold) / 12 + 3.75                                 | 7.5 + (Bertrand + Henri + Arnold) / 12 + 3.75                                 |
+| #ERROR | (Bertrand + Henri + Arnold) / 3 |    15 |                                    12 | (6.5 + Bertrand / 4 + 10.75 + Henri / 4 + 12.25 + Arnold / 4) / 3 + 1.4166667 | (6.5 + Bertrand / 4 + 10.75 + Henri / 4 + 12.25 + Arnold / 4) / 3 + 1.4166667 |
+#+TBLFM: $6=$Mean::@6=vmean(@2..@4)::$Mean=vmean($Maths..$Physics)
+*** Use <C-c><C-c> on the row above to recalculate the formulas.
+*** Use <C-c>} to show cell values.
+*** Use <C-c>' to show minibuffer for editing formulas
 
 ** References
 org-store-link
