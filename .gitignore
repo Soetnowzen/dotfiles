@@ -6,9 +6,12 @@ tmux-*.log
 
 # Emacs
 \#*#
+emacs/.backups
 emacs/elpa
 emacs/games
 emacs/history
 emacs/projectile-bookmarks.eld
+emacs/projectile.cache
+emacs/smex-items
 emacs/transient
 emacs/url
