@@ -17,6 +17,7 @@
 (require 'init-theme)
 (require 'init-whitespace)
 (require 'init-ivy)
+(require 'init-git-gutter+)
 
 (defun mp-display-message ()
   (interactive)
@@ -66,7 +67,7 @@
     ("http://swedroid.se/feed" "http.com/feed.xml" "http.khz.se/nordigt" "http://feeds.feedburner.com/Explosm" "http.mmo-champion.com/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10")))
  '(package-selected-packages
    (quote
-    (smex counsel ivy telephone-line color-theme-solarized elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil))))
+    (git-gutter+ smex counsel ivy telephone-line color-theme-solarized elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
