@@ -63,6 +63,7 @@ alias d='dirs -v'
 alias df="df -h"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
+alias f='fg'
 alias fi_reg="find . -type f -regex"
 alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'
@@ -72,7 +73,9 @@ alias grep='grep --color'
 alias grepbb='grep -Rin --color --include=*.bb'
 alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
 alias grepdir="grep '[^\\/]*$'"
+alias grepi='grep --color -i'
 alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
+alias greprin='grep --color -Rin'
 alias h='history'
 alias j='jobs -l'
 alias less='less -r'
@@ -92,10 +95,11 @@ alias tm='tmux attach || tmux new'
 alias v-split='vim -o'
 alias v-tsplit='vim -p'
 alias v-vsplit='vim -O'
-alias v='vim -p'
+alias v='vim -O'
 alias vd='vimdiff'
 alias vimr='vim ~/.vimrc'
 alias vs='vim -o'
+alias vt='vim -p'
 alias vv='vim -O'
 alias wget='wget -c'
 

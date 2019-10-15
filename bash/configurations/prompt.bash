@@ -203,6 +203,7 @@ function __git_stash_count()
   git_stash_count=$(git stash list 2> /dev/null | wc -l)
   if [[ ${git_stash_count} != "0" ]]; then
     printf ", %s✭%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
+    # printf ", %s*%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
   fi
 }
 

@@ -17,7 +17,7 @@
 (require 'init-theme)
 (require 'init-whitespace)
 (require 'init-ivy)
-(require 'init-git-gutter+)
+(require 'init-git-gutter)
 
 (defun mp-display-message ()
   (interactive)

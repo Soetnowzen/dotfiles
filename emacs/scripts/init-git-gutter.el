@@ -1,4 +1,4 @@
-(provide 'init-git-gutter+)
+(provide 'init-git-gutter)
 
 (use-package git-gutter+
   :ensure t
