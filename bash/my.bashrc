@@ -90,6 +90,7 @@ alias print_path='echo $PATH | tr : "\n"'
 alias psu='ps u --forest'
 alias pushdd="pushd \$PWD > /dev/null"
 alias rm='rm -I'
+alias t='tree'
 alias tcshr='vim ~/.tcshrc'
 alias tm='tmux attach || tmux new'
 alias v-split='vim -o'

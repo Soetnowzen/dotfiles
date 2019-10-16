@@ -11,3 +11,5 @@ inoreabbrev p printf("\n");<Left><Left><Left><Left><Left>
 set foldmethod=syntax
 syntax region foldIfNotDef start="#ifndef" end="#endif" transparent fold keepend
 syntax region foldIfDef start="#ifdef" end="#endif" transparent fold keepend
+
+set syntax=cpp.doxygen
