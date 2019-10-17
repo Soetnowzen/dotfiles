@@ -191,9 +191,10 @@ function __git_commit_status()
       printf "⬇"
       # printf "v"
     elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
-      ahead_behind=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1⬆ \2⬇/')
-      # ahead_behind=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1^ \2v/')
-      printf "diverged(%s)" "$ahead_behind"
+      # local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1⬆ \2⬇/')
+      # local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1^ \2v/')
+      local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1 \2/')
+      printf "(%s)" "$local_remote"
     fi
     number_of_commits=$(echo "$git_commit_status" | grep -Eo '[0-9]+')
     printf "%s%s" "$number_of_commits" "$YELLOW"

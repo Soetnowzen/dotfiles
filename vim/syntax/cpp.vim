@@ -1,3 +1,4 @@
+" set syntax=cpp.doxygen
 
 set tabstop=2
 set shiftwidth=2
@@ -12,4 +13,3 @@ set foldmethod=syntax
 syntax region foldIfNotDef start="#ifndef" end="#endif" transparent fold keepend
 syntax region foldIfDef start="#ifdef" end="#endif" transparent fold keepend
 
-set syntax=cpp.doxygen

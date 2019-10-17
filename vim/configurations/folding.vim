@@ -1,6 +1,6 @@
 set foldcolumn=1
 " highlight clear Folded
-highlight Folded cterm=Bold gui=Bold
+highlight Folded cterm=Bold gui=Bold ctermfg=11
 
 function! MyFoldLevel( lineNumber ) " {
   let thisLine = getline( a:lineNumber )

@@ -43,3 +43,5 @@ highlight Orange ctermfg=Red guifg=Red
 highlight Violet ctermfg=Magenta guifg=Magenta
 highlight Yellow ctermfg=Yellow guifg=Yellow
 highlight White ctermfg=White guifg=White
+
+command FoldExcess setlocal foldexpr=getline(v:lnum)=~@/?0:1 foldmethod=expr
