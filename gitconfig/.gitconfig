@@ -9,6 +9,45 @@
 	upstream = yellow
 	local = red
 	remote = blue
+	current = green
+	plain = magenta
+	reset = blue
+[color "diff"]
+	meta = yellow
+	frag = magenta
+	old = red
+	new = green
+	# commit
+	# context
+	# func
+	# plain
+	# whitespace
+[color "status"]
+	added = green
+	changed = red
+	untracked = cyan
+	# branch
+	# header
+	# localBranch
+	# noBranch
+	# remoteBranch
+	# unmerged
+	# untracked
+	# updated
+[color "interactive"]
+	error = red
+	header = yellow
+	help = white
+	plain = magenta
+	prompt = blue
+	reset = blue
+[color "decorate"]
+	HEAD = yellow
+	branch = yellow
+	grafted = blue
+	remoteBranch = yellow
+	stash = bold red
+	tag = bold magenta
 [core]
 	editor = vim
 	pager = less -RFX
