@@ -5,13 +5,6 @@
 	interactive = auto
 	pager = true
 	ui = auto
-[color "branch"]
-	upstream = yellow
-	local = red
-	remote = blue
-	current = green
-	plain = magenta
-	reset = blue
 [color "diff"]
 	meta = yellow
 	frag = magenta
@@ -34,13 +27,20 @@
 	# unmerged
 	# untracked
 	# updated
+[color "branch"]
+	upstream = yellow
+	local = red
+	remote = blue
+	current = green
+	plain = magenta
+	# reset = blue
 [color "interactive"]
 	error = red
 	header = yellow
 	help = white
 	plain = magenta
 	prompt = blue
-	reset = blue
+	# reset = blue
 [color "decorate"]
 	HEAD = yellow
 	branch = yellow
