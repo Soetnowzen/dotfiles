@@ -13,7 +13,7 @@ VIOLET="$(tput setaf 13)"
 # EXIT_UNDERLINE="\\[$(tput rmul)\\]"
 RESET="$(tput sgr0)"
 
-__prompt_command()
+function __prompt_command()
 {
   local args=("$@")
   local EXIT="${args[0]}"
@@ -160,7 +160,7 @@ function __modified_files_count()
       printf " %s✱%s" "$BLUE" "$modified_files"
       # printf " %s~%s" "$BLUE" "$modified_files"
     fi
-    renamed_files=$(echo "${git_status}" | grep -c '^R ')
+    renamed_files=$(echo "${git_status}" | grep -c '^R')
     if [[ $renamed_files != 0 ]]; then
       printf " %s➜%s" "$MAGENTA" "$renamed_files"
       # printf " %s>%s" "$MAGENTA" "$renamed_files"
@@ -193,7 +193,7 @@ function __git_commit_status()
     elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
       # local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1⬆ \2⬇/')
       # local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1^ \2v/')
-      local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1 \2/')
+      local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+ \([[:digit:]]\+\) and \([[:digit:]]\+\)/\1 \2/')
       printf "(%s)" "$local_remote"
     fi
     number_of_commits=$(echo "$git_commit_status" | grep -Eo '[0-9]+')

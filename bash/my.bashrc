@@ -21,6 +21,9 @@ source "$dotfiles_dir/scripts/make_completion.bash"
 source "$dotfiles_dir/scripts/output_color.bash"
 source "$dotfiles_dir/scripts/ssh_completion.bash"
 # source "$dotfiles_dir/scripts/unmount_completion.bash"
+source "$dotfiles_dir/scripts/fg_completion.bash"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 PROMPT_COMMAND=_prompt
 PS1="\\$ "
@@ -190,6 +193,8 @@ alias sol.light='source ~/dotfiles/mintty/sol.light'
 # Auto complete searches when using up and down
 bind '"\e[A":history-search-backward' # ]
 bind '"\e[B":history-search-forward' # ]
+bind '"\e[1;3D": backward-word' ### Alt left ]
+bind '"\e[1;3C": forward-word' ### Alt right" ]
 
 function my_pylint()
 {
@@ -221,6 +226,34 @@ function tail_color()
                          s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
                          s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
                          s/\(\<\w\+.\w\+:\d\+\>\)/$BLUE\1$RESET/gI"
+}
+
+function testing_flags()
+{
+  local PARAMS=""
+
+  while (( "$#" )); do
+    case "$1" in
+      -f|--flag-with-argument)
+        FLARG=$2
+        shift 2
+        ;;
+      --) # end argument parsing
+        shift
+        break
+        ;;
+      -*|--*=) # unsupported flags
+        echo "Error: Unsupported flag $1" >&2
+        ;;
+      *) # preserve positional arguments
+        PARAMS="$PARAMS $1"
+        shift
+        ;;
+    esac
+  done
+
+  # set positional arguments in their proper place
+  eval set -- "$PARAMS"
 }
 
 # Colors

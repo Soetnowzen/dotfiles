@@ -216,6 +216,7 @@ nnoremap <Leader><CR> :noh\<CR>
 nnoremap <expr> <Space> foldlevel('.') ? 'za' : ":noh\<CR>"
 
 "     The glorious & dear vim leader declarations {
+nnoremap <Leader>t :vimgrep /TODO\\|FIXME\\|MKMK/ **/*.cc<CR>
 nnoremap <Leader>c /\v[<=>]{4,}<CR>
 nnoremap <Leader>cn ]c
 nnoremap <Leader>cp [c

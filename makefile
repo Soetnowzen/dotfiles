@@ -5,7 +5,7 @@ help:
 	@make -rpn | sed -n -e '/^$$/ { n ; /^[^ ]*:/p}' | egrep -v '^.PHONY' | egrep -v '^all'
 
 all:
-	bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf
+	bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf fzf
 
 bash:
 	ln -fsn $(here)/bash/my.bashrc $(HOME)/.bashrc
@@ -52,5 +52,9 @@ vimperator:
 	mkdir -p $(HOME)/.vimperator/colors
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
+fzf:
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install
+
 .PHONY:
-	bash gdb git input mintty sumatra_pdf tcsh tmux vim vimperator
+	bash gdb git input mintty sumatra_pdf tcsh tmux vim vimperator fzf
