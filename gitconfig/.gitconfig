@@ -113,6 +113,8 @@
 	ll2 = !"git lg1 --graph --decorate --numstat"
 	ls = diff-tree --no-commit-id --name-only -r HEAD
 	mt = mergetool
+	nb = !"git newBranch"
+	newBranch = "!new_branch() { git checkout -b $1 origin/team_name/$1; }; new_branch"
 	ours = checkout --ours --
 	pl = pull
 	plb = pull --no-ff origin master
@@ -120,7 +122,9 @@
 	prb = pull --rebase origin master
 	ps = push
 	psd = push origin HEAD:refs/drafts/master
+	psdf = "!push_feature_branch() { git push origin HEAD:refs/draft/team_name/$1; }; push_feature_branch"
 	psf = push origin HEAD:refs/for/master
+	psff = "!push_feature_branch() { git push origin HEAD:refs/for/team_name/$1; }; push_feature_branch"
 	r = revert
 	rc = rebase --continue
 	restore = checkout -m --

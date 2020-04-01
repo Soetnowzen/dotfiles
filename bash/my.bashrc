@@ -219,13 +219,37 @@ function tail_color()
   # ORANGE="$(tput setaf 9)"
   # VIOLET="$(tput setaf 13)"
   RESET="$(tput sgr0)"
+  tail "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
+                      s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
+                      s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
+                      s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
+                      s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
+                      s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
+                      s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
+}
+
+function tailf_color()
+{
+  local file RED GREEN YELLOW MAGENTA WHITE RESET
+  # BLUE CYAN ORANGE VIOLET
+  file="${1}"
+  RED="$(tput setaf 1)"
+  GREEN="$(tput setaf 2)"
+  YELLOW="$(tput setaf 3)"
+  BLUE="$(tput setaf 4)"
+  MAGENTA="$(tput setaf 5)"
+  CYAN="$(tput setaf 6)"
+  WHITE="$(tput setaf 7)"
+  # ORANGE="$(tput setaf 9)"
+  # VIOLET="$(tput setaf 13)"
+  RESET="$(tput sgr0)"
   tail -f "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
                          s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
                          s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
                          s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
                          s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
                          s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
-                         s/\(\<\w\+.\w\+:\d\+\>\)/$BLUE\1$RESET/gI"
+                         s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
 }
 
 function testing_flags()
