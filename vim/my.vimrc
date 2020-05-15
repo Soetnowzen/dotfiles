@@ -23,10 +23,16 @@ augroup END " }
 
 function! s:insert_gates() " {
   let gatename = substitute(toupper(substitute(expand("%:t"), '\C\([A-Z]\)', '_\1','g')), "\\.", "_", "g")
+  let className = substitute(expand("%:r"), '\<.', '\u&', 'g')
   execute "normal! i#ifndef " . gatename
   execute "normal! o#define " . gatename
+  normal! o
+  execute "normal! oclass " . className
+  execute "normal! o{"
+  execute "normal! o};"
   execute "normal! Go#endif /* " . gatename . " */"
   normal! ko
+  normal! k
 endfunction " }
 
 augroup c_insert_gates " {

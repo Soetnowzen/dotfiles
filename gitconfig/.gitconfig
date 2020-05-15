@@ -69,7 +69,7 @@
 [alias]
 	a = add
 	aa = add --all
-	alias =  config --get-regexp alias
+	alias =  !"git_alias() { git config --get-regexp alias | grep -i --color $1; }; git_alias"
 	ap = add -p
 	au = add -u
 	bi = bisect run # <my_script> <arguments>
@@ -90,6 +90,7 @@
 	cs = commit -s
 	d = diff
 	dc = diff --cached
+	deliverBranch = "!deliver_branch() { git merge --squash origin/$1; }; deliver_branch"
 	dt = difftool
 	dw = diff --word-diff
 	f = fetch
@@ -101,7 +102,7 @@
 	fl = !"git filelog"
 	head = rev-parse HEAD
 	la = "!git config -l | grep alias | cut -c 7-"
-	lg = !"git lg2"
+	lg = !"git lg8"
 	lg1 = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
 	lg2 = !"git lg1 --graph --abbrev-commit --decorate --all"
 	lg3 = !"git lg1 --decorate --graph"
@@ -109,6 +110,7 @@
 	lg5 = !"git lg1 --all --graph"
 	lg6 = !"git lg1 --color --graph"
 	lg7 = !"git lg6 --abbrev-commit"
+	lg8 = !"git lg1 --graph --abbrev-commit --decorate master $(git rev-parse --abbrev-ref HEAD)"
 	ll = !"git lg1 --graph --decorate --numstat --all"
 	ll2 = !"git lg1 --graph --decorate --numstat"
 	ls = diff-tree --no-commit-id --name-only -r HEAD
@@ -122,13 +124,15 @@
 	prb = pull --rebase origin master
 	ps = push
 	psd = push origin HEAD:refs/drafts/master
-	psdf = "!push_feature_branch() { git push origin HEAD:refs/draft/team_name/$1; }; push_feature_branch"
+	psdf = !"git push origin HEAD:refs/drafts/team_name/$(git rev-parse --abbrev-ref HEAD)"
 	psf = push origin HEAD:refs/for/master
-	psff = "!push_feature_branch() { git push origin HEAD:refs/for/team_name/$1; }; push_feature_branch"
+	psff = !"git push origin HEAD:refs/for/team_name/$(git rev-parse --abbrev-ref HEAD)"
+	undo = checkout HEAD~1 --
 	r = revert
 	rc = rebase --continue
 	restore = checkout -m --
 	rh = "!reset_hard_function() { git reset HEAD~$1 --hard; }; reset_hard_function"
+	root = rev-parse --show-toplevel
 	rs = "!reset_function() { git reset HEAD~$1; }; reset_function"
 	s = status
 	search = !"git lg1 --abbrev-commit --decorate --all -S"
@@ -136,7 +140,7 @@
 	sl = stash list
 	sp = stash pop
 	ss = status -s
-	st = stash save
+	st = stash
 	sts = stash show -p
 	sw = show --word-diff
 	t = tag

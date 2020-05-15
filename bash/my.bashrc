@@ -21,7 +21,7 @@ source "$dotfiles_dir/scripts/make_completion.bash"
 source "$dotfiles_dir/scripts/output_color.bash"
 source "$dotfiles_dir/scripts/ssh_completion.bash"
 # source "$dotfiles_dir/scripts/unmount_completion.bash"
-source "$dotfiles_dir/scripts/fg_completion.bash"
+# source "$dotfiles_dir/scripts/fg_completion.bash"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -67,6 +67,7 @@ alias df="df -h"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
 alias f='fg'
+alias ff='find . -type f -iname'
 alias fi_reg="find . -type f -regex"
 alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'
@@ -422,3 +423,42 @@ function git-find()
         fi
     done
 }
+
+function find_code()
+{
+  MATCH="$@"
+  grep -lr "$MATCH" ${SRCDIR} | while read file
+  do
+    echo ${file}
+    grep -nh -A5 -B5 "@MATCH" "${file}"
+  done
+}
+
+function search_and_replace()
+{
+  old_phrase=$1
+  new_phrase=$2
+  # find . -type f -exec sed -i "s/$old_phrase/$new_phrase/g" {} \;
+  sed -i "s/$old_phrase/$new_phrase/g" "$(grep -ril $old_phrase . 2> /dev/null)"
+}
+
+function _welcome()
+{
+  printf "%s@%s\\n" "${USER}" "$(hostname)"
+  printf "OS: %s\\n" "$(lsb_release -d | sed -e "s/Description:\s*\(.*\)/\1/")"
+  printf "Kernel: %s\\n" "$(uname -r)"
+  printf "Uptime: %s\\n" "$(uptime --pretty)"
+  # printf "Packages: %s\\n"
+  printf "Shell: %s %s\\n" "${SHELL}" "$($SHELL --version | head -n 1)"
+  printf "Resolution: %s\\n"
+  printf "DE: %s\\n"
+  printf "WM: %s\\n"
+  printf "WM Theme: %s\\n"
+  printf "Theme: %s\\n"
+  printf "Icons: %s\\n"
+  printf "CPU: %s\\n" "$(vmstat | tail -n 1 | awk '{s = $13 + $14} END {print s}')"
+  printf "GPU: %s\\n"
+  printf "Memory: %s\\n" $(free -h | grep Mem | awk '{print $7}')
+}
+
+_welcome
