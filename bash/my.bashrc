@@ -51,6 +51,18 @@ EDITOR=vim
 export EDITOR
 # }
 
+# tmux history
+#{
+# avoid duplicates
+export HISTCONTROL=ignoredups:erasedups
+
+# append history enteies
+shopt -s histappend
+
+# After each command, save and reload history
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+# }
+
 # Aliases
 # {
 alias ls='ls -F --color --group-directories-first'

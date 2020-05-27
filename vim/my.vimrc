@@ -23,7 +23,7 @@ augroup END " }
 
 function! s:insert_gates() " {
   let gatename = substitute(toupper(substitute(expand("%:t"), '\C\([A-Z]\)', '_\1','g')), "\\.", "_", "g")
-  let className = substitute(expand("%:r"), '\<.', '\u&', 'g')
+  let className = substitute(expand("%:t:r"), '\<.', '\u&', 'g')
   execute "normal! i#ifndef " . gatename
   execute "normal! o#define " . gatename
   normal! o
