@@ -37,6 +37,7 @@ function _prompt()
   local jobs_count
   jobs_count=$(jobs -l 2> /dev/null | wc -l)
   "$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$jobs_count"
+  return $EXIT
 }
 
 # Shell options

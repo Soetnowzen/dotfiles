@@ -17,6 +17,7 @@ syntax match Yellow '\c\<warn\w*'
 syntax match RED '\c\<fail\w*'
 syntax match White '\c\<info\w*'
 syntax match RED '\c\<err\w*'
+syntax match GREEN '\c\<pass\(\|ed\)\>'
 
 " syntax region Cyan start='<' skip='\v\\.' end='>'
 " syntax region Cyan start='(' skip='\v\\.' end=')'
