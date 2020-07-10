@@ -32,6 +32,10 @@ function _prompt()
 {
   # This needs to be first
   local EXIT="$?"
+  # After each command, save and reload history
+  history -a
+  history -c
+  history -r
   local dirs_count
   dirs_count=$(dirs -v 2> /dev/null | wc -l)
   local jobs_count
@@ -59,9 +63,6 @@ export HISTCONTROL=ignoredups:erasedups
 
 # append history enteies
 shopt -s histappend
-
-# After each command, save and reload history
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 # }
 
 # Aliases
@@ -455,23 +456,30 @@ function search_and_replace()
   sed -i "s/$old_phrase/$new_phrase/g" "$(grep -ril $old_phrase . 2> /dev/null)"
 }
 
-function _welcome()
+function git-find()
 {
-  printf "%s@%s\\n" "${USER}" "$(hostname)"
-  printf "OS: %s\\n" "$(lsb_release -d | sed -e "s/Description:\s*\(.*\)/\1/")"
-  printf "Kernel: %s\\n" "$(uname -r)"
-  printf "Uptime: %s\\n" "$(uptime --pretty)"
-  # printf "Packages: %s\\n"
-  printf "Shell: %s %s\\n" "${SHELL}" "$($SHELL --version | head -n 1)"
-  printf "Resolution: %s\\n"
-  printf "DE: %s\\n"
-  printf "WM: %s\\n"
-  printf "WM Theme: %s\\n"
-  printf "Theme: %s\\n"
-  printf "Icons: %s\\n"
-  printf "CPU: %s\\n" "$(vmstat | tail -n 1 | awk '{s = $13 + $14} END {print s}')"
-  printf "GPU: %s\\n"
-  printf "Memory: %s\\n" $(free -h | grep Mem | awk '{print $7}')
+  word=$1
+  for file in $(git show --name-only); do
+    file="$(git rev-parse --show-toplevel)/$file"
+    ROWS=$(git show -- "${file}" | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
+      /^(---|\+\+\+|[^-+ ])/{print;next};\
+    {line=substr($0,2)};\
+      /^-/{print "-" minus_count++ ":" line;next};\
+      /^[+]/{print "+" plus_count++ ":" line;next};\
+      {print "(" minus_count++ "," plus_count++ "):"line}' |
+        grep -E "^\\+[^\\+]" | grep -i "${word}")
+    local EXIT_STATUS="$?"
+    if [[ $EXIT_STATUS == 0 ]]; then
+      ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
+      EXIT_STATUS="$?"
+      if [[ $EXIT_STATUS == 0 ]]; then
+        for ROW in $ROW_NUMBERS; do
+          printf "%s%s%s:%s%s %scontains%s %s%s.\\n" "${RED}" "${file}" "${RESTORE}" "${GREEN}" "${ROW}" "${RESTORE}" "${CYAN}" "${word}" "${RESTORE}"
+        done
+      fi
+    fi
+
+
+  done
 }
 
-_welcome
