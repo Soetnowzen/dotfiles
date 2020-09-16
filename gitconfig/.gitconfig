@@ -102,7 +102,7 @@
 	fl = !"git filelog"
 	head = rev-parse HEAD
 	la = "!git config -l | grep alias | cut -c 7-"
-	lg = !"git lg8"
+	lg = !"git lg9"
 	lg1 = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
 	lg2 = !"git lg1 --graph --abbrev-commit --decorate --all"
 	lg3 = !"git lg1 --decorate --graph"
@@ -110,7 +110,8 @@
 	lg5 = !"git lg1 --all --graph"
 	lg6 = !"git lg1 --color --graph"
 	lg7 = !"git lg6 --abbrev-commit"
-	lg8 = !"git lg1 --graph --abbrev-commit --decorate master {origin/makemake/,}$(git rev-parse --abbrev-ref HEAD)"
+	lg8 = !"git lg1 --graph --abbrev-commit --decorate master {origin/team_name/,}$(git rev-parse --abbrev-ref HEAD)"
+	lg9 = !"git lg1 --graph --abbrev-commit --decorate master"
 	ll = !"git lg1 --graph --decorate --numstat --all"
 	ll2 = !"git lg1 --graph --decorate --numstat"
 	ls = diff-tree --no-commit-id --name-only -r HEAD

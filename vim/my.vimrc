@@ -45,7 +45,13 @@ augroup END " }
 " Sets show row numbers
 set number
 
-set tags+=/
+" set tags+=./tags
+" set tags+=./../tags
+" set tags+=./../../tags
+" set tags+=./../../../tags
+set tags+=tags
+" set tags to reporoot/.git/tags
+set tags+=system("git rev-parse --show-toplevel")."/.git/tags"
 
 " Cursor marking
 set cursorline

@@ -31,8 +31,8 @@ function __prompt_command()
   fi
   printf "%s%s@%s%s%s " "$(whoami)" "$RESET" "$BLUE" "$(hostname)" "$RESET"
   # Path
-  # printf "%s%s" "$GREEN" "$(pwd)"
-  __smaller_path
+  printf "%s%s" "$GREEN" "$(pwd)"
+  # __smaller_path
   __count_dirs_stack "$dirs_count"
   __count_jobs_stack "$jobs_count"
   # Get current git branch
