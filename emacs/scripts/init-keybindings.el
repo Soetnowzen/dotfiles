@@ -1,12 +1,12 @@
 (provide 'init-keybindings)
 
-(defun my/setup-magit-keys ()
-  "Setup keybindings for magit"
-  (interactive)
-  (general-define-key
-   :prefix leader
-   :keymaps '(normal visual emacs)
-   "g" 'magit-status))
+;; (defun my/setup-magit-keys ()
+;;   "Setup keybindings for magit"
+;;   (interactive)
+;;   (general-define-key
+;;    :prefix leader
+;;    :keymaps '(normal visual emacs)
+;;    "g" 'magit-status))
 
 (defun my/setup-evil-keys ()
   ;;Exit insert mode by pressing j and then j quickly
@@ -113,8 +113,18 @@
 
 (use-package general
   :ensure t
-  :after (evil magit elfeed projectile)
+  ;; :after (evil magit elfeed projectile)
+  :after (evil elfeed projectile)
   :config
+  ;; (general-create-definer my/leader-keys
+  ;;   :keymaps '(normal insert visual emacs)
+  ;;   :prefix "SPC"
+  ;;   :global-prefix "C-SPC")
+
+  ;; (my/leader-keys
+  ;;  "t" '(:ignore t :which-key "toggles")
+  ;;  "tt" '(counsel-load-theme :which-key "choose theme"))
+
   (setq leader "<SPC>")
   (my/setup-comment-keys)
   (my/setup-elfeed-keys)
@@ -122,7 +132,7 @@
   (my/setup-evil-keys)
   (my/setup-folding-keys)
   (my/setup-ivy-keys)
-  (my/setup-magit-keys)
+  ;; (my/setup-magit-keys)
   (my/setup-projectile-keys)
   (my/setup-window-keys)
   )

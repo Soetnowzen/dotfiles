@@ -3,12 +3,23 @@
 ;; (setq true t)
 (setq evil-want-keybinding nil)
 
+(defun my/evil-hook ()
+  (dolist (mode '(custom-mode
+                  eshell-mode
+                  term-mode))
+    (add-to-list 'evil-emacs-state-modes mode)))
+
 (use-package evil
              :ensure t
              :init
              (setq evil-want-C-u-scroll t)
+             :hook (evil-mode . my/evil-hook)
              :config
              (evil-mode 1)
+             (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+             ;; Use visual line motions even outside of visual-line-mode buffers
+             (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+             (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
              ;; allow cursor to move past last character - useful in lisp for
              ;; evaluating last sexp
              ;; (setq evil-move-cursor-back t)
@@ -27,7 +38,9 @@
              (global-evil-visualstar-mode))
 
 (use-package evil-collection
-             :ensure t)
+  :ensure t
+  :after evil
+  (evil-collection-init))
 
 (setq evil-fold-list
       '(((hs-minor-mode)

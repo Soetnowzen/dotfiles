@@ -8,3 +8,6 @@
 (use-package evil-magit
              :ensure t
              :after magit)
+
+;; Interface for working with github & gitlab???
+;; (use-package froge)

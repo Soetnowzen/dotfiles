@@ -447,3 +447,5 @@ function git-find()
   done
 }
 
+# Variables
+export DISPLAY=localhost:0.0
