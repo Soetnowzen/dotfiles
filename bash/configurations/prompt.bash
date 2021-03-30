@@ -25,7 +25,7 @@ function __prompt_command()
   printf "%s%s " "$CYAN" "$(date +%H:%M)"
   # user@pc
   if [[ $EXIT != 0 ]]; then
-    printf "%s" "$RED"
+      printf "%s" "$RED"
   else
     printf "%s" "$BLUE"
   fi
@@ -44,8 +44,22 @@ function __prompt_command()
   fi
   if [[ $EXIT != 0 ]]; then
     # Print exit code if not 0
-    printf " %s✘${EXIT}" "$RED"
     # printf " %sX${EXIT}" "$RED"
+    if [[ $EXIT == 1 ]]; then
+      printf " %sCatchall for general errors (${EXIT}✘)" "$RED"
+    elif [[ $EXIT == 2 ]]; then
+      printf " %sMisuse of shell builtins (${EXIT}✘)" "$RED"
+    elif [[ $EXIT == 126 ]]; then
+      printf " %sCommand invoked cannot execute (${EXIT}✘)" "$RED"
+    elif [[ $EXIT == 127 ]]; then
+      printf " %sCommand not found (${EXIT}✘)" "$RED"
+    elif [[ $EXIT == 130 ]]; then
+      printf " %sScript terminated by Control-C (${EXIT}✘)" "$RED"
+    elif [[ $EXIT -gt 128 ]] && [[ $EXIT -lt 255 ]]; then
+      printf " %sFatal error signal 'n=%s' (${EXIT}✘)" $(($EXIT-128)) "$RED"
+    else
+      printf " %s✘${EXIT}" "$RED"
+    fi
   fi
 
   printf "%s]\\n" "$RESET"
