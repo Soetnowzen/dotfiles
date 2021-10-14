@@ -20,23 +20,8 @@
 (require 'init-ivy)
 ;; (require 'init-git-gutter)
 ;; (require 'init-command-log)
-
-(use-package which-key
-  :init (which-key-mode)
-  :config
-  (setq which-key-idle-delay 0.3))
-
-;; Error: File not found
-(use-package helpful
-  :ensure t
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
+(require 'init-helpful)
+(require 'init-which-key)
 
 (defun mp-display-message ()
   (interactive)

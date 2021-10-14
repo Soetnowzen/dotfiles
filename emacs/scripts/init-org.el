@@ -24,14 +24,18 @@
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
 
   ;; Adding new org keywords
-  ;; (setq org-todo-keywords
-  ;;       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-  ;;         (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANCEL(k@)")))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "ON HOLD(h)" "WAITING(w@/!)" "|" "DONE(d!)" "CANCELED(c)")
+          ;; (sequence "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANCEL(k@)")
+          ))
 
   )
 
-;; ;; enable easy templates (<q for quote blocks, <s for source blocks)
-;; (require 'org-tempo)
+;; Enable easy templates (<q for quote blocks, <s for source blocks)
+(require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
 
 ;; ;; Prevent org-mode from truncating lines by default
 ;; (setq org-startup-truncated nil)
@@ -54,14 +58,15 @@
 ;(setq org-link-frame-setup (file . find-file))
 
 ;; set org templates
-(setq org-capture-templates
-      `(("t" "Remente TODO" entry (file+olp "~/org/remente/notes.org" "Tasks" "Active")
+(setq org-capture-templates `(("t" "Remente TODO" entry (file+olp "~/org/remente/notes.org" "Tasks" "Active")
          "* TODO %?\nSCHEDULED: <%<%Y-%m-%d %a>>\n[%<%Y-%m-%d %a>]\n%a"
          :prepend t) ))
 
 (org-babel-do-load-languages
   'org-babel-load-languages
-  '((python . t) (shell . t)))
+  '((python . t)
+    (emacs-lisp . t)
+    (shell . t)))
 (defun my-org-confirm-babel-evaluate (lang body)
   (not (member lang '("python" "bash"))))
 
