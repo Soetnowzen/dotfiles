@@ -161,27 +161,27 @@ function __modified_files_count()
     printf ","
     added_files=$(echo "${git_status}" | grep -c '^A ')
     if [[ $added_files != 0 ]]; then
-      printf " %s✚%s" "$GREEN" "$added_files"
-      # printf " %s+%s" "$GREEN" "$added_files"
+      # printf " %s✚%s" "$GREEN" "$added_files"
+      printf " %s+%s" "$GREEN" "$added_files"
     fi
     deleted_files=$(echo "${git_status}" | grep -c '^\s*D')
     if [[ $deleted_files != 0 ]]; then
-      printf " %s✖%s" "$RED" "$deleted_files"
-      # printf " %s-%s" "$RED" "$deleted_files"
+      # printf " %s✖%s" "$RED" "$deleted_files"
+      printf " %s-%s" "$RED" "$deleted_files"
     fi
     modified_files=$(echo "${git_status}" | grep -c '^\s*M')
     if [[ $modified_files != 0 ]]; then
-      printf " %s✱%s" "$BLUE" "$modified_files"
-      # printf " %s~%s" "$BLUE" "$modified_files"
+      # printf " %s✱%s" "$BLUE" "$modified_files"
+      printf " %s~%s" "$BLUE" "$modified_files"
     fi
     renamed_files=$(echo "${git_status}" | grep -c '^R')
     if [[ $renamed_files != 0 ]]; then
-      printf " %s➜%s" "$MAGENTA" "$renamed_files"
-      # printf " %s>%s" "$MAGENTA" "$renamed_files"
+      # printf " %s➜%s" "$MAGENTA" "$renamed_files"
+      printf " %s>%s" "$MAGENTA" "$renamed_files"
     fi
     unmerged_files=$(echo "${git_status}" | grep -c '^UU')
     if [[ $unmerged_files != 0 ]]; then
-      # printf " %s=%s" "$YELLOW" "$unmerged_files"
+      # printf " %s!=%s" "$YELLOW" "$unmerged_files"
       printf " %s≠%s" "$YELLOW" "$unmerged_files"
     fi
     untraced_files=$(echo "${git_status}" | grep -c '^??')
@@ -199,15 +199,15 @@ function __git_commit_status()
   if [[ ${git_commit_status} != "" ]]; then
     printf ", %s" "$VIOLET"
     if [[ $(echo "$git_commit_status" | grep -Eo 'ahead') != "" ]]; then
-      printf "⬆"
-      # printf "^"
+      # printf "⬆"
+      printf "^"
     elif [[ $(echo "$git_commit_status" | grep -Eo 'behind') != "" ]]; then
-      printf "⬇"
-      # printf "v"
+      # printf "⬇"
+      printf "v"
     elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
       # local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1⬆ \2⬇/')
-      # local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1^ \2v/')
-      local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+ \([[:digit:]]\+\) and \([[:digit:]]\+\)/\1 \2/')
+      local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1^ \2v/')
+      # local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+ \([[:digit:]]\+\) and \([[:digit:]]\+\)/\1 \2/')
       printf "(%s)" "$local_remote"
     fi
     number_of_commits=$(echo "$git_commit_status" | grep -Eo '[0-9]+')
@@ -219,8 +219,8 @@ function __git_stash_count()
 {
   git_stash_count=$(git stash list 2> /dev/null | wc -l)
   if [[ ${git_stash_count} != "0" ]]; then
-    printf ", %s✭%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
-    # printf ", %s*%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
+    # printf ", %s✭%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
+    printf ", %s*%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
   fi
 }
 

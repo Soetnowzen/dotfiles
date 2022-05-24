@@ -32,10 +32,10 @@
   )
 
 ;; Enable easy templates (<q for quote blocks, <s for source blocks)
-(require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
+;; (require 'org-tempo)
+;; (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+;; (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+;; (add-to-list 'org-structure-template-alist '("py" . "src python"))
 
 ;; ;; Prevent org-mode from truncating lines by default
 ;; (setq org-startup-truncated nil)

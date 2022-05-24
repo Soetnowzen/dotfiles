@@ -3,7 +3,8 @@
 (use-package solarized-theme
   :ensure t
   :config
-  (load-theme 'solarized-dark t))
+  ;; (load-theme 'solarized-dark t))
+  (load-theme 'solarized-selenized-black t))
 
 ;; disable gui fluff
 ;; (scroll-bar-mode -1)
