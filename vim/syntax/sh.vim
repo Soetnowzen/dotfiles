@@ -6,3 +6,4 @@ inoreabbrev if if<CR>fi<Up><End><Space>[[]]; then<Left><Left><Left><Left><Left><
 inoreabbrev ifdef ifdef<CR>#endif<Up><End>
 inoreabbrev ifndef ifndef<CR>#endif<Up><End>
 inoreabbrev while while<Space><CR>done<Up><End>[[]]; do<Left><Left><Left><Left><Left><Left>
+inoreabbrev cd cd<Space><Space>\|\|<Space>exit<Left><Left><Left><Left><Left><Left><Left><Left>
