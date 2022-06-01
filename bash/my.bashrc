@@ -23,6 +23,7 @@ source "$dotfiles_dir/scripts/output_color.bash"
 source "$dotfiles_dir/scripts/ssh_completion.bash"
 # source "$dotfiles_dir/scripts/unmount_completion.bash"
 # source "$dotfiles_dir/scripts/fg_completion.bash"
+source "$dotfiles_dir/scripts/watch_files.sh"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
