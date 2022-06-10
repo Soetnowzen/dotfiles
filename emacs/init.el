@@ -23,6 +23,13 @@
 (require 'init-helpful)
 (require 'init-which-key)
 
+;; UTF-8 support
+;; (prefer-coding-system 'utf-8)
+;; (set-default-coding-systems 'utf-8)
+;; ;; (set-terminal-coding-systems 'utf-8)
+;; (set-keyboard-coding-systems 'utf-8)
+;; (set x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
 (defun mp-display-message ()
   (interactive)
   ;; Place your code below this line, but inside the bracket.

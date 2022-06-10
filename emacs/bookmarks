@@ -1,0 +1,10 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("org-refile-last-stored"
+ (filename . "c:/Users/eseblag/Documents/notes/tasks.org")
+ (front-context-string . "**  FEP-593 Blac")
+ (rear-context-string . "e twice a day.\n\n")
+ (position . 35651))
+)
