@@ -423,6 +423,11 @@ set hlsearch
 " Ignore case when searching
 set ignorecase
 
+" Automatically switch search to case-sensitive when search quesry contains an uppercase letter
+set smartcase
+
+set confirm
+
 nnoremap * /\v\C<<C-R>=expand('<cword>')<CR>><CR>
 nnoremap # ?\v\C<<C-R>=expand('<cword>')<CR>><CR>
 nnoremap <Leader>sc :%s/\v\C(<<C-r>=expand('<cword>')<CR>>)/\=substitute("<C-r>=expand('<cword>')<CR>", "\\C\\([^A-Z]\\)\\([A-Z]\\)", "\\1_\\2", "g")/gc<CR>
@@ -477,7 +482,7 @@ set smartindent
 set guitablabel=\[%N\]\ %t\ %M
 
 " Changes tabularly to spaces
-set expandtab
+set noexpandtab
 
 " Tabs only two spaces
 set tabstop=2

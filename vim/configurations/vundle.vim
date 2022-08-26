@@ -109,13 +109,13 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline_detect_spell=1
 let g:airline_detect_spelllang=1
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '◀'
+let g:airline_left_sep = '>'
+let g:airline_right_sep = '<'
 " old vim-powerline symbols
 " let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
+let g:airline_left_alt_sep = '>>'
 " let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
+let g:airline_right_alt_sep = '<<'
 " let g:airline_symbols.branch = '⭠'
 " let g:airline_symbols.readonly = '⭤'
 " let g:airline_symbols.linenr = '⭡'        "
@@ -184,7 +184,7 @@ let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 " let g:syntastic_cpp_checkers = ['clang_check', 'gcc']
 let g:syntastic_cpp_checkers = []
 let g:syntastic_erl_checkers = ['Dialyzer'] " untested
-let g:syntastic_js_checkers = ['JSHint'] " untested
+let g:syntastic_js_checkers = ['eslint'] " untested
 let g:syntastic_java_checkers = ['PMD'] " untested
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
