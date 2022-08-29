@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# An example hook script to verify what is about to be committed.
+# Called by "git commit" with no arguments.  The hook should
+# exit with non-zero status after issuing an appropriate message if
+# it wants to stop the commit.
+#
+# To enable this hook, rename this file to "pre-commit".
+
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+BLUE="$(tput setaf 4)"
+MAGENTA="$(tput setaf 5)"
+CYAN="$(tput setaf 6)"
+WHITE="$(tput setaf 7)"
+GREY="$(tput setaf 9)"
+VIOLET="$(tput setaf 13)"
+BLACK="$(tput setaf 16)"
+BOLD="$(tput bold)"
+UNDERLINE="$(tput smul)"
+EXIT_UNDERLINE="$(tput rmul)"
+RESTORE="$(tput sgr0)"
+
+FILE_FOUND=""
+
+check_for()
+{
+  word=$1
+  ending_message=$2
+  ROWS=$(git diff --cached -- ":/${file}" | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
+    /^(---|\+\+\+|[^-+ ])/{print;next};\
+    {line=substr($0,2)};\
+      /^-/{print "-" minus_count++ ":" line;next};\
+      /^[+]/{print "+" plus_count++ ":" line;next};\
+      {print "(" minus_count++ "," plus_count++ "):"line}' | grep -E "^\\+[^\\+]" | grep -i "\\<${word}\\>")
+  local EXIT_STATUS="$?"
+  if [[ $EXIT_STATUS == 0 ]]; then
+    ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
+    EXIT_STATUS="$?"
+    if [[ $EXIT_STATUS == 0 ]]; then
+      for ROW in $ROW_NUMBERS; do
+        FILE_FOUND+="${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains${CYAN} $1${RESTORE}${ending_message}.\\n"
+      done
+    fi
+  fi
+}
+
+for file in $(git diff --cached --name-only); do
+  check_for TODO " message"
+  check_for fix " message"
+  check_for fixme " message"
+  check_for printf ", use TRACE instead"
+done
+
+if [[ ! -z $FILE_FOUND ]]; then
+  echo "${YELLOW}###################"
+  echo "# COMMIT REJECTED #"
+  echo "###################"
+  echo -e "$FILE_FOUND#"
+  echo "# Please remove the ${CYAN}highlighted${RESTORE} messages."
+  echo "#"
+  exit 1
+fi
+
+exit 0
