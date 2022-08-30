@@ -195,13 +195,13 @@ function __modified_files_count()
 
 function __git_commit_status()
 {
-  git_commit_status=$(git status -uno 2> /dev/null | grep -i 'Your branch' | grep -Eo 'by [0-9]+|diverged|behind|ahead')
+  git_commit_status=$(git status -uno 2> /dev/null | grep -i 'Your branch\|Din gren' | grep -Eo 'by [0-9]+|med [0-9]+|diverged|behind|ahead|efter|före')
   if [[ ${git_commit_status} != "" ]]; then
     printf ", %s" "$VIOLET"
-    if [[ $(echo "$git_commit_status" | grep -Eo 'ahead') != "" ]]; then
+    if [[ $(echo "$git_commit_status" | grep -Eo 'ahead|före') != "" ]]; then
       # printf "⬆"
       printf "^"
-    elif [[ $(echo "$git_commit_status" | grep -Eo 'behind') != "" ]]; then
+    elif [[ $(echo "$git_commit_status" | grep -Eo 'behind|efter') != "" ]]; then
       # printf "⬇"
       printf "v"
     elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
