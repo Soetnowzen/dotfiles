@@ -23,13 +23,6 @@
 (require 'init-helpful)
 (require 'init-which-key)
 
-;; UTF-8 support
-;; (prefer-coding-system 'utf-8)
-;; (set-default-coding-systems 'utf-8)
-;; ;; (set-terminal-coding-systems 'utf-8)
-;; (set-keyboard-coding-systems 'utf-8)
-;; (set x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-
 (defun mp-display-message ()
   (interactive)
   ;; Place your code below this line, but inside the bracket.
@@ -71,15 +64,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(compilation-message-face (quote default))
- '(counsel-describe-function-function (quote helpful-callable) t)
- '(counsel-describe-variable-function (quote helpful-variable) t)
+ '(counsel-describe-function-function (quote helpful-callable))
+ '(counsel-describe-variable-function (quote helpful-variable))
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
  '(cua-overwrite-cursor-color "#b58900")
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("3e200d49451ec4b8baa068c989e7fba2a97646091fd555eca0ee5a1386d56077" "f5b6be56c9de9fd8bdd42e0c05fecb002dedb8f48a5f00e769370e4517dde0e8" "833ddce3314a4e28411edf3c6efde468f6f2616fc31e17a62587d6a9255f4633" "d89e15a34261019eec9072575d8a924185c27d3da64899905f8548cbd9491a36" "830877f4aab227556548dc0a28bf395d0abe0e3a0ab95455731c9ea5ab5fe4e1" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "d91ef4e714f05fff2070da7ca452980999f5361209e679ee988e3c432df24347" "0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+    ("8502973a780f2c76ba77422f38270d7f6b71cd18e7cd9a45da614f89b60a7f06" "7f1d414afda803f3244c6fb4c2c64bea44dac040ed3731ec9d75275b9e831fe5" "d89e15a34261019eec9072575d8a924185c27d3da64899905f8548cbd9491a36" "833ddce3314a4e28411edf3c6efde468f6f2616fc31e17a62587d6a9255f4633" "fee7287586b17efbfda432f05539b58e86e059e78006ce9237b8732fde991b4c" "4c56af497ddf0e30f65a7232a8ee21b3d62a8c332c6b268c81e9ea99b11da0d3" "2809bcb77ad21312897b541134981282dc455ccd7c14d74cc333b6e549b824f3" "d91ef4e714f05fff2070da7ca452980999f5361209e679ee988e3c432df24347" "0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(elfeed-feeds
    (quote
     ("http://swedroid.se/feed" "http.com/feed.xml" "http.khz.se/nordigt" "http://feeds.feedburner.com/Explosm" "http.mmo-champion.com/external.php?do=rss&type=newcontent&sectionid=1&days=120&count=10")))
@@ -112,7 +105,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#5b7300" "#b3c34d" "#0061a8" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (helpful ivy-rich which-key git-gutter+ smex counsel ivy telephone-line color-theme-solarized elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil)))
+    (phi-autopair helpful ivy-rich which-key git-gutter+ smex counsel ivy telephone-line color-theme-solarized elfeed autopair key-chord ## solarized-theme evil-collection evil-visualstar evil-surround use-package evil)))
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
