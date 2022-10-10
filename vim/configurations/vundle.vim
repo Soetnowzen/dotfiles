@@ -97,43 +97,44 @@ vnoremap <Leader>d :Linediff<CR>
 nnoremap <Leader>r :LinediffReset<CR>
 " }
 
-" Airline {
-" :AirlineTheme solarized
-if has('gui_running')
-  let g:airline_solarized_bg='light'
-else
-  let g:airline_solarized_bg='dark'
-endif
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline_detect_spell=1
-let g:airline_detect_spelllang=1
-let g:airline_left_sep = '>'
-let g:airline_right_sep = '<'
-" old vim-powerline symbols
-" let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '>>'
-" let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '<<'
-" let g:airline_symbols.branch = '⭠'
-" let g:airline_symbols.readonly = '⭤'
-" let g:airline_symbols.linenr = '⭡'        "
-let g:airline_detect_modified=1
-let g:airline_detect_paste=1
-let g:airline_detect_crypt=1
-let g:airline_inactive_collapse=1
-function! AirlineInit() " {
-  let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
-  let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
-  let g:airline_section_c = airline#section#create(['filetype'])
-  let g:airline_section_x = airline#section#create(['%P'])
-  let g:airline_section_y = airline#section#create(['%B'])
-  let g:airline_section_z = airline#section#create_right(['%l', '%c'])
-endfunction
-"   }
-autocmd VimEnter * call AirlineInit()
-" }
+  " Airline {
+  " :AirlineTheme solarized
+  if has('gui_running')
+    let g:airline_solarized_bg='light'
+  else
+    let g:airline_solarized_bg='dark'
+  endif
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#left_sep = ' '
+  let g:airline#extensions#tabline#left_alt_sep = '|'
+  let g:airline_detect_spell=1
+  let g:airline_detect_spelllang=1
+  let g:airline_left_sep = '>'
+  " let g:airline_left_sep = '▶'
+  let g:airline_right_sep = '<'
+  " old vim-powerline symbols
+  " let g:airline_left_sep = '⮀'
+  let g:airline_left_alt_sep = '>>'
+  " let g:airline_right_sep = '⮂'
+  let g:airline_right_alt_sep = '<<'
+  " let g:airline_symbols.branch = '<-'
+  " let g:airline_symbols.readonly = '<->'
+  " let g:airline_symbols.linenr = '^'        "
+  let g:airline_detect_modified=1
+  let g:airline_detect_paste=1
+  let g:airline_detect_crypt=1
+  let g:airline_inactive_collapse=1
+  function! AirlineInit() " {
+    let g:airline_section_a = airline#section#create(['mode', 'B', 'branch'])
+    let g:airline_section_b = airline#section#create_left(['ffenc', 'hunks', '%f'])
+    let g:airline_section_c = airline#section#create(['filetype'])
+    let g:airline_section_x = airline#section#create(['%P'])
+    let g:airline_section_y = airline#section#create(['%B'])
+    let g:airline_section_z = airline#section#create_right(['%l', '%c'])
+  endfunction
+  "   }
+  autocmd VimEnter * call AirlineInit()
+  " }
 
 " vim-cpp-enhanced-highlight {
 let g:cpp_class_scope_highlight = 1
@@ -184,7 +185,7 @@ let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 " let g:syntastic_cpp_checkers = ['clang_check', 'gcc']
 let g:syntastic_cpp_checkers = []
 let g:syntastic_erl_checkers = ['Dialyzer'] " untested
-let g:syntastic_js_checkers = ['eslint'] " untested
+let g:syntastic_js_checkers = ['JSHint'] " untested
 let g:syntastic_java_checkers = ['PMD'] " untested
 
 " let g:syntastic_c_cflags = '-I/usr/include/lib'
