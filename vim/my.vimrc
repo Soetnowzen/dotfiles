@@ -130,11 +130,12 @@ set wildignore+=tags
 set diffopt+=iwhite
 augroup set_filetype " {
   autocmd!
+  autocmd BufRead,BufNewFile *.org set filetype=org
+  autocmd BufRead,BufNewFile *.bb set filetype=sh
   autocmd BufRead,BufNewFile *.json set filetype=json
   autocmd BufRead,BufNewFile *.log set filetype=log
-  autocmd BufRead,BufNewFile log.* set filetype=log
   autocmd BufRead,BufNewFile *.txt set filetype=text
-  autocmd BufRead,BufNewFile *.bb set filetype=sh
+  autocmd BufRead,BufNewFile log.* set filetype=log
 augroup END
 "   }
 
