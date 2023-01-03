@@ -2,6 +2,7 @@
 set showbreak=\ \ \ \ 
 set tabstop=4
 set shiftwidth=4
+set noexpandtab
 
 inoreabbrev if if:<Left>
 inoreabbrev elif elif:<Left>
