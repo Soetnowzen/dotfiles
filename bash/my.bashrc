@@ -86,6 +86,7 @@ alias c='cat -nv'
 alias clr='clear'
 alias d='dirs -v'
 alias df="df -h"
+alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
 alias f='fg'

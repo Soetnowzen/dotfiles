@@ -43,8 +43,6 @@ function __prompt_command()
 		printf ")"
 	fi
 	if [[ $EXIT != 0 ]]; then
-		# Print exit code if not 0
-		# printf " %sX${EXIT}" "$RED"
 		if [[ $EXIT == 1 ]]; then
 			printf " %sCatchall for general errors (${EXIT}X)" "$RED"
 		elif [[ $EXIT == 2 ]]; then
