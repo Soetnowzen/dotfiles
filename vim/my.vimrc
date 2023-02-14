@@ -13,31 +13,31 @@ let &t_SI = "\<Esc>[5 q"
 
 " Auto startups {
 augroup Shebang " {
-  autocmd!
-  autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
-  autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
-  autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
-  autocmd BufNewFile *.sh 0put =\"#!/bin/bash\"|$
-  autocmd BufNewFile *.bash 0put =\"#!/bin/bash\"|$
+	autocmd!
+	autocmd BufNewFile *.py 0put =\"#!/usr/bin/env python\<nl># -*- coding: utf-8 -*-\<nl>\"|$
+	autocmd BufNewFile *.rb 0put =\"#!/usr/bin/env ruby\<nl># -*- coding: utf-8 -*-\<nl>\"|$
+	autocmd BufNewFile *.tex 0put =\"%&plain\<nl>\"|$
+	autocmd BufNewFile *.sh 0put =\"#!/bin/bash\"|$
+	autocmd BufNewFile *.bash 0put =\"#!/bin/bash\"|$
 augroup END " }
 
 function! s:insert_gates() " {
-  let gatename = substitute(toupper(substitute(expand("%:t"), '\C\([A-Z]\)', '_\1','g')), "\\.", "_", "g")
-  let className = substitute(expand("%:t:r"), '\<.', '\u&', 'g')
-  execute "normal! i#ifndef " . gatename
-  execute "normal! o#define " . gatename
-  normal! o
-  execute "normal! oclass " . className
-  execute "normal! o{"
-  execute "normal! o};"
-  execute "normal! Go#endif /* " . gatename . " */"
-  normal! ko
-  normal! k
+	let gatename = substitute(toupper(substitute(expand("%:t"), '\C\([A-Z]\)', '_\1','g')), "\\.", "_", "g")
+	let className = substitute(expand("%:t:r"), '\<.', '\u&', 'g')
+	execute "normal! i#ifndef " . gatename
+	execute "normal! o#define " . gatename
+	normal! o
+	execute "normal! oclass " . className
+	execute "normal! o{"
+	execute "normal! o};"
+	execute "normal! Go#endif /* " . gatename . " */"
+	normal! ko
+	normal! k
 endfunction " }
 
 augroup c_insert_gates " {
-  autocmd!
-  autocmd BufNewFile *.{h,hpp,hh} call <SID>insert_gates()
+	autocmd!
+	autocmd BufNewFile *.{h,hpp,hh} call <SID>insert_gates()
 augroup END " }
 " }
 
@@ -129,13 +129,13 @@ set wildignore+=tags
 
 set diffopt+=iwhite
 augroup set_filetype " {
-  autocmd!
-  autocmd BufRead,BufNewFile *.org set filetype=org
-  autocmd BufRead,BufNewFile *.bb set filetype=sh
-  autocmd BufRead,BufNewFile *.json set filetype=json
-  autocmd BufRead,BufNewFile *.log set filetype=log
-  autocmd BufRead,BufNewFile *.txt set filetype=text
-  autocmd BufRead,BufNewFile log.* set filetype=log
+	autocmd!
+	autocmd BufRead,BufNewFile *.org set filetype=org
+	autocmd BufRead,BufNewFile *.bb set filetype=sh
+	autocmd BufRead,BufNewFile *.json set filetype=json
+	autocmd BufRead,BufNewFile *.log set filetype=log
+	autocmd BufRead,BufNewFile *.txt set filetype=text
+	autocmd BufRead,BufNewFile log.* set filetype=log
 augroup END
 "   }
 
@@ -172,16 +172,16 @@ set guioptions+=a
 " Vertically split the screen into two windows with scrollbind set, <C-W>o to quit
 noremap <Leader>ac :execute AddColumn()<CR>
 function! AddColumn() " {
-  execute "norm \<C-u>"
-  let @z=&so
-  set noscb so=0
-  botright vsplit
-  execute "norm \<PageDown>"
-  setlocal scrollbind
-  wincmd p
-  setlocal scrollbind
-  let &so=@z
-  " }
+	execute "norm \<C-u>"
+	let @z=&so
+	set noscb so=0
+	botright vsplit
+	execute "norm \<PageDown>"
+	setlocal scrollbind
+	wincmd p
+	setlocal scrollbind
+	let &so=@z
+	" }
 endfunction
 
 "   Normal mode remap {
@@ -326,11 +326,11 @@ inoremap :<CR> <End>:<CR>
 inoremap ;<CR> <End>;<CR>
 
 function! s:ParingUp(char) " {
-  let line = getline('.')
-  let column = col('.')
-  return strpart(line, column-1, 1) == a:char ?
-        \ "\<Right>" :
-        \ a:char . a:char . "\<Left>"
+	let line = getline('.')
+	let column = col('.')
+	return strpart(line, column-1, 1) == a:char ?
+				\ "\<Right>" :
+				\ a:char . a:char . "\<Left>"
 endfunction " }
 
 inoremap <expr> " <sid>ParingUp("\"")
@@ -340,11 +340,11 @@ inoremap \" \"
 inoremap \' \'
 
 function! s:HandlingEndingPair(char) " {
-  let line = getline('.')
-  let column = col('.')
-  return strpart(line, column-1, 1) == a:char ?
-        \ "\<Right>" :
-        \ a:char
+	let line = getline('.')
+	let column = col('.')
+	return strpart(line, column-1, 1) == a:char ?
+				\ "\<Right>" :
+				\ a:char
 endfunction " }
 
 " {{
@@ -359,20 +359,20 @@ inoremap <expr> > <sid>HandlingEndingPair('>')
 inoremap <expr> ] <sid>HandlingEndingPair(']')
 
 function! s:BackSpaceHandling() " {
-  let column = col('.')
-  let line = getline('.')
-  let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
-  if index(pairing_characters, strpart(line, column-2, 2)) >= 0
-    return "\<Right>\<BS>\<BS>"
-  else
-    " {
-    " let ending_characters = ["]", "}", ")", ">"]
-    " if index(ending_characters, strpart(line, column-1, 1))
-      " return "\<Esc>%v%c"
-    " else
-      return "\<BS>"
-    " endif
-  endif
+	let column = col('.')
+	let line = getline('.')
+	let pairing_characters = ["[]", "{}", "''", "\"\"", "()", "**", "\/\/", "<>", "  ", "--", "``"]
+	if index(pairing_characters, strpart(line, column-2, 2)) >= 0
+		return "\<Right>\<BS>\<BS>"
+	else
+		" {
+		" let ending_characters = ["]", "}", ")", ">"]
+		" if index(ending_characters, strpart(line, column-1, 1))
+		" return "\<Esc>%v%c"
+		" else
+		return "\<BS>"
+		" endif
+	endif
 endfunction " }
 
 " Ruins the ability to use abbreviations
@@ -383,12 +383,12 @@ inoremap <expr> <CR>  index(pairing_characters, strpart(getline('.'), col('.')-2
 
 
 " function! s:InsertExpr(char)
-  " let line = getline('.')
-  " let col  = col('.')
-  " return
-        " \   line[col-3] =~ '[=<>!~]' ? "\<bs>".a:char." "
-        " \ : line[col-2] =~ '\s\+'    ? a:char." "
-        " \ :                            a:char
+" let line = getline('.')
+" let col  = col('.')
+" return
+" \   line[col-3] =~ '[=<>!~]' ? "\<bs>".a:char." "
+" \ : line[col-2] =~ '\s\+'    ? a:char." "
+" \ :                            a:char
 " endfunction
 " inoremap <buffer> <expr> = <sid>InsertExpr('=')
 " inoremap <buffer> <expr> < <sid>InsertExpr('<')
@@ -434,16 +434,16 @@ nnoremap # ?\v\C<<C-R>=expand('<cword>')<CR>><CR>
 nnoremap <Leader>sc :%s/\v\C(<<C-r>=expand('<cword>')<CR>>)/\=substitute("<C-r>=expand('<cword>')<CR>", "\\C\\([^A-Z]\\)\\([A-Z]\\)", "\\1_\\2", "g")/gc<CR>
 nnoremap <Leader>cc :%s/\v\C(<<C-r>=expand('<cword>')<CR>>)/\=substitute("<C-r>=expand('<cword>')<CR>", "\\C_\\([a-z]\\)", "\\u\\1", "g")/gc<CR>
 command! ToSnakeCase
-      \ exec "norm \"xygn" |
-      \ let @y = substitute(@x, "\\C\\([^A-Z]\\)\\([A-Z]\\)", "\\1_\\2", "g") |
-      \ let @y = tolower(@y) |
-      \ exec "norm cgn\<C-r>y" |
-      \ let @@ = ":ToSnakeCase\n"
+			\ exec "norm \"xygn" |
+			\ let @y = substitute(@x, "\\C\\([^A-Z]\\)\\([A-Z]\\)", "\\1_\\2", "g") |
+			\ let @y = tolower(@y) |
+			\ exec "norm cgn\<C-r>y" |
+			\ let @@ = ":ToSnakeCase\n"
 command! ToCamelCase
-      \ exec "norm \"xygn" |
-      \ let @y = substitute(@x, "\\C_\\([a-z]\\)", "\\u\\1", "g") |
-      \ exec "norm cgn\<C-r>y" |
-      \ let @@ = ":ToCamelCase\n"
+			\ exec "norm \"xygn" |
+			\ let @y = substitute(@x, "\\C_\\([a-z]\\)", "\\u\\1", "g") |
+			\ exec "norm cgn\<C-r>y" |
+			\ let @@ = ":ToCamelCase\n"
 
 " Show search matches while typing
 set incsearch
@@ -527,4 +527,4 @@ autocmd BufWinLeave * call clearmatches()
 " (search and replace / whitespaces / one or more, end of line)
 command RemoveSpaces %s/\s\+$/
 command AddSpaces %s/ \(if\|for\|while\)(/ \1 (/
-" }
+	" }

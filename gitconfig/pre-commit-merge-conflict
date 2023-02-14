@@ -13,30 +13,30 @@ FILE_FOUND=''
 
 check_for()
 {
-  if [[ $(git diff --cached -- :/$file | grep -nE "^\+\s*$1{4,}") ]]; then
-    ROW_NUMBERS=$(grep -nE "^\s*$1{4,}" $file | sed -e 's/\([[:digit:]]\+\):.\+/\1/')
-    if [[ $? == 0 ]]; then
-      for ROW in $ROW_NUMBERS; do
-        FILE_FOUND+="${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains ${CYAN}$1$1$1$1 ${RESTORE}message.\n"
-      done
-    fi
-  fi
+	if [[ $(git diff --cached -- :/$file | grep -nE "^\+\s*$1{4,}") ]]; then
+		ROW_NUMBERS=$(grep -nE "^\s*$1{4,}" $file | sed -e 's/\([[:digit:]]\+\):.\+/\1/')
+		if [[ $? == 0 ]]; then
+			for ROW in $ROW_NUMBERS; do
+				FILE_FOUND+="${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains ${CYAN}$1$1$1$1 ${RESTORE}message.\n"
+			done
+		fi
+	fi
 }
 
 for file in $(git diff --cached --name-only); do
-  check_for "<"
-  check_for "="
-  check_for ">"
+	check_for "<"
+	check_for "="
+	check_for ">"
 done
 
 if [[ ! -z $FILE_FOUND ]]; then
-  echo -e "${YELLOW}###################"
-  echo "# COMMIT REJECTED #"
-  echo "###################"
-  echo -e "$FILE_FOUND#"
-  echo    "# You are trying to commit a merge conflict."
-  echo "#"
-  exit 1
+	echo -e "${YELLOW}###################"
+	echo "# COMMIT REJECTED #"
+	echo "###################"
+	echo -e "$FILE_FOUND#"
+	echo    "# You are trying to commit a merge conflict."
+	echo "#"
+	exit 1
 fi
 
 exit 0

@@ -6,7 +6,7 @@
 # !! to perform last command in this position
 
 if [ -r ~/.bashrc.work ]; then
-  . ~/.bashrc.work
+	. ~/.bashrc.work
 fi
 
 dotfiles_dir="$HOME/dotfiles/bash"
@@ -33,18 +33,18 @@ PS1="\\$ "
 
 function _prompt()
 {
-  # This needs to be first
-  local EXIT="$?"
-  # After each command, save and reload history
-  history -a
-  history -c
-  history -r
-  local dirs_count
-  dirs_count=$(dirs -v 2> /dev/null | wc -l)
-  local jobs_count
-  jobs_count=$(jobs -l 2> /dev/null | wc -l)
-  "$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$jobs_count"
-  return $EXIT
+	# This needs to be first
+	local EXIT="$?"
+	# After each command, save and reload history
+	history -a
+	history -c
+	history -r
+	local dirs_count
+	dirs_count=$(dirs -v 2> /dev/null | wc -l)
+	local jobs_count
+	jobs_count=$(jobs -l 2> /dev/null | wc -l)
+	"$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$jobs_count"
+	return $EXIT
 }
 
 # Shell options
@@ -135,42 +135,42 @@ alias wget='wget -c'
 alias find_broken_links='find -L . -type l'
 
 if [[ $UID != 0 ]]; then
-  alias reboot='sudo reboot'
-  alias update='sudo apt-get update && sudo apt-get upgrade'
+	alias reboot='sudo reboot'
+	alias update='sudo apt-get update && sudo apt-get upgrade'
 fi
 # }
 
 function cdd()
 {
-  # Not working yet.
-  local directory
-  directory="$1"
-  cd "~$1"
+	# Not working yet.
+	local directory
+	directory="$1"
+	cd "~$1"
 }
 
 function most_used_cmd()
 {
-  # history | awk 'BEGIN {FS="[ \t]+|\\|"} {print $3}' | sort | uniq -c | sort -nr
-  # history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl
-  history | tr -s ' ' | cut -d ' ' -f3 | sort | uniq -c | sort -n | tail | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
+	# history | awk 'BEGIN {FS="[ \t]+|\\|"} {print $3}' | sort | uniq -c | sort -nr
+	# history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl
+	history | tr -s ' ' | cut -d ' ' -f3 | sort | uniq -c | sort -n | tail | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
 }
 
 function most_used_cmd_arguments()
 {
-  history | tr -s ' ' | cut -d ' ' -f3,4,5,6,7,8,9,10,11 | sort | uniq -c | sort -n # | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
+	history | tr -s ' ' | cut -d ' ' -f3,4,5,6,7,8,9,10,11 | sort | uniq -c | sort -n # | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
 }
 
 function mcd()
 {
-  directory="${1}"
-  mkdir -p "$directory"
-  cd "$directory" || exit
+	directory="${1}"
+	mkdir -p "$directory"
+	cd "$directory" || exit
 }
 
 function fi_()
 {
-  arguments="${*}"
-  (find "${arguments}" | grep '[^\/]*$')
+	arguments="${*}"
+	(find "${arguments}" | grep '[^\/]*$')
 }
 
 # Solarized
@@ -185,86 +185,86 @@ bind '"\e[1;3C": forward-word' ### Alt right" ]
 
 function my_pylint()
 {
-  VERSION="${1}"
-  PYTHON_FILE="${2}"
-  MY_PYLINT="python${VERSION} -m pylint $PYTHON_FILE"
-  eval "$MY_PYLINT"
+	VERSION="${1}"
+	PYTHON_FILE="${2}"
+	MY_PYLINT="python${VERSION} -m pylint $PYTHON_FILE"
+	eval "$MY_PYLINT"
 }
 
 function tail_color()
 {
-  local file RED GREEN YELLOW MAGENTA WHITE RESET
-  # BLUE CYAN ORANGE VIOLET
-  file="${1}"
-  RED="$(tput setaf 1)"
-  GREEN="$(tput setaf 2)"
-  YELLOW="$(tput setaf 3)"
-  BLUE="$(tput setaf 4)"
-  MAGENTA="$(tput setaf 5)"
-  CYAN="$(tput setaf 6)"
-  WHITE="$(tput setaf 7)"
-  # ORANGE="$(tput setaf 9)"
-  # VIOLET="$(tput setaf 13)"
-  RESET="$(tput sgr0)"
-  tail "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
-                      s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
-                      s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
-                      s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
-                      s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
-                      s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
-                      s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
+	local file RED GREEN YELLOW MAGENTA WHITE RESET
+	# BLUE CYAN ORANGE VIOLET
+	file="${1}"
+	RED="$(tput setaf 1)"
+	GREEN="$(tput setaf 2)"
+	YELLOW="$(tput setaf 3)"
+	BLUE="$(tput setaf 4)"
+	MAGENTA="$(tput setaf 5)"
+	CYAN="$(tput setaf 6)"
+	WHITE="$(tput setaf 7)"
+	# ORANGE="$(tput setaf 9)"
+	# VIOLET="$(tput setaf 13)"
+	RESET="$(tput sgr0)"
+	tail "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
+	s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
+	s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
+	s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
+	s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
+	s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
+	s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
 }
 
 function tailf_color()
 {
-  local file RED GREEN YELLOW MAGENTA WHITE RESET
-  # BLUE CYAN ORANGE VIOLET
-  file="${1}"
-  RED="$(tput setaf 1)"
-  GREEN="$(tput setaf 2)"
-  YELLOW="$(tput setaf 3)"
-  BLUE="$(tput setaf 4)"
-  MAGENTA="$(tput setaf 5)"
-  CYAN="$(tput setaf 6)"
-  WHITE="$(tput setaf 7)"
-  # ORANGE="$(tput setaf 9)"
-  # VIOLET="$(tput setaf 13)"
-  RESET="$(tput sgr0)"
-  tail -f "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
-                         s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
-                         s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
-                         s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
-                         s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
-                         s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
-                         s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
+	local file RED GREEN YELLOW MAGENTA WHITE RESET
+	# BLUE CYAN ORANGE VIOLET
+	file="${1}"
+	RED="$(tput setaf 1)"
+	GREEN="$(tput setaf 2)"
+	YELLOW="$(tput setaf 3)"
+	BLUE="$(tput setaf 4)"
+	MAGENTA="$(tput setaf 5)"
+	CYAN="$(tput setaf 6)"
+	WHITE="$(tput setaf 7)"
+	# ORANGE="$(tput setaf 9)"
+	# VIOLET="$(tput setaf 13)"
+	RESET="$(tput sgr0)"
+	tail -f "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
+	s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
+	s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
+	s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
+	s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
+	s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
+	s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
 }
 
 function testing_flags()
 {
-  local PARAMS=""
+	local PARAMS=""
 
-  while (( "$#" )); do
-    case "$1" in
-      -f|--flag-with-argument)
-        FLARG=$2
-        shift 2
-        ;;
-      --) # end argument parsing
-        shift
-        break
-        ;;
-      -*|--*=) # unsupported flags
-        echo "Error: Unsupported flag $1" >&2
-        ;;
-      *) # preserve positional arguments
-        PARAMS="$PARAMS $1"
-        shift
-        ;;
-    esac
-  done
+	while (( "$#" )); do
+		case "$1" in
+			-f|--flag-with-argument)
+				FLARG=$2
+				shift 2
+				;;
+			--) # end argument parsing
+				shift
+				break
+				;;
+			-*|--*=) # unsupported flags
+				echo "Error: Unsupported flag $1" >&2
+				;;
+			*) # preserve positional arguments
+				PARAMS="$PARAMS $1"
+				shift
+				;;
+		esac
+	done
 
-  # set positional arguments in their proper place
-  eval set -- "$PARAMS"
+	# set positional arguments in their proper place
+	eval set -- "$PARAMS"
 }
 
 # Colors
@@ -273,33 +273,33 @@ function testing_flags()
 # Color script
 function colors_and_formatting()
 {
-  # Background
-  for clbg in {40..47} {100..107} 49 ; do
-    # Foreground
-    for clfg in {30..37} {90..97} 39 ; do
-      # Formatting
-      for attr in 0 1 2 4 5 7 ; do
-        # Print the result
-        echo -en "\\e[${attr};${clbg};${clfg}m ^[${attr};${clbg};${clfg}m \\e[0m"
-      done
-      echo # Newline
-    done
-  done
+	# Background
+	for clbg in {40..47} {100..107} 49 ; do
+		# Foreground
+		for clfg in {30..37} {90..97} 39 ; do
+			# Formatting
+			for attr in 0 1 2 4 5 7 ; do
+				# Print the result
+				echo -en "\\e[${attr};${clbg};${clfg}m ^[${attr};${clbg};${clfg}m \\e[0m"
+			done
+			echo # Newline
+		done
+	done
 }
 
 function 256-colors()
 {
-  for fgbg in 38 48 ; do # Foreground / Background
-    for color in {0..255} ; do # Colors
-      # Display the color
-      printf "\\e[${fgbg};5;%sm  %3s  \\e[0m" $color $color
-      # Display 6 colors per lines
-      if [ $(((color + 1) % 6)) == 4 ] ; then
-        echo # New line
-      fi
-    done
-    echo # New line
-  done
+	for fgbg in 38 48 ; do # Foreground / Background
+		for color in {0..255} ; do # Colors
+			# Display the color
+			printf "\\e[${fgbg};5;%sm  %3s  \\e[0m" $color $color
+			# Display 6 colors per lines
+			if [ $(((color + 1) % 6)) == 4 ] ; then
+				echo # New line
+			fi
+		done
+		echo # New line
+	done
 }
 
 # ls description
@@ -353,106 +353,106 @@ alias solar_stop="\${SOLR_PATH}/bin/solr stop"
 
 function countdown()
 {
-  # countdown 60              60 seconds
-  # countdown 60*30           30 minutes
-  # countdown $((24*60*60))   1 day
-  now=$(date +%s)
-  date1=$(${now} + "$1");
-  while [ "$date1" -ge "$(date +%s)" ]; do
-    echo -ne "$(date -u --date @$((date1 - $(date +%s))) +%H:%M:%S)\\r";
-    sleep 0.1
-  done
+	# countdown 60              60 seconds
+	# countdown 60*30           30 minutes
+	# countdown $((24*60*60))   1 day
+	now=$(date +%s)
+	date1=$(${now} + "$1");
+	while [ "$date1" -ge "$(date +%s)" ]; do
+		echo -ne "$(date -u --date @$((date1 - $(date +%s))) +%H:%M:%S)\\r";
+		sleep 0.1
+	done
 }
 
 function stopwatch()
 {
-  date1=$(date +%s);
-  while true; do
-    echo -ne "$(date -u --date @$(($(date +%s) - date1)) +%H:%M:%S)\\r";
-    sleep 0.1
-  done
+	date1=$(date +%s);
+	while true; do
+		echo -ne "$(date -u --date @$(($(date +%s) - date1)) +%H:%M:%S)\\r";
+		sleep 0.1
+	done
 }
 
 function git-find()
 {
-    local word=$1
-    local RED="$(tput setaf 1)"
-    local GREEN="$(tput setaf 2)"
-    local YELLOW="$(tput setaf 3)"
-    local BLUE="$(tput setaf 4)"
-    local MAGENTA="$(tput setaf 5)"
-    local CYAN="$(tput setaf 6)"
-    local WHITE="$(tput setaf 7)"
-    local GREY="$(tput setaf 9)"
-    local VIOLET="$(tput setaf 13)"
-    local BLACK="$(tput setaf 16)"
-    local BOLD="$(tput bold)"
-    local UNDERLINE="$(tput smul)"
-    local EXIT_UNDERLINE="$(tput rmul)"
-    local RESTORE="$(tput sgr0)"
-    for file in $(git show --name-only); do
-        ROWS=$(git show -- ":/${file}" 2> /dev/null | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
-    /^(---|\+\+\+|[^-+ ])/{print;next};\
-    {line=substr($0,2)};\
-      /^-/{print "-" minus_count++ ":" line;next};\
-      /^[+]/{print "+" plus_count++ ":" line;next};\
-      {print "(" minus_count++ "," plus_count++ "):"line}' | grep -E "^\\+[^\\+]" | grep -i "\\<${word}\\>")
-        local EXIT_STATUS="$?"
-        if [[ $EXIT_STATUS == 0 ]]; then
-            ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
-            EXIT_STATUS="$?"
-            if [[ $EXIT_STATUS == 0 ]]; then
-                for ROW in $ROW_NUMBERS; do
-                    echo -e "${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains${CYAN} $1${RESTORE}"
-                done
-            fi
-        fi
-    done
-}
+	local word=$1
+	local RED="$(tput setaf 1)"
+	local GREEN="$(tput setaf 2)"
+	local YELLOW="$(tput setaf 3)"
+	local BLUE="$(tput setaf 4)"
+	local MAGENTA="$(tput setaf 5)"
+	local CYAN="$(tput setaf 6)"
+	local WHITE="$(tput setaf 7)"
+	local GREY="$(tput setaf 9)"
+	local VIOLET="$(tput setaf 13)"
+	local BLACK="$(tput setaf 16)"
+	local BOLD="$(tput bold)"
+	local UNDERLINE="$(tput smul)"
+	local EXIT_UNDERLINE="$(tput rmul)"
+	local RESTORE="$(tput sgr0)"
+	for file in $(git show --name-only); do
+		ROWS=$(git show -- ":/${file}" 2> /dev/null | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
+			/^(---|\+\+\+|[^-+ ])/{print;next};\
+			{line=substr($0,2)};\
+				/^-/{print "-" minus_count++ ":" line;next};\
+				/^[+]/{print "+" plus_count++ ":" line;next};\
+				{print "(" minus_count++ "," plus_count++ "):"line}' | grep -E "^\\+[^\\+]" | grep -i "\\<${word}\\>")
+					local EXIT_STATUS="$?"
+					if [[ $EXIT_STATUS == 0 ]]; then
+						ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
+						EXIT_STATUS="$?"
+						if [[ $EXIT_STATUS == 0 ]]; then
+							for ROW in $ROW_NUMBERS; do
+								echo -e "${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains${CYAN} $1${RESTORE}"
+							done
+						fi
+					fi
+				done
+			}
 
-function find_code()
-{
-  MATCH="$@"
-  grep -lr "$MATCH" ${SRCDIR} | while read file
-  do
-    echo ${file}
-    grep -nh -A5 -B5 "@MATCH" "${file}"
-  done
-}
+		function find_code()
+		{
+			MATCH="$@"
+			grep -lr "$MATCH" ${SRCDIR} | while read file
+		do
+			echo ${file}
+			grep -nh -A5 -B5 "@MATCH" "${file}"
+		done
+	}
 
 function search_and_replace()
 {
-  old_phrase=$1
-  new_phrase=$2
-  # find . -type f -exec sed -i "s/$old_phrase/$new_phrase/g" {} \;
-  sed -i "s/$old_phrase/$new_phrase/g" "$(grep -ril $old_phrase . 2> /dev/null)"
+	old_phrase=$1
+	new_phrase=$2
+	# find . -type f -exec sed -i "s/$old_phrase/$new_phrase/g" {} \;
+	sed -i "s/$old_phrase/$new_phrase/g" "$(grep -ril $old_phrase . 2> /dev/null)"
 }
 
 function git-find()
 {
-  word=$1
-  for file in $(git show --name-only); do
-    file="$(git rev-parse --show-toplevel)/$file"
-    ROWS=$(git show -- "${file}" | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
-      /^(---|\+\+\+|[^-+ ])/{print;next};\
-    {line=substr($0,2)};\
-      /^-/{print "-" minus_count++ ":" line;next};\
-      /^[+]/{print "+" plus_count++ ":" line;next};\
-      {print "(" minus_count++ "," plus_count++ "):"line}' |
-        grep -E "^\\+[^\\+]" | grep -i "${word}")
-    local EXIT_STATUS="$?"
-    if [[ $EXIT_STATUS == 0 ]]; then
-      ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
-      EXIT_STATUS="$?"
-      if [[ $EXIT_STATUS == 0 ]]; then
-        for ROW in $ROW_NUMBERS; do
-          printf "%s%s%s:%s%s %scontains%s %s%s.\\n" "${RED}" "${file}" "${RESTORE}" "${GREEN}" "${ROW}" "${RESTORE}" "${CYAN}" "${word}" "${RESTORE}"
-        done
-      fi
-    fi
+	word=$1
+	for file in $(git show --name-only); do
+		file="$(git rev-parse --show-toplevel)/$file"
+		ROWS=$(git show -- "${file}" | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
+			/^(---|\+\+\+|[^-+ ])/{print;next};\
+			{line=substr($0,2)};\
+			/^-/{print "-" minus_count++ ":" line;next};\
+			/^[+]/{print "+" plus_count++ ":" line;next};\
+			{print "(" minus_count++ "," plus_count++ "):"line}' |
+				grep -E "^\\+[^\\+]" | grep -i "${word}")
+		local EXIT_STATUS="$?"
+		if [[ $EXIT_STATUS == 0 ]]; then
+			ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
+			EXIT_STATUS="$?"
+			if [[ $EXIT_STATUS == 0 ]]; then
+				for ROW in $ROW_NUMBERS; do
+					printf "%s%s%s:%s%s %scontains%s %s%s.\\n" "${RED}" "${file}" "${RESTORE}" "${GREEN}" "${ROW}" "${RESTORE}" "${CYAN}" "${word}" "${RESTORE}"
+				done
+			fi
+		fi
 
 
-  done
+	done
 }
 
 # Variables
