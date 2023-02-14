@@ -170,12 +170,13 @@ endif
 let g:gitgutter_diff_args = '-w'
 " }
 
-" ALE {
+" Asynchronous Lint Engine (ALE) {
 let b:ale_linters= {
 			\ 'python': ['flake8', 'pylint']
 			\ }
 let b:ale_fixers = {
-			\ '*': ['removetrailing_lines', 'trim_whitespace'],
+			\ '*': ['remove_trailing_lines', 'trim_whitespace'],
+			\ 'cpp': ['clang-format'],
 			\ 'javascript': ['prettier', 'eslint'],
 			\ 'json': ['prettier'],
 			\ 'python': ['autopep8', 'yapf']
