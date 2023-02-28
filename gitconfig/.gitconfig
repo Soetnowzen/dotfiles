@@ -84,7 +84,7 @@
 	cm = commit -m
 	co = checkout
 	coh = checkout HEAD
-	com = checkout master
+	com = checkout main
 	cop = checkout -p
 	cp = cherry-pick
 	cs = commit -s
@@ -96,7 +96,7 @@
 	f = fetch
 	fa = fetch --all
 	fb = !"git featureBranch"
-	featureBranch = "!feature_branch() { git checkout -b $1 origin/master; }; feature_branch"
+	featureBranch = "!feature_branch() { git checkout -b $1 origin/main; }; feature_branch"
 	filelog = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = !"git filelog"
@@ -111,8 +111,8 @@
 	lg5 = !"git lg1 --all --graph"
 	lg6 = !"git lg1 --color --graph"
 	lg7 = !"git lg6 --abbrev-commit"
-	lg8 = !"git lg1 --graph --abbrev-commit --decorate master {origin/team_name/,}$(git rev-parse --abbrev-ref HEAD)"
-	lg9 = !"git lg1 --graph --abbrev-commit --decorate master"
+	lg8 = !"git lg1 --graph --abbrev-commit --decorate $(git branchName) {origin/team_name/,}$(git branchName)"
+	lg9 = !"git lg1 --graph --abbrev-commit --decorate $(git branchName)"
 	lg10 = !"git lg1 --graph --abbrev-commit --decorate main"
 	ll = !"git lg1 --graph --decorate --numstat --all"
 	ll2 = !"git lg1 --graph --decorate --numstat"
@@ -122,14 +122,14 @@
 	newBranch = "!new_branch() { git checkout -b $1 origin/team_name/$1; }; new_branch"
 	ours = checkout --ours --
 	pl = pull
-	plb = pull --no-ff origin master
+	plb = pull --no-ff origin main
 	pr = pull --rebase
-	prb = pull --rebase origin master
+	prb = pull --rebase origin main
 	ps = push
-	psd = push origin HEAD:refs/drafts/master
-	psdf = !"git push origin HEAD:refs/drafts/team_name/$(git rev-parse --abbrev-ref HEAD)"
-	psf = push origin HEAD:refs/for/master
-	psff = !"git push origin HEAD:refs/for/team_name/$(git rev-parse --abbrev-ref HEAD)"
+	psd = !"push origin HEAD:refs/drafts/$(git branchName)"
+	psdf = !"git push origin HEAD:refs/drafts/team_name/$(git branchName)"
+	psf = !"push origin HEAD:refs/for/$(git branchName)"
+	psff = !"git push origin HEAD:refs/for/team_name/$(git branchName)"
 	undo = checkout HEAD~1 --
 	r = revert
 	rc = rebase --continue
@@ -148,6 +148,6 @@
 	sw = show --word-diff
 	t = tag
 	theirs = checkout --theirs --
-	uplift = merge --no-ff origin/master
+	uplift = merge --no-ff origin/main
 	zip = archive --format=zip HEAD
 	zip-latest = archive -o latest.zip HEAD
