@@ -103,19 +103,16 @@
 	head = rev-parse HEAD
 	la = "!git config -l | grep alias | cut -c 7-"
 	showHistory = log --graph --oneline --decorate
-	lg = !"git lg9"
-	lg1 = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
-	lg2 = !"git lg1 --graph --abbrev-commit --decorate --all"
-	lg3 = !"git lg1 --decorate --graph"
-	lg4 = !"git lg1 --no-merges"
-	lg5 = !"git lg1 --all --graph"
-	lg6 = !"git lg1 --color --graph"
-	lg7 = !"git lg6 --abbrev-commit"
-	lg8 = !"git lg1 --graph --abbrev-commit --decorate $(git branchName) {origin/team_name/,}$(git branchName)"
-	lg9 = !"git lg1 --graph --abbrev-commit --decorate $(git branchName)"
-	lg10 = !"git lg1 --graph --abbrev-commit --decorate main"
-	ll = !"git lg1 --graph --decorate --numstat --all"
-	ll2 = !"git lg1 --graph --decorate --numstat"
+	lg = !"git lgBranchName"
+	lgColorFormat = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
+	lgGraphAll = !"git lgColorFormat --graph --abbrev-commit --decorate --all"
+	lgGraph = !"git lgColorFormat --decorate --graph"
+	lgNoMerges = !"git lgColorFormat --no-merges"
+	lg8 = !"git lgColorFormat --graph --abbrev-commit --decorate main {origin/team_name/,}$(git branchName)"
+	lgGraphAbbrevCommit = !"git lgColorFormat --graph --abbrev-commit --decorate"
+	lgBranchName = !"git lgGraphAbbrevCommit $(branchName)"
+	ll = !"git lgColorFormat --graph --decorate --numstat --all"
+	ll2 = !"git lgColorFormat --graph --decorate --numstat"
 	ls = diff-tree --no-commit-id --name-only -r HEAD
 	mt = mergetool
 	nb = !"git newBranch"
@@ -126,9 +123,9 @@
 	pr = pull --rebase
 	prb = pull --rebase origin main
 	ps = push
-	psd = !"push origin HEAD:refs/drafts/$(git branchName)"
+	psd = !"git push origin HEAD:refs/drafts/$(git branchName)"
 	psdf = !"git push origin HEAD:refs/drafts/team_name/$(git branchName)"
-	psf = !"push origin HEAD:refs/for/$(git branchName)"
+	psf = !"git push origin HEAD:refs/for/$(git branchName)"
 	psff = !"git push origin HEAD:refs/for/team_name/$(git branchName)"
 	undo = checkout HEAD~1 --
 	r = revert
@@ -140,6 +137,7 @@
 	s = status
 	search = !"git lg1 --abbrev-commit --decorate --all -S"
 	sh = show
+	shs = show --stat
 	sl = stash list
 	sp = stash pop
 	ss = status -s
