@@ -59,6 +59,7 @@
 	tool = vimdiff
 [init]
 	templatedir = ~/.git_template
+	defaultBranch = main
 [mergetool]
 	keepBackup = false
 [diff]
@@ -96,7 +97,7 @@
 	f = fetch
 	fa = fetch --all
 	fb = !"git featureBranch"
-	featureBranch = "!feature_branch() { git checkout -b $1 origin/main; }; feature_branch"
+	featureBranch = "!feature_branch() { git checkout -b $1 origin/$(git branchName); }; feature_branch"
 	filelog = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = !"git filelog"
