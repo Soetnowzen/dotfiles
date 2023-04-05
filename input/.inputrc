@@ -2,7 +2,31 @@ set show-all-if-ambiguous on
 set completion-ignore-case on
 set completion-map-case on
 set completion-prefix-display-length 2
-set colored-stats on
+# Color files by types
+# Note that this may cause completion text blink in some terminals (e.g. xterm).
+set colored-stats On
+# Append char to indicate type
+set visible-stats On
+# Mark symlinked directories
+set mark-symlinked-directories On
+# Color the common prefix
+set colored-completion-prefix On
+# Color the common prefix in menu-complete
+set menu-complete-display-prefix On
+
+set editing-mode vi
+set show-mode-in-prompt on
+set vi-ins-mode-string \1└─[\e[37;1m\2ins\1\e[0m] \2
+set vi-cmd-mode-string \1└─[\e[35;1m\2cmd\1\e[0m] \2
+
+set keymap vi-insert
+"jj":vi-movement-mode
+
+set keymap vi-command
+"k": history-search-backward
+"j": history-search-forward
+"H": backward-word
+"L": forward-word
 
 # mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
 "\e[1;5C": forward-word

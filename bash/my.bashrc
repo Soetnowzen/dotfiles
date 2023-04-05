@@ -26,8 +26,6 @@ source "$dotfiles_dir/scripts/tmux-session-saver.bash"
 # source "$dotfiles_dir/scripts/fg_completion.bash"
 source "$dotfiles_dir/scripts/watch_files.sh"
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 PROMPT_COMMAND=_prompt
 PS1="\\$ "
 
@@ -49,8 +47,11 @@ function _prompt()
 
 # Shell options
 # {
+# Enable direxpand (so that env variables are expended when tab completing)
 shopt -s direxpand
 shopt -s expand_aliases
+# disable histexpand (the !123 syntax)
+set +o histexpand
 # }
 
 # Variables
@@ -456,4 +457,4 @@ function git-find()
 }
 
 # Variables
-export DISPLAY=localhost:0.0
+# export DISPLAY=localhost:0.0
