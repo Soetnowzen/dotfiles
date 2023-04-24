@@ -14,6 +14,7 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'jceb/vim-orgmode'
 Plugin 'octol/vim-cpp-enhanced-highlight'
 Plugin 'scrooloose/nerdtree'
+Plugin 'skywind3000/vim-auto-popmenu'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -197,4 +198,25 @@ let g:ale_sign_warning = '--'
 
 " Show 5 lines of errors (default: 10)
 let g:ale_list_window_size = 5
+" }
+
+" auto-popmenu {
+" enable this plugin for filestypes, '*' for all files.
+let g:apc_enable_ft = {
+			\ 'text': 1,
+			\ 'markdown': 1,
+			\ 'php': 1,
+			\ 'javascript': 1,
+			\ 'json': 1
+			\ }
+
+" source for dictionary, current or other loaded buffers, see ':help cpt'
+set cpt=.,k,w,b
+
+" don't select the first item.
+" set completeopt=menu,menuone,noselect
+set completeopt=menu,longest,preview,noselect
+
+" Suppress annoy messages.
+set shortmess+=c
 " }
