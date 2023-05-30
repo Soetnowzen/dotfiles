@@ -27,7 +27,13 @@ source "$dotfiles_dir/scripts/tmux-session-saver.bash"
 source "$dotfiles_dir/scripts/watch_files.sh"
 
 PROMPT_COMMAND=_prompt
-PS1="\\$ "
+CYAN="$(tput setaf 6)"
+RESET="$(tput sgr0)"
+PS1="$CYAN"'Execution time $(bash_get_stop_time $ROOTPID)s'"$RESET"'\n'
+PS1="$PS1"'\$ '
+PS0='$(bash_get_start_time $ROOTPID)'
+# PS0='$(bash_get_start_time $ROOTPID) $ROOTPID experiments \[\033[00m\]\n'
+# PS0='\[\ePtmux;\e\e[2 q\e\\\]'
 
 function _prompt()
 {
@@ -44,6 +50,36 @@ function _prompt()
 	"$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$jobs_count"
 	return $EXIT
 }
+
+function round_seconds()
+{
+	# rounds a number to 3 decimal places
+	echo m=$1";h=0.5;scale=4;t=1000;if(m<0) h=-0.5;a=m*t+h;scale=3;a/t;" | bc
+}
+
+function bash_get_start_time()
+{
+	# places the epoch time in ns into shared memory
+	date +%s.%N >"/dev/shm/${USER}.bashtime.${1}"
+}
+
+function bash_get_stop_time()
+{
+	# reads stored epoch time and subtracts from current
+	local endtime=$(date +%s.%N)
+	local starttime=$(cat /dev/shm/${USER}.bashtime.${1})
+	round_seconds $(echo $(eval echo "$endtime - $starttime") | bc)
+}
+
+ROOTPID=$BASHPID
+bash_get_start_time $ROOTPID
+
+function runonexit()
+{
+	rm -I /dev/shm/${USER}.bashtime.${ROOTPID}
+}
+
+trap runonexit EXIT
 
 # Shell options
 # {
