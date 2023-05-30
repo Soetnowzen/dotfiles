@@ -178,7 +178,7 @@ let b:ale_linters= {
 let b:ale_fixers = {
 			\ '*': ['remove_trailing_lines', 'trim_whitespace'],
 			\ 'cpp': ['clang-format'],
-			\ 'javascript': ['prettier', 'eslint'],
+			\ 'javascript': ['prettier', 'eslint', 'clang-format'],
 			\ 'json': ['clang-format', 'prettier'],
 			\ 'python': ['autopep8', 'yapf']
 			\ }

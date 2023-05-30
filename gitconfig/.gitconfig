@@ -111,7 +111,7 @@
 	lgNoMerges = !"git lgColorFormat --no-merges"
 	lg8 = !"git lgColorFormat --graph --abbrev-commit --decorate main {origin/team_name/,}$(git branchName)"
 	lgGraphAbbrevCommit = !"git lgColorFormat --graph --abbrev-commit --decorate"
-	lgBranchName = !"git lgGraphAbbrevCommit $(branchName)"
+	lgBranchName = !"git lgGraphAbbrevCommit $(git branchName)"
 	ll = !"git lgColorFormat --graph --decorate --numstat --all"
 	ll2 = !"git lgColorFormat --graph --decorate --numstat"
 	ls = diff-tree --no-commit-id --name-only -r HEAD

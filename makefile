@@ -5,7 +5,7 @@ help:
 	@make -rpn | sed -n -e '/^$$/ { n ; /^[^ ]*:/p}' | egrep -v '^.PHONY' | egrep -v '^all'
 
 all:
-	bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf fzf emacs keyboard
+	bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf emacs keyboard
 
 bash:
 	ln -fsn $(here)/bash/my.bashrc $(HOME)/.bashrc
@@ -52,10 +52,6 @@ vimperator:
 	mkdir -p $(HOME)/.vimperator/colors
 	ln -fsn $(here)/vimperator/colors/solarized_dark.vimp $(HOME)/.vimperator/colors/solarized_dark.vimp
 
-fzf:
-	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install
-
 emacs:
 	ln -fsn $(here)/emacs $(HOME)/.emacs.d
 
@@ -63,4 +59,4 @@ keyboard:
 	ln -fsn $(here)/keyboard/.my_keyboard $(HOME)/.my_keyboard
 
 .PHONY:
-	bash gdb git input mintty sumatra_pdf tcsh tmux vim vimperator fzf emacs keyboard
+	bash gdb git input mintty sumatra_pdf tcsh tmux vim vimperator emacs keyboard
