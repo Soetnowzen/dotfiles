@@ -53,20 +53,25 @@ function _prompt()
 
 function display_time()
 {
-	local Time=$1
-	local miliseconds=$(echo "$Time/1%1000" | bc)
-	local Days=$(echo "$Time/60/60/24/1000" | bc)
-	local Hours=$(echo "$Time/60/60/1000%24" | bc)
-	local Minutes=$(echo "$Time/60/1000%60" | bc)
-	local Seconds=$(echo "$Time/1000%60" | bc)
-	local time=""
-	(( $Days > 0 )) && time+="$Days days "
-	(( $Hours > 0 )) && time+="$Hours hours "
-	(( $Minutes > 0 )) && time+="$Minutes minutes "
-	(( $Seconds > 0 )) && time+="$Seconds seconds "
-	(( $Days > 0 || $Hours > 0 || $Minutes > 0 || $Seconds > 0 )) && time+='and '
-	time+="$miliseconds ms"
-	echo $time
+	local time=$1
+	local miliseconds
+	miliseconds=$(echo "$time / 1 % 1000" | bc)
+	local days
+	days=$(echo "$time / 60 / 60 / 24 / 1000" | bc)
+	local hours
+	hours=$(echo "$time / 60 / 60 / 1000 % 24" | bc)
+	local minutes
+	minutes=$(echo "$time / 60 / 1000 % 60" | bc)
+	local seconds
+	seconds=$(echo "$time / 1000 % 60" | bc)
+	local readable_time=""
+	(( days > 0 )) && readable_time+="$days days "
+	(( hours > 0 )) && readable_time+="$hours hours "
+	(( minutes > 0 )) && readable_time+="$minutes minutes "
+	(( seconds > 0 )) && readable_time+="$seconds seconds "
+	(( days > 0 || hours > 0 || minutes > 0 || seconds > 0 )) && readable_time+='and '
+	readable_time+="$miliseconds ms"
+	echo "$readable_time"
 }
 
 function bash_get_start_time()
