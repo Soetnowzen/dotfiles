@@ -29,7 +29,7 @@ source "$dotfiles_dir/scripts/watch_files.sh"
 PROMPT_COMMAND=_prompt
 CYAN="$(tput setaf 6)"
 RESET="$(tput sgr0)"
-PS1="$CYAN"'Execution time $(bash_get_stop_time $ROOTPID)s'"$RESET"'\n'
+PS1="| $CYAN"'Execution time $(bash_get_stop_time $ROOTPID)'"$RESET"'\n'
 PS1="$PS1"'\$ '
 PS0='$(bash_get_start_time $ROOTPID)'
 # PS0='$(bash_get_start_time $ROOTPID) $ROOTPID experiments \[\033[00m\]\n'
@@ -51,10 +51,22 @@ function _prompt()
 	return $EXIT
 }
 
-function round_seconds()
+function display_time()
 {
-	# rounds a number to 3 decimal places
-	echo m=$1";h=0.5;scale=4;t=1000;if(m<0) h=-0.5;a=m*t+h;scale=3;a/t;" | bc
+	local Time=$1
+	local miliseconds=$(echo "$Time/1%1000" | bc)
+	local Days=$(echo "$Time/60/60/24/1000" | bc)
+	local Hours=$(echo "$Time/60/60/1000%24" | bc)
+	local Minutes=$(echo "$Time/60/1000%60" | bc)
+	local Seconds=$(echo "$Time/1000%60" | bc)
+	local time=""
+	(( $Days > 0 )) && time+="$Days days "
+	(( $Hours > 0 )) && time+="$Hours hours "
+	(( $Minutes > 0 )) && time+="$Minutes minutes "
+	(( $Seconds > 0 )) && time+="$Seconds seconds "
+	(( $Days > 0 || $Hours > 0 || $Minutes > 0 || $Seconds > 0 )) && time+='and '
+	time+="$miliseconds ms"
+	echo $time
 }
 
 function bash_get_start_time()
@@ -68,7 +80,9 @@ function bash_get_stop_time()
 	# reads stored epoch time and subtracts from current
 	local endtime=$(date +%s.%N)
 	local starttime=$(cat /dev/shm/${USER}.bashtime.${1})
-	round_seconds $(echo $(eval echo "$endtime - $starttime") | bc)
+
+	local miliseconds=$(echo "($endtime - $starttime)*1000" | bc)
+	echo $(display_time $miliseconds)
 }
 
 ROOTPID=$BASHPID
