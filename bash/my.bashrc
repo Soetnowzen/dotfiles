@@ -83,22 +83,25 @@ function bash_get_start_time()
 function bash_get_stop_time()
 {
 	# reads stored epoch time and subtracts from current
-	local endtime=$(date +%s.%N)
-	local starttime=$(cat /dev/shm/${USER}.bashtime.${1})
+	local end_time
+	end_time=$(date +%s.%N)
+	local start_time
+	start_time="$(cat "/dev/shm/${USER}.bashtime.${1}")"
 
-	local miliseconds=$(echo "($endtime - $starttime)*1000" | bc)
-	echo $(display_time $miliseconds)
+	local miliseconds
+	miliseconds=$(echo "($end_time - $start_time)*1000" | bc)
+	display_time "$miliseconds"
 }
 
 ROOTPID=$BASHPID
 bash_get_start_time $ROOTPID
 
-function runonexit()
+function run_on_exit()
 {
-	rm -I /dev/shm/${USER}.bashtime.${ROOTPID}
+	rm -I "/dev/shm/${USER}.bashtime.${ROOTPID}"
 }
 
-trap runonexit EXIT
+trap run_on_exit EXIT
 
 # Shell options
 # {
@@ -451,31 +454,31 @@ function git-find()
 		ROWS=$(git show -- ":/${file}" 2> /dev/null | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
 			/^(---|\+\+\+|[^-+ ])/{print;next};\
 			{line=substr($0,2)};\
-				/^-/{print "-" minus_count++ ":" line;next};\
-				/^[+]/{print "+" plus_count++ ":" line;next};\
-				{print "(" minus_count++ "," plus_count++ "):"line}' | grep -E "^\\+[^\\+]" | grep -i "\\<${word}\\>")
-					local EXIT_STATUS="$?"
-					if [[ $EXIT_STATUS == 0 ]]; then
-						ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
-						EXIT_STATUS="$?"
-						if [[ $EXIT_STATUS == 0 ]]; then
-							for ROW in $ROW_NUMBERS; do
-								echo -e "${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains${CYAN} $1${RESTORE}"
-							done
-						fi
-					fi
+			/^-/{print "-" minus_count++ ":" line;next};\
+			/^[+]/{print "+" plus_count++ ":" line;next};\
+			{print "(" minus_count++ "," plus_count++ "):"line}' | grep -E "^\\+[^\\+]" | grep -i "\\<${word}\\>")
+		local EXIT_STATUS="$?"
+		if [[ $EXIT_STATUS == 0 ]]; then
+			ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
+			EXIT_STATUS="$?"
+			if [[ $EXIT_STATUS == 0 ]]; then
+				for ROW in $ROW_NUMBERS; do
+					echo -e "${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains${CYAN} $1${RESTORE}"
 				done
-			}
+			fi
+		fi
+	done
+}
 
-		function find_code()
-		{
-			MATCH="$@"
-			grep -lr "$MATCH" ${SRCDIR} | while read file
-		do
-			echo ${file}
-			grep -nh -A5 -B5 "@MATCH" "${file}"
-		done
-	}
+function find_code()
+{
+	MATCH="$@"
+	grep -lr "$MATCH" ${SRCDIR} | while read file
+do
+	echo ${file}
+	grep -nh -A5 -B5 "@MATCH" "${file}"
+done
+}
 
 function search_and_replace()
 {
