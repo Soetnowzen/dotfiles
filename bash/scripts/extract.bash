@@ -44,3 +44,11 @@ function extract()
 	fi
 }
 
+function tar_grep()
+{
+	# unzip tar that matches wildcard to standard output
+	local tar_zip=$1
+	# '*crash.log'
+	local wildcard_search=$2
+	tar xzf $tar_zip --wildcard "$wildcard_search" -O
+}
