@@ -129,7 +129,7 @@ shopt -s histappend
 
 # Aliases
 # {
-alias ls='ls -F --color --group-directories-first'
+alias ls='ls -h -F --color --group-directories-first'
 alias la='ls -A'
 alias ll='la -l'
 alias l='ll'
@@ -196,7 +196,7 @@ alias find_broken_links='find -L . -type l'
 
 if [[ $UID != 0 ]]; then
 	alias reboot='sudo reboot'
-	alias update='sudo apt-get update && sudo apt-get upgrade'
+	alias update='sudo apt-get -y update && sudo apt-get -y upgrade'
 fi
 # }
 
