@@ -144,6 +144,7 @@ alias c='cat -nv'
 alias clr='clear'
 alias d='dirs -v'
 alias df="df -h"
+alias docker_stop_all='docker stop $(docker ps -q)'
 alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
