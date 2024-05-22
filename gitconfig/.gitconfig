@@ -141,6 +141,7 @@
 	shs = show --stat
 	sl = stash list
 	sp = stash pop
+	squash = rebase -i origin/master
 	ss = status -s
 	st = stash
 	sts = stash show -p
