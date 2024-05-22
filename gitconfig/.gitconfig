@@ -129,7 +129,7 @@
 	psf = !"git push origin HEAD:refs/for/$(git branchName)"
 	psff = !"git push origin HEAD:refs/for/team_name/$(git branchName)"
 	undo = checkout HEAD~1 --
-	r = revert
+	r = rebase
 	rc = rebase --continue
 	restore = checkout -m --
 	rh = "!reset_hard_function() { git reset HEAD~$1 --hard; }; reset_hard_function"
