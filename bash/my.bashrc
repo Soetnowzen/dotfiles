@@ -141,7 +141,7 @@ alias apt-get='sudo apt-get'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bashr='vim ~/.bashrc'
 alias c='cat -nv'
-alias clr='clear'
+alias cl='clear &&'
 alias d='dirs -v'
 alias df="df -h"
 alias docker_stop_all='docker stop $(docker ps -q)'
@@ -169,7 +169,6 @@ alias mkdir='mkdir -pv'
 alias mount='mount | column -t'
 alias o='popd'
 alias p='pushd'
-alias password_gen='apg -m 10 -M SNCL'
 alias pd='pushd'
 alias po='popd'
 alias popdd='popd >/dev/null'
@@ -200,6 +199,16 @@ if [[ $UID != 0 ]]; then
 	alias update='sudo apt-get -y update && sudo apt-get -y upgrade'
 fi
 # }
+
+function password_gen()
+{
+	local number_of_characeters="$1"
+	if [[ "$number_of_characeters" == "" ]]; then
+		tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 20; echo
+	else
+		tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c $number_of_characeters; echo
+	fi
+}
 
 function cdd()
 {
