@@ -123,7 +123,7 @@ function __git_tag_prompt()
 {
 	git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
 	if [[ ${git_tag} != "" ]]; then
-		printf ", %s%s%s" "$WHITE" "$git_tag" "$YELLOW"
+		printf ", %stag: %s%s" "$WHITE" "$git_tag" "$YELLOW"
 	fi
 }
 
@@ -185,7 +185,7 @@ function __modified_files_count()
 		untraced_files=$(echo "${git_status}" | grep -c '^??')
 		if [[ $untraced_files != 0 ]]; then
 			# printf " %s◼%s" "$WHITE" "$untraced_files"
-			printf " %s?%s" "$WHITE" "$untraced_files"
+			printf " %s??%s" "$WHITE" "$untraced_files"
 		fi
 		printf "%s" "$YELLOW"
 	fi
@@ -218,7 +218,7 @@ function __git_stash_count()
 	git_stash_count=$(git stash list 2> /dev/null | wc -l)
 	if [[ ${git_stash_count} != "0" ]]; then
 		# printf ", %s✭%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
-		printf ", %s*%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
+		printf ", %sstash: %s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
 	fi
 }
 
