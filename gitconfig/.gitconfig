@@ -106,16 +106,15 @@
 	fl = !"git filelog"
 	head = rev-parse HEAD
 	la = "!git config -l | grep alias | cut -c 7-"
-	showHistory = log --graph --oneline --decorate
 	lg = !"git lgAllRemote"
-	lgAllRemote = !"git lgColorFormat --decorate --graph --all --remotes"
-	lgColorFormat = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
-	lgGraphAll = !"git lgColorFormat --graph --abbrev-commit --decorate --all"
-	lgGraph = !"git lgColorFormat --decorate --graph"
-	lgNoMerges = !"git lgColorFormat --no-merges"
 	lg8 = !"git lgColorFormat --graph --abbrev-commit --decorate main {origin/team_name/,}$(git branchName)"
-	lgGraphAbbrevCommit = !"git lgColorFormat --graph --abbrev-commit --decorate"
+	lgAllRemote = !"git lgColorFormat --decorate --graph --all --remotes"
 	lgBranchName = !"git lgGraphAbbrevCommit $(git branchName)"
+	lgColorFormat = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
+	lgGraph = !"git lgColorFormat --decorate --graph"
+	lgGraphAbbrevCommit = !"git lgColorFormat --graph --abbrev-commit --decorate"
+	lgGraphAll = !"git lgColorFormat --graph --abbrev-commit --decorate --all"
+	lgNoMerges = !"git lgColorFormat --no-merges"
 	ll = !"git lgColorFormat --graph --decorate --numstat --all"
 	ll2 = !"git lgColorFormat --graph --decorate --numstat"
 	ls = diff-tree --no-commit-id --name-only -r HEAD
@@ -132,7 +131,6 @@
 	psdf = !"git push origin HEAD:refs/drafts/team_name/$(git branchName)"
 	psf = !"git push origin HEAD:refs/for/$(git branchName)"
 	psff = !"git push origin HEAD:refs/for/team_name/$(git branchName)"
-	undo = checkout HEAD~1 --
 	r = rebase
 	rc = rebase --continue
 	restore = checkout -m --
@@ -142,6 +140,7 @@
 	s = status
 	search = !"git lg1 --abbrev-commit --decorate --all -S"
 	sh = show
+	showHistory = log --graph --oneline --decorate
 	shs = show --stat
 	sl = stash list
 	sp = stash pop
@@ -152,6 +151,7 @@
 	sw = show --word-diff
 	t = tag
 	theirs = checkout --theirs --
+	undo = checkout HEAD~1 --
 	uplift = merge --no-ff origin/main
 	zip = archive --format=zip HEAD
 	zip-latest = archive -o latest.zip HEAD
