@@ -90,8 +90,11 @@
 	cp = cherry-pick
 	cs = commit -s
 	d = diff
+	day = !"git lg --since=\"24 hours ago\" --author=\"(git config user.name)\""
 	dc = diff --cached
+	dcw = dc --word-diff
 	deliverBranch = "!deliver_branch() { git merge --squash origin/$1; }; deliver_branch"
+	ds = diff --stat
 	dt = difftool
 	dw = diff --word-diff
 	f = fetch
@@ -104,7 +107,8 @@
 	head = rev-parse HEAD
 	la = "!git config -l | grep alias | cut -c 7-"
 	showHistory = log --graph --oneline --decorate
-	lg = !"git lgBranchName"
+	lg = !"git lgAllRemote"
+	lgAllRemote = !"git lgColorFormat --decorate --graph --all --remotes"
 	lgColorFormat = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
 	lgGraphAll = !"git lgColorFormat --graph --abbrev-commit --decorate --all"
 	lgGraph = !"git lgColorFormat --decorate --graph"
