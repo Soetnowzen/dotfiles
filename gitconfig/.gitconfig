@@ -93,6 +93,7 @@
 	day = !"git lg --since=\"24 hours ago\" --author=\"(git config user.name)\""
 	dc = diff --cached
 	dcw = dc --word-diff
+	defaultBranch = !"git rev-parse --abbrev-ref origin/HEAD | sed 's@origin/@@'"
 	deliverBranch = "!deliver_branch() { git merge --squash origin/$1; }; deliver_branch"
 	ds = diff --stat
 	dt = difftool
@@ -109,6 +110,7 @@
 	lg = !"git lgAllRemote"
 	lg8 = !"git lgColorFormat --graph --abbrev-commit --decorate main {origin/team_name/,}$(git branchName)"
 	lgAllRemote = !"git lgColorFormat --decorate --graph --all --remotes"
+	lgBranchCommits = !"git lgColorFormat $(git defaultBranch).."
 	lgBranchName = !"git lgGraphAbbrevCommit $(git branchName)"
 	lgColorFormat = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
 	lgGraph = !"git lgColorFormat --decorate --graph"
