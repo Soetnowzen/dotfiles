@@ -116,6 +116,7 @@ function __git_prompt()
 	__git_tag_prompt
 	__git_modifications_prompt
 	__git_commit_status
+	__git_feature_branch_commits
 	__git_stash_count
 }
 
@@ -210,6 +211,54 @@ function __git_commit_status()
 		fi
 		number_of_commits=$(echo "$git_commit_status" | grep -Eo '[0-9]+')
 		printf "%s%s" "$number_of_commits" "$YELLOW"
+	fi
+}
+
+function __git_feature_branch_commits()
+{
+	local current_branch
+	current_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+	
+	# Get the default branch from origin/HEAD
+	local base_branch
+	base_branch=$(git rev-parse --abbrev-ref origin/HEAD 2> /dev/null)
+	
+	# If origin/HEAD is not set, fall back to common branch names
+	if [[ $base_branch == "" ]] || [[ $base_branch == "origin/HEAD" ]]; then
+		if git show-ref --verify --quiet refs/heads/master; then
+			base_branch="master"
+		elif git show-ref --verify --quiet refs/heads/main; then
+			base_branch="main"
+		elif git show-ref --verify --quiet refs/heads/develop; then
+			base_branch="develop"
+		elif git show-ref --verify --quiet refs/remotes/origin/master; then
+			base_branch="origin/master"
+		elif git show-ref --verify --quiet refs/remotes/origin/main; then
+			base_branch="origin/main"
+		elif git show-ref --verify --quiet refs/remotes/origin/develop; then
+			base_branch="origin/develop"
+		fi
+	fi
+	
+	# Skip if no base branch found or if on the base branch
+	if [[ $base_branch == "" ]] || [[ $current_branch == "${base_branch#origin/}" ]]; then
+		return
+	fi
+	
+	# Count commits ahead and behind base branch
+	local commits_ahead commits_behind
+	commits_ahead=$(git rev-list --count "${base_branch}..HEAD" 2> /dev/null)
+	commits_behind=$(git rev-list --count "HEAD..${base_branch}" 2> /dev/null)
+	
+	if [[ $commits_ahead != "" ]] && [[ $commits_ahead -gt 0 ]]; then
+		printf ", %s↑%s from %s" "$CYAN" "$commits_ahead" "$base_branch"
+		
+		# Warn if also behind (needs rebase)
+		if [[ $commits_behind != "" ]] && [[ $commits_behind -gt 0 ]]; then
+			printf " %s(↓%s, rebase?)%s" "$ORANGE" "$commits_behind" "$YELLOW"
+		else
+			printf "%s" "$YELLOW"
+		fi
 	fi
 }
 
