@@ -22,7 +22,7 @@ function __prompt_command()
 	printf "[" # ]
 
 	# Time
-	printf "%s%s " "$CYAN" "$(date +%H:%M)"
+	printf "%s%s%s " "$CYAN" "$(date +%H:%M)" "$RESET"
 	# user@pc
 	if [[ $EXIT != 0 ]]; then
 		printf "%s" "$RED"
@@ -124,7 +124,7 @@ function __git_tag_prompt()
 {
 	git_tag=$(git tag -l --points-at HEAD 2> /dev/null)
 	if [[ ${git_tag} != "" ]]; then
-		printf ", %stag: %s%s" "$WHITE" "$git_tag" "$YELLOW"
+		printf " | %stag: %s%s" "$WHITE" "$git_tag" "$YELLOW"
 	fi
 }
 
@@ -135,7 +135,7 @@ function __git_modifications_prompt()
 	if [[ ${git_count} != "" ]]; then
 		git_diff_word=$(echo "$git_count" | grep '\[-.*-\]\|{+.*+}')
 		if [[ ${git_diff_word} != "" ]]; then
-			printf ","
+			printf " |"
 			change_rows=$(echo "${git_diff_word}" | grep -c '\[-.*-\]{+.*+}')
 			if [[ ${change_rows} != "0" ]]; then
 				printf " %s~%s" "$YELLOW" "$change_rows"
@@ -157,16 +157,16 @@ function __modified_files_count()
 {
 	git_status=$(git status -s 2> /dev/null)
 	if [[ ${git_status} != "" ]]; then
-		printf ","
+		printf " |"
 		added_files=$(echo "${git_status}" | grep -c '^A ')
 		if [[ $added_files != 0 ]]; then
-			# printf " %s✚%s" "$GREEN" "$added_files"
-			printf " %s+%s" "$GREEN" "$added_files"
+			printf " %s✚%s" "$GREEN" "$added_files"
+			# printf " %s+%s" "$GREEN" "$added_files"
 		fi
 		deleted_files=$(echo "${git_status}" | grep -c '^\s*D')
 		if [[ $deleted_files != 0 ]]; then
-			# printf " %s✖%s" "$RED" "$deleted_files"
-			printf " %s-%s" "$RED" "$deleted_files"
+			printf " %s✖%s" "$RED" "$deleted_files"
+			# printf " %s-%s" "$RED" "$deleted_files"
 		fi
 		modified_files=$(echo "${git_status}" | grep -c '^\s*M')
 		if [[ $modified_files != 0 ]]; then
@@ -175,8 +175,8 @@ function __modified_files_count()
 		fi
 		renamed_files=$(echo "${git_status}" | grep -c '^R')
 		if [[ $renamed_files != 0 ]]; then
-			# printf " %s➜%s" "$MAGENTA" "$renamed_files"
-			printf " %s>%s" "$MAGENTA" "$renamed_files"
+			printf " %s➜%s" "$MAGENTA" "$renamed_files"
+			# printf " %s>%s" "$MAGENTA" "$renamed_files"
 		fi
 		unmerged_files=$(echo "${git_status}" | grep -c '^UU')
 		if [[ $unmerged_files != 0 ]]; then
@@ -196,16 +196,16 @@ function __git_commit_status()
 {
 	git_commit_status=$(git status -uno 2> /dev/null | grep -i 'Your branch\|Din gren' | grep -Eo 'by [0-9]+|med [0-9]+|diverged|behind|ahead|efter|före')
 	if [[ ${git_commit_status} != "" ]]; then
-		printf ", %s" "$VIOLET"
+		printf " | %s" "$VIOLET"
 		if [[ $(echo "$git_commit_status" | grep -Eo 'ahead|före') != "" ]]; then
-			# printf "⬆"
-			printf "^"
+			printf "⬆"
+			# printf "^"
 		elif [[ $(echo "$git_commit_status" | grep -Eo 'behind|efter') != "" ]]; then
-			# printf "⬇"
-			printf "v"
+			printf "⬇"
+			# printf "v"
 		elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
-			# local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1⬆ \2⬇/')
-			local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1^ \2v/')
+			local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1⬆ \2⬇/')
+			# local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1^ \2v/')
 			# local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+ \([[:digit:]]\+\) and \([[:digit:]]\+\)/\1 \2/')
 			printf "(%s)" "$local_remote"
 		fi
@@ -218,11 +218,11 @@ function __git_feature_branch_commits()
 {
 	local current_branch
 	current_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-	
+
 	# Get the default branch from origin/HEAD
 	local base_branch
 	base_branch=$(git rev-parse --abbrev-ref origin/HEAD 2> /dev/null)
-	
+
 	# If origin/HEAD is not set, fall back to common branch names
 	if [[ $base_branch == "" ]] || [[ $base_branch == "origin/HEAD" ]]; then
 		if git show-ref --verify --quiet refs/heads/master; then
@@ -239,20 +239,20 @@ function __git_feature_branch_commits()
 			base_branch="origin/develop"
 		fi
 	fi
-	
+
 	# Skip if no base branch found or if on the base branch
 	if [[ $base_branch == "" ]] || [[ $current_branch == "${base_branch#origin/}" ]]; then
 		return
 	fi
-	
+
 	# Count commits ahead and behind base branch
 	local commits_ahead commits_behind
 	commits_ahead=$(git rev-list --count "${base_branch}..HEAD" 2> /dev/null)
 	commits_behind=$(git rev-list --count "HEAD..${base_branch}" 2> /dev/null)
-	
+
 	if [[ $commits_ahead != "" ]] && [[ $commits_ahead -gt 0 ]]; then
-		printf ", %s↑%s from %s" "$CYAN" "$commits_ahead" "$base_branch"
-		
+		printf " | %s↑%s from %s" "$CYAN" "$commits_ahead" "$base_branch"
+
 		# Warn if also behind (needs rebase)
 		if [[ $commits_behind != "" ]] && [[ $commits_behind -gt 0 ]]; then
 			printf " %s(↓%s, rebase?)%s" "$ORANGE" "$commits_behind" "$YELLOW"
@@ -266,8 +266,8 @@ function __git_stash_count()
 {
 	git_stash_count=$(git stash list 2> /dev/null | wc -l)
 	if [[ ${git_stash_count} != "0" ]]; then
-		# printf ", %s✭%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
-		printf ", %sstash: %s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
+		# printf " | %s✭%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
+		printf " | %sstash: %s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
 	fi
 }
 
