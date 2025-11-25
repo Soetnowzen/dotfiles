@@ -198,10 +198,10 @@ function __git_commit_status()
 	if [[ ${git_commit_status} != "" ]]; then
 		printf " | %s" "$VIOLET"
 		if [[ $(echo "$git_commit_status" | grep -Eo 'ahead|före') != "" ]]; then
-			printf "⬆"
+			printf "↑"
 			# printf "^"
 		elif [[ $(echo "$git_commit_status" | grep -Eo 'behind|efter') != "" ]]; then
-			printf "⬇"
+			printf "↓"
 			# printf "v"
 		elif [[ $(echo "$git_commit_status" | grep -Eo 'diverged') != "" ]]; then
 			local_remote=$(git status -uno | grep -Eo 'and have [0-9]+ and [0-9]+' | sed -e 's/.\+\([[:digit:]]\+\) and \([[:digit:]]\+\)/\1⬆ \2⬇/')
