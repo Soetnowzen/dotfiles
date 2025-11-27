@@ -102,6 +102,7 @@
 	fa = fetch --all
 	fb = !"git featureBranch"
 	featureBranch = "!feature_branch() { git checkout -b $1 origin/$(git branchName); }; feature_branch"
+	featureCommits = !"git lgColorFormat --oneline $(git rev-parse --abbrev-ref origin/HEAD)..HEAD"
 	filelog = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = !"git filelog"
