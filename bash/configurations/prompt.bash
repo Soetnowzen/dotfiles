@@ -23,15 +23,15 @@ function __prompt_command()
 
 	# Time
 	printf "%s%s%s " "$CYAN" "$(date +%H:%M)" "$RESET"
-	# user@pc
+	# user@pc - use $USER and $HOSTNAME instead of subshells
 	if [[ $EXIT != 0 ]]; then
 		printf "%s" "$RED"
 	else
 		printf "%s" "$BLUE"
 	fi
-	printf "%s%s@%s%s%s " "$(whoami)" "$RESET" "$BLUE" "$(hostname)" "$RESET"
-	# Path
-	printf "%s%s" "$GREEN" "$(pwd)"
+	printf "%s%s@%s%s%s " "$USER" "$RESET" "$BLUE" "${HOSTNAME:-$(hostname)}" "$RESET"
+	# Path - use $PWD instead of $(pwd)
+	printf "%s%s" "$GREEN" "$PWD"
 	# __smaller_path
 	__count_dirs_stack "$dirs_count"
 	__count_jobs_stack "$jobs_count"
@@ -39,7 +39,7 @@ function __prompt_command()
 	branch=$(__parse_git_branch)
 	if [[ ${branch} != "" ]]; then
 		printf "%s(%s" "$YELLOW" "$branch"
-		__git_prompt
+		__git_prompt "$branch"
 		printf ")"
 	fi
 	if [[ $EXIT != 0 ]]; then
@@ -105,18 +105,16 @@ function __count_jobs_stack()
 
 function __parse_git_branch()
 {
-	branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-	# position="$(git describe --contains --all HEAD 2> /dev/null)"
-	# */
-	echo "${branch}"
+	git rev-parse --abbrev-ref HEAD 2> /dev/null
 }
 
 function __git_prompt()
 {
+	local current_branch="$1"
 	__git_tag_prompt
 	__git_modifications_prompt
 	__git_commit_status
-	__git_feature_branch_commits
+	__git_feature_branch_commits "$current_branch"
 	__git_stash_count
 }
 
@@ -149,39 +147,30 @@ function __git_modifications_prompt()
 
 function __modified_files_count()
 {
-	git_status=$(git status -s 2> /dev/null)
-	if [[ ${git_status} != "" ]]; then
+	local git_status
+	git_status=$(git status --porcelain 2> /dev/null)
+	if [[ -n ${git_status} ]]; then
 		printf " | files:"
-		added_files=$(echo "${git_status}" | grep -c '^A ')
-		if [[ $added_files != 0 ]]; then
-			printf " %s✚%s" "$GREEN" "$added_files"
-			# printf " %s+%s" "$GREEN" "$added_files"
-		fi
-		deleted_files=$(echo "${git_status}" | grep -c '^\s*D')
-		if [[ $deleted_files != 0 ]]; then
-			printf " %s✖%s" "$RED" "$deleted_files"
-			# printf " %s-%s" "$RED" "$deleted_files"
-		fi
-		modified_files=$(echo "${git_status}" | grep -c '^\s*M')
-		if [[ $modified_files != 0 ]]; then
-			# printf " %s✱%s" "$BLUE" "$modified_files"
-			printf " %s~%s" "$BLUE" "$modified_files"
-		fi
-		renamed_files=$(echo "${git_status}" | grep -c '^R')
-		if [[ $renamed_files != 0 ]]; then
-			printf " %s➜%s" "$MAGENTA" "$renamed_files"
-			# printf " %s>%s" "$MAGENTA" "$renamed_files"
-		fi
-		unmerged_files=$(echo "${git_status}" | grep -c '^UU')
-		if [[ $unmerged_files != 0 ]]; then
-			# printf " %s!=%s" "$YELLOW" "$unmerged_files"
-			printf " %s≠%s" "$YELLOW" "$unmerged_files"
-		fi
-		untraced_files=$(echo "${git_status}" | grep -c '^??')
-		if [[ $untraced_files != 0 ]]; then
-			# printf " %s◼%s" "$WHITE" "$untraced_files"
-			printf " %s??%s" "$WHITE" "$untraced_files"
-		fi
+		# Count all file states in a single awk pass
+		local counts
+		counts=$(echo "${git_status}" | awk '
+			BEGIN { a=0; d=0; m=0; r=0; u=0; q=0 }
+			/^A /  { a++ }
+			/^ ?D/ { d++ }
+			/^ ?M/ { m++ }
+			/^R /  { r++ }
+			/^UU/  { u++ }
+			/^\?\?/ { q++ }
+			END { print a, d, m, r, u, q }
+		')
+		read -r added_files deleted_files modified_files renamed_files unmerged_files untraced_files <<< "$counts"
+		
+		[[ $added_files -gt 0 ]] && printf " %s✚%s" "$GREEN" "$added_files"
+		[[ $deleted_files -gt 0 ]] && printf " %s✖%s" "$RED" "$deleted_files"
+		[[ $modified_files -gt 0 ]] && printf " %s~%s" "$BLUE" "$modified_files"
+		[[ $renamed_files -gt 0 ]] && printf " %s➜%s" "$MAGENTA" "$renamed_files"
+		[[ $unmerged_files -gt 0 ]] && printf " %s≠%s" "$YELLOW" "$unmerged_files"
+		[[ $untraced_files -gt 0 ]] && printf " %s??%s" "$WHITE" "$untraced_files"
 		printf "%s" "$YELLOW"
 	fi
 }
@@ -210,15 +199,14 @@ function __git_commit_status()
 
 function __git_feature_branch_commits()
 {
-	local current_branch
-	current_branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
+	local current_branch="$1"
 
 	# Get the default branch from origin/HEAD
 	local base_branch
 	base_branch=$(git rev-parse --abbrev-ref origin/HEAD 2> /dev/null)
 
 	# If origin/HEAD is not set, fall back to common branch names
-	if [[ $base_branch == "" ]] || [[ $base_branch == "origin/HEAD" ]]; then
+	if [[ -z $base_branch ]] || [[ $base_branch == "origin/HEAD" ]]; then
 		if git show-ref --verify --quiet refs/heads/master; then
 			base_branch="master"
 		elif git show-ref --verify --quiet refs/heads/main; then
@@ -235,32 +223,35 @@ function __git_feature_branch_commits()
 	fi
 
 	# Skip if no base branch found or if on the base branch
-	if [[ $base_branch == "" ]] || [[ $current_branch == "${base_branch#origin/}" ]]; then
+	if [[ -z $base_branch ]] || [[ $current_branch == "${base_branch#origin/}" ]]; then
 		return
 	fi
 
 	# Count commits ahead and behind base branch
-	local commits_ahead commits_behind
-	commits_ahead=$(git rev-list --count "${base_branch}..HEAD" 2> /dev/null)
-	commits_behind=$(git rev-list --count "HEAD..${base_branch}" 2> /dev/null)
+	local counts
+	counts=$(git rev-list --left-right --count "${base_branch}...HEAD" 2> /dev/null)
+	if [[ -n $counts ]]; then
+		local commits_behind commits_ahead
+		read -r commits_behind commits_ahead <<< "$counts"
 
-	if [[ $commits_ahead != "" ]] && [[ $commits_ahead -gt 0 ]]; then
-		printf " | %s↑%s from %s" "$CYAN" "$commits_ahead" "$base_branch"
+		if [[ $commits_ahead -gt 0 ]]; then
+			printf " | %s↑%s from %s" "$CYAN" "$commits_ahead" "$base_branch"
 
-		# Warn if also behind (needs rebase)
-		if [[ $commits_behind != "" ]] && [[ $commits_behind -gt 0 ]]; then
-			printf " %s(↓%s, rebase?)%s" "$ORANGE" "$commits_behind" "$YELLOW"
-		else
-			printf "%s" "$YELLOW"
+			# Warn if also behind (needs rebase)
+			if [[ $commits_behind -gt 0 ]]; then
+				printf " %s(↓%s, rebase?)%s" "$ORANGE" "$commits_behind" "$YELLOW"
+			else
+				printf "%s" "$YELLOW"
+			fi
 		fi
 	fi
 }
 
 function __git_stash_count()
 {
-	git_stash_count=$(git stash list 2> /dev/null | wc -l)
-	if [[ ${git_stash_count} != "0" ]]; then
-		# printf " | %s✭%s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
+	local git_stash_count
+	git_stash_count=$(git rev-list --walk-reflogs --count refs/stash 2> /dev/null || echo 0)
+	if [[ ${git_stash_count} -gt 0 ]]; then
 		printf " | %sstash: %s%s" "$ORANGE" "$git_stash_count" "$YELLOW"
 	fi
 }
