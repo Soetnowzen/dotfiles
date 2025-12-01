@@ -131,23 +131,17 @@ function __git_tag_prompt()
 function __git_modifications_prompt()
 {
 	__modified_files_count
-	git_count=$(git diff --word-diff 2> /dev/null)
-	if [[ ${git_count} != "" ]]; then
-		git_diff_word=$(echo "$git_count" | grep '\[-.*-\]\|{+.*+}')
-		if [[ ${git_diff_word} != "" ]]; then
-			printf " |"
-			change_rows=$(echo "${git_diff_word}" | grep -c '\[-.*-\]{+.*+}')
-			if [[ ${change_rows} != "0" ]]; then
-				printf " %s~%s" "$YELLOW" "$change_rows"
-			fi
-			plus_rows=$(echo "${git_diff_word}" | grep -cv '\[-.*-\]')
-			if [[ ${plus_rows} != "0" ]]; then
-				printf " %s+%s" "$GREEN" "$plus_rows"
-			fi
-			minus_rows=$(echo "${git_diff_word}" | grep -cv '{+.*+}')
-			if [[ ${minus_rows} != "0" ]]; then
-				printf " %s-%s" "$RED" "$minus_rows"
-			fi
+	# Use --shortstat for efficient line counting
+	git_shortstat=$(git diff --shortstat 2> /dev/null)
+	if [[ ${git_shortstat} != "" ]]; then
+		printf " | lines:"
+		plus_lines=$(echo "$git_shortstat" | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+')
+		minus_lines=$(echo "$git_shortstat" | grep -oE '[0-9]+ deletion' | grep -oE '[0-9]+')
+		if [[ ${plus_lines} != "" ]]; then
+			printf " %s+%s" "$GREEN" "$plus_lines"
+		fi
+		if [[ ${minus_lines} != "" ]]; then
+			printf " %s-%s" "$RED" "$minus_lines"
 		fi
 		printf "%s" "$YELLOW"
 	fi
@@ -157,7 +151,7 @@ function __modified_files_count()
 {
 	git_status=$(git status -s 2> /dev/null)
 	if [[ ${git_status} != "" ]]; then
-		printf " |"
+		printf " | files:"
 		added_files=$(echo "${git_status}" | grep -c '^A ')
 		if [[ $added_files != 0 ]]; then
 			printf " %s✚%s" "$GREEN" "$added_files"
