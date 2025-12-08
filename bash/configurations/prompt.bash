@@ -21,6 +21,9 @@ function __prompt_command()
 	local jobs_count="${args[2]}"
 	printf "[" # ]
 
+	# SSH indicator
+	__ssh_indicator
+
 	# Time
 	printf "%s%s%s " "$CYAN" "$(date +%H:%M)" "$RESET"
 	# user@pc - use $USER and $HOSTNAME instead of subshells
@@ -81,6 +84,14 @@ function __smaller_path()
 		new_path="/"
 	fi
 	printf "%s%s" "$GREEN" "$new_path"
+}
+
+function __ssh_indicator()
+{
+	# Check if we're in an SSH session
+	if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]] || [[ -n $SSH_CONNECTION ]]; then
+		printf "%s⚡%s" "$MAGENTA" "$RESET"
+	fi
 }
 
 function __count_dirs_stack()
@@ -164,7 +175,7 @@ function __modified_files_count()
 			END { print a, d, m, r, u, q }
 		')
 		read -r added_files deleted_files modified_files renamed_files unmerged_files untraced_files <<< "$counts"
-		
+
 		[[ $added_files -gt 0 ]] && printf " %s✚%s" "$GREEN" "$added_files"
 		[[ $deleted_files -gt 0 ]] && printf " %s✖%s" "$RED" "$deleted_files"
 		[[ $modified_files -gt 0 ]] && printf " %s~%s" "$BLUE" "$modified_files"
