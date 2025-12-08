@@ -29,8 +29,7 @@ source "$dotfiles_dir/scripts/watch_files.sh"
 PROMPT_COMMAND=_prompt
 CYAN="$(tput setaf 6)"
 RESET="$(tput sgr0)"
-PS1="| $CYAN"'Execution time $(bash_get_stop_time $ROOTPID)'"$RESET"'\n'
-PS1="$PS1"'\$ '
+PS1='| '"$CYAN"'Execution time $(bash_get_stop_time $ROOTPID)'"$RESET"'\n\$ '
 PS0='$(bash_get_start_time $ROOTPID)'
 # PS0='$(bash_get_start_time $ROOTPID) $ROOTPID experiments \[\033[00m\]\n'
 # PS0='\[\ePtmux;\e\e[2 q\e\\\]'
@@ -43,54 +42,58 @@ function _prompt()
 	history -a
 	history -c
 	history -r
-	local dirs_count
-	dirs_count=$(dirs -v 2> /dev/null | wc -l)
-	local jobs_count
-	jobs_count=$(jobs -l 2> /dev/null | wc -l)
+	# Count directory stack without subprocess
+	local dirs_arr
+	read -ra dirs_arr <<< "$(dirs -p)"
+	local dirs_count=${#dirs_arr[@]}
+	# Count jobs without subprocess (jobs -p gives just PIDs, one per line)
+	local jobs_output
+	jobs_output=$(jobs -p)
+	local jobs_count=0
+	[[ -n $jobs_output ]] && jobs_count=$(wc -l <<< "$jobs_output")
 	"$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$jobs_count"
 	return $EXIT
 }
 
 function display_time()
 {
-	local time=$1
-	local miliseconds
-	miliseconds=$(echo "$time / 1 % 1000" | bc)
-	local days
-	days=$(echo "$time / 60 / 60 / 24 / 1000" | bc)
-	local hours
-	hours=$(echo "$time / 60 / 60 / 1000 % 24" | bc)
-	local minutes
-	minutes=$(echo "$time / 60 / 1000 % 60" | bc)
-	local seconds
-	seconds=$(echo "$time / 1000 % 60" | bc)
+	# Input is microseconds as an integer
+	local total_us=$1
+	local total_ms=$((total_us / 1000))
+
+	local days=$((total_ms / 86400000))
+	local hours=$((total_ms % 86400000 / 3600000))
+	local minutes=$((total_ms % 3600000 / 60000))
+	local seconds=$((total_ms % 60000 / 1000))
+	local milliseconds=$((total_ms % 1000))
+
 	local readable_time=""
-	(( days > 0 )) && readable_time+="$days days "
-	(( hours > 0 )) && readable_time+="$hours hours "
-	(( minutes > 0 )) && readable_time+="$minutes minutes "
-	(( seconds > 0 )) && readable_time+="$seconds seconds "
-	(( days > 0 || hours > 0 || minutes > 0 || seconds > 0 )) && readable_time+='and '
-	readable_time+="$miliseconds ms"
-	echo "$readable_time"
+	((days > 0)) && readable_time+="${days}d "
+	((hours > 0)) && readable_time+="${hours}h "
+	((minutes > 0)) && readable_time+="${minutes}m "
+	# Always show seconds if we have any time units above, or if seconds > 0
+	if ((seconds > 0 || minutes > 0 || hours > 0 || days > 0)); then
+		readable_time+="${seconds}s "
+	fi
+	# Always show milliseconds
+	readable_time+="${milliseconds}ms"
+	printf '%s' "$readable_time"
 }
 
 function bash_get_start_time()
 {
-	# places the epoch time in ns into shared memory
-	date +%s.%N >"/dev/shm/${USER}.bashtime.${1}"
+	# Use EPOCHREALTIME (Bash 5.0+) - no subprocess needed!
+	# Store as microseconds (remove the decimal point)
+	printf '%s' "${EPOCHREALTIME/./}" >"/dev/shm/${USER}.bashtime.${1}"
 }
 
 function bash_get_stop_time()
 {
-	# reads stored epoch time and subtracts from current
-	local end_time
-	end_time=$(date +%s.%N)
+	local end_time=${EPOCHREALTIME/./}
 	local start_time
-	start_time="$(cat "/dev/shm/${USER}.bashtime.${1}")"
-
-	local miliseconds
-	miliseconds=$(echo "($end_time - $start_time)*1000" | bc)
-	display_time "$miliseconds"
+	start_time=$(<"/dev/shm/${USER}.bashtime.${1}")
+	local elapsed_us=$((end_time - start_time))
+	display_time "$elapsed_us"
 }
 
 ROOTPID=$BASHPID
