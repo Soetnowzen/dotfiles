@@ -46,12 +46,16 @@ function _prompt()
 	local dirs_arr
 	read -ra dirs_arr <<< "$(dirs -p)"
 	local dirs_count=${#dirs_arr[@]}
-	# Count jobs without subprocess (jobs -p gives just PIDs, one per line)
+	# Count stopped and running jobs separately
 	local jobs_output
-	jobs_output=$(jobs -p)
-	local jobs_count=0
-	[[ -n $jobs_output ]] && jobs_count=$(wc -l <<< "$jobs_output")
-	"$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$jobs_count"
+	jobs_output=$(jobs 2>/dev/null)
+	local stopped_jobs=0 running_jobs=0
+	if [[ -n $jobs_output ]]; then
+		stopped_jobs=$(echo "$jobs_output" | grep -c 'Stopped' 2>/dev/null | tr -d '[:space:]') || stopped_jobs=0
+		running_jobs=$(echo "$jobs_output" | grep -c 'Running' 2>/dev/null | tr -d '[:space:]') || running_jobs=0
+	fi
+	: "${stopped_jobs:=0}" "${running_jobs:=0}"
+	"$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$stopped_jobs" "$running_jobs"
 	return $EXIT
 }
 

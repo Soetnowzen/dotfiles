@@ -18,7 +18,8 @@ function __prompt_command()
 	local args=("$@")
 	local EXIT="${args[0]}"
 	local dirs_count="${args[1]}"
-	local jobs_count="${args[2]}"
+	local stopped_jobs="${args[2]}"
+	local running_jobs="${args[3]}"
 	printf "[" # ]
 
 	# SSH indicator
@@ -48,7 +49,7 @@ function __prompt_command()
 	__readonly_indicator
 	# __smaller_path
 	__count_dirs_stack "$dirs_count"
-	__count_jobs_stack "$jobs_count"
+	__count_jobs_stack "$stopped_jobs" "$running_jobs"
 	# Get current git branch
 	branch=$(__parse_git_branch)
 	if [[ ${branch} != "" ]]; then
@@ -58,19 +59,19 @@ function __prompt_command()
 	fi
 	if [[ $EXIT != 0 ]]; then
 		if [[ $EXIT == 1 ]]; then
-			printf " %sCatchall for general errors (${EXIT}X)" "$RED"
+			printf " %sCatchall for general errors (%sX)%s" "$RED" "$EXIT" "$RESET"
 		elif [[ $EXIT == 2 ]]; then
-			printf " %sMisuse of shell builtins (${EXIT}X)" "$RED"
+			printf " %sMisuse of shell builtins (%sX)%s" "$RED" "$EXIT" "$RESET"
 		elif [[ $EXIT == 126 ]]; then
-			printf " %sCommand invoked cannot execute (${EXIT}X)" "$RED"
+			printf " %sCommand invoked cannot execute (%sX)%s" "$RED" "$EXIT" "$RESET"
 		elif [[ $EXIT == 127 ]]; then
-			printf " %sCommand not found (${EXIT}X)" "$RED"
+			printf " %sCommand not found (%sX)%s" "$RED" "$EXIT" "$RESET"
 		elif [[ $EXIT == 130 ]]; then
-			printf " %sScript terminated by Control-C (${EXIT}X)" "$RED"
+			printf " %sScript terminated by Control-C (%sX)%s" "$RED" "$EXIT" "$RESET"
 		elif [[ $EXIT -gt 128 ]] && [[ $EXIT -lt 255 ]]; then
-			printf " %sFatal error signal 'n=%s' (${EXIT}X)" $(($EXIT-128)) "$RED"
+			printf " %sFatal error signal n=%s (%sX)%s" "$RED" "$((EXIT-128))" "$EXIT" "$RESET"
 		else
-			printf " %sX${EXIT}" "$RED"
+			printf " %sX%s%s" "$RED" "$EXIT" "$RESET"
 		fi
 	fi
 
@@ -111,9 +112,9 @@ function __python_venv_indicator()
 	if [[ -n $VIRTUAL_ENV ]]; then
 		local venv_name
 		venv_name=$(basename "$VIRTUAL_ENV")
-		printf "%s🐍%s%s " "$GREEN" "$venv_name" "$RESET"
+		printf "%s🐍 %s%s " "$GREEN" "$venv_name" "$RESET"
 	elif [[ -n $CONDA_DEFAULT_ENV ]]; then
-		printf "%s🐍%s%s " "$GREEN" "$CONDA_DEFAULT_ENV" "$RESET"
+		printf "%s🐍 %s%s " "$GREEN" "$CONDA_DEFAULT_ENV" "$RESET"
 	fi
 }
 
@@ -121,7 +122,7 @@ function __docker_indicator()
 {
 	# Check if we're inside a container
 	if [[ -f /.dockerenv ]] || grep -q 'docker\|lxc\|containerd' /proc/1/cgroup 2>/dev/null; then
-		printf "%s🐳container%s " "$CYAN" "$RESET"
+		printf "%s🐳 container%s " "$CYAN" "$RESET"
 		return
 	fi
 
@@ -134,7 +135,7 @@ function __docker_indicator()
 			context=$(docker context show 2>/dev/null)
 		fi
 		if [[ -n $context ]] && [[ $context != "default" ]]; then
-			printf "%s🐳%s%s " "$CYAN" "$context" "$RESET"
+			printf "%s🐳 %s%s " "$CYAN" "$context" "$RESET"
 		fi
 	fi
 }
@@ -186,11 +187,25 @@ function __count_dirs_stack()
 
 function __count_jobs_stack()
 {
-	local jobs_count="$1"
-	if [[ $jobs_count != "" ]]; then
-		if [[ $jobs_count != 0 ]]; then
-			printf "[%sj%s%s]" "$VIOLET" "$jobs_count" "$GREEN"
+	local stopped_jobs="${1:-0}"
+	local running_jobs="${2:-0}"
+	
+	# Ensure integers
+	stopped_jobs=$((stopped_jobs + 0)) 2>/dev/null || stopped_jobs=0
+	running_jobs=$((running_jobs + 0)) 2>/dev/null || running_jobs=0
+
+	if ((stopped_jobs > 0 || running_jobs > 0)); then
+		printf "["
+		# Stopped jobs (shown with ⏸)
+		if ((stopped_jobs > 0)); then
+			printf "%s⏸ %s%s" "$ORANGE" "$stopped_jobs" "$RESET"
+			((running_jobs > 0)) && printf " "
 		fi
+		# Running jobs (shown with ▶)
+		if ((running_jobs > 0)); then
+			printf "%s▶ %s%s" "$VIOLET" "$running_jobs" "$RESET"
+		fi
+		printf "%s]%s" "$GREEN" "$RESET"
 	fi
 }
 
