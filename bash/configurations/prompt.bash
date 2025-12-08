@@ -30,6 +30,9 @@ function __prompt_command()
 	# Docker indicator
 	__docker_indicator
 
+	# Node.js indicator (only in Node projects)
+	__nodejs_indicator
+
 	# Time
 	printf "%s%s%s " "$CYAN" "$(date +%H:%M)" "$RESET"
 	# user@pc - use $USER and $HOSTNAME instead of subshells
@@ -130,6 +133,33 @@ function __docker_indicator()
 		fi
 		if [[ -n $context ]] && [[ $context != "default" ]]; then
 			printf "%s🐳%s%s " "$CYAN" "$context" "$RESET"
+		fi
+	fi
+}
+
+function __nodejs_indicator()
+{
+	# Only show Node version if we're in a Node project (has package.json)
+	# Search current dir and up to 3 parent dirs for package.json
+	local dir="$PWD"
+	local found=false
+	local depth=0
+	while [[ $depth -lt 4 ]]; do
+		if [[ -f "$dir/package.json" ]]; then
+			found=true
+			break
+		fi
+		[[ $dir == "/" ]] && break
+		dir=$(dirname "$dir")
+		((depth++))
+	done
+
+	if [[ $found == true ]] && command -v node &>/dev/null; then
+		# Get version without 'v' prefix for cleaner display
+		local node_version
+		node_version=$(node --version 2>/dev/null)
+		if [[ -n $node_version ]]; then
+			printf "%s⬢%s%s " "$GREEN" "$node_version" "$RESET"
 		fi
 	fi
 }
