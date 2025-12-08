@@ -44,6 +44,8 @@ function __prompt_command()
 	printf "%s%s@%s%s%s " "$USER" "$RESET" "$BLUE" "${HOSTNAME:-$(hostname)}" "$RESET"
 	# Path - use $PWD instead of $(pwd)
 	printf "%s%s" "$GREEN" "$PWD"
+	# Read-only directory indicator
+	__readonly_indicator
 	# __smaller_path
 	__count_dirs_stack "$dirs_count"
 	__count_jobs_stack "$jobs_count"
@@ -161,6 +163,14 @@ function __nodejs_indicator()
 		if [[ -n $node_version ]]; then
 			printf "%s⬢%s%s " "$GREEN" "$node_version" "$RESET"
 		fi
+	fi
+}
+
+function __readonly_indicator()
+{
+	# Check if current directory is writable
+	if [[ ! -w $PWD ]]; then
+		printf " %s🔒%s" "$RED" "$GREEN"
 	fi
 }
 
