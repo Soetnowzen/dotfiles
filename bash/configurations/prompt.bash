@@ -24,6 +24,9 @@ function __prompt_command()
 	# SSH indicator
 	__ssh_indicator
 
+	# Python virtual environment indicator
+	__python_venv_indicator
+
 	# Time
 	printf "%s%s%s " "$CYAN" "$(date +%H:%M)" "$RESET"
 	# user@pc - use $USER and $HOSTNAME instead of subshells
@@ -91,6 +94,18 @@ function __ssh_indicator()
 	# Check if we're in an SSH session
 	if [[ -n $SSH_CLIENT ]] || [[ -n $SSH_TTY ]] || [[ -n $SSH_CONNECTION ]]; then
 		printf "%s⚡%s" "$MAGENTA" "$RESET"
+	fi
+}
+
+function __python_venv_indicator()
+{
+	# Check for Python virtual environment (venv, virtualenv, or conda)
+	if [[ -n $VIRTUAL_ENV ]]; then
+		local venv_name
+		venv_name=$(basename "$VIRTUAL_ENV")
+		printf "%s🐍%s%s " "$GREEN" "$venv_name" "$RESET"
+	elif [[ -n $CONDA_DEFAULT_ENV ]]; then
+		printf "%s🐍%s%s " "$GREEN" "$CONDA_DEFAULT_ENV" "$RESET"
 	fi
 }
 
