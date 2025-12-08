@@ -137,11 +137,44 @@ function __parse_git_branch()
 function __git_prompt()
 {
 	local current_branch="$1"
+	__git_operation_prompt
 	__git_tag_prompt
 	__git_modifications_prompt
 	__git_commit_status
 	__git_feature_branch_commits "$current_branch"
 	__git_stash_count
+}
+
+function __git_operation_prompt()
+{
+	local git_dir
+	git_dir=$(git rev-parse --git-dir 2> /dev/null)
+	[[ -z $git_dir ]] && return
+
+	if [[ -d "$git_dir/rebase-merge" ]] || [[ -d "$git_dir/rebase-apply" ]]; then
+		# Get rebase progress
+		local step total
+		if [[ -d "$git_dir/rebase-merge" ]]; then
+			step=$(cat "$git_dir/rebase-merge/msgnum" 2>/dev/null)
+			total=$(cat "$git_dir/rebase-merge/end" 2>/dev/null)
+		else
+			step=$(cat "$git_dir/rebase-apply/next" 2>/dev/null)
+			total=$(cat "$git_dir/rebase-apply/last" 2>/dev/null)
+		fi
+		if [[ -n $step ]] && [[ -n $total ]]; then
+			printf " | %sREBASE %s/%s%s" "$RED" "$step" "$total" "$YELLOW"
+		else
+			printf " | %sREBASE%s" "$RED" "$YELLOW"
+		fi
+	elif [[ -f "$git_dir/MERGE_HEAD" ]]; then
+		printf " | %sMERGE%s" "$RED" "$YELLOW"
+	elif [[ -f "$git_dir/CHERRY_PICK_HEAD" ]]; then
+		printf " | %sCHERRY-PICK%s" "$RED" "$YELLOW"
+	elif [[ -f "$git_dir/REVERT_HEAD" ]]; then
+		printf " | %sREVERT%s" "$RED" "$YELLOW"
+	elif [[ -f "$git_dir/BISECT_LOG" ]]; then
+		printf " | %sBISECT%s" "$ORANGE" "$YELLOW"
+	fi
 }
 
 function __git_tag_prompt()
