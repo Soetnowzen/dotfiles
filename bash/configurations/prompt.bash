@@ -27,6 +27,9 @@ function __prompt_command()
 	# Python virtual environment indicator
 	__python_venv_indicator
 
+	# Docker indicator
+	__docker_indicator
+
 	# Time
 	printf "%s%s%s " "$CYAN" "$(date +%H:%M)" "$RESET"
 	# user@pc - use $USER and $HOSTNAME instead of subshells
@@ -106,6 +109,28 @@ function __python_venv_indicator()
 		printf "%s🐍%s%s " "$GREEN" "$venv_name" "$RESET"
 	elif [[ -n $CONDA_DEFAULT_ENV ]]; then
 		printf "%s🐍%s%s " "$GREEN" "$CONDA_DEFAULT_ENV" "$RESET"
+	fi
+}
+
+function __docker_indicator()
+{
+	# Check if we're inside a container
+	if [[ -f /.dockerenv ]] || grep -q 'docker\|lxc\|containerd' /proc/1/cgroup 2>/dev/null; then
+		printf "%s🐳container%s " "$CYAN" "$RESET"
+		return
+	fi
+
+	# Check if Docker is available and context is non-default
+	if command -v docker &>/dev/null; then
+		# Use DOCKER_CONTEXT env var if set, otherwise check current context
+		local context="${DOCKER_CONTEXT:-}"
+		if [[ -z $context ]]; then
+			# Only check docker context if not set (this is slower)
+			context=$(docker context show 2>/dev/null)
+		fi
+		if [[ -n $context ]] && [[ $context != "default" ]]; then
+			printf "%s🐳%s%s " "$CYAN" "$context" "$RESET"
+		fi
 	fi
 }
 
