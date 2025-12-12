@@ -122,7 +122,7 @@ function __docker_indicator()
 {
 	# Check if we're inside a container
 	if [[ -f /.dockerenv ]] || grep -q 'docker\|lxc\|containerd' /proc/1/cgroup 2>/dev/null; then
-		printf "%s🐳 container%s " "$CYAN" "$RESET"
+		printf "%s🐳%s " "$CYAN" "$RESET"
 		return
 	fi
 
