@@ -137,6 +137,7 @@
 	r = rebase
 	rc = rebase --continue
 	restore = checkout -m --
+	restore-prev = restore --source=HEAD~1
 	rh = "!reset_hard_function() { git reset HEAD~$1 --hard; }; reset_hard_function"
 	root = rev-parse --show-toplevel
 	rs = "!reset_function() { git reset HEAD~$1; }; reset_function"
