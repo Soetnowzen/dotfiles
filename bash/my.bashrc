@@ -166,7 +166,7 @@ fi
 
 if command -v fdfind >/dev/null 2>&1; then
     alias find='fdfind'
-else  
+else
     alias find='command find'
 	alias ff='find . -type f -iname'
 	alias fi_reg="find . -type f -regex"
@@ -527,7 +527,7 @@ alias solar_stop="\${SOLR_PATH}/bin/solr stop"
 
 function countdown() {
 	# countdown 60              60 seconds
-	# countdown 60*30           30 minutes  
+	# countdown 60*30           30 minutes
 	# countdown $((24*60*60))   1 day
 	local seconds="${1:-60}"
 	local end_time=$(($(date +%s) + seconds))
@@ -628,3 +628,46 @@ function search_and_replace() {
 
 # Variables
 # export DISPLAY=localhost:0.0
+
+# Git clone wrapper with automatic hook and config setup
+function git-clone() {
+    local repo_url="$1"
+    local target_dir="${2:-$(basename "$repo_url" .git)}"
+    local clone_to_projects=false
+
+    # If no target directory specified, clone to ~/projects/
+    if [[ -z "$2" ]]; then
+        mkdir -p ~/projects
+        target_dir="~/projects/$target_dir"
+        clone_to_projects=true
+    fi
+
+    echo "🚀 Cloning $repo_url to $target_dir..."
+    if git clone "$repo_url" "$target_dir"; then
+        cd "$target_dir" || return 1
+
+        echo "🔧 Setting up hooks and personal config..."
+
+        # Apply git template (installs hooks)
+        git init >/dev/null 2>&1
+
+        # Personal config is now handled by conditional includes
+        # But we can still set repo-specific settings
+        if [[ "$clone_to_projects" == true ]]; then
+            echo "📁 Cloned to projects directory - personal config auto-applied"
+        fi
+
+        echo "✅ Repository cloned and configured!"
+        echo "📁 Directory: $(pwd)"
+
+        # Show current git config
+        echo "👤 User: $(git config user.name) <$(git config user.email)>"
+    else
+        echo "❌ Clone failed!"
+        return 1
+    fi
+}
+
+# Aliases for convenience
+alias gcl='git-clone'
+alias gclone='git-clone'

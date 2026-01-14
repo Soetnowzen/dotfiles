@@ -38,10 +38,14 @@ gdb: ## Install GDB configuration
 git: ## Install Git configuration
 	@echo "$(YELLOW)Installing Git config...$(RESET)"
 	@ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
+	@ln -fsn $(here)/gitconfig/.gitconfig-personal $(HOME)/.gitconfig-personal
 	@mkdir -p $(HOME)/.git_template/hooks
-	@ln -fsn $(here)/gitconfig/pre-commit-conflict $(HOME)/.git_template/hooks/pre-commit
+	@ln -fsn $(here)/gitconfig/pre-commit $(HOME)/.git_template/hooks/pre-commit
+	@ln -fsn $(here)/gitconfig/commit-msg $(HOME)/.git_template/hooks/commit-msg
+	@ln -fsn $(here)/gitconfig/pre-push $(HOME)/.git_template/hooks/pre-push
+	@chmod +x $(HOME)/.git_template/hooks/*
 	@ln -fsn $(here)/gitconfig/.gitk $(HOME)/.gitk
-	@echo "$(GREEN)✓ Git config installed$(RESET)"
+	@echo "$(GREEN)✓ Git config and hooks installed$(RESET)"
 
 input: ## Install readline/input configuration
 	@echo "$(YELLOW)Installing input config...$(RESET)"
@@ -146,7 +150,18 @@ update: ## Update dotfiles repository
 	@git pull origin master
 	@echo "$(GREEN)✓ Repository updated$(RESET)"
 
+install-hooks: ## Install git hooks to current repository
+	@echo "$(YELLOW)Installing git hooks to current repository...$(RESET)"
+	@if [ -d .git ]; then \
+		mkdir -p .git/hooks; \
+		cp $(HOME)/.git_template/hooks/* .git/hooks/ 2>/dev/null || true; \
+		chmod +x .git/hooks/* 2>/dev/null || true; \
+		echo "$(GREEN)✓ Hooks installed to current repository$(RESET)"; \
+	else \
+		echo "$(RED)✗ Not a git repository$(RESET)"; \
+	fi
+
 # Core configurations that most people want
 essential: bash vim git tmux input ## Install essential dotfiles (bash, vim, git, tmux, input)
 
-.PHONY: help all install bash gdb git input mintty sumatra_pdf tcsh tmux vim vimperator emacs keyboard check backup clean update essential
+.PHONY: help all install bash gdb git input mintty sumatra_pdf tcsh tmux vim vimperator emacs keyboard check backup clean update install-hooks essential

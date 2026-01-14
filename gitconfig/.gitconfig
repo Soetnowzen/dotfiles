@@ -159,3 +159,13 @@
 	uplift = merge --no-ff origin/main
 	zip = archive --format=zip HEAD
 	zip-latest = archive -o latest.zip HEAD
+	# Smart clone with auto-setup
+	sclone = "!f() { git clone \"$1\" \"$2\" && cd \"${2:-$(basename \"$1\" .git)}\" && git init && git config user.name \"Sebastian\" && git config user.email \"your.email@example.com\" && git config core.editor \"vim\" && echo \"✅ Cloned and configured!\"; }; f"
+
+# Conditional config - automatically applies personal settings
+[includeIf "gitdir:~/projects/"]
+    path = ~/.gitconfig-personal
+[includeIf "gitdir:~/code/"]  
+    path = ~/.gitconfig-personal
+[includeIf "gitdir:~/dev/"]
+    path = ~/.gitconfig-personal

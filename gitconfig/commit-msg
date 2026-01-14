@@ -1,0 +1,123 @@
+#!/bin/bash
+# Commit message hook to enforce good commit message practices
+# This is installed by the makefile to ~/.git_template/hooks/commit-msg
+
+set -euo pipefail
+
+# Colors
+readonly RED="$(tput setaf 1 2>/dev/null || echo '')"
+readonly GREEN="$(tput setaf 2 2>/dev/null || echo '')"
+readonly YELLOW="$(tput setaf 3 2>/dev/null || echo '')"
+readonly BLUE="$(tput setaf 4 2>/dev/null || echo '')"
+readonly RESET="$(tput sgr0 2>/dev/null || echo '')"
+
+commit_msg_file="$1"
+commit_msg=$(cat "$commit_msg_file")
+
+# Skip if merge commit or revert
+if [[ "$commit_msg" =~ ^Merge || "$commit_msg" =~ ^Revert ]]; then
+    exit 0
+fi
+
+# Skip if empty commit message (will be handled by git itself)
+if [[ -z "$(echo "$commit_msg" | tr -d '[:space:]')" ]]; then
+    exit 0
+fi
+
+errors=()
+
+# Extract first line (subject)
+subject=$(echo "$commit_msg" | head -n 1)
+
+# Check 1: Subject line length (recommended: 50 chars, max: 72)
+subject_length=${#subject}
+if [[ $subject_length -gt 72 ]]; then
+    errors+=("Subject line too long (${subject_length} > 72 chars)")
+elif [[ $subject_length -gt 50 ]]; then
+    echo "${YELLOW}Warning: Subject line is ${subject_length} chars (recommended: ≤50)${RESET}"
+fi
+
+# Check 2: Subject should not end with period
+if [[ "$subject" =~ \.$ ]]; then
+    errors+=("Subject line should not end with a period")
+fi
+
+# Check 3: Use imperative mood (starts with verb)
+if [[ ! "$subject" =~ ^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|revert)(\(.+\))?:\  ]]; then
+    # If not conventional commit format, check for imperative mood
+    first_word=$(echo "$subject" | cut -d' ' -f1 | tr '[:upper:]' '[:lower:]')
+    non_imperative_words=("added" "fixed" "changed" "updated" "removed" "deleted" "created" "modified" "improved")
+    for word in "${non_imperative_words[@]}"; do
+        if [[ "$first_word" == "$word" ]]; then
+            errors+=("Use imperative mood: '${word}' should be '${word%ed}' or '${word%d}'")
+            break
+        fi
+    done
+fi
+
+# Check 4: Subject should start with capital letter (unless conventional commit)
+if [[ ! "$subject" =~ ^[A-Z] ]] && [[ ! "$subject" =~ ^(feat|fix|docs|style|refactor|test|chore|build|ci|perf|revert) ]]; then
+    errors+=("Subject line should start with a capital letter")
+fi
+
+# Check 5: Check for common mistakes
+case "$subject" in
+    *"WIP"*|*"wip"*|*"TODO"*|*"todo"*)
+        errors+=("Remove WIP/TODO markers before committing")
+        ;;
+    "Initial commit")
+        errors+=("Be more descriptive than 'Initial commit'")
+        ;;
+    "Update"|"Fix"|"Change")
+        errors+=("Subject too vague - describe what was updated/fixed/changed")
+        ;;
+esac
+
+# Check 6: Body guidelines (if body exists)
+body_lines=$(echo "$commit_msg" | tail -n +3)
+if [[ -n "$(echo "$body_lines" | tr -d '[:space:]')" ]]; then
+    # Check if second line is empty
+    second_line=$(echo "$commit_msg" | sed -n '2p')
+    if [[ -n "$second_line" ]]; then
+        errors+=("Second line should be empty (separate subject from body)")
+    fi
+    
+    # Check body line length
+    while IFS= read -r line; do
+        if [[ ${#line} -gt 72 ]]; then
+            echo "${YELLOW}Warning: Body line exceeds 72 characters: ${#line}${RESET}"
+            break
+        fi
+    done <<< "$body_lines"
+fi
+
+# Report errors
+if [[ ${#errors[@]} -gt 0 ]]; then
+    echo ""
+    echo "${RED}❌ Commit message format errors:${RESET}"
+    for error in "${errors[@]}"; do
+        echo "  ${RED}•${RESET} $error"
+    done
+    
+    echo ""
+    echo "${BLUE}📝 Good commit message format:${RESET}"
+    echo "  ${GREEN}feat: add user authentication system${RESET}"
+    echo "  ${GREEN}fix: resolve memory leak in image processing${RESET}"
+    echo "  ${GREEN}docs: update installation instructions${RESET}"
+    echo ""
+    echo "${BLUE}Conventional commit types:${RESET}"
+    echo "  ${YELLOW}feat${RESET}     - New feature"
+    echo "  ${YELLOW}fix${RESET}      - Bug fix"
+    echo "  ${YELLOW}docs${RESET}     - Documentation"
+    echo "  ${YELLOW}style${RESET}    - Code style/formatting"
+    echo "  ${YELLOW}refactor${RESET} - Code refactoring"
+    echo "  ${YELLOW}test${RESET}     - Tests"
+    echo "  ${YELLOW}chore${RESET}    - Maintenance"
+    echo ""
+    echo "To skip this check: ${YELLOW}git commit --no-verify${RESET}"
+    
+    exit 1
+fi
+
+echo "${GREEN}✅ Commit message format looks good!${RESET}"
+exit 0

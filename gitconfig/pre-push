@@ -1,0 +1,79 @@
+#!/bin/bash
+# Pre-push hook to prevent pushing to protected branches and run final checks
+# This is installed by the makefile to ~/.git_template/hooks/pre-push
+
+set -euo pipefail
+
+# Colors
+readonly RED="$(tput setaf 1 2>/dev/null || echo '')"
+readonly GREEN="$(tput setaf 2 2>/dev/null || echo '')"
+readonly YELLOW="$(tput setaf 3 2>/dev/null || echo '')"
+readonly BLUE="$(tput setaf 4 2>/dev/null || echo '')"
+readonly RESET="$(tput sgr0 2>/dev/null || echo '')"
+
+remote="$1"
+url="$2"
+
+# Protected branches
+protected_branches=("main" "master" "production" "prod" "release")
+
+# Read the refs being pushed
+while read local_ref local_sha remote_ref remote_sha; do
+    # Extract branch name
+    if [[ "$remote_ref" =~ refs/heads/(.+)$ ]]; then
+        branch="${BASH_REMATCH[1]}"
+        
+        # Check if pushing to protected branch
+        for protected in "${protected_branches[@]}"; do
+            if [[ "$branch" == "$protected" ]]; then
+                echo "${RED}❌ ERROR: Direct push to '$branch' branch is not allowed!${RESET}"
+                echo ""
+                echo "${BLUE}Recommended workflow:${RESET}"
+                echo "  1. Create a feature branch: ${YELLOW}git checkout -b feature/your-feature${RESET}"
+                echo "  2. Push your feature branch: ${YELLOW}git push -u origin feature/your-feature${RESET}"
+                echo "  3. Create a Pull Request to merge into $branch"
+                echo ""
+                echo "If you really need to push directly (use with caution):"
+                echo "  ${YELLOW}git push --no-verify${RESET}"
+                exit 1
+            fi
+        done
+        
+        # Check if branch exists on remote and we're force pushing
+        if [[ "$remote_sha" != "0000000000000000000000000000000000000000" && 
+              "$local_sha" != "0000000000000000000000000000000000000000" ]]; then
+            # Check if this would be a force push
+            if ! git merge-base --is-ancestor "$remote_sha" "$local_sha" 2>/dev/null; then
+                echo "${YELLOW}⚠️  WARNING: This looks like a force push to '$branch'${RESET}"
+                echo "Remote SHA: $remote_sha"
+                echo "Local SHA:  $local_sha"
+                echo ""
+                read -p "Are you sure you want to continue? (y/N): " -n 1 -r
+                echo
+                if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                    echo "${GREEN}Push cancelled.${RESET}"
+                    exit 1
+                fi
+            fi
+        fi
+        
+        # Final check: ensure working directory is clean
+        if ! git diff-index --quiet HEAD --; then
+            echo "${YELLOW}⚠️  WARNING: Working directory has uncommitted changes${RESET}"
+            echo "Consider committing or stashing your changes first."
+            echo ""
+            git status --porcelain
+            echo ""
+            read -p "Continue with push anyway? (y/N): " -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                echo "${GREEN}Push cancelled.${RESET}"
+                exit 1
+            fi
+        fi
+        
+        echo "${GREEN}✅ Pre-push checks passed for branch '$branch'${RESET}"
+    fi
+done
+
+exit 0

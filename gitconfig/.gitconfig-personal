@@ -1,0 +1,16 @@
+[user]
+    name = <Your name>
+    email = <your.email@example.com>
+
+[core]
+    editor = vim
+    autocrlf = input
+
+[push]
+    autoSetupRemote = true
+
+[pull]  
+    rebase = false
+
+[init]
+    templatedir = ~/.git_template

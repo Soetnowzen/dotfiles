@@ -1,0 +1,136 @@
+#!/bin/bash
+# Pre-commit hook to prevent common mistakes
+# This is installed by the makefile to ~/.git_template/hooks/pre-commit
+
+set -euo pipefail
+
+# Colors
+readonly RED="$(tput setaf 1 2>/dev/null || echo '')"
+readonly GREEN="$(tput setaf 2 2>/dev/null || echo '')"
+readonly YELLOW="$(tput setaf 3 2>/dev/null || echo '')"
+readonly BLUE="$(tput setaf 4 2>/dev/null || echo '')"
+readonly RESET="$(tput sgr0 2>/dev/null || echo '')"
+
+exit_code=0
+issues_found=""
+
+# Helper function to add issues
+add_issue() {
+    local file="$1"
+    local line="$2" 
+    local message="$3"
+    issues_found+="${RED}$file${RESET}:${GREEN}$line${RESET} - $message\n"
+    exit_code=1
+}
+
+# Check 1: Prevent commits to main/master branch
+current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
+if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
+    echo "${RED}ERROR: Direct commits to $current_branch are not allowed!${RESET}"
+    echo "Create a feature branch: ${YELLOW}git checkout -b feature/your-feature${RESET}"
+    exit 1
+fi
+
+# Check 2: Merge conflict markers
+echo "${BLUE}Checking for merge conflict markers...${RESET}"
+while IFS= read -r -d '' file; do
+    if [[ -f "$file" ]]; then
+        while IFS=: read -r line_num line_content; do
+            if [[ "$line_content" =~ (\<{4,}|\={4,}|\>{4,}) ]]; then
+                add_issue "$file" "$line_num" "contains merge conflict markers"
+            fi
+        done < <(grep -n -E "^(<{4,}|={4,}|>{4,})" "$file" 2>/dev/null || true)
+    fi
+done < <(git diff --cached --name-only -z)
+
+# Check 3: TODO/FIXME comments being committed
+echo "${BLUE}Checking for TODO/FIXME markers...${RESET}"
+while IFS= read -r -d '' file; do
+    if [[ -f "$file" && "$file" =~ \.(js|py|java|cpp|c|h|sh|bash|ts|jsx|tsx)$ ]]; then
+        while IFS=: read -r line_num line_content; do
+            if [[ "$line_content" =~ (TODO|FIXME|XXX|HACK) ]]; then
+                add_issue "$file" "$line_num" "contains ${YELLOW}$(echo "$line_content" | grep -o -E "(TODO|FIXME|XXX|HACK)")${RESET} marker"
+            fi
+        done < <(grep -n -i -E "(TODO|FIXME|XXX|HACK)" "$file" 2>/dev/null || true)
+    fi
+done < <(git diff --cached --name-only -z)
+
+# Check 4: Console.log/print statements (common debugging artifacts)
+echo "${BLUE}Checking for debug statements...${RESET}"
+while IFS= read -r -d '' file; do
+    if [[ -f "$file" ]]; then
+        case "$file" in
+            *.js|*.jsx|*.ts|*.tsx)
+                while IFS=: read -r line_num line_content; do
+                    if [[ "$line_content" =~ console\.(log|warn|error|debug) ]]; then
+                        add_issue "$file" "$line_num" "contains console statement: ${YELLOW}$(echo "$line_content" | grep -o 'console\.[a-z]*')${RESET}"
+                    fi
+                done < <(grep -n "console\." "$file" 2>/dev/null || true)
+                ;;
+            *.py)
+                while IFS=: read -r line_num line_content; do
+                    if [[ "$line_content" =~ print\( ]] && [[ ! "$line_content" =~ #.*print ]]; then
+                        add_issue "$file" "$line_num" "contains ${YELLOW}print()${RESET} statement"
+                    fi
+                done < <(grep -n "print(" "$file" 2>/dev/null || true)
+                ;;
+        esac
+    fi
+done < <(git diff --cached --name-only -z)
+
+# Check 5: Secrets/API keys (basic patterns)
+echo "${BLUE}Checking for potential secrets...${RESET}"
+secret_patterns=(
+    "api[_-]?key['\"]?\s*[:=]\s*['\"][a-zA-Z0-9_-]{20,}"
+    "password['\"]?\s*[:=]\s*['\"][^'\"]{8,}"
+    "secret['\"]?\s*[:=]\s*['\"][a-zA-Z0-9_-]{20,}"
+    "token['\"]?\s*[:=]\s*['\"][a-zA-Z0-9_-]{20,}"
+    "aws[_-]?secret[_-]?access[_-]?key"
+    "-----BEGIN [A-Z]+ PRIVATE KEY-----"
+)
+
+while IFS= read -r -d '' file; do
+    if [[ -f "$file" && ! "$file" =~ \.(jpg|jpeg|png|gif|pdf|zip|tar|gz|exe|dll|so|dylib)$ ]]; then
+        for pattern in "${secret_patterns[@]}"; do
+            while IFS=: read -r line_num line_content; do
+                add_issue "$file" "$line_num" "may contain ${RED}sensitive information${RESET}"
+                break # Only report once per file per pattern
+            done < <(grep -n -i -E "$pattern" "$file" 2>/dev/null || true)
+        done
+    fi
+done < <(git diff --cached --name-only -z)
+
+# Check 6: Large files (over 10MB)
+echo "${BLUE}Checking for large files...${RESET}"
+while IFS= read -r -d '' file; do
+    if [[ -f "$file" ]]; then
+        size=$(stat -c%s "$file" 2>/dev/null || stat -f%z "$file" 2>/dev/null || echo 0)
+        if [[ $size -gt 10485760 ]]; then # 10MB
+            size_mb=$((size / 1048576))
+            add_issue "$file" "1" "is ${RED}${size_mb}MB${RESET} - consider using Git LFS for large files"
+        fi
+    fi
+done < <(git diff --cached --name-only -z)
+
+# Check 7: Trailing whitespace
+echo "${BLUE}Checking for trailing whitespace...${RESET}"
+if git diff --cached --check >/dev/null 2>&1; then
+    : # No trailing whitespace
+else
+    echo "${YELLOW}Warning: Trailing whitespace detected. Run 'git diff --cached --check' for details.${RESET}"
+    echo "You can fix this with: ${BLUE}git diff --cached --check | sed 's/:.*//g' | xargs sed -i 's/[[:space:]]*\$//'${RESET}"
+fi
+
+# Report results
+if [[ $exit_code -ne 0 ]]; then
+    echo ""
+    echo "${RED}❌ Pre-commit checks failed:${RESET}"
+    echo -e "$issues_found"
+    echo ""
+    echo "To skip these checks (not recommended): ${YELLOW}git commit --no-verify${RESET}"
+    echo "To fix conflicts: resolve the issues above and try again"
+    exit $exit_code
+fi
+
+echo "${GREEN}✅ All pre-commit checks passed!${RESET}"
+exit 0
