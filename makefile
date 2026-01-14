@@ -38,7 +38,13 @@ gdb: ## Install GDB configuration
 git: ## Install Git configuration
 	@echo "$(YELLOW)Installing Git config...$(RESET)"
 	@ln -fsn $(here)/gitconfig/.gitconfig $(HOME)/.gitconfig
-	@ln -fsn $(here)/gitconfig/.gitconfig-personal $(HOME)/.gitconfig-personal
+	@if [ ! -f $(HOME)/.gitconfig-personal ]; then \
+		echo "$(BLUE)Creating personal git config...$(RESET)"; \
+		cp $(here)/gitconfig/.gitconfig-personal $(HOME)/.gitconfig-personal; \
+		echo "$(YELLOW)⚠️  Edit ~/.gitconfig-personal with your name and email$(RESET)"; \
+	else \
+		echo "$(GREEN)Personal git config already exists, not overwriting$(RESET)"; \
+	fi
 	@mkdir -p $(HOME)/.git_template/hooks
 	@ln -fsn $(here)/gitconfig/pre-commit $(HOME)/.git_template/hooks/pre-commit
 	@ln -fsn $(here)/gitconfig/commit-msg $(HOME)/.git_template/hooks/commit-msg

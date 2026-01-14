@@ -51,7 +51,10 @@ set number
 " set tags+=./../../../tags
 set tags+=tags
 " set tags to reporoot/.git/tags
-execute 'set tags+=' . system('git rev-parse --show-toplevel 2>/dev/null') . '/.git/tags'
+let git_root = substitute(system('git rev-parse --show-toplevel 2>/dev/null'), '\n\+$', '', '')
+if !empty(git_root) && isdirectory(git_root)
+    execute 'set tags+=' . git_root . '/.git/tags'
+endif
 
 " Cursor marking
 set cursorline
