@@ -51,7 +51,7 @@ set number
 " set tags+=./../../../tags
 set tags+=tags
 " set tags to reporoot/.git/tags
-set tags+=system("git rev-parse --show-toplevel")."/.git/tags"
+execute 'set tags+=' . system('git rev-parse --show-toplevel 2>/dev/null') . '/.git/tags'
 
 " Cursor marking
 set cursorline
@@ -69,7 +69,9 @@ set autoread
 
 set mouse=a
 
-set showcmd
+set showcmd               " Show partial commands
+set lazyredraw            " Don't redraw during macros
+set ttyfast               " Faster terminal connection
 
 " Delete comment characters when joining lines.
 set formatoptions+=j
@@ -239,7 +241,7 @@ nnoremap <Leader>j :
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>sn ]s
 nnoremap <Leader>sp [s
-nnoremap <Leader>v :tabe ~/.vimrc<CR>
+nnoremap <Leader>v :tabe $MYVIMRC<CR>
 " nnoremap <Leader>w :w<CR>
 
 " Select block
@@ -485,6 +487,8 @@ set guitablabel=\[%N\]\ %t\ %M
 " Changes tabularly to spaces
 set noexpandtab
 
+set laststatus=2          " Always show statusline
+
 " Tabs only two spaces
 set tabstop=2
 set shiftwidth=2
@@ -498,6 +502,7 @@ set backupdir=$HOME/.vim/.backup//
 set undodir=$HOME/.vim/.backup//
 set writebackup
 set undofile
+set undolevels=1000       " More undo levels
 " }
 
 " GUI Layout {

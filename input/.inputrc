@@ -13,20 +13,59 @@ set mark-symlinked-directories On
 set colored-completion-prefix On
 # Color the common prefix in menu-complete
 set menu-complete-display-prefix On
+# Better tab completion behavior
+set completion-query-items 200
+set page-completions off
+# Don't show hidden files unless explicitly requested
+# set match-hidden-files off
+# Show completion immediately without bell
+set bell-style none
+# Skip completed text on ambiguous completions
+set skip-completed-text on
+# Expand tilde when completing
+set expand-tilde on
+# Better bracketed paste mode
+set enable-bracketed-paste on
 
 set editing-mode vi
 set show-mode-in-prompt on
-set vi-ins-mode-string \1└─[\e[37;1m\2ins\1\e[0m] \2
-set vi-cmd-mode-string \1└─[\e[35;1m\2cmd\1\e[0m] \2
+set vi-ins-mode-string \1\e]0;INSERT\007└─[\e[32;1m\2ins\1\e[0m] \2
+set vi-cmd-mode-string \1\e]0;COMMAND\007└─[\e[31;1m\2cmd\1\e[0m] \2
 
 set keymap vi-insert
 "jj":vi-movement-mode
+"kj":vi-movement-mode
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\C-p": history-search-backward
+"\C-n": history-search-forward
+"\C-r": reverse-search-history
 
 set keymap vi-command
 "k": history-search-backward
 "j": history-search-forward
 "H": backward-word
 "L": forward-word
+"gg": beginning-of-history
+"G": end-of-history
+"0": beginning-of-line
+"$": end-of-line
+"w": forward-word
+"b": backward-word
+"e": forward-word-end
+"x": delete-char
+"X": backward-delete-char
+"r": overwrite-mode
+"u": undo
+"dd": kill-whole-line
+"cc": kill-whole-line
+"yy": copy-line
+"p": yank
+"P": yank
+"/": reverse-search-history
+"?": forward-search-history
+"n": reverse-search-history
+"N": forward-search-history
 
 # mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
 "\e[1;5C": forward-word
@@ -41,4 +80,21 @@ set keymap vi-command
 # ]
 "\e\e[D": backward-word
 # ]
+
+# Additional terminal compatibility
+# Alt+Backspace to delete word backwards
+"\e\d": backward-kill-word
+"\e\C-h": backward-kill-word
+"\e\177": backward-kill-word
+
+# Home and End keys in different terminals
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+"\e[7~": beginning-of-line
+"\e[8~": end-of-line
+"\eOH": beginning-of-line
+"\eOF": end-of-line
+
+# Delete key
+"\e[3~": delete-char
 

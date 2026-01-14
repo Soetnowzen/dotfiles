@@ -115,6 +115,16 @@ trap run_on_exit EXIT
 # Enable direxpand (so that env variables are expended when tab completing)
 shopt -s direxpand
 shopt -s expand_aliases
+
+# Case insensitive completion
+bind "set completion-ignore-case on"
+bind "set show-all-if-ambiguous on"
+bind "set menu-complete-display-prefix on"
+
+# Improved cd behavior
+shopt -s autocd  # Just type directory name to cd into it
+shopt -s cdspell # Auto-correct minor spelling errors in cd
+
 # disable histexpand (the !123 syntax)
 set +o histexpand
 # }
@@ -127,8 +137,15 @@ export EDITOR
 
 # tmux history
 #{
-# avoid duplicates
-export HISTCONTROL=ignoredups:erasedups
+
+# Increase history size significantly
+export HISTSIZE=50000
+export HISTFILESIZE=50000
+export HISTFILE=~/.bash_history_extended
+# Add timestamp to history
+export HISTTIMEFORMAT='%F %T '
+# Ignore duplicate commands and commands starting with space
+export HISTCONTROL=ignoreboth:erasedups
 
 # append history enteies
 shopt -s histappend
@@ -136,8 +153,38 @@ shopt -s histappend
 
 # Aliases
 # {
-alias ls='ls -h -F --color --group-directories-first'
-alias la='ls -A'
+# Modern alternatives (install if you don't have them)
+# apt install bat exa fd-find ripgrep
+# Modern CLI tool simple aliases (fixed to avoid infinite loops)
+if command -v batcat >/dev/null 2>&1; then
+    alias cat='batcat'
+	alias c='batcat'
+else
+    alias cat='command cat'
+	alias c='cat -nv'
+fi
+
+if command -v fdfind >/dev/null 2>&1; then
+    alias find='fdfind'
+else  
+    alias find='command find'
+	alias ff='find . -type f -iname'
+	alias fi_reg="find . -type f -regex"
+fi
+
+if command -v rg >/dev/null 2>&1; then
+    alias grep='rg'
+else
+    alias grep='command grep --color'
+fi
+
+if command -v exa >/dev/null 2>&1; then
+    alias ls='exa --group-directories-first --color=auto'
+else
+    alias ls='command ls -h -F --color --group-directories-first'
+fi
+
+alias la='ls -a'
 alias ll='la -l'
 alias l='ll'
 alias l_size='ll -S'
@@ -147,17 +194,13 @@ alias apt-get='sudo apt-get'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bashr='vim ~/.bashrc'
-alias c='cat -nv'
 alias cl='clear &&'
 alias d='dirs -v'
 alias df="df -h"
-alias docker_stop_all='docker stop $(docker ps -q)'
 alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
 alias f='fg'
-alias ff='find . -type f -iname'
-alias fi_reg="find . -type f -regex"
 alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
@@ -182,7 +225,6 @@ alias popdd='popd >/dev/null'
 alias print_path='echo $PATH | tr : "\n"'
 alias psu='ps u --forest'
 alias pushdd="pushd \$PWD > /dev/null"
-alias rm='rm -I'
 alias rmrf='rm -rf'
 alias t='tree'
 alias tcshr='vim ~/.tcshrc'
@@ -198,8 +240,47 @@ alias vt='vim -p'
 alias vv='vim -O'
 alias wget='wget -c'
 
+# Safer rm with confirmation for files in certain directories
+alias rm='rm -I --preserve-root'
+alias mv='mv -i'
+alias cp='cp -i'
+alias ln='ln -i'
+
+# More comprehensive Docker aliases
+alias dc='docker-compose'
+alias dps='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"'
+alias dimg='docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedAt}}"'
+alias dlog='docker logs -f'
+alias dexec='docker exec -it'
+alias dclean='docker system prune -af && docker volume prune -f'
+alias docker_stop_all='docker stop $(docker ps -q)'
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
-alias find_broken_links='find -L . -type l'
+alias find_broken_links='command find -L . -type l'
+
+# SSH with automatic agent forwarding
+alias ssha='ssh -A'
+
+# Quick SSH config editing
+alias sshconfig='vim ~/.ssh/config'
+
+# Show SSH connections
+alias sshlist='ss -t state established "( dport = :22 or sport = :22 )"'
+
+# Disk usage for current directory with human readable sizes
+function duh() {
+    du -h --max-depth=1 "$@" | sort -hr
+}
+
+# Process monitoring
+function psgrep() {
+    ps aux | grep -v grep | grep -i "$@"
+}
+
+# Network information
+function myip() {
+    echo "Local IP: $(hostname -I | awk '{print $1}')"
+    echo "External IP: $(curl -s ifconfig.me)"
+}
 
 if [[ $UID != 0 ]]; then
 	alias reboot='sudo reboot'
