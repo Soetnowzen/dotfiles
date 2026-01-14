@@ -288,34 +288,46 @@ if [[ $UID != 0 ]]; then
 fi
 # }
 
-function password_gen()
-{
-	local number_of_characeters="$1"
-	if [[ "$number_of_characeters" == "" ]]; then
-		tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 20; echo
+function password_gen() {
+	local length="${1:-20}"  # Default to 20 characters
+	local chars='A-Za-z0-9!@#$%^&*()_+-=[]{}|;:,.<>?'
+	tr -dc "$chars" </dev/urandom | head -c "$length"
+	echo  # Add newline
+}
+
+# Directory bookmark functions (replacing broken cdd)
+function mark() {
+	export "MARK_${1}"="$PWD"
+	echo "Marked $PWD as $1"
+}
+
+function jump() {
+	local mark_var="MARK_$1"
+	local mark_dir="${!mark_var}"
+	if [[ -n "$mark_dir" && -d "$mark_dir" ]]; then
+		cd "$mark_dir" || return 1
 	else
-		tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c $number_of_characeters; echo
+		echo "Mark $1 not set or directory doesn't exist" >&2
+		return 1
 	fi
 }
 
-function cdd()
-{
-	# Not working yet.
-	local directory
-	directory="$1"
-	cd "~$1"
+function marks() {
+	env | grep '^MARK_' | sed 's/^MARK_//' | sort
 }
 
-function most_used_cmd()
-{
-	# history | awk 'BEGIN {FS="[ \t]+|\\|"} {print $3}' | sort | uniq -c | sort -nr
-	# history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl
-	history | tr -s ' ' | cut -d ' ' -f3 | sort | uniq -c | sort -n | tail | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
+function most_used_cmd() {
+	# Show most used commands with bar chart
+	history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' \
+		| grep -v "^[0-9.]*% $" \
+		| sort -nr \
+		| head -10 \
+		| awk '{printf "%-20s %3d (%.1f%%)\n", $3, $1, $2}'
 }
 
-function most_used_cmd_arguments()
-{
-	history | tr -s ' ' | cut -d ' ' -f3,4,5,6,7,8,9,10,11 | sort | uniq -c | sort -n # | perl -lane 'print $F[1], "\t", $F[0], " ", "▄" x ($F[0] / 12)'
+function most_used_cmd_with_args() {
+	# Show most used command combinations
+	history | awk '{$1=""; print substr($0,2)}' | sort | uniq -c | sort -nr | head -10
 }
 
 function mcd()
@@ -325,10 +337,11 @@ function mcd()
 	cd "$directory" || exit
 }
 
-function fi_()
-{
-	arguments="${*}"
-	(find "${arguments}" | grep '[^\/]*$')
+function find_files() {
+	# Better name and implementation
+	local pattern="$1"
+	shift
+	find "${@:-.}" -type f -name "*${pattern}*" 2>/dev/null
 }
 
 # Solarized
@@ -341,12 +354,16 @@ bind '"\e[B":history-search-forward' # ]
 bind '"\e[1;3D": backward-word' ### Alt left ]
 bind '"\e[1;3C": forward-word' ### Alt right" ]
 
-function my_pylint()
-{
-	VERSION="${1}"
-	PYTHON_FILE="${2}"
-	MY_PYLINT="python${VERSION} -m pylint $PYTHON_FILE"
-	eval "$MY_PYLINT"
+function my_pylint() {
+	local python_version="${1:-3}"
+	local python_file="$2"
+
+	if [[ -z "$python_file" ]]; then
+		echo "Usage: my_pylint [python_version] <file.py>" >&2
+		return 1
+	fi
+
+	python"${python_version}" -m pylint "$python_file"
 }
 
 function tail_color()
@@ -397,33 +414,31 @@ function tailf_color()
 	s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
 }
 
-function testing_flags()
-{
-	local PARAMS=""
-
-	while (( "$#" )); do
-		case "$1" in
-			-f|--flag-with-argument)
-				FLARG=$2
-				shift 2
-				;;
-			--) # end argument parsing
-				shift
-				break
-				;;
-			-*|--*=) # unsupported flags
-				echo "Error: Unsupported flag $1" >&2
-				;;
-			*) # preserve positional arguments
-				PARAMS="$PARAMS $1"
-				shift
-				;;
-		esac
-	done
-
-	# set positional arguments in their proper place
-	eval set -- "$PARAMS"
-}
+# Template for argument parsing - remove if not needed
+# function parse_args() {
+# 	local PARAMS=""
+# 	while (( "$#" )); do
+# 		case "$1" in
+# 			-f|--flag-with-argument)
+# 				FLARG=$2
+# 				shift 2
+# 				;;
+# 			--) # end argument parsing
+# 				shift
+# 				break
+# 				;;
+# 			-*|--*=) # unsupported flags
+# 				echo "Error: Unsupported flag $1" >&2
+# 				return 1
+# 				;;
+# 			*) # preserve positional arguments
+# 				PARAMS="$PARAMS $1"
+# 				shift
+# 				;;
+# 		esac
+# 	done
+# 	eval set -- "$PARAMS"
+# }
 
 # Colors
 # {
@@ -509,17 +524,19 @@ alias solar_start="\${SOLR_PATH}/bin/solr start"
 alias solar_stop="\${SOLR_PATH}/bin/solr stop"
 # }
 
-function countdown()
-{
+function countdown() {
 	# countdown 60              60 seconds
-	# countdown 60*30           30 minutes
+	# countdown 60*30           30 minutes  
 	# countdown $((24*60*60))   1 day
-	now=$(date +%s)
-	date1=$(${now} + "$1");
-	while [ "$date1" -ge "$(date +%s)" ]; do
-		echo -ne "$(date -u --date @$((date1 - $(date +%s))) +%H:%M:%S)\\r";
+	local seconds="${1:-60}"
+	local end_time=$(($(date +%s) + seconds))
+
+	while [[ $end_time -gt $(date +%s) ]]; do
+		local remaining=$((end_time - $(date +%s)))
+		printf "\r%s" "$(date -u -d @${remaining} +%H:%M:%S)"
 		sleep 0.1
 	done
+	echo -e "\nTime's up!"
 }
 
 function stopwatch()
@@ -578,39 +595,34 @@ do
 done
 }
 
-function search_and_replace()
-{
-	old_phrase=$1
-	new_phrase=$2
-	# find . -type f -exec sed -i "s/$old_phrase/$new_phrase/g" {} \;
-	sed -i "s/$old_phrase/$new_phrase/g" "$(grep -ril $old_phrase . 2> /dev/null)"
-}
+function search_and_replace() {
+	local old_phrase="$1"
+	local new_phrase="$2"
 
-function git-find()
-{
-	word=$1
-	for file in $(git show --name-only); do
-		file="$(git rev-parse --show-toplevel)/$file"
-		ROWS=$(git show -- "${file}" | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
-			/^(---|\+\+\+|[^-+ ])/{print;next};\
-			{line=substr($0,2)};\
-			/^-/{print "-" minus_count++ ":" line;next};\
-			/^[+]/{print "+" plus_count++ ":" line;next};\
-			{print "(" minus_count++ "," plus_count++ "):"line}' |
-				grep -E "^\\+[^\\+]" | grep -i "${word}")
-		local EXIT_STATUS="$?"
-		if [[ $EXIT_STATUS == 0 ]]; then
-			ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
-			EXIT_STATUS="$?"
-			if [[ $EXIT_STATUS == 0 ]]; then
-				for ROW in $ROW_NUMBERS; do
-					printf "%s%s%s:%s%s %scontains%s %s%s.\\n" "${RED}" "${file}" "${RESTORE}" "${GREEN}" "${ROW}" "${RESTORE}" "${CYAN}" "${word}" "${RESTORE}"
-				done
-			fi
-		fi
+	if [[ -z "$old_phrase" || -z "$new_phrase" ]]; then
+		echo "Usage: search_and_replace <old_phrase> <new_phrase>" >&2
+		return 1
+	fi
 
+	local files
+	files=$(grep -ril "$old_phrase" . 2>/dev/null)
 
-	done
+	if [[ -z "$files" ]]; then
+		echo "No files found containing '$old_phrase'"
+		return 0
+	fi
+
+	echo "Files to be modified:"
+	echo "$files"
+	read -p "Continue? (y/N): " -n 1 -r
+	echo
+
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		echo "$files" | xargs sed -i "s/$old_phrase/$new_phrase/g"
+		echo "Replacement complete!"
+	else
+		echo "Operation cancelled."
+	fi
 }
 
 # Variables
