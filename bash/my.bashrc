@@ -180,6 +180,7 @@ fi
 
 if command -v exa >/dev/null 2>&1; then
     alias ls='exa --group-directories-first --color=auto'
+	alias ls-git='exa --git --group-directories-first --color=auto'
 else
     alias ls='command ls -h -F --color --group-directories-first'
 fi
