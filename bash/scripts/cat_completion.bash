@@ -10,7 +10,25 @@ function _cat_completion()
 		--help|--version)
 			return
 			;;
-		--language|-l|--theme|--tabs|--terminal-width|--paging|--pager|--map-syntax|-m|--style|--color|--decorations|-d|--wrap|--highlight-line|-H|--line-range|-r|--diff)
+		# bat options with specific values
+		--color)
+			COMPREPLY=( $( compgen -W "auto always never" -- "$current" ) )
+			return
+			;;
+		--paging)
+			COMPREPLY=( $( compgen -W "auto always never" -- "$current" ) )
+			return
+			;;
+		--decorations|-d)
+			COMPREPLY=( $( compgen -W "auto always never" -- "$current" ) )
+			return
+			;;
+		--wrap)
+			COMPREPLY=( $( compgen -W "auto never character" -- "$current" ) )
+			return
+			;;
+		# bat options that expect arguments
+		--language|-l|--theme|--tabs|--terminal-width|--pager|--map-syntax|-m|--style|--highlight-line|-H|--line-range|-r|--diff)
 			# These bat options expect arguments, let default completion handle it
 			return
 			;;

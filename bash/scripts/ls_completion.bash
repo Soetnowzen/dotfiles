@@ -10,12 +10,26 @@ function _ls_completion()
 		--help|--version|-v|-\?)
 			return
 			;;
-		--color|--colour|--time-style|--format|--indicator-style|--quoting-style|--sort|--tabsize|-T|-w|--width|--block-size)
-			# These options expect arguments, let default completion handle it
+		# exa options with specific values
+		--color|--colour)
+			COMPREPLY=( $( compgen -W "auto always never" -- "$current" ) )
 			return
 			;;
-		# exa-specific options that expect arguments
-		-s|--sort|-L|--level|-I|--ignore-glob|--time|--time-style)
+		-s|--sort)
+			if command -v exa >/dev/null 2>&1; then
+				COMPREPLY=( $( compgen -W "name Name size time modified accessed created extension Extension type" -- "$current" ) )
+			else
+				COMPREPLY=( $( compgen -W "none time size version extension" -- "$current" ) )
+			fi
+			return
+			;;
+		--time)
+			COMPREPLY=( $( compgen -W "modified accessed created" -- "$current" ) )
+			return
+			;;
+		# Options that expect arguments
+		--time-style|--format|--indicator-style|--quoting-style|--tabsize|-T|-w|--width|--block-size|-L|--level|-I|--ignore-glob)
+			# These options expect arguments, let default completion handle it
 			return
 			;;
 	esac

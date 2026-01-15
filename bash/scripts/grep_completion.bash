@@ -10,12 +10,31 @@ function _grep_completion()
 		--help|--version|-V)
 			return
 			;;
+		# Options with specific values
+		--color|--colour)
+			COMPREPLY=( $( compgen -W "auto always never" -- "$current" ) )
+			return
+			;;
+		--engine)
+			COMPREPLY=( $( compgen -W "default pcre2 auto" -- "$current" ) )
+			return
+			;;
+		--sort|--sortr)
+			COMPREPLY=( $( compgen -W "none path modified accessed created" -- "$current" ) )
+			return
+			;;
+		-t|--type)
+			if command -v rg >/dev/null 2>&1; then
+				COMPREPLY=( $( compgen -W "agda asm asciidoc awk bash bib c cmake config cpp csharp css csv dart dockerfile elisp elixir erlang fortran go haskell html java js json julia latex less lisp lua make markdown objc ocaml pascal perl php pod protobuf python r rdoc rst ruby rust scala sh sql svg tex txt vhdl vim xml yaml" -- "$current" ) )
+			fi
+			return
+			;;
 		# Options that expect arguments - ripgrep
-		-A|--after-context|-B|--before-context|-C|--context|--color|--colors|--context-separator|--dfa-size-limit|-E|--encoding|--engine|--field-context-separator|--field-match-separator|-f|--file|-g|--glob|--iglob|--ignore-file|-M|--max-columns|-m|--max-count|--max-depth|--max-filesize|--path-separator|--pre|--pre-glob|--regex-size-limit|-e|--regexp|-r|--replace|--sort|--sortr|-j|--threads|-t|--type|--type-add|--type-clear|-T|--type-not)
+		-A|--after-context|-B|--before-context|-C|--context|--colors|--context-separator|--dfa-size-limit|-E|--encoding|--field-context-separator|--field-match-separator|-f|--file|-g|--glob|--iglob|--ignore-file|-M|--max-columns|-m|--max-count|--max-depth|--max-filesize|--path-separator|--pre|--pre-glob|--regex-size-limit|-e|--regexp|-r|--replace|-j|--threads|--type-add|--type-clear|-T|--type-not)
 			return
 			;;
 		# Options that expect arguments - traditional grep
-		--label|--binary-files|--directories|-D|--devices|-d|--exclude|--exclude-from|--exclude-dir|--include|-m|--max-count|-A|--after-context|-B|--before-context|-C|--context|-e|--regexp|-f|--file|--colour|--color)
+		--label|--binary-files|--directories|-D|--devices|-d|--exclude|--exclude-from|--exclude-dir|--include|-m|--max-count|-A|--after-context|-B|--before-context|-C|--context|-e|--regexp|-f|--file)
 			return
 			;;
 	esac
