@@ -11,6 +11,7 @@ fi
 
 dotfiles_dir="$HOME/dotfiles/bash"
 source "$dotfiles_dir/scripts/change_directory.bash"
+source "$dotfiles_dir/scripts/cat_completion.bash"
 source "$dotfiles_dir/scripts/chmod_completion.bash"
 source "$dotfiles_dir/scripts/chown_completion.bash"
 source "$dotfiles_dir/scripts/extract.bash"
