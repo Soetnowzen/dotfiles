@@ -1,32 +1,5 @@
 # kill(1) completion                                       -*- shell-script -*-
 
-_kill()
-{
-	local cur prev words cword
-	_init_completion || return
-
-	case $prev in
-		-s)
-			_signals
-			return
-			;;
-		-l)
-			return
-			;;
-	esac
-
-	if [[ $cword -eq 1 && "$cur" == -* ]]; then
-		# return list of available signals
-		_signals -
-		COMPREPLY+=( $( compgen -W "-s -l" -- "$cur" ) )
-	else
-		# return list of available PIDs
-		_pids
-	fi
-}
-
-# complete -F _kill kill
-
 function _kill_completion()
 {
 	local current previous
@@ -34,40 +7,41 @@ function _kill_completion()
 	previous=${COMP_WORDS[COMP_CWORD-1]}
 
 	case $previous in
-		-s)
-			local -a sigs=( $( compgen -P "$1" -A signal "SIG${cur#$1}" ) )
-			COMPREPLY+=( "${sigs[@]/#${1}SIG/${1}}" )
+		-s|--signal)
+			# Complete signal names and numbers
+			local signals="HUP INT QUIT ILL TRAP ABRT BUS FPE KILL USR1 SEGV USR2 PIPE ALRM TERM STKFLT CHLD CONT STOP TSTP TTIN TTOU URG XCPU XFSZ VTALRM PROF WINCH POLL PWR SYS"
+			local signal_numbers="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31"
+			COMPREPLY=( $( compgen -W "$signals $signal_numbers" -- "$current" ) )
 			return
 			;;
-		-l)
-			return
-			;;
-		-9)
-			_get_process_id "$current"
-			return
-			;;
-		-15)
-			_get_process_id "$current"
+		-l|--list)
 			return
 			;;
 	esac
 
-	if [[ $COMP_CWORD == 1 ]]; then
-		# if [[ $current == -* ]]; then
-		local flags='-9 -15 -s -l'
-		COMPREPLY+=( $( compgen -W "$flags" -- "$cur" ) )
+	local options="
+		-s --signal
+		-l --list
+		-L --table
+		-a --all
+		-p --pid
+		-q --queue
+		--verbose
+		--help
+		--version
+	"
+
+	if [[ $current == -* ]]; then
+		COMPREPLY=( $( compgen -W "$options" -- "$current" ) )
+		return
 	fi
+
+	# Complete process IDs and job specifications
+	local pids=$(ps -eo pid --no-headers | tr -d ' ')
+	local jobs=$(jobs -p 2>/dev/null)
+	local job_specs=$(jobs 2>/dev/null | sed -n 's/^\[\([0-9]\+\)\].*/\%\1/p')
+	
+	COMPREPLY=( $( compgen -W "$pids $jobs $job_specs" -- "$current" ) )
 }
 
-function _get_process_id()
-{
-	local current
-	current=$1
-	# signals=$(ps -u | tr -s ' ' | cut -d ' ' -f2,11,12,13,14)
-	signals=$(ps u | tr -s ' ' | cut -d ' ' -f2)
-	COMPREPLY+=($(compgen -W "$signals" -- "$current"))
-}
-
-complete -F _kill_completion kill
-
-# ex: filetype=sh
+complete -o default -F _kill_completion kill killall pkill
