@@ -30,23 +30,29 @@ make all
 
 ### Core Configurations
 - **Bash** (`bash/`) - Enhanced shell with modern CLI tools, improved history, and productivity aliases
+- **Zsh** (`myzsh/`) - Modern Z shell configuration with advanced prompt and completions
 - **Vim** (`vim/`) - Feature-rich vim configuration with syntax highlighting and plugins
 - **Git** (`gitconfig/`) - Advanced git configuration with aliases and hooks
 - **Tmux** (`tmux/`) - Terminal multiplexer configuration
 - **Input** (`input/`) - Readline configuration with vi-mode enhancements
 
 ### Development Tools
-- **GDB** (`gdb/`) - Debugger configuration
-- **Emacs** (`emacs/`) - Emacs configuration with packages
+- **GDB** (`gdb/`) - Debugger configuration with Python support
+- **Emacs** (`emacs/`) - Comprehensive Emacs configuration with packages
+- **VS Code** (`vscode/`) - Visual Studio Code settings and preferences
+- **DevContainers** (`.devcontainer/`) - Development container configurations
 
 ### Platform-Specific
-- **Mintty** (`mintty/`) - Terminal emulator for Windows
+- **PowerShell** (`PowerShell/`) - PowerShell profile and Solarized color schemes
+- **Mintty** (`mintty/`) - Terminal emulator configuration for Windows
 - **SumatraPDF** (`sumatra_pdf/`) - PDF viewer configuration for Windows
 - **Vimperator** (`vimperator/`) - Firefox extension configuration
 
 ### System Tools
 - **Tcsh** (`tcsh/`) - C shell configuration
+- **Top** (`top/`) - System monitor configuration
 - **Keyboard** (`keyboard/`) - Keyboard layout configuration
+- **Fonts** (`fonts/`) - Custom font installations and configurations
 
 ## 🛠 Installation Options
 
@@ -55,31 +61,47 @@ make all
 make essential  # Installs bash, vim, git, tmux, input
 ```
 
+### Complete Installation
+```bash
+make all        # Install all available configurations
+make install    # Alias for 'all'
+```
+
 ### Individual Components
 ```bash
 make bash       # Install bash configuration
 make vim        # Install vim configuration
 make git        # Install git configuration
-# ... see 'make help' for all options
+make tmux       # Install tmux configuration
+make emacs      # Install Emacs configuration
+make gdb        # Install GDB configuration
+make input      # Install readline/input configuration
+make tcsh       # Install tcsh configuration
+make vimperator # Install Vimperator configuration
+make keyboard   # Install keyboard configuration
+make mintty     # Install Mintty configuration (Windows)
+make sumatra_pdf # Install SumatraPDF configuration (Windows)
 ```
 
 ### Utility Commands
 ```bash
-make help       # Show all available targets
-make check      # Check what's currently installed
+make help       # Show all available targets with descriptions
+make check      # Check installation status of all configs
 make backup     # Backup existing configs before installing
-make clean      # Uninstall (remove symlinks)
-make update     # Update repository
+make clean      # Uninstall (remove all symlinks)
+make update     # Update repository from remote
+make install-hooks # Install git hooks to current repository
 ```
 
 ## 🎯 Key Features
 
-### Enhanced Bash Experience
-- **Modern CLI tools** with automatic fallbacks
+### Enhanced Shell Experience
+- **Modern CLI tools** with automatic fallbacks (bash & zsh)
 - **Improved history** management and search
-- **Git-aware prompt** with execution timing
+- **Git-aware prompt** with execution timing and branch status
 - **Comprehensive aliases** for common tasks
 - **Directory bookmarks** (mark/jump/marks)
+- **Advanced zsh features** with custom completions and functions
 
 ### Vi-Mode Enhancements
 - **Full vim navigation** in command mode (gg, G, w, b, etc.)
@@ -141,11 +163,13 @@ marks           # List all bookmarks
 ## 🔍 What's Different
 
 This dotfiles collection focuses on:
-- **Productivity**: Fast, efficient tools and workflows
-- **Modern tooling**: Integration with contemporary CLI tools
-- **Safety**: Backup and uninstall options
-- **Documentation**: Self-documenting with help systems
-- **Cross-platform**: Works across different operating systems
+- **Productivity**: Fast, efficient tools and workflows across bash and zsh
+- **Modern tooling**: Integration with contemporary CLI tools (`bat`, `exa`, `fd`, `ripgrep`)
+- **Multi-shell support**: Comprehensive configurations for bash, zsh, tcsh
+- **Development ready**: IDE configurations (VS Code, Emacs, Vim) and debugging tools
+- **Safety**: Backup and uninstall options with status checking
+- **Documentation**: Self-documenting with help systems and inline comments
+- **Cross-platform**: Works across Linux, macOS, and Windows (WSL/MSYS2)
 
 ## 📝 License
 
