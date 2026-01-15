@@ -53,8 +53,11 @@
 	pager = less -RFX
 	whitespace = trailing-space,space-before-tab
 	autocrlf = input
+	abbrev = 12              # Show longer commit hashes by default
+	preloadindex = true      # Speed up operations on large repos
+	fscache = true          # Windows performance (if applicable)
 [push]
-	default = tracking
+	default = simple  # or 'current'
 [merge]
 	tool = vimdiff
 [init]
@@ -90,7 +93,7 @@
 	cp = cherry-pick
 	cs = commit -s
 	d = diff
-	day = !"git lg --since=\"24 hours ago\" --author=\"(git config user.name)\""
+	day = !"git lg --since='24 hours ago' --author=\"$(git config user.name)\""
 	dc = diff --cached
 	dcw = dc --word-diff
 	default-branch = !"git rev-parse --abbrev-ref origin/HEAD | sed 's@origin/@@'"
@@ -162,10 +165,51 @@
 	# Smart clone with auto-setup
 	sclone = "!f() { git clone \"$1\" \"$2\" && cd \"${2:-$(basename \"$1\" .git)}\" && git init && git config user.name \"Sebastian\" && git config user.email \"your.email@example.com\" && git config core.editor \"vim\" && echo \"✅ Cloned and configured!\"; }; f"
 
+	# Modern shortcuts
+	unstage = reset HEAD --
+	uncommit = reset --soft HEAD~1
+	amend = commit --amend --no-edit
+
+	# Better branch management
+	gone = "!f() { git fetch --all --prune; git branch -vv | awk '/: gone]/{print $1}' | xargs -r git branch -D; }; f"
+	recent = "!git branch --sort=-committerdate | head -10"
+
+	# Improved logging
+	tree = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	oneline = log --oneline --decorate --graph
+
+	# Useful shortcuts
+	edit-last = "!vim `git diff-tree --no-commit-id --name-only -r HEAD`"
+	contributors = shortlog -sn
+	ignore = "!gi() { curl -sL https://www.toptal.com/developers/gitignore/api/$@ ;}; gi"
+
 # Conditional config - automatically applies personal settings
 [includeIf "gitdir:~/projects/"]
     path = ~/.gitconfig-personal
-[includeIf "gitdir:~/code/"]  
+[includeIf "gitdir:~/code/"]
     path = ~/.gitconfig-personal
 [includeIf "gitdir:~/dev/"]
     path = ~/.gitconfig-personal
+[includeIf "gitdir:~/work/"]
+    path = ~/.gitconfig-work
+
+[fetch]
+    prune = true            # Auto-prune deleted remote branches
+    pruneTags = true        # Also prune deleted remote tags
+
+[pull]
+    rebase = true           # Prefer rebase over merge for pulls
+
+[rebase]
+    autoStash = true        # Auto-stash/pop when rebasing
+    autoSquash = true       # Auto-squash commits marked with squash!/fixup!
+
+[status]
+    showUntrackedFiles = all
+
+[branch]
+    autosetupmerge = always
+    autosetuprebase = always
+
+[rerere]
+    enabled = true          # Remember merge conflict resolutions
