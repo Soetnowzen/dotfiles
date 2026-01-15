@@ -1,190 +1,180 @@
-# bash completion for GNU find                             -*- shell-script -*-
-# This makes heavy use of ksh style extended globs and contains Linux specific
-# code for completing the parameter to the -fstype option; do.
-
-_find()
-{
-  local cur prev words cword
-  _init_completion || return
-
-  case $prev in
-    -maxdepth|-mindepth)
-      COMPREPLY=( $( compgen -W '{0..9}' -- "$cur" ) )
-      return
-      ;;
-      -newer|-anewer|-cnewer|-fls|-fprint|-fprint0|-fprintf|-name|-iname|\
-        -lname|-ilname|-wholename|-iwholename|-samefile)
-      _filedir
-      return
-      ;;
-    -fstype)
-      _fstypes
-      [[ $OSTYPE == *bsd* ]] && \
-        COMPREPLY+=( $( compgen -W 'local rdonly' -- "$cur" ) )
-      return
-      ;;
-    -gid)
-      _gids
-      return
-      ;;
-    -group)
-      COMPREPLY=( $( compgen -g -- "$cur" 2>/dev/null) )
-      return
-      ;;
-    -xtype|-type)
-      COMPREPLY=( $( compgen -W 'b c d p f l s' -- "$cur" ) )
-      return
-      ;;
-    -uid)
-      _uids
-      return
-      ;;
-    -user)
-      COMPREPLY=( $( compgen -u -- "$cur" ) )
-      return
-      ;;
-    -exec|-execdir|-ok|-okdir)
-      words=(words[0] "$cur")
-      cword=1
-      _command
-      return
-      ;;
-      -[acm]min|-[acm]time|-iname|-lname|-wholename|-iwholename|-lwholename|\
-        -ilwholename|-inum|-path|-ipath|-regex|-iregex|-links|-perm|-size|\
-        -used|-printf|-context)
-      # do nothing, just wait for a parameter to be given
-      return
-      ;;
-    -regextype)
-      COMPREPLY=( $( compgen -W 'emacs posix-awk posix-basic posix-egrep
-      posix-extended' -- "$cur" ) )
-      return
-      ;;
-  esac
-
-  local i exprfound=false
-  # set exprfound to true if [there is already an expression present]
-  for i in ${words[@]}; do
-    [[ "$i" == [-\(\),\!]* ]] && exprfound=true && break
-  done
-  # handle case where first parameter is not a dash option
-  if ! $exprfound && [[ "$cur" != [-\(\),\!]* ]]; then
-    _filedir -d
-    return
-  fi
-
-  # complete using basic options
-  COMPREPLY=( $( compgen -W '-daystart -depth -follow -help
-  -ignore_readdir_race -maxdepth -mindepth -mindepth -mount
-  -noignore_readdir_race -noleaf -regextype -version -warn -nowarn -xdev
-  -amin -anewer -atime -cmin -cnewer -ctime -empty -executable -false
-  -fstype -gid -group -ilname -iname -inum -ipath -iregex -iwholename
-  -links -lname -mmin -mtime -name -newer -nogroup -nouser -path -perm
-  -readable -regex -samefile -size -true -type -uid -used -user
-  -wholename -writable -xtype -context -delete -exec -execdir -fls
-  -fprint -fprint0 -fprintf -ls -ok -okdir -print -print0 -printf -prune
-  -quit' -- "$cur" ) )
-
-  if [[ ${#COMPREPLY[@]} -ne 0 ]]; then
-    # this removes any options from the list of completions that have
-    # already been specified somewhere on the command line, as long as
-    # these options can only be used once (in a word, "options", in
-    # opposition to "tests" and "actions", as in the find(1) manpage)
-    local -A onlyonce=( [-daystart]=1 [-depth]=1 [-follow]=1 [-help]=1
-    [-ignore_readdir_race]=1 [-maxdepth]=1 [-mindepth]=1 [-mount]=1
-    [-noignore_readdir_race]=1 [-noleaf]=1 [-nowarn]=1 [-regextype]=1
-    [-version]=1 [-warn]=1 [-xdev]=1 )
-    local j
-    for i in "${words[@]}"; do
-      [[ $i && ${onlyonce[$i]} ]] || continue
-      for j in ${!COMPREPLY[@]}; do
-        [[ ${COMPREPLY[j]} == $i ]] && unset 'COMPREPLY[j]'
-      done
-    done
-  fi
-
-  _filedir
-
-}
+# find(1)/fd(1) completion                               -*- shell-script -*-
 
 function _find_completion()
 {
-  local current previous
-  current=${COMP_WORDS[COMP_CWORD]}
-  previous=${COMP_WORDS[COMP_CWORD-1]}
+	local current previous
+	current=${COMP_WORDS[COMP_CWORD]}
+	previous=${COMP_WORDS[COMP_CWORD-1]}
 
-  case $previous in
-    -maxdepth|-mindepth)
-      COMPREPLY=( $( compgen -W '{0..9}' -- "$current" ) )
-      return
-      ;;
-      -newer|-anewer|-cnewer|-fls|-fprint|-fprint0|-fprintf|-name|-iname|\
-        -lname|-ilname|-wholename|-iwholename|-samefile)
-      _filedir
-      return
-      ;;
-    -fstype)
-      _fstypes
-      [[ $OSTYPE == *bsd* ]] && \
-        COMPREPLY+=( $( compgen -W 'local rdonly' -- "$current" ) )
-      return
-      ;;
-    -gid)
-      _gids
-      return
-      ;;
-    -group)
-      COMPREPLY=( $( compgen -g -- "$current" 2>/dev/null) )
-      return
-      ;;
-    -xtype|-type)
-      COMPREPLY=( $( compgen -W 'b c d p f l s' -- "$current" ) )
-      return
-      ;;
-    -uid)
-      _uids
-      return
-      ;;
-    -user)
-      COMPREPLY=( $( compgen -u -- "$current" ) )
-      return
-      ;;
-    -exec|-execdir|-ok|-okdir)
-      words=(words[0] "$current")
-      cword=1
-      _command
-      return
-      ;;
-      -[acm]min|-[acm]time|-iname|-lname|-wholename|-iwholename|-lwholename|\
-        -ilwholename|-inum|-path|-ipath|-regex|-iregex|-links|-perm|-size|\
-        -used|-printf|-context)
-      # do nothing, just wait for a parameter to be given
-      return
-      ;;
-    -regextype)
-      COMPREPLY=( $( compgen -W 'emacs posix-awk posix-basic posix-egrep
-      posix-extended' -- "$current" ) )
-      return
-      ;;
-  esac
+	case $previous in
+		--help|--version|-V)
+			return
+			;;
+		# fd-specific options that expect specific values
+		-c|--color)
+			COMPREPLY=( $( compgen -W "auto always never" -- "$current" ) )
+			return
+			;;
+		-t|--type)
+			COMPREPLY=( $( compgen -W "f d l s p b c" -- "$current" ) )
+			return
+			;;
+		# fd-specific options that expect arguments
+		-d|--max-depth|--min-depth|--max-results|-j|--threads|-x|--exec|-X|--exec-batch|--batch-size|-E|--exclude|-e|--extension|--changed-within|--changed-before|-o|--owner|-S|--size|--ignore-file|--search-path)
+			return
+			;;
+		# Traditional find options that expect specific values
+		-type|-xtype)
+			COMPREPLY=( $( compgen -W "b c d p f l s" -- "$current" ) )
+			return
+			;;
+		-regextype)
+			COMPREPLY=( $( compgen -W "emacs posix-awk posix-basic posix-egrep posix-extended" -- "$current" ) )
+			return
+			;;
+		# Traditional find options that expect arguments
+		-maxdepth|-mindepth|-newer|-anewer|-cnewer|-fls|-fprint|-fprint0|-fprintf|-name|-iname|-lname|-ilname|-wholename|-iwholename|-samefile|-fstype|-gid|-group|-uid|-user|-exec|-execdir|-ok|-okdir|-amin|-atime|-cmin|-ctime|-lname|-wholename|-iwholename|-lwholename|-ilwholename|-inum|-path|-ipath|-regex|-iregex|-links|-perm|-size|-used|-printf|-context)
+			return
+			;;
+	esac
 
-  local basic_options='-daystart -depth -follow -help
-  -ignore_readdir_race -maxdepth -mindepth -mindepth -mount
-  -noignore_readdir_race -noleaf -regextype -version -warn -nowarn -xdev
-  -amin -anewer -atime -cmin -cnewer -ctime -empty -executable -false
-  -fstype -gid -group -ilname -iname -inum -ipath -iregex -iwholename
-  -links -lname -mmin -mtime -name -newer -nogroup -nouser -path -perm
-  -readable -regex -samefile -size -true -type -uid -used -user
-  -wholename -writable -xtype -context -delete -exec -execdir -fls
-  -fprint -fprint0 -fprintf -ls -ok -okdir -print -print0 -printf -prune
-  -quit'
-  if [[ $current == -* ]]; then
-    COMPREPLY=( $( compgen -W "$basic_options" -- "$current" ) )
-    [[ $COMPREPLY == *= ]] && compopt -o nospace
-    return
-  fi
+	local options=""
+	
+	# Check if we're actually using fd/fdfind
+	if command -v fdfind >/dev/null 2>&1; then
+		# fd/fdfind options
+		options="
+			-H --hidden
+			-I --no-ignore
+			--no-ignore-vcs
+			--no-ignore-global
+			--no-require-git
+			-u --unrestricted
+			-s --case-sensitive
+			-i --ignore-case
+			-g --glob
+			-r --regex
+			-F --fixed-strings
+			-a --absolute-path
+			-l --list-details
+			-L --follow
+			-p --full-path
+			-d --max-depth
+			--min-depth
+			--max-results
+			-1
+			-q --quiet
+			--has-results
+			-j --threads
+			-x --exec
+			-X --exec-batch
+			--batch-size
+			-E --exclude
+			-e --extension
+			-t --type
+			-c --color
+			--changed-within
+			--changed-before
+			-o --owner
+			-S --size
+			--ignore-file
+			-0 --print0
+			--search-path
+			--strip-cwd-prefix
+			--one-file-system
+			--base-directory
+			--path-separator
+			--gen-completions
+			-h --help
+			-V --version
+		"
+	else
+		# Traditional find options
+		options="
+			-H -L -P
+			-D
+			-O
+			-daystart
+			-depth
+			-follow
+			-help
+			-ignore_readdir_race
+			-maxdepth
+			-mindepth
+			-mount
+			-noignore_readdir_race
+			-noleaf
+			-regextype
+			-version
+			-warn
+			-nowarn
+			-xdev
+			-amin
+			-anewer
+			-atime
+			-cmin
+			-cnewer
+			-ctime
+			-empty
+			-executable
+			-false
+			-fstype
+			-gid
+			-group
+			-ilname
+			-iname
+			-inum
+			-ipath
+			-iregex
+			-iwholename
+			-links
+			-lname
+			-mmin
+			-mtime
+			-name
+			-newer
+			-nogroup
+			-nouser
+			-path
+			-perm
+			-readable
+			-regex
+			-samefile
+			-size
+			-true
+			-type
+			-uid
+			-used
+			-user
+			-wholename
+			-writable
+			-xtype
+			-context
+			-delete
+			-exec
+			-execdir
+			-fls
+			-fprint
+			-fprint0
+			-fprintf
+			-ls
+			-ok
+			-okdir
+			-print
+			-print0
+			-printf
+			-prune
+			-quit
+		"
+	fi
+
+	if [[ $current == -* ]]; then
+		COMPREPLY=( $( compgen -W "$options" -- "$current" ) )
+		return
+	fi
+
+	# Default to directory completion for non-option arguments
+	COMPREPLY=( $( compgen -d -- "$current" ) )
 }
 
-complete -o default -F _find_completion find
-
-# ex: filetype=sh
+complete -o default -F _find_completion find ff fi_reg find_broken_links
