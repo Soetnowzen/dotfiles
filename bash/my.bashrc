@@ -1,6 +1,10 @@
 #!/bin/bash
 
 # set -o vi
+# Set up vi mode indicators with custom styling
+bind 'set vi-ins-mode-string "\1\e[6;30;42m\2 INS \1\e[0m\2"'
+bind 'set vi-cmd-mode-string "\1\e[6;30;41m\2 CMD \1\e[0m\2"'
+bind 'set show-mode-in-prompt on'
 # ctrl-k (until end), ctrl-u (until begin), ctrl-w (backward), ctrl-y (paste) - cutting and pasting text in the command line
 # ctrl-r search_term to search for previous command.
 # !! to perform last command in this position
@@ -32,7 +36,6 @@ source "$dotfiles_dir/scripts/watch_files.sh"
 PROMPT_COMMAND=_prompt
 CYAN="$(tput setaf 6)"
 RESET="$(tput sgr0)"
-PS1='| '"$CYAN"'Execution time $(bash_get_stop_time $ROOTPID)'"$RESET"'\n\$ '
 PS0='$(bash_get_start_time $ROOTPID)'
 # PS0='$(bash_get_start_time $ROOTPID) $ROOTPID experiments \[\033[00m\]\n'
 # PS0='\[\ePtmux;\e\e[2 q\e\\\]'
@@ -58,7 +61,9 @@ function _prompt()
 		running_jobs=$(echo "$jobs_output" | grep -c 'Running' 2>/dev/null | tr -d '[:space:]') || running_jobs=0
 	fi
 	: "${stopped_jobs:=0}" "${running_jobs:=0}"
-	"$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$stopped_jobs" "$running_jobs"
+	# Capture the prompt output and set PS1 with execution time
+	local prompt_line=$("$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$stopped_jobs" "$running_jobs")
+	PS1="${prompt_line}"$'\n'" \\[${CYAN}\\]⏱\$(bash_get_stop_time \$ROOTPID)\\[${RESET}\\] $ "
 	return $EXIT
 }
 

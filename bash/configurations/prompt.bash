@@ -1,17 +1,17 @@
 
-RED="$(tput setaf 1)"
-GREEN="$(tput setaf 2)"
-YELLOW="$(tput setaf 3)"
-BLUE="$(tput setaf 4)"
-MAGENTA="$(tput setaf 5)"
-CYAN="$(tput setaf 6)"
-WHITE="$(tput setaf 7)"
-ORANGE="$(tput setaf 9)"
-VIOLET="$(tput setaf 13)"
+RED="\\[$(tput setaf 1)\\]"
+GREEN="\\[$(tput setaf 2)\\]"
+YELLOW="\\[$(tput setaf 3)\\]"
+BLUE="\\[$(tput setaf 4)\\]"
+MAGENTA="\\[$(tput setaf 5)\\]"
+CYAN="\\[$(tput setaf 6)\\]"
+WHITE="\\[$(tput setaf 7)\\]"
+ORANGE="\\[$(tput setaf 9)\\]"
+VIOLET="\\[$(tput setaf 13)\\]"
 # BLACK="\\[$(tput setaf 16)\\]"
 # UNDERLINE="\\[$(tput smul)\\]"
 # EXIT_UNDERLINE="\\[$(tput rmul)\\]"
-RESET="$(tput sgr0)"
+RESET="\\[$(tput sgr0)\\]"
 
 function __prompt_command()
 {
@@ -75,7 +75,7 @@ function __prompt_command()
 		fi
 	fi
 
-	printf "%s]\\n" "$RESET"
+	printf "%s]" "$RESET"
 }
 
 function __smaller_path()
