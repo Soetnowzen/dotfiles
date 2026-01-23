@@ -17,7 +17,7 @@ issues_found=""
 # Helper function to add issues
 add_issue() {
     local file="$1"
-    local line="$2" 
+    local line="$2"
     local message="$3"
     issues_found+="${RED}$file${RESET}:${GREEN}$line${RESET} - $message\n"
     exit_code=1
@@ -118,7 +118,10 @@ echo "${BLUE}Checking for trailing whitespace...${RESET}"
 if git diff --cached --check >/dev/null 2>&1; then
     : # No trailing whitespace
 else
-    echo "${YELLOW}Warning: Trailing whitespace detected. Run 'git diff --cached --check' for details.${RESET}"
+    echo "${YELLOW}Warning: Trailing whitespace detected in the following files:${RESET}"
+    git diff --cached --check | while IFS=: read -r file line_info rest; do
+        echo "  ${RED}$file${RESET}:${GREEN}$line_info${RESET}"
+    done
     echo "You can fix this with: ${BLUE}git diff --cached --check | sed 's/:.*//g' | xargs sed -i 's/[[:space:]]*\$//'${RESET}"
 fi
 

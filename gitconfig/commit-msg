@@ -81,7 +81,7 @@ if [[ -n "$(echo "$body_lines" | tr -d '[:space:]')" ]]; then
     if [[ -n "$second_line" ]]; then
         errors+=("Second line should be empty (separate subject from body)")
     fi
-    
+
     # Check body line length
     while IFS= read -r line; do
         if [[ ${#line} -gt 72 ]]; then
@@ -98,7 +98,7 @@ if [[ ${#errors[@]} -gt 0 ]]; then
     for error in "${errors[@]}"; do
         echo "  ${YELLOW}•${RESET} $error"
     done
-    
+
     echo ""
     echo "${BLUE}📝 Good commit message format examples:${RESET}"
     echo "  ${GREEN}feat: add user authentication system${RESET}"
