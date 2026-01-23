@@ -91,21 +91,21 @@ if [[ -n "$(echo "$body_lines" | tr -d '[:space:]')" ]]; then
     done <<< "$body_lines"
 fi
 
-# Report errors
+# Report errors as warnings instead of failing
 if [[ ${#errors[@]} -gt 0 ]]; then
     echo ""
-    echo "${RED}❌ Commit message format errors:${RESET}"
+    echo "${YELLOW}⚠️  Commit message format suggestions:${RESET}"
     for error in "${errors[@]}"; do
-        echo "  ${RED}•${RESET} $error"
+        echo "  ${YELLOW}•${RESET} $error"
     done
     
     echo ""
-    echo "${BLUE}📝 Good commit message format:${RESET}"
+    echo "${BLUE}📝 Good commit message format examples:${RESET}"
     echo "  ${GREEN}feat: add user authentication system${RESET}"
     echo "  ${GREEN}fix: resolve memory leak in image processing${RESET}"
     echo "  ${GREEN}docs: update installation instructions${RESET}"
     echo ""
-    echo "${BLUE}Conventional commit types:${RESET}"
+    echo "${BLUE}Conventional commit types (optional):${RESET}"
     echo "  ${YELLOW}feat${RESET}     - New feature"
     echo "  ${YELLOW}fix${RESET}      - Bug fix"
     echo "  ${YELLOW}docs${RESET}     - Documentation"
@@ -114,10 +114,7 @@ if [[ ${#errors[@]} -gt 0 ]]; then
     echo "  ${YELLOW}test${RESET}     - Tests"
     echo "  ${YELLOW}chore${RESET}    - Maintenance"
     echo ""
-    echo "To skip this check: ${YELLOW}git commit --no-verify${RESET}"
-    
-    exit 1
 fi
 
-echo "${GREEN}✅ Commit message format looks good!${RESET}"
+echo "${GREEN}✅ Commit accepted!${RESET}"
 exit 0

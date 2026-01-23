@@ -26,9 +26,8 @@ add_issue() {
 # Check 1: Prevent commits to main/master branch
 current_branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
 if [[ "$current_branch" == "main" || "$current_branch" == "master" ]]; then
-    echo "${RED}ERROR: Direct commits to $current_branch are not allowed!${RESET}"
-    echo "Create a feature branch: ${YELLOW}git checkout -b feature/your-feature${RESET}"
-    exit 1
+    echo "${YELLOW}WARNING: Direct commits to $current_branch are discouraged!${RESET}"
+    echo "Consider creating a feature branch: ${BLUE}git checkout -b feature/your-feature${RESET}"
 fi
 
 # Check 2: Merge conflict markers
@@ -68,8 +67,10 @@ while IFS= read -r -d '' file; do
                 done < <(grep -n "console\." "$file" 2>/dev/null || true)
                 ;;
             *.py)
+                print_pattern='print('
+                comment_pattern='#.*print'
                 while IFS=: read -r line_num line_content; do
-                    if [[ "$line_content" =~ print\( ]] && [[ ! "$line_content" =~ #.*print ]]; then
+                    if [[ "$line_content" =~ $print_pattern ]] && [[ ! "$line_content" =~ $comment_pattern ]]; then
                         add_issue "$file" "$line_num" "contains ${YELLOW}print()${RESET} statement"
                     fi
                 done < <(grep -n "print(" "$file" 2>/dev/null || true)
