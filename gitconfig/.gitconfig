@@ -106,6 +106,9 @@
 	fb = !"git feature-branch"
 	feature-branch = "!feature_branch() { git checkout -b $1 origin/$(git branch-name); }; feature_branch"
 	feature-commits = !"git lg-color-format --oneline $(git rev-parse --abbrev-ref origin/HEAD)..HEAD"
+	feature-files = !"git lg-color-format --name-status $(git merge-base HEAD $(git default-branch))..HEAD"
+	feature-stats = !"git lg-color-format --stat $(git merge-base HEAD $(git default-branch))..HEAD"
+	feature-compact = !"git log --oneline --name-only $(git merge-base HEAD $(git default-branch))..HEAD"
 	file-log = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = !"git file-log"
