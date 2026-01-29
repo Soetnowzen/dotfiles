@@ -136,6 +136,8 @@
 	pr = pull --rebase
 	prb = pull --rebase origin main
 	ps = push
+	psf-bypass = "!FORCE_PUSH_BYPASS=true git push --force"
+	psfl = push --force-with-lease
 	psd = !"git push origin HEAD:refs/drafts/$(git branch-name)"
 	psdf = !"git push origin HEAD:refs/drafts/team_name/$(git branch-name)"
 	psf = !"git push origin HEAD:refs/for/$(git branch-name)"

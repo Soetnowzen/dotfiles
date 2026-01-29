@@ -45,11 +45,36 @@ while read local_ref local_sha remote_ref remote_sha; do
                 echo "Remote SHA: $remote_sha"
                 echo "Local SHA:  $local_sha"
                 echo ""
-                read -p "Are you sure you want to continue? (y/N): " -n 1 -r
-                echo
-                if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-                    echo "${GREEN}Push cancelled.${RESET}"
-                    exit 1
+
+                # Check if bypass is enabled via environment variable
+                if [[ "${FORCE_PUSH_BYPASS:-}" == "true" ]]; then
+                    echo "${BLUE}🚀 Bypassing confirmation due to FORCE_PUSH_BYPASS=true${RESET}"
+                elif [[ "${GIT_FORCE_CONFIRM:-}" == "false" ]]; then
+                    echo "${BLUE}🚀 Bypassing confirmation due to GIT_FORCE_CONFIRM=false${RESET}"
+                else
+                    echo "${BLUE}Safe alternatives to consider:${RESET}"
+                    echo "  • ${YELLOW}git push --force-with-lease${RESET} (safer force push)"
+                    echo "  • ${YELLOW}git revert <commit>${RESET} (create revert commit)"
+                    echo "  • ${YELLOW}git push origin +HEAD:$branch${RESET} (explicit force syntax)"
+                    echo ""
+                    echo "${BLUE}To bypass this prompt next time:${RESET}"
+                    echo "  • ${YELLOW}FORCE_PUSH_BYPASS=true git push --force${RESET}"
+                    echo "  • ${YELLOW}GIT_FORCE_CONFIRM=false git push --force${RESET}"
+                    echo ""
+
+                    # Try interactive confirmation
+                    if [[ -t 0 ]]; then
+                        read -p "Are you sure you want to continue? (y/N): " -n 1 -r
+                        echo
+                        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                            echo "${GREEN}Push cancelled.${RESET}"
+                            exit 1
+                        fi
+                    else
+                        echo "${RED}❌ Non-interactive terminal detected. Use environment variable to bypass:${RESET}"
+                        echo "  ${YELLOW}FORCE_PUSH_BYPASS=true git push --force${RESET}"
+                        exit 1
+                    fi
                 fi
             fi
         fi
