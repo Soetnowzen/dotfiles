@@ -144,6 +144,7 @@
 	psff = !"git push origin HEAD:refs/for/team_name/$(git branch-name)"
 	r = rebase
 	rc = rebase --continue
+	ro = !"git rebase origin/$(git default-branch)"
 	restore = checkout -m --
 	restore-previous = restore --source=HEAD~1
 	rh = "!reset_hard_function() { git reset HEAD~$1 --hard; }; reset_hard_function"
@@ -156,7 +157,7 @@
 	shs = show --stat
 	sl = stash list
 	sp = stash pop
-	squash = rebase -i origin/master
+	squash = !"git rebase -i origin/$(git default-branch)"
 	ss = status -s
 	st = stash
 	sts = stash show -p
