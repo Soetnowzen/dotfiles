@@ -1,0 +1,34 @@
+{
+    "name": "Dotfiles Test Environment",
+    "dockerFile": "Dockerfile",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "/bin/bash"
+                    },
+                    "zsh": {
+                        "path": "/usr/bin/zsh"
+                    },
+                    "tcsh": {
+                        "path": "/usr/bin/tcsh"
+                    }
+                }
+            },
+            "extensions": [
+                "ms-vscode.theme-solarized-dark"
+            ]
+        }
+    },
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/home/testuser/dotfiles,type=bind,consistency=cached"
+    ],
+    "remoteUser": "testuser",
+    "postCreateCommand": [
+        "bash", "-c",
+        "echo 'Setting up dotfiles test environment...' && cd /home/testuser/dotfiles && echo 'Dotfiles available at ~/dotfiles' && echo 'Available shells: bash, zsh, tcsh' && echo 'Run install.sh to test your dotfiles installation' && echo 'Ready for dotfiles testing!'"
+    ],
+    "workspaceFolder": "/home/testuser/dotfiles"
+}
