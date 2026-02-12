@@ -95,15 +95,23 @@ function display_time()
 function bash_get_start_time()
 {
 	# Use EPOCHREALTIME (Bash 5.0+) - no subprocess needed!
-	# Store as microseconds (remove the decimal point)
-	printf '%s' "${EPOCHREALTIME/./}" >"/dev/shm/${USER}.bashtime.${1}"
+	# Store as microseconds (strip non-digits to avoid locale decimal separators)
+	local now
+	now=${EPOCHREALTIME//[!0-9]/}
+	printf '%s' "$now" >"/dev/shm/${USER}.bashtime.${1}"
 }
 
 function bash_get_stop_time()
 {
-	local end_time=${EPOCHREALTIME/./}
+	local end_time
+	end_time=${EPOCHREALTIME//[!0-9]/}
 	local start_time
 	start_time=$(<"/dev/shm/${USER}.bashtime.${1}")
+	# Guard against missing/invalid start_time
+	if [[ -z $start_time || $start_time =~ [^0-9] ]]; then
+		printf '0ms'
+		return 0
+	fi
 	local elapsed_us=$((end_time - start_time))
 	display_time "$elapsed_us"
 }
