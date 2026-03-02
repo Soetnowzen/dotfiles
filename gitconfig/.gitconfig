@@ -99,6 +99,7 @@
 	default-branch = !"git rev-parse --abbrev-ref origin/HEAD | sed 's@origin/@@'"
 	deliver-branch = "!deliver_branch() { git merge --squash origin/$1; }; deliver_branch"
 	ds = diff --stat
+	dsm = !"git diff --stat $(git default-branch)..HEAD"
 	dt = difftool
 	dw = diff --word-diff
 	f = fetch
@@ -106,16 +107,15 @@
 	fb = !"git feature-branch"
 	feature-branch = "!feature_branch() { git checkout -b $1 origin/$(git branch-name); }; feature_branch"
 	feature-commits = !"git lg-color-format --oneline $(git rev-parse --abbrev-ref origin/HEAD)..HEAD"
+	feature-compact = !"git log --oneline --name-only $(git merge-base HEAD $(git default-branch))..HEAD"
 	feature-files = !"git lg-color-format --name-status $(git merge-base HEAD $(git default-branch))..HEAD"
 	feature-stats = !"git lg-color-format --stat $(git merge-base HEAD $(git default-branch))..HEAD"
-	feature-compact = !"git log --oneline --name-only $(git merge-base HEAD $(git default-branch))..HEAD"
 	file-log = log -u
 	files = diff-tree --no-commit-id --name-only -r
 	fl = !"git file-log"
 	head = rev-parse HEAD
 	la = "!git config -l | grep alias | cut -c 7-"
 	lg = !"git lg-all-remote"
-	lg8 = !"git lg-color-format --graph --abbrev-commit --decorate main {origin/team_name/,}$(git branch-name)"
 	lg-all-remote = !"git lg-color-format --decorate --graph --all --remotes"
 	lg-branch-commits = !"git lg-color-format $(git default-branch).."
 	lg-branch-name = !"git lg-graph-abbrev-commit $(git branch-name)"
@@ -124,6 +124,7 @@
 	lg-graph-abbrev-commit = !"git lg-color-format --graph --abbrev-commit --decorate"
 	lg-graph-all = !"git lg-color-format --graph --abbrev-commit --decorate --all"
 	lg-no-merges = !"git lg-color-format --no-merges"
+	lg8 = !"git lg-color-format --graph --abbrev-commit --decorate main {origin/team_name/,}$(git branch-name)"
 	ll = !"git lg-color-format --graph --decorate --numstat --all"
 	ll2 = !"git lg-color-format --graph --decorate --numstat"
 	ls = diff-tree --no-commit-id --name-only -r HEAD
@@ -136,18 +137,19 @@
 	pr = pull --rebase
 	prb = pull --rebase origin main
 	ps = push
-	psf-bypass = "!FORCE_PUSH_BYPASS=true git push --force"
-	psfl = push --force-with-lease
 	psd = !"git push origin HEAD:refs/drafts/$(git branch-name)"
 	psdf = !"git push origin HEAD:refs/drafts/team_name/$(git branch-name)"
 	psf = !"git push origin HEAD:refs/for/$(git branch-name)"
+	psf-bypass = "!FORCE_PUSH_BYPASS=true git push --force"
 	psff = !"git push origin HEAD:refs/for/team_name/$(git branch-name)"
+	psfl = push --force-with-lease
 	r = rebase
 	rc = rebase --continue
-	ro = !"git rebase origin/$(git default-branch)"
 	restore = checkout -m --
 	restore-previous = restore --source=HEAD~1
+	review-feature = !"git dsm"
 	rh = "!reset_hard_function() { git reset HEAD~$1 --hard; }; reset_hard_function"
+	ro = !"git rebase origin/$(git default-branch)"
 	root = rev-parse --show-toplevel
 	rs = "!reset_function() { git reset HEAD~$1; }; reset_function"
 	s = status
