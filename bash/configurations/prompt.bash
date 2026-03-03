@@ -271,16 +271,15 @@ function __git_modifications_prompt()
 	# Use --shortstat for efficient line counting
 	git_shortstat=$(git diff --shortstat 2> /dev/null)
 	if [[ ${git_shortstat} != "" ]]; then
-		printf " | lines:"
 		plus_lines=$(echo "$git_shortstat" | grep -oE '[0-9]+ insertion' | grep -oE '[0-9]+')
 		minus_lines=$(echo "$git_shortstat" | grep -oE '[0-9]+ deletion' | grep -oE '[0-9]+')
-		if [[ ${plus_lines} != "" ]]; then
-			printf " %s+%s" "$GREEN" "$plus_lines"
+		# Only show lines section if there are actual insertions or deletions
+		if [[ ${plus_lines} -gt 0 ]] || [[ ${minus_lines} -gt 0 ]]; then
+			printf " | lines:"
+			[[ ${plus_lines} -gt 0 ]] && printf " %s+%s" "$GREEN" "$plus_lines"
+			[[ ${minus_lines} -gt 0 ]] && printf " %s-%s" "$RED" "$minus_lines"
+			printf "%s" "$YELLOW"
 		fi
-		if [[ ${minus_lines} != "" ]]; then
-			printf " %s-%s" "$RED" "$minus_lines"
-		fi
-		printf "%s" "$YELLOW"
 	fi
 }
 
