@@ -100,6 +100,7 @@
 	deliver-branch = "!deliver_branch() { git merge --squash origin/$1; }; deliver_branch"
 	ds = diff --stat
 	dsm = !"git diff --stat $(git default-branch)..HEAD"
+	dsmf = !"git diff $(git default-branch)..HEAD -- "
 	dt = difftool
 	dw = diff --word-diff
 	f = fetch
