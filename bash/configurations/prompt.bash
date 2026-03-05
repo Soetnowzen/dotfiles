@@ -20,43 +20,52 @@ function __prompt_command()
 	local dirs_count="${args[1]}"
 	local stopped_jobs="${args[2]}"
 	local running_jobs="${args[3]}"
-	printf "[" # ]
 
-	# SSH indicator
+	# Check if we're in a worktree - if so, use multi-line
+	local is_worktree=false
+	if [[ $PWD =~ \.worktrees/ ]]; then
+		is_worktree=true
+	fi
+
+	# Start first line
+	printf "["
+
+	# Add indicators
 	__ssh_indicator
-
-	# Python virtual environment indicator
 	__python_venv_indicator
-
-	# Docker indicator
 	__docker_indicator
-
-	# Node.js indicator (only in Node projects)
 	__nodejs_indicator
 
 	# Time
 	printf "%s%s%s " "$CYAN" "$(date +%H:%M)" "$RESET"
-	# user@pc - use $USER and $HOSTNAME instead of subshells
+
+	# user@pc
 	if [[ $EXIT != 0 ]]; then
 		printf "%s" "$RED"
 	else
 		printf "%s" "$BLUE"
 	fi
 	printf "%s%s@%s%s%s " "$USER" "$RESET" "$BLUE" "${HOSTNAME:-$(hostname)}" "$RESET"
-	# Path - use $PWD instead of $(pwd)
-	printf "%s%s" "$GREEN" "$PWD"
-	# Read-only directory indicator
+
+	# Smart path display
+	__smart_path_display
 	__readonly_indicator
-	# __smaller_path
 	__count_dirs_stack "$dirs_count"
 	__count_jobs_stack "$stopped_jobs" "$running_jobs"
+	__count_worktrees
+
 	# Get current git branch
+	local branch
 	branch=$(__parse_git_branch)
-	if [[ ${branch} != "" ]]; then
+
+	# Always show git information if available, single line format
+	if [[ -n $branch ]]; then
 		printf "%s(%s" "$YELLOW" "$branch"
 		__git_prompt "$branch"
-		printf ")"
+		printf ")%s" "$RESET"
 	fi
+
+	# Add error information and final closing bracket
 	if [[ $EXIT != 0 ]]; then
 		if [[ $EXIT == 1 ]]; then
 			printf " %sCatchall for general errors (%sX)%s" "$RED" "$EXIT" "$RESET"
@@ -74,8 +83,30 @@ function __prompt_command()
 			printf " %sX%s%s" "$RED" "$EXIT" "$RESET"
 		fi
 	fi
-
 	printf "%s]" "$RESET"
+}
+
+function __smart_path_display()
+{
+	local current_path="$PWD"
+
+	# Check if we're in a worktree
+	if [[ $current_path =~ \.worktrees/ ]]; then
+		# Extract worktree name and make it more compact
+		local worktree_name
+		worktree_name=$(basename "$current_path")
+		local base_path
+		base_path=$(dirname "$(dirname "$current_path")")
+		local base_name
+		base_name=$(basename "$base_path")
+		printf "%s%s/…/%s" "$GREEN" "$base_name" "$worktree_name"
+	elif [[ ${#current_path} -gt 50 ]]; then
+		# Use compact path for very long paths
+		__smaller_path
+	else
+		# Use full path for normal cases
+		printf "%s%s" "$GREEN" "$current_path"
+	fi
 }
 
 function __smaller_path()
@@ -189,7 +220,7 @@ function __count_jobs_stack()
 {
 	local stopped_jobs="${1:-0}"
 	local running_jobs="${2:-0}"
-	
+
 	# Ensure integers
 	stopped_jobs=$((stopped_jobs + 0)) 2>/dev/null || stopped_jobs=0
 	running_jobs=$((running_jobs + 0)) 2>/dev/null || running_jobs=0
@@ -209,9 +240,31 @@ function __count_jobs_stack()
 	fi
 }
 
+function __count_worktrees()
+{
+	# Only show worktree count if we're in a git repository with multiple worktrees
+	if git rev-parse --git-dir >/dev/null 2>&1; then
+		local worktree_count
+		worktree_count=$(git worktree list --porcelain 2>/dev/null | grep -c '^worktree ' 2>/dev/null || echo "0")
+		if ((worktree_count > 1)); then
+			printf "[%s🌳 %s%s]" "$VIOLET" "$worktree_count" "$RESET"
+		fi
+	fi
+}
+
 function __parse_git_branch()
 {
-	git rev-parse --abbrev-ref HEAD 2> /dev/null
+	local branch_result
+	branch_result=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
+	# Temporary debug for worktrees - remove this later
+	if [[ $PWD =~ \.worktrees/ ]] && [[ -z $branch_result ]]; then
+		# Try alternative git commands for worktrees
+		branch_result=$(git branch --show-current 2> /dev/null)
+		if [[ -z $branch_result ]]; then
+			branch_result=$(git symbolic-ref --short HEAD 2> /dev/null)
+		fi
+	fi
+	echo "$branch_result"
 }
 
 function __git_prompt()
