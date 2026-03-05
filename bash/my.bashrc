@@ -32,6 +32,7 @@ source "$dotfiles_dir/scripts/tmux-session-saver.bash"
 # source "$dotfiles_dir/scripts/unmount_completion.bash"
 source "$dotfiles_dir/scripts/fg_completion.bash"
 source "$dotfiles_dir/scripts/watch_files.sh"
+source "$dotfiles_dir/scripts/worktree_navigation.bash"
 
 PROMPT_COMMAND=_prompt
 CYAN="$(tput setaf 6)"
