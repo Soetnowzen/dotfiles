@@ -21,7 +21,7 @@ help: ## Show this help message
 	@echo "Usage: make <target>"
 
 all: ## Install all dotfiles
-	@$(MAKE) bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf emacs keyboard
+	@$(MAKE) bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf emacs keyboard copilot
 
 install: all ## Alias for 'all'
 
@@ -123,6 +123,37 @@ keyboard: ## Install keyboard configuration
 	@echo "$(YELLOW)Installing keyboard config...$(RESET)"
 	@ln -fsn $(here)/keyboard/.my_keyboard $(HOME)/.my_keyboard
 	@echo "$(GREEN)✓ Keyboard config installed$(RESET)"
+
+copilot: ## Install GitHub Copilot CLI (gh + gh-copilot extension)
+	@echo "$(YELLOW)Installing GitHub Copilot CLI...$(RESET)"
+	@if ! command -v gh &>/dev/null; then \
+		echo "$(BLUE)Installing gh CLI...$(RESET)"; \
+		type -p curl >/dev/null || (sudo apt-get update && sudo apt-get install -y curl); \
+		curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg; \
+		sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg; \
+		echo "deb [arch=$$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null; \
+		sudo apt-get update && sudo apt-get install -y gh; \
+		echo "$(GREEN)✓ gh CLI installed$(RESET)"; \
+	else \
+		echo "$(GREEN)✓ gh CLI already present$(RESET)"; \
+	fi
+	@if command -v gh &>/dev/null; then \
+		if ! gh extension list 2>/dev/null | grep -q 'copilot'; then \
+			echo "$(BLUE)Installing gh-copilot extension...$(RESET)"; \
+			gh extension install github/gh-copilot; \
+			echo "$(GREEN)✓ gh-copilot extension installed$(RESET)"; \
+		else \
+			echo "$(GREEN)✓ gh-copilot extension already installed$(RESET)"; \
+		fi; \
+	else \
+		echo "$(YELLOW)⚠ gh CLI not available, skipping extension install$(RESET)"; \
+	fi
+	@if command -v gh &>/dev/null && ! gh auth status &>/dev/null; then \
+		echo "$(BLUE)Opening browser for GitHub authentication...$(RESET)"; \
+		gh auth login --web -h github.com --git-protocol https; \
+	else \
+		echo "$(GREEN)✓ Already authenticated with GitHub$(RESET)"; \
+	fi
 
 # Utility targets
 check: ## Check which configs are already installed
