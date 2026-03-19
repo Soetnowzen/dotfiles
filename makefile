@@ -21,9 +21,15 @@ help: ## Show this help message
 	@echo "Usage: make <target>"
 
 all: ## Install all dotfiles
-	@$(MAKE) bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf emacs keyboard copilot
+	@$(MAKE) bash vim vimperator git mintty tcsh tmux gdb input sumatra_pdf emacs keyboard htop
 
 install: all ## Alias for 'all'
+
+htop: ## Install htop configuration
+	@echo "$(YELLOW)Installing htop config...$(RESET)"
+	@mkdir -p $(HOME)/.config/htop
+	@ln -fsn $(here)/htop/htoprc $(HOME)/.config/htop/htoprc
+	@echo "$(GREEN)✓ htop config installed$(RESET)"
 
 bash: ## Install bash configuration
 	@echo "$(YELLOW)Installing bash config...$(RESET)"
