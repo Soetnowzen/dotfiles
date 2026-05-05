@@ -175,7 +175,7 @@ shopt -s histappend
 # apt install bat exa fd-find ripgrep
 # Modern CLI tool simple aliases (fixed to avoid infinite loops)
 if command -v batcat >/dev/null 2>&1; then
-	cat() { echo "batcat $*" >&2; command batcat "$@"; }
+	cat() { printf "batcat %s\n" "$(printf '%q ' "$@")"  >&2; command batcat "$@"; }
 	alias c='batcat'
 	echo "cat -> batcat"
 else
@@ -184,7 +184,7 @@ else
 fi
 
 if command -v fdfind >/dev/null 2>&1; then
-	find() { echo "fdfind $*" >&2; command fdfind "$@"; }
+	find() { printf "fdfind %s\n" "$(printf '%q ' "$@")"  >&2; command fdfind "$@"; }
 	echo "find -> fdfind"
 else
 	alias find='command find'
@@ -193,7 +193,7 @@ else
 fi
 
 if command -v rg >/dev/null 2>&1; then
-	grep() { echo "rg $*" >&2; command rg "$@"; }
+	grep() { printf "rg %s\n" "$(printf '%q ' "$@")"  >&2; command rg "$@"; }
 	echo "grep -> rg"
 else
 	alias grep='command grep --color'
@@ -206,7 +206,7 @@ alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\
 alias greprin='grep --color -Rin'
 
 if command -v exa >/dev/null 2>&1; then
-	ls() { echo "exa --group-directories-first --color=auto $*" >&2; command exa --group-directories-first --color=auto "$@"; }
+	ls() { printf "exa --group-directories-first --color=auto %s\n" "$(printf '%q ' "$@")"  >&2; command exa --group-directories-first --color=auto "$@"; }
 	alias ls-git='exa --git --group-directories-first --color=auto'
 	echo "ls -> exa --group-directories-first --color=auto"
 else
@@ -218,14 +218,14 @@ alias ll='la -l'
 alias l='ll'
 alias l_size='ll -S'
 alias :q='exit'
-apt-get() { echo "sudo apt-get $*" >&2; sudo apt-get "$@"; }
+apt-get() { printf "sudo apt-get %s\n" "$(printf '%q ' "$@")"  >&2; sudo apt-get "$@"; }
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bashr='vim ~/.bashrc'
 alias cl='clear &&'
 alias d='dirs -v'
-df() { echo "df -h $*" >&2; command df -h "$@"; }
+df() { printf "df -h %s\n" "$(printf '%q ' "$@")"  >&2; command df -h "$@"; }
 alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
@@ -236,9 +236,9 @@ alias gitr='vim ~/.gitconfig'
 alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
 alias h='history'
 alias j='jobs -l'
-less() { echo "less -r $*" >&2; command less -r "$@"; }
-mkdir() { echo "mkdir -pv $*" >&2; command mkdir -pv "$@"; }
-mount() { echo "mount $* | column -t" >&2; command mount "$@" | column -t; }
+less() { printf "less -r %s\n" "$(printf '%q ' "$@")"  >&2; command less -r "$@"; }
+mkdir() { printf "mkdir -pv %s\n" "$(printf '%q ' "$@")"  >&2; command mkdir -pv "$@"; }
+mount() { printf "mount %s | column -t\n" "$(printf '%q ' "$@")"  >&2; command mount "$@" | column -t; }
 alias o='popd'
 alias p='pushd'
 alias pd='pushd'
@@ -260,13 +260,13 @@ alias vimr='vim ~/.vimrc'
 alias vs='vim -o'
 alias vt='vim -p'
 alias vv='vim -O'
-wget() { echo "wget -c $*" >&2; command wget -c "$@"; }
+wget() { printf "wget -c %s\n" "$(printf '%q ' "$@")"  >&2; command wget -c "$@"; }
 
 # Safer rm with confirmation for files in certain directories
-rm() { echo "rm -I --preserve-root $*" >&2; command rm -I --preserve-root "$@"; }
-mv() { echo "mv -i $*" >&2; command mv -i "$@"; }
-cp() { echo "cp -i $*" >&2; command cp -i "$@"; }
-ln() { echo "ln -i $*" >&2; command ln -i "$@"; }
+rm() { printf "rm -I --preserve-root %s\n" "$(printf '%q ' "$@")"  >&2; command rm -I --preserve-root "$@"; }
+mv() { printf "mv -i %s\n" "$(printf '%q ' "$@")"  >&2; command mv -i "$@"; }
+cp() { printf "cp -i %s\n" "$(printf '%q ' "$@")"  >&2; command cp -i "$@"; }
+ln() { printf "ln -i %s\n" "$(printf '%q ' "$@")"  >&2; command ln -i "$@"; }
 
 # More comprehensive Docker aliases
 alias dc='docker-compose'
