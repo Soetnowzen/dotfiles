@@ -231,32 +231,40 @@ alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
 alias f='fg'
 _git_expand_alias() {
-	local subcmd="$1" seen="${2:-}"
-	# Guard against infinite alias loops
+	local subcmd="$1" seen="${2:-}" acc_args="${3:-}"
 	[[ "|$seen|" == *"|$subcmd|"* ]] && return
 	local expanded
 	expanded=$(command git config --get "alias.$subcmd" 2>/dev/null)
 	[[ -z "$expanded" ]] && return
 	seen+="|$subcmd"
+	local display_call="$subcmd${acc_args:+ $acc_args}"
 	if [[ "$expanded" == \!* ]]; then
 		local shell_cmd="${expanded#!}"
-		printf "  git %s -> %s\n" "$subcmd" "$shell_cmd" >&2
-		# Recurse if shell cmd is simply (")git <subcmd>...
-		if [[ "$shell_cmd" =~ ^\"?git[[:space:]]+([a-zA-Z_-]+) ]]; then
-			_git_expand_alias "${BASH_REMATCH[1]}" "$seen"
+		# Strip surrounding quotes git config may preserve
+		shell_cmd="${shell_cmd#\"}"; shell_cmd="${shell_cmd%\"}"
+		printf "  git %s -> %s\n" "$display_call" "$shell_cmd" >&2
+		# Recurse if shell cmd is simply: git <subcmd> [args...]
+		if [[ "$shell_cmd" =~ ^git[[:space:]]+([a-zA-Z_-]+)(.*) ]]; then
+			local next_args="${BASH_REMATCH[2]# }"
+			local combined="${next_args}${acc_args:+ $acc_args}"
+			_git_expand_alias "${BASH_REMATCH[1]}" "$seen" "${combined% }"
 		fi
 	else
-		local rest_args=""
-		[[ $# -gt 2 ]] && rest_args=" $(printf '%q ' "${@:3}")"
-		printf "  git %s -> git %s%s\n" "$subcmd" "$expanded" "$rest_args" >&2
 		local next="${expanded%% *}"
-		_git_expand_alias "$next" "$seen"
+		local expansion_args=""
+		[[ "$expanded" == *" "* ]] && expansion_args="${expanded#* }"
+		local full_cmd="$expanded${acc_args:+ $acc_args}"
+		printf "  git %s -> git %s\n" "$display_call" "$full_cmd" >&2
+		local combined="${expansion_args}${acc_args:+ $acc_args}"
+		_git_expand_alias "$next" "$seen" "${combined# }"
 	fi
 }
 git() {
 	local subcmd="${1:-}"
 	if [[ -n "$subcmd" ]]; then
-		_git_expand_alias "$subcmd" "" "${@:2}"
+		local user_args=""
+		[[ $# -gt 1 ]] && user_args="$(printf '%q ' "${@:2}")"
+		_git_expand_alias "$subcmd" "" "${user_args% }"
 	fi
 	command git "$@"
 }
