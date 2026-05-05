@@ -16,7 +16,7 @@ function _ls_completion()
 			return
 			;;
 		-s|--sort)
-			if command -v eza >/dev/null 2>&1; then
+			if command -v eza >/dev/null 2>&1 || command -v exa >/dev/null 2>&1; then
 				COMPREPLY=( $( compgen -W "name Name size time modified accessed created extension Extension type" -- "$current" ) )
 			else
 				COMPREPLY=( $( compgen -W "none time size version extension" -- "$current" ) )
@@ -36,9 +36,9 @@ function _ls_completion()
 
 	local options=""
 	
-	# Check if we're actually using eza
-	if command -v eza >/dev/null 2>&1; then
-		# eza options
+	# Check if we're actually using eza/exa
+	if command -v eza >/dev/null 2>&1 || command -v exa >/dev/null 2>&1; then
+		# eza/exa options
 		options="
 			-1 --oneline
 			-l --long

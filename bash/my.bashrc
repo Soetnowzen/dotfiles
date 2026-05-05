@@ -210,6 +210,10 @@ if command -v eza >/dev/null 2>&1; then
 	ls() { printf "eza --group-directories-first --color=auto %s\n" "$(printf '%q ' "$@")"  >&2; command eza --group-directories-first --color=auto "$@"; }
 	alias ls-git='eza --git --group-directories-first --color=auto'
 	echo "ls -> eza --group-directories-first --color=auto"
+elif command -v exa >/dev/null 2>&1; then
+	ls() { printf "exa --group-directories-first --color=auto %s\n" "$(printf '%q ' "$@")"  >&2; command exa --group-directories-first --color=auto "$@"; }
+	alias ls-git='exa --git --group-directories-first --color=auto'
+	echo "ls -> exa --group-directories-first --color=auto"
 else
 	alias ls='command ls -h -F --color --group-directories-first'
 fi
