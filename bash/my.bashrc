@@ -123,7 +123,7 @@ bash_get_start_time $ROOTPID
 
 function run_on_exit()
 {
-	rm -I "/dev/shm/${USER}.bashtime.${ROOTPID}"
+	command rm -I "/dev/shm/${USER}.bashtime.${ROOTPID}"
 }
 
 trap run_on_exit EXIT
@@ -198,6 +198,12 @@ if command -v rg >/dev/null 2>&1; then
 else
 	alias grep='command grep --color'
 fi
+alias grepbb='grep -Rin --color --include=*.bb'
+alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
+alias grepdir="grep '[^\\/]*$'"
+alias grepi='grep --color -i'
+alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
+alias greprin='grep --color -Rin'
 
 if command -v exa >/dev/null 2>&1; then
 	ls() { echo "exa --group-directories-first --color=auto $*" >&2; command exa --group-directories-first --color=auto "$@"; }
@@ -212,14 +218,14 @@ alias ll='la -l'
 alias l='ll'
 alias l_size='ll -S'
 alias :q='exit'
-alias apt-get='sudo apt-get'
+apt-get() { echo "sudo apt-get $*" >&2; sudo apt-get "$@"; }
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bashr='vim ~/.bashrc'
 alias cl='clear &&'
 alias d='dirs -v'
-alias df="df -h"
+df() { echo "df -h $*" >&2; command df -h "$@"; }
 alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
@@ -228,18 +234,11 @@ alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
 alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
-alias grep='grep --color'
-alias grepbb='grep -Rin --color --include=*.bb'
-alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
-alias grepdir="grep '[^\\/]*$'"
-alias grepi='grep --color -i'
-alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
-alias greprin='grep --color -Rin'
 alias h='history'
 alias j='jobs -l'
-alias less='less -r'
-alias mkdir='mkdir -pv'
-alias mount='mount | column -t'
+less() { echo "less -r $*" >&2; command less -r "$@"; }
+mkdir() { echo "mkdir -pv $*" >&2; command mkdir -pv "$@"; }
+mount() { echo "mount $* | column -t" >&2; command mount "$@" | column -t; }
 alias o='popd'
 alias p='pushd'
 alias pd='pushd'
@@ -261,13 +260,13 @@ alias vimr='vim ~/.vimrc'
 alias vs='vim -o'
 alias vt='vim -p'
 alias vv='vim -O'
-alias wget='wget -c'
+wget() { echo "wget -c $*" >&2; command wget -c "$@"; }
 
 # Safer rm with confirmation for files in certain directories
-alias rm='rm -I --preserve-root'
-alias mv='mv -i'
-alias cp='cp -i'
-alias ln='ln -i'
+rm() { echo "rm -I --preserve-root $*" >&2; command rm -I --preserve-root "$@"; }
+mv() { echo "mv -i $*" >&2; command mv -i "$@"; }
+cp() { echo "cp -i $*" >&2; command cp -i "$@"; }
+ln() { echo "ln -i $*" >&2; command ln -i "$@"; }
 
 # More comprehensive Docker aliases
 alias dc='docker-compose'
