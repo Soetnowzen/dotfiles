@@ -230,20 +230,33 @@ alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
 alias f='fg'
+_git_expand_alias() {
+	local subcmd="$1" seen="${2:-}"
+	# Guard against infinite alias loops
+	[[ "|$seen|" == *"|$subcmd|"* ]] && return
+	local expanded
+	expanded=$(command git config --get "alias.$subcmd" 2>/dev/null)
+	[[ -z "$expanded" ]] && return
+	seen+="|$subcmd"
+	if [[ "$expanded" == \!* ]]; then
+		local shell_cmd="${expanded#!}"
+		printf "  git %s -> %s\n" "$subcmd" "$shell_cmd" >&2
+		# Recurse if shell cmd is simply (")git <subcmd>...
+		if [[ "$shell_cmd" =~ ^\"?git[[:space:]]+([a-zA-Z_-]+) ]]; then
+			_git_expand_alias "${BASH_REMATCH[1]}" "$seen"
+		fi
+	else
+		local rest_args=""
+		[[ $# -gt 2 ]] && rest_args=" $(printf '%q ' "${@:3}")"
+		printf "  git %s -> git %s%s\n" "$subcmd" "$expanded" "$rest_args" >&2
+		local next="${expanded%% *}"
+		_git_expand_alias "$next" "$seen"
+	fi
+}
 git() {
 	local subcmd="${1:-}"
-	local expanded
 	if [[ -n "$subcmd" ]]; then
-		expanded=$(command git config --get "alias.$subcmd" 2>/dev/null)
-		if [[ -n "$expanded" ]]; then
-			if [[ "$expanded" == \!* ]]; then
-				printf "git %s -> %s\n" "$subcmd" "${expanded#!}" >&2
-			else
-				local rest_args=""
-				[[ $# -gt 1 ]] && rest_args=" $(printf '%q ' "${@:2}")"
-				printf "git %s -> git %s%s\n" "$subcmd" "$expanded" "$rest_args" >&2
-			fi
-		fi
+		_git_expand_alias "$subcmd" "" "${@:2}"
 	fi
 	command git "$@"
 }
