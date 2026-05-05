@@ -172,7 +172,8 @@ shopt -s histappend
 # Aliases
 # {
 # Modern alternatives (install if you don't have them)
-# apt install bat exa fd-find ripgrep
+# apt install bat eza fd-find ripgrep
+# Packages vs binaries: bat->batcat, eza->exa (eza provides both), fd-find->fdfind, ripgrep->rg
 # Modern CLI tool simple aliases (fixed to avoid infinite loops)
 if command -v batcat >/dev/null 2>&1; then
 	cat() { printf "batcat %s\n" "$(printf '%q ' "$@")"  >&2; command batcat "$@"; }

@@ -4,7 +4,7 @@
 sudo apt-get update && sudo apt-get install -y \
     bc \
     bat \
-    exa \
+    eza \
     fd-find \
     ripgrep \
     curl
@@ -14,7 +14,7 @@ ln -fsn ~/dotfiles/bash/my.bashrc ~/.bashrc
 ln -fsn ~/dotfiles/input/.inputrc ~/.inputrc
 
 echo "✓ Dotfiles installation complete!"
-echo "✓ Installed modern CLI tools: bat, exa, fd-find, ripgrep"
+echo "✓ Installed modern CLI tools: bat (batcat), eza (exa), fd-find (fdfind), ripgrep (rg)"
 echo "✓ Configured bash and input settings"
 echo ""
 echo "To enable GitHub Copilot CLI, run: make copilot"
