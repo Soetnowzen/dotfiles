@@ -85,6 +85,6 @@ function _ssh_completion()
 	COMPREPLY=( $( compgen -W "$hosts" -- "$current" ) )
 }
 
-complete -o default -F _ssh_completion ssh scp sftp
+complete -o default -o filenames -F _ssh_completion ssh scp sftp
 
-complete -o default -F _ssh_completion ssh
+complete -o default -o filenames -F _ssh_completion ssh

@@ -77,5 +77,5 @@ function _chown_completion()
 	fi
 }
 
-complete -o default -F _chown_completion chown
+complete -o default -o filenames -F _chown_completion chown
 

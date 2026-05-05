@@ -69,4 +69,4 @@ function _make_complete()
 	fi
 }
 
-complete -F _make_complete -o default make
+complete -F _make_complete -o default -o filenames make

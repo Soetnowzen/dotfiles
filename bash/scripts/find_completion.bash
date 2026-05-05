@@ -177,4 +177,4 @@ function _find_completion()
 	COMPREPLY=( $( compgen -d -- "$current" ) )
 }
 
-complete -o default -F _find_completion find ff fi_reg find_broken_links
+complete -o default -o filenames -F _find_completion find ff fi_reg find_broken_links

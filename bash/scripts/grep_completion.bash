@@ -208,4 +208,4 @@ function _grep_completion()
 	COMPREPLY=( $( compgen -f -- "$current" ) )
 }
 
-complete -o default -F _grep_completion grep grepi greprin grepbb grepc
+complete -o default -o filenames -F _grep_completion grep grepi greprin grepbb grepc

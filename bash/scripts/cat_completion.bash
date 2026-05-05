@@ -100,4 +100,4 @@ function _cat_completion()
 	COMPREPLY=( $( compgen -f -- "$current" ) )
 }
 
-complete -o default -F _cat_completion cat
+complete -o default -o filenames -F _cat_completion cat

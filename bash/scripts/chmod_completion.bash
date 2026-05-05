@@ -119,4 +119,4 @@ function _chmod_completion()
 	COMPREPLY=( $( compgen -f -- "$current" ) )
 }
 
-complete -o default -F _chmod_completion chmod
+complete -o default -o filenames -F _chmod_completion chmod

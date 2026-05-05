@@ -154,4 +154,4 @@ function _ls_completion()
 	COMPREPLY=( $( compgen -f -- "$current" ) )
 }
 
-complete -o default -F _ls_completion ls la ll l
+complete -o default -o filenames -F _ls_completion ls la ll l
