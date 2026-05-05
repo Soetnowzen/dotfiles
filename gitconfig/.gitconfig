@@ -158,6 +158,7 @@
 	sh = show
 	show-history = log --graph --oneline --decorate
 	shs = show --stat
+	sync = !"git fetch --all && git rebase origin/$(git default-branch)"
 	sl = stash list
 	sls = stash list --stat
 	sa = stash apply
