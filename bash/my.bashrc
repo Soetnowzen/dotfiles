@@ -272,8 +272,9 @@ alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
 alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
-alias h='history'
-alias j='jobs -l'
+h() { printf "history %s\n" "$(printf '%q ' "$@")" >&2; history "$@"; }
+j() { printf "jobs -l %s\n" "$(printf '%q ' "$@")" >&2; jobs -l "$@"; }
+alias d='dirs -v'
 less() { printf "less -r %s\n" "$(printf '%q ' "$@")"  >&2; command less -r "$@"; }
 mkdir() { printf "mkdir -pv %s\n" "$(printf '%q ' "$@")"  >&2; command mkdir -pv "$@"; }
 mount() { printf "mount %s | column -t\n" "$(printf '%q ' "$@")"  >&2; command mount "$@" | column -t; }
@@ -283,10 +284,10 @@ alias pd='pushd'
 alias po='popd'
 alias popdd='popd >/dev/null'
 alias print_path='echo $PATH | tr : "\n"'
-alias psu='ps u --forest'
+psu() { printf "ps u --forest %s\n" "$(printf '%q ' "$@")" >&2; command ps u --forest "$@"; }
 alias pushdd="pushd \$PWD > /dev/null"
 alias rmrf='rm -rf'
-alias t='tree'
+t() { printf "tree %s\n" "$(printf '%q ' "$@")" >&2; command tree "$@"; }
 alias tcshr='vim ~/.tcshrc'
 alias tm='tmux attach || tmux new'
 alias v-split='vim -o'
@@ -307,33 +308,35 @@ cp() { printf "cp -i %s\n" "$(printf '%q ' "$@")"  >&2; command cp -i "$@"; }
 ln() { printf "ln -i %s\n" "$(printf '%q ' "$@")"  >&2; command ln -i "$@"; }
 
 # More comprehensive Docker aliases
-alias dc='docker-compose'
-alias dps='docker ps --format "table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}"'
-alias dimg='docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedAt}}"'
-alias dlog='docker logs -f'
-alias dexec='docker exec -it'
-alias dclean='docker system prune -af && docker volume prune -f'
-alias docker_stop_all='docker stop $(docker ps -q)'
+dc() { printf "docker-compose %s\n" "$(printf '%q ' "$@")" >&2; command docker-compose "$@"; }
+dps() { printf 'docker ps --format ... %s\n' "$(printf '%q ' "$@")" >&2; command docker ps --format 'table {{.Names}}	{{.Image}}	{{.Status}}	{{.Ports}}' "$@"; }
+dimg() { printf 'docker images --format ... %s\n' "$(printf '%q ' "$@")" >&2; command docker images --format 'table {{.Repository}}	{{.Tag}}	{{.Size}}	{{.CreatedAt}}' "$@"; }
+dlog() { printf "docker logs -f %s\n" "$(printf '%q ' "$@")" >&2; command docker logs -f "$@"; }
+dexec() { printf "docker exec -it %s\n" "$(printf '%q ' "$@")" >&2; command docker exec -it "$@"; }
+dclean() { printf "docker system prune -af && docker volume prune -f\n" >&2; command docker system prune -af && command docker volume prune -f; }
+docker_stop_all() { printf "docker stop \$(docker ps -q)\n" >&2; command docker stop $(command docker ps -q); }
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='command find -L . -type l'
 
 # SSH with automatic agent forwarding
-alias ssha='ssh -A'
+ssha() { printf "ssh -A %s\n" "$(printf '%q ' "$@")" >&2; command ssh -A "$@"; }
 
 # Quick SSH config editing
 alias sshconfig='vim ~/.ssh/config'
 
 # Show SSH connections
-alias sshlist='ss -t state established "( dport = :22 or sport = :22 )"'
+sshlist() { printf "ss -t state established '( dport = :22 or sport = :22 )'\n" >&2; command ss -t state established '( dport = :22 or sport = :22 )'; }
 
 # Disk usage for current directory with human readable sizes
 function duh() {
-    du -h --max-depth=1 "$@" | sort -hr
+    printf "du -h --max-depth=1 %s | sort -hr\n" "$(printf '%q ' "$@")" >&2
+    command du -h --max-depth=1 "$@" | sort -hr
 }
 
 # Process monitoring
 function psgrep() {
-    ps aux | grep -v grep | grep -i "$@"
+    printf "ps aux | grep -v grep | grep -i %s\n" "$(printf '%q ' "$@")" >&2
+    command ps aux | command grep -v grep | command grep -i "$@"
 }
 
 # Network information
