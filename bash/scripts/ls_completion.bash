@@ -1,4 +1,4 @@
-# ls(1)/exa(1) completion                               -*- shell-script -*-
+# ls(1)/eza(1) completion                               -*- shell-script -*-
 
 function _ls_completion()
 {
@@ -10,13 +10,13 @@ function _ls_completion()
 		--help|--version|-v|-\?)
 			return
 			;;
-		# exa options with specific values
+		# eza options with specific values
 		--color|--colour)
 			COMPREPLY=( $( compgen -W "auto always never" -- "$current" ) )
 			return
 			;;
 		-s|--sort)
-			if command -v exa >/dev/null 2>&1; then
+			if command -v eza >/dev/null 2>&1; then
 				COMPREPLY=( $( compgen -W "name Name size time modified accessed created extension Extension type" -- "$current" ) )
 			else
 				COMPREPLY=( $( compgen -W "none time size version extension" -- "$current" ) )
@@ -36,9 +36,9 @@ function _ls_completion()
 
 	local options=""
 	
-	# Check if we're actually using exa
-	if command -v exa >/dev/null 2>&1; then
-		# exa options
+	# Check if we're actually using eza
+	if command -v eza >/dev/null 2>&1; then
+		# eza options
 		options="
 			-1 --oneline
 			-l --long

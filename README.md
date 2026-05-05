@@ -6,7 +6,7 @@ A comprehensive collection of configuration files for various tools and applicat
 
 ## ✨ Features
 
-- **Modern CLI Tools**: Integrated support for `bat`, `exa`, `fd`, `ripgrep`
+- **Modern CLI Tools**: Integrated support for `bat`, `eza`, `fd`, `ripgrep`
 - **Enhanced Vi Mode**: Comprehensive vi-mode navigation in bash and readline
 - **Git Integration**: Advanced git aliases and visual status indicators
 - **Cross-Platform**: Support for Linux, macOS, and Windows (WSL/MSYS2)
@@ -110,7 +110,7 @@ make install-hooks # Install git hooks to current repository
 - **History search** with arrow keys
 
 ### Git Integration
-- **Visual status indicators** in `exa` listings
+- **Visual status indicators** in `eza` listings
 - **Comprehensive aliases** (gs, gd, glog, etc.)
 - **Pre-commit hooks** for conflict prevention
 - **Enhanced diff and log formatting**
@@ -124,7 +124,7 @@ make install-hooks # Install git hooks to current repository
 
 ### Optional (for enhanced features)
 - `bat` - Syntax highlighting for cat
-- `exa` - Modern ls replacement  
+- `eza` - Modern ls replacement  
 - `fd` / `fdfind` - Fast find alternative
 - `ripgrep` (`rg`) - Fast text search
 - `vim` - Text editor
@@ -133,13 +133,13 @@ make install-hooks # Install git hooks to current repository
 ### Installation of Modern Tools
 ```bash
 # Ubuntu/Debian
-sudo apt install bat exa fd-find ripgrep
+sudo apt install bat eza fd-find ripgrep
 
 # macOS
-brew install bat exa fd ripgrep
+brew install bat eza fd ripgrep
 
 # Arch Linux  
-sudo pacman -S bat exa fd ripgrep
+sudo pacman -S bat eza fd ripgrep
 ```
 
 ## 🔧 Customization
@@ -164,7 +164,7 @@ marks           # List all bookmarks
 
 This dotfiles collection focuses on:
 - **Productivity**: Fast, efficient tools and workflows across bash and zsh
-- **Modern tooling**: Integration with contemporary CLI tools (`bat`, `exa`, `fd`, `ripgrep`)
+- **Modern tooling**: Integration with contemporary CLI tools (`bat`, `eza`, `fd`, `ripgrep`)
 - **Multi-shell support**: Comprehensive configurations for bash, zsh, tcsh
 - **Development ready**: IDE configurations (VS Code, Emacs, Vim) and debugging tools
 - **Safety**: Backup and uninstall options with status checking

@@ -173,7 +173,7 @@ shopt -s histappend
 # {
 # Modern alternatives (install if you don't have them)
 # apt install bat eza fd-find ripgrep
-# Packages vs binaries: bat->batcat, eza->exa (eza provides both), fd-find->fdfind, ripgrep->rg
+# Packages vs binaries: bat->batcat, eza (provides both eza and exa binaries), fd-find->fdfind, ripgrep->rg
 # Modern CLI tool simple aliases (fixed to avoid infinite loops)
 if command -v batcat >/dev/null 2>&1; then
 	cat() { printf "batcat %s\n" "$(printf '%q ' "$@")"  >&2; command batcat "$@"; }
@@ -206,10 +206,10 @@ alias grepi='grep --color -i'
 alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
 alias greprin='grep --color -Rin'
 
-if command -v exa >/dev/null 2>&1; then
-	ls() { printf "exa --group-directories-first --color=auto %s\n" "$(printf '%q ' "$@")"  >&2; command exa --group-directories-first --color=auto "$@"; }
-	alias ls-git='exa --git --group-directories-first --color=auto'
-	echo "ls -> exa --group-directories-first --color=auto"
+if command -v eza >/dev/null 2>&1; then
+	ls() { printf "eza --group-directories-first --color=auto %s\n" "$(printf '%q ' "$@")"  >&2; command eza --group-directories-first --color=auto "$@"; }
+	alias ls-git='eza --git --group-directories-first --color=auto'
+	echo "ls -> eza --group-directories-first --color=auto"
 else
 	alias ls='command ls -h -F --color --group-directories-first'
 fi
