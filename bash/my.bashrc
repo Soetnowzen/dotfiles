@@ -230,6 +230,23 @@ alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
 alias f='fg'
+git() {
+	local subcmd="${1:-}"
+	local expanded
+	if [[ -n "$subcmd" ]]; then
+		expanded=$(command git config --get "alias.$subcmd" 2>/dev/null)
+		if [[ -n "$expanded" ]]; then
+			if [[ "$expanded" == \!* ]]; then
+				printf "git %s -> %s\n" "$subcmd" "${expanded#!}" >&2
+			else
+				local rest_args=""
+				[[ $# -gt 1 ]] && rest_args=" $(printf '%q ' "${@:2}")"
+				printf "git %s -> git %s%s\n" "$subcmd" "$expanded" "$rest_args" >&2
+			fi
+		fi
+	fi
+	command git "$@"
+}
 alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
