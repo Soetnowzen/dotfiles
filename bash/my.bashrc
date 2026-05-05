@@ -289,16 +289,16 @@ alias pushdd="pushd \$PWD > /dev/null"
 alias rmrf='rm -rf'
 t() { printf "tree %s\n" "$(printf '%q ' "$@")" >&2; command tree "$@"; }
 alias tcshr='vim ~/.tcshrc'
-alias tm='tmux attach || tmux new'
-alias v-split='vim -o'
-alias v-tsplit='vim -p'
-alias v-vsplit='vim -O'
-alias v='vim -O'
-alias vd='vimdiff'
+tm() { if command tmux has-session 2>/dev/null; then printf "tmux attach\n" >&2; command tmux attach; else printf "tmux new\n" >&2; command tmux new; fi; }
+v-split()  { printf "vim -o %s\n"  "$(printf '%q ' "$@")" >&2; command vim -o  "$@"; }
+v-tsplit() { printf "vim -p %s\n"  "$(printf '%q ' "$@")" >&2; command vim -p  "$@"; }
+v-vsplit() { printf "vim -O %s\n"  "$(printf '%q ' "$@")" >&2; command vim -O  "$@"; }
+v()        { printf "vim -O %s\n"  "$(printf '%q ' "$@")" >&2; command vim -O  "$@"; }
+vd()       { printf "vimdiff %s\n" "$(printf '%q ' "$@")" >&2; command vimdiff  "$@"; }
 alias vimr='vim ~/.vimrc'
-alias vs='vim -o'
-alias vt='vim -p'
-alias vv='vim -O'
+vs()       { printf "vim -o %s\n"  "$(printf '%q ' "$@")" >&2; command vim -o  "$@"; }
+vt()       { printf "vim -p %s\n"  "$(printf '%q ' "$@")" >&2; command vim -p  "$@"; }
+vv()       { printf "vim -O %s\n"  "$(printf '%q ' "$@")" >&2; command vim -O  "$@"; }
 wget() { printf "wget -c %s\n" "$(printf '%q ' "$@")"  >&2; command wget -c "$@"; }
 
 # Safer rm with confirmation for files in certain directories
@@ -346,8 +346,8 @@ function myip() {
 }
 
 if [[ $UID != 0 ]]; then
-	alias reboot='sudo reboot'
-	alias update='sudo apt-get -y update && sudo apt-get -y upgrade'
+	reboot() { printf "sudo reboot\n" >&2; sudo reboot; }
+	update() { printf "sudo apt-get -y update && sudo apt-get -y upgrade\n" >&2; sudo apt-get -y update && sudo apt-get -y upgrade; }
 fi
 # }
 
