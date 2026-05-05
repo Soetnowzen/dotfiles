@@ -247,7 +247,10 @@ _git_expand_alias() {
 		local shell_cmd="${expanded#!}"
 		# Strip surrounding quotes git config may preserve
 		shell_cmd="${shell_cmd#\"}"; shell_cmd="${shell_cmd%\"}"
-		printf "  git %s -> %s\n" "$display_call" "$shell_cmd" >&2
+		# Expand $(…) subshells for display only (runs in subshell, no side effects on main commands)
+		local display_cmd
+		display_cmd=$(eval "printf '%s' \"${shell_cmd//\"/\\\"}\"" 2>/dev/null) || display_cmd="$shell_cmd"
+		printf "  git %s -> %s\n" "$display_call" "$display_cmd" >&2
 		# Recurse if shell cmd is simply: git <subcmd> [args...]
 		if [[ "$shell_cmd" =~ ^git[[:space:]]+([a-zA-Z_-]+)(.*) ]]; then
 			local next_args="${BASH_REMATCH[2]# }"
