@@ -175,32 +175,36 @@ shopt -s histappend
 # apt install bat exa fd-find ripgrep
 # Modern CLI tool simple aliases (fixed to avoid infinite loops)
 if command -v batcat >/dev/null 2>&1; then
-    alias cat='batcat'
+	cat() { echo "batcat $*" >&2; command batcat "$@"; }
 	alias c='batcat'
+	echo "cat -> batcat"
 else
-    alias cat='command cat'
+	alias cat='command cat'
 	alias c='cat -nv'
 fi
 
 if command -v fdfind >/dev/null 2>&1; then
-    alias find='fdfind'
+	find() { echo "fdfind $*" >&2; command fdfind "$@"; }
+	echo "find -> fdfind"
 else
-    alias find='command find'
+	alias find='command find'
 	alias ff='find . -type f -iname'
 	alias fi_reg="find . -type f -regex"
 fi
 
 if command -v rg >/dev/null 2>&1; then
-    alias grep='rg'
+	grep() { echo "rg $*" >&2; command rg "$@"; }
+	echo "grep -> rg"
 else
-    alias grep='command grep --color'
+	alias grep='command grep --color'
 fi
 
 if command -v exa >/dev/null 2>&1; then
-    alias ls='exa --group-directories-first --color=auto'
+	ls() { echo "exa --group-directories-first --color=auto $*" >&2; command exa --group-directories-first --color=auto "$@"; }
 	alias ls-git='exa --git --group-directories-first --color=auto'
+	echo "ls -> exa --group-directories-first --color=auto"
 else
-    alias ls='command ls -h -F --color --group-directories-first'
+	alias ls='command ls -h -F --color --group-directories-first'
 fi
 
 alias la='ls -a'
