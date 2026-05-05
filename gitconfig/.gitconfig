@@ -159,11 +159,17 @@
 	show-history = log --graph --oneline --decorate
 	shs = show --stat
 	sl = stash list
+	sls = stash list --stat
+	sa = stash apply
+	sd = stash drop
+	sda = !"git stash list | wc -l | xargs -I{} sh -c 'echo \"Drop all {} stashes? (y/N): \" && read ans && [ \"$ans\" = y ] && git stash clear && echo Cleared || echo Cancelled'"
+	sbr = stash branch
 	sp = stash pop
 	squash = !"git rebase -i origin/$(git default-branch)"
 	ss = status -s
 	st = stash
 	sts = stash show -p
+	stl = !"git stash list | while IFS= read -r line; do idx=$(echo \"$line\" | grep -o 'stash@{[0-9]*}'); msg=$(echo \"$line\" | sed 's/stash@{[0-9]*}: //'); files=$(git stash show \"$idx\" --stat 2>/dev/null | tail -1); printf \"%s  %s  [%s]\\n\" \"$idx\" \"$msg\" \"$files\"; done"
 	sw = show --word-diff
 	t = tag
 	theirs = checkout --theirs --
