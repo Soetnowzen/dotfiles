@@ -177,11 +177,11 @@ shopt -s histappend
 # Modern CLI tool simple aliases (fixed to avoid infinite loops)
 if command -v batcat >/dev/null 2>&1; then
 	cat() { printf "batcat %s\n" "$(printf '%q ' "$@")"  >&2; command batcat "$@"; }
-	alias c='batcat'
+	c() { printf "c %s\n" "$(printf '%q ' "$@")"  >&2; command batcat "$@"; }
 	echo "cat -> batcat"
 else
 	alias cat='command cat'
-	alias c='cat -nv'
+	c() { printf "c %s\n" "$(printf '%q ' "$@")"  >&2; command cat -nv "$@"; }
 fi
 
 if command -v fdfind >/dev/null 2>&1; then
