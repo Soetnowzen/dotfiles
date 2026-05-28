@@ -34,6 +34,7 @@ source "$dotfiles_dir/scripts/fg_completion.bash"
 source "$dotfiles_dir/scripts/watch_files.sh"
 source "$dotfiles_dir/scripts/worktree_navigation.bash"
 source "$dotfiles_dir/scripts/yarn_completion.bash"
+source "$dotfiles_dir/scripts/docker_completion.bash"
 source "$dotfiles_dir/scripts/copilot.bash"
 
 PROMPT_COMMAND=_prompt
@@ -742,3 +743,4 @@ function git-clone() {
 # Aliases for convenience
 alias gcl='git-clone'
 alias gclone='git-clone'
+export PATH="$HOME/.local/bin:$PATH"
