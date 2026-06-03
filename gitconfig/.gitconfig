@@ -119,6 +119,7 @@
 	lg = !"git lg-all-remote"
 	lg-all-remote = !"git lg-color-format --decorate --graph --all --remotes"
 	lg-branch-commits = !"git lg-color-format $(git default-branch).."
+	log-prime = !"git lg-color-format --graph --decorate origin/$(git default-branch)"
 	lg-branch-name = !"git lg-graph-abbrev-commit $(git branch-name)"
 	lg-color-format = log --format=format:"%C(red)%h\\ %C(yellow)%d%C(reset)%s%C(blue)[%an]%C(green)(%ai)%C(reset)"
 	lg-graph = !"git lg-color-format --decorate --graph"
