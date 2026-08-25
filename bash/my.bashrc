@@ -41,7 +41,10 @@ source "$dotfiles_dir/scripts/copilot.bash"
 # fork+exec'ing the script on every prompt.
 source "$dotfiles_dir/configurations/prompt.bash"
 
-PROMPT_COMMAND=_prompt
+# Array form, so tools that append to PROMPT_COMMAND (direnv, conda, atuin,
+# VS Code shell integration, ...) compose with the prompt instead of one
+# silently overwriting the other.
+PROMPT_COMMAND=(_prompt)
 CYAN="$(tput setaf 6)"
 RESET="$(tput sgr0)"
 # Stamp the command start time with zero forks: the arithmetic inside the array
@@ -52,6 +55,11 @@ PS0='${__PROMPT_NULL[__PROMPT_T0=${EPOCHREALTIME//[!0-9]/}]}'
 # Set to 0 to stop re-reading the whole history file on every prompt; history is
 # then only appended (much cheaper, but no live sharing between terminals).
 : "${BASH_SHARE_HISTORY:=1}"
+# Commands faster than this are not worth timing; showing "0ms" on every prompt
+# only drains the number of its signal. Set to 0 to always show it.
+: "${PROMPT_MIN_TIME_MS:=500}"
+# Keep $COLUMNS current so the prompt can size the path against the window.
+shopt -s checkwinsize
 
 function _prompt()
 {
@@ -59,10 +67,20 @@ function _prompt()
 	local EXIT="$?"
 
 	# Elapsed time of the command that just finished. Builtins only.
+	# Short commands render no timer segment at all.
 	if [[ -n ${__PROMPT_T0:-} ]]; then
 		local __now=${EPOCHREALTIME//[!0-9]/}
-		__format_duration __PROMPT_ELAPSED "$((__now - __PROMPT_T0))"
+		local __elapsed_us=$((__now - __PROMPT_T0))
 		unset -v __PROMPT_T0
+		__PROMPT_TIMER=""
+		if ((__elapsed_us / 1000 >= PROMPT_MIN_TIME_MS)); then
+			local __pretty
+			__format_duration __pretty "$__elapsed_us"
+			__PROMPT_TIMER="\\[${CYAN}\\]⏱${__pretty}\\[${RESET}\\] "
+		fi
+	else
+		# No command ran (bare Enter); do not leave a stale duration behind.
+		__PROMPT_TIMER=""
 	fi
 
 	# After each command, save (and optionally reload) history
@@ -88,9 +106,16 @@ function _prompt()
 	fi
 
 	__prompt_command "$EXIT" "$dirs_count" "$stopped_jobs" "$running_jobs"
-	PS1="${__PROMPT_OUT}"$'\n'" \\[${CYAN}\\]⏱${__PROMPT_ELAPSED:-0ms}\\[${RESET}\\] $ "
+	PS1="${__PROMPT_OUT}"$'\n'" ${__PROMPT_TIMER}${__PROMPT_SIGIL} "
 	return $EXIT
 }
+
+# "#" for root, "$" otherwise - the usual convention.
+if ((UID == 0)); then
+	__PROMPT_SIGIL="#"
+else
+	__PROMPT_SIGIL="\$"
+fi
 
 # Format microseconds into "1h 2m 3s 4ms" and store it in the named variable.
 function __format_duration()

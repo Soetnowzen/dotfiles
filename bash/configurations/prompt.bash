@@ -58,6 +58,10 @@ if [[ -z ${__PROMPT_STATIC_DONE:-} ]]; then
 		fi
 	fi
 
+	# Running as root looks identical to a normal shell otherwise.
+	__PROMPT_ROOT=""
+	((UID == 0)) && __PROMPT_ROOT="${RED}⚠ root${RESET} "
+
 	declare -gA __PROMPT_BASE_BRANCH=()
 	__PROMPT_NODE_PATH=""
 	__PROMPT_NODE_VER=""
@@ -75,6 +79,7 @@ function __prompt_command()
 	local now
 
 	p+="$__PROMPT_SSH"
+	p+="$__PROMPT_ROOT"
 	__python_venv_indicator
 	p+="$__PROMPT_DOCKER"
 	__nodejs_indicator
@@ -123,20 +128,33 @@ function __smart_path_display()
 {
 	local current_path="$PWD"
 
+	# ~ instead of spelling out $HOME.
+	if [[ -n ${HOME:-} && $current_path == "$HOME" ]]; then
+		current_path="~"
+	elif [[ -n ${HOME:-} && $current_path == "$HOME"/* ]]; then
+		current_path="~${current_path#"$HOME"}"
+	fi
+
+	# Truncate relative to the terminal width rather than a fixed column count.
+	# The rest of the prompt (time, user@host, git) needs room too, so the path
+	# gets at most half the line.
+	local max=${PROMPT_PATH_MAX:-$((${COLUMNS:-100} / 2))}
+	((max < 20)) && max=20
+
 	if [[ $current_path == *"/.worktrees/"* ]]; then
 		# <repo>/…/<worktree>, all with parameter expansion.
 		local worktree_name="${current_path##*/}"
 		local base_path="${current_path%/*}"
 		base_path="${base_path%/*}"
 		p+="${GREEN}${base_path##*/}/…/${worktree_name}"
-	elif ((${#current_path} > 50)); then
+	elif ((${#current_path} > max)); then
 		__smaller_path "$current_path"
 	else
 		p+="${GREEN}${current_path}"
 	fi
 }
 
-# /home/user/some/long/dir -> /h/u/s/dir
+# /home/user/some/long/dir -> /h/u/s/dir     ~/some/long/dir -> ~/s/l/dir
 function __smaller_path()
 {
 	local -a parts=()
@@ -147,10 +165,12 @@ function __smaller_path()
 
 	local last=$((${#parts[@]} - 1))
 	if ((last < 1)); then
-		p+="${GREEN}/"
+		p+="${GREEN}${parts[0]:-/}"
 		return 0
 	fi
-	local i new_path=""
+	# parts[0] is "" for an absolute path and "~" for a home-relative one; it is
+	# kept verbatim, the middle segments shrink to one character each.
+	local i new_path="${parts[0]}"
 	for ((i = 1; i < last; i++)); do
 		new_path+="/${parts[i]:0:1}"
 	done
@@ -256,15 +276,20 @@ function __git_prompt()
 
 	# One porcelain=v2 call replaces: rev-parse HEAD, status --porcelain,
 	# status -uno (branch tracking) and rev-list --count refs/stash.
+	# `command git` skips the interactive git() wrapper from my.bashrc, which
+	# would otherwise fork an extra `git config --get alias.status` per call
+	# (and print alias expansions into the prompt).
 	local status_out
-	status_out=$(git status --porcelain=v2 --branch --show-stash 2>/dev/null) || return 0
+	status_out=$(command git status --porcelain=v2 --branch --show-stash 2>/dev/null) || return 0
 
-	local line branch="" oid="" ahead=0 behind=0 stash=0 ab xy x y
+	local line branch="" oid="" upstream="" ahead=0 behind=0 stash=0 ab xy x y
 	local added=0 deleted=0 modified=0 renamed=0 unmerged=0 untracked=0
+	local worktree_dirty=0
 	while IFS= read -r line; do
 		case $line in
 		'# branch.head '*) branch="${line#\# branch.head }" ;;
 		'# branch.oid '*) oid="${line#\# branch.oid }" ;;
+		'# branch.upstream '*) upstream="${line#\# branch.upstream }" ;;
 		'# branch.ab '*)
 			ab="${line#\# branch.ab }"
 			ahead="${ab%% *}"
@@ -283,11 +308,18 @@ function __git_prompt()
 			[[ $x == D || $y == D ]] && ((deleted++))
 			[[ $x == M || $y == M ]] && ((modified++))
 			[[ $x == R || $x == C ]] && ((renamed++))
+			# Unstaged line counts can only be non-zero when the worktree side
+			# of the status code is dirty; used to skip `git diff --shortstat`.
+			[[ $y == M || $y == D ]] && worktree_dirty=1
 			;;
 		esac
 	done <<<"$status_out"
 
-	[[ $branch == "(detached)" ]] && branch="${oid:0:7}"
+	local detached=0
+	if [[ $branch == "(detached)" ]]; then
+		branch="${oid:0:7}"
+		detached=1
+	fi
 	[[ -z $branch ]] && return 0
 
 	__count_worktrees "$__git_dir"
@@ -296,8 +328,11 @@ function __git_prompt()
 	__git_operation_prompt "$__git_dir"
 	__git_tag_prompt
 	__git_file_counts "$added" "$deleted" "$modified" "$renamed" "$unmerged" "$untracked"
-	__git_line_counts
-	__git_commit_status "$ahead" "$behind"
+	# `git diff --shortstat` is the most expensive call in the prompt (~70ms in
+	# a 1.5k-file repo), and it can only report something when the worktree
+	# side of the status output was dirty.
+	((worktree_dirty)) && __git_line_counts
+	__git_commit_status "$ahead" "$behind" "$upstream" "$detached"
 	__git_feature_branch_commits "$__git_dir" "$branch"
 	((stash > 0)) && p+=" | ${ORANGE}stash: ${stash}${YELLOW}"
 	p+=")${RESET}"
@@ -354,7 +389,7 @@ function __git_tag_prompt()
 {
 	[[ ${PROMPT_SHOW_TAG:-1} == 1 ]] || return 0
 	local git_tag
-	git_tag=$(git tag -l --points-at HEAD 2>/dev/null)
+	git_tag=$(command git tag -l --points-at HEAD 2>/dev/null)
 	[[ -n $git_tag ]] && p+=" | ${WHITE}tag: ${git_tag}${YELLOW}"
 	return 0
 }
@@ -378,7 +413,7 @@ function __git_file_counts()
 function __git_line_counts()
 {
 	local shortstat
-	shortstat=$(git diff --shortstat 2>/dev/null)
+	shortstat=$(command git diff --shortstat 2>/dev/null)
 	[[ -z $shortstat ]] && return 0
 
 	# "1 file changed, 12 insertions(+), 3 deletions(-)" parsed with globs.
@@ -402,7 +437,15 @@ function __git_line_counts()
 
 function __git_commit_status()
 {
-	local ahead="$1" behind="$2"
+	local ahead="$1" behind="$2" upstream="$3" detached="${4:-0}"
+
+	# A branch with no upstream is exactly the state where a nudge helps: it has
+	# never been pushed, so nothing above can tell you how far it has drifted.
+	if [[ -z $upstream ]]; then
+		((detached)) || p+=" | ${ORANGE}no upstream${YELLOW}"
+		return 0
+	fi
+
 	((ahead || behind)) || return 0
 
 	p+=" | ${VIOLET}"
@@ -424,11 +467,11 @@ function __git_feature_branch_commits()
 	# Base branch discovery is several git calls; cache it per repository.
 	local base_branch="${__PROMPT_BASE_BRANCH[$git_dir]-}"
 	if [[ -z $base_branch ]]; then
-		base_branch=$(git rev-parse --abbrev-ref origin/HEAD 2>/dev/null)
+		base_branch=$(command git rev-parse --abbrev-ref origin/HEAD 2>/dev/null)
 		if [[ -z $base_branch || $base_branch == "origin/HEAD" ]]; then
 			local ref
 			for ref in master main develop; do
-				if git show-ref --verify --quiet "refs/heads/$ref"; then
+				if command git show-ref --verify --quiet "refs/heads/$ref"; then
 					base_branch="$ref"
 					break
 				fi
@@ -437,7 +480,7 @@ function __git_feature_branch_commits()
 		if [[ -z $base_branch ]]; then
 			local ref
 			for ref in master main develop; do
-				if git show-ref --verify --quiet "refs/remotes/origin/$ref"; then
+				if command git show-ref --verify --quiet "refs/remotes/origin/$ref"; then
 					base_branch="origin/$ref"
 					break
 				fi
@@ -450,7 +493,7 @@ function __git_feature_branch_commits()
 	[[ $current_branch == "${base_branch#origin/}" ]] && return 0
 
 	local counts
-	counts=$(git rev-list --left-right --count "${base_branch}...HEAD" 2>/dev/null)
+	counts=$(command git rev-list --left-right --count "${base_branch}...HEAD" 2>/dev/null)
 	[[ -z $counts ]] && return 0
 
 	local commits_behind commits_ahead
@@ -470,7 +513,7 @@ function __git_feature_branch_commits()
 # Run this after changing a repo's default branch or switching docker context.
 function prompt_refresh()
 {
-	unset -v __PROMPT_STATIC_DONE __PROMPT_SSH __PROMPT_DOCKER
+	unset -v __PROMPT_STATIC_DONE __PROMPT_SSH __PROMPT_DOCKER __PROMPT_ROOT
 	unset -v __PROMPT_NODE_PATH __PROMPT_NODE_VER
 	unset -v __PROMPT_BASE_BRANCH
 	source "${BASH_SOURCE[0]}"
