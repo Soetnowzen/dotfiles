@@ -37,38 +37,82 @@ source "$dotfiles_dir/scripts/yarn_completion.bash"
 source "$dotfiles_dir/scripts/docker_completion.bash"
 source "$dotfiles_dir/scripts/copilot.bash"
 
+# Sourced once; the prompt is then rendered by a function call instead of
+# fork+exec'ing the script on every prompt.
+source "$dotfiles_dir/configurations/prompt.bash"
+
 PROMPT_COMMAND=_prompt
 CYAN="$(tput setaf 6)"
 RESET="$(tput sgr0)"
-PS0='$(bash_get_start_time $ROOTPID)'
-# PS0='$(bash_get_start_time $ROOTPID) $ROOTPID experiments \[\033[00m\]\n'
+# Stamp the command start time with zero forks: the arithmetic inside the array
+# subscript performs the assignment, and ${__PROMPT_NULL[...]} expands to "".
+PS0='${__PROMPT_NULL[__PROMPT_T0=${EPOCHREALTIME//[!0-9]/}]}'
 # PS0='\[\ePtmux;\e\e[2 q\e\\\]'
+
+# Set to 0 to stop re-reading the whole history file on every prompt; history is
+# then only appended (much cheaper, but no live sharing between terminals).
+: "${BASH_SHARE_HISTORY:=1}"
 
 function _prompt()
 {
 	# This needs to be first
 	local EXIT="$?"
-	# After each command, save and reload history
-	history -a
-	history -c
-	history -r
-	# Count directory stack without subprocess
-	local dirs_arr
-	read -ra dirs_arr <<< "$(dirs -p)"
-	local dirs_count=${#dirs_arr[@]}
-	# Count stopped and running jobs separately
-	local jobs_output
-	jobs_output=$(jobs 2>/dev/null)
-	local stopped_jobs=0 running_jobs=0
-	if [[ -n $jobs_output ]]; then
-		stopped_jobs=$(echo "$jobs_output" | grep -c 'Stopped' 2>/dev/null | tr -d '[:space:]') || stopped_jobs=0
-		running_jobs=$(echo "$jobs_output" | grep -c 'Running' 2>/dev/null | tr -d '[:space:]') || running_jobs=0
+
+	# Elapsed time of the command that just finished. Builtins only.
+	if [[ -n ${__PROMPT_T0:-} ]]; then
+		local __now=${EPOCHREALTIME//[!0-9]/}
+		__format_duration __PROMPT_ELAPSED "$((__now - __PROMPT_T0))"
+		unset -v __PROMPT_T0
 	fi
-	: "${stopped_jobs:=0}" "${running_jobs:=0}"
-	# Capture the prompt output and set PS1 with execution time
-	local prompt_line=$("$dotfiles_dir/configurations/prompt.bash" "$EXIT" "$dirs_count" "$stopped_jobs" "$running_jobs")
-	PS1="${prompt_line}"$'\n'" \\[${CYAN}\\]⏱\$(bash_get_stop_time \$ROOTPID)\\[${RESET}\\] $ "
+
+	# After each command, save (and optionally reload) history
+	history -a
+	if [[ $BASH_SHARE_HISTORY == 1 ]]; then
+		history -c
+		history -r
+	fi
+
+	# Directory stack size, straight from the shell's own array
+	local dirs_count=${#DIRSTACK[@]}
+
+	# Count stopped and running jobs in one pass (one subshell instead of five)
+	local stopped_jobs=0 running_jobs=0 jobs_output line
+	jobs_output=$(jobs 2>/dev/null)
+	if [[ -n $jobs_output ]]; then
+		while IFS= read -r line; do
+			case $line in
+			*Stopped*) ((stopped_jobs++)) ;;
+			*Running*) ((running_jobs++)) ;;
+			esac
+		done <<< "$jobs_output"
+	fi
+
+	__prompt_command "$EXIT" "$dirs_count" "$stopped_jobs" "$running_jobs"
+	PS1="${__PROMPT_OUT}"$'\n'" \\[${CYAN}\\]⏱${__PROMPT_ELAPSED:-0ms}\\[${RESET}\\] $ "
 	return $EXIT
+}
+
+# Format microseconds into "1h 2m 3s 4ms" and store it in the named variable.
+function __format_duration()
+{
+	local __var=$1
+	local total_ms=$(($2 / 1000))
+
+	local days=$((total_ms / 86400000))
+	local hours=$((total_ms % 86400000 / 3600000))
+	local minutes=$((total_ms % 3600000 / 60000))
+	local seconds=$((total_ms % 60000 / 1000))
+	local milliseconds=$((total_ms % 1000))
+
+	local readable_time=""
+	((days > 0)) && readable_time+="${days}d "
+	((hours > 0)) && readable_time+="${hours}h "
+	((minutes > 0)) && readable_time+="${minutes}m "
+	if ((seconds > 0 || minutes > 0 || hours > 0 || days > 0)); then
+		readable_time+="${seconds}s "
+	fi
+	readable_time+="${milliseconds}ms"
+	printf -v "$__var" '%s' "$readable_time"
 }
 
 function display_time()
@@ -96,39 +140,9 @@ function display_time()
 	printf '%s' "$readable_time"
 }
 
-function bash_get_start_time()
-{
-	# Use EPOCHREALTIME (Bash 5.0+) - no subprocess needed!
-	# Store as microseconds (strip non-digits to avoid locale decimal separators)
-	local now
-	now=${EPOCHREALTIME//[!0-9]/}
-	printf '%s' "$now" >"/dev/shm/${USER}.bashtime.${1}"
-}
-
-function bash_get_stop_time()
-{
-	local end_time
-	end_time=${EPOCHREALTIME//[!0-9]/}
-	local start_time
-	start_time=$(<"/dev/shm/${USER}.bashtime.${1}")
-	# Guard against missing/invalid start_time
-	if [[ -z $start_time || $start_time =~ [^0-9] ]]; then
-		printf '0ms'
-		return 0
-	fi
-	local elapsed_us=$((end_time - start_time))
-	display_time "$elapsed_us"
-}
-
+# Command timing lives entirely in shell variables now (see PS0 and _prompt);
+# no /dev/shm file, no exit trap, no subshell per prompt redraw.
 ROOTPID=$BASHPID
-bash_get_start_time $ROOTPID
-
-function run_on_exit()
-{
-	command rm -I "/dev/shm/${USER}.bashtime.${ROOTPID}"
-}
-
-trap run_on_exit EXIT
 
 # Shell options
 # {
