@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
-# Detect terminal background color via OSC 11 and apply matching Solarized theme to tmux.
-# Works inside tmux by using the DCS passthrough sequence.
+# Apply a Solarized dark/light tmux theme matching the terminal background.
+#
+# Usage: apply-theme.sh [light|dark|auto]   (default: auto)
+#
+# auto resolves in this order:
+#   1. $TMUX_THEME, if set to light/dark  — explicit override
+#   2. OSC 11 query of the terminal background — needs a real tty, so this
+#      only works when run from an interactive shell, NOT from tmux
+#      run-shell (the server process has no controlling terminal)
+#   3. Time of day — light between $TMUX_LIGHT_START and $TMUX_LIGHT_END
 
-detect_is_light() {
+LIGHT_START=${TMUX_LIGHT_START:-7}   # inclusive
+LIGHT_END=${TMUX_LIGHT_END:-18}      # exclusive
+
+detect_by_osc11() {
     local response="" old_stty char
 
-    old_stty=$(stty -g < /dev/tty 2>/dev/null) || return 1
-    stty raw -echo min 0 time 2 < /dev/tty 2>/dev/null
+    old_stty=$(stty -g < /dev/tty 2>/dev/null) || return 2
+    stty raw -echo min 0 time 2 < /dev/tty 2>/dev/null || return 2
 
     if [ -n "$TMUX" ]; then
         # DCS passthrough: doubles the leading ESC so the outer terminal sees it
@@ -15,26 +26,47 @@ detect_is_light() {
         printf '\033]11;?\007' > /dev/tty
     fi
 
-    # Read until BEL or ST (ESC \) with per-char 0.5 s bash timeout
-    while IFS= read -r -n 1 -t 0.5 char < /dev/tty 2>/dev/null; do
+    # Read until BEL or ST (ESC \) with per-char timeout
+    while IFS= read -r -n 1 -t 0.2 char < /dev/tty 2>/dev/null; do
         response+="$char"
-        [[ "$response" == *$'\a'*       ]] && break
-        [[ "$response" == *$'\033\\'*   ]] && break
+        [[ "$response" == *$'\a'*     ]] && break
+        [[ "$response" == *$'\033\\'* ]] && break
     done
 
     stty "$old_stty" < /dev/tty 2>/dev/null
 
-    # Parse rgb:RRRR/GGGG/BBBB  (4-digit 16-bit hex per channel)
+    # Parse rgb:RRRR/GGGG/BBBB (4-digit 16-bit hex per channel)
     if [[ "$response" =~ rgb:([0-9a-fA-F]+)/([0-9a-fA-F]+)/([0-9a-fA-F]+) ]]; then
         local r=$((16#${BASH_REMATCH[1]:0:2}))
         local g=$((16#${BASH_REMATCH[2]:0:2}))
         local b=$((16#${BASH_REMATCH[3]:0:2}))
         local lum=$(( (r * 299 + g * 587 + b * 114) / 1000 ))
-        [ "$lum" -gt 127 ]
-        return $?
+        [ "$lum" -gt 127 ] && echo light || echo dark
+        return 0
     fi
 
-    return 1  # Unknown — fall back to dark
+    return 2  # no usable response
+}
+
+detect_by_clock() {
+    local hour=$((10#$(date +%H)))
+    if [ "$hour" -ge "$LIGHT_START" ] && [ "$hour" -lt "$LIGHT_END" ]; then
+        echo light
+    else
+        echo dark
+    fi
+}
+
+resolve_theme() {
+    case "${1:-auto}" in
+        light|dark) echo "$1"; return ;;
+    esac
+
+    case "$TMUX_THEME" in
+        light|dark) echo "$TMUX_THEME"; return ;;
+    esac
+
+    detect_by_osc11 || detect_by_clock
 }
 
 apply_dark() {
@@ -59,11 +91,14 @@ apply_light() {
     tmux set -g message-command-style       "fg=#268bd2,bg=#eee8d5"
     tmux set -g mode-style                  "bg=#b58900,fg=#fdf6e3"
     tmux set -g pane-active-border-style    "fg=#268bd2"
-    tmux set -g pane-border-style           "fg=#eee8d5"
+    tmux set -g pane-border-style           "fg=#93a1a1"
     tmux setenv -g TERM_THEME light
 }
 
-if detect_is_light; then
+# Nothing to style if no server is running
+tmux has-session 2>/dev/null || exit 0
+
+if [ "$(resolve_theme "$1")" = light ]; then
     apply_light
 else
     apply_dark

@@ -338,7 +338,18 @@ alias pushdd="pushd \$PWD > /dev/null"
 alias rmrf='rm -rf'
 t() { printf "tree %s\n" "$(printf '%q ' "$@")" >&2; command tree "$@"; }
 alias tcshr='vim ~/.tcshrc'
-tm() { if command tmux has-session 2>/dev/null; then printf "tmux attach\n" >&2; command tmux attach; else printf "tmux new\n" >&2; command tmux new; fi; }
+# Theme is resolved here, not in tmux.conf: run-shell executes in the tmux
+# server, which has no controlling tty, so the OSC 11 query always fails there.
+tm() {
+  if command tmux has-session 2>/dev/null; then
+    printf "tmux attach\n" >&2
+  else
+    printf "tmux new\n" >&2
+    command tmux new-session -d
+  fi
+  ~/dotfiles/tmux/apply-theme.sh
+  command tmux attach
+}
 v-split()  { printf "vim -o %s\n"  "$(printf '%q ' "$@")" >&2; command vim -o  "$@"; }
 v-tsplit() { printf "vim -p %s\n"  "$(printf '%q ' "$@")" >&2; command vim -p  "$@"; }
 v-vsplit() { printf "vim -O %s\n"  "$(printf '%q ' "$@")" >&2; command vim -O  "$@"; }
