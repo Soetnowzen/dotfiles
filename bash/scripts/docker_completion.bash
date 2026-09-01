@@ -409,3 +409,54 @@ function _dstart_completion()
 	COMPREPLY=( $( compgen -W "$prev_folders" -- "$current" ) )
 }
 complete -F _dstart_completion dstart
+
+# dstop: stop a devcontainer — uses current repo, or a path from tab completion
+function dstop()
+{
+	local repo_root
+	if [[ -n "${1:-}" ]]; then
+		repo_root="$1"
+	else
+		repo_root=$(git rev-parse --show-toplevel 2>/dev/null)
+	fi
+
+	if [[ -z "$repo_root" ]]; then
+		echo "dstop: not inside a git repository and no path given" >&2
+		return 1
+	fi
+
+	if [[ ! -d "$repo_root/.devcontainer" ]]; then
+		echo "dstop: no .devcontainer found in $repo_root" >&2
+		return 1
+	fi
+
+	# The devcontainer CLI has no stop/down command, so drive docker directly either way.
+	local json clean service
+	if json=$(_devcontainer_json_path "$repo_root"); then
+		clean=$(_devcontainer_json_clean "$json") || {
+			echo "dstop: failed to parse $json" >&2
+			return 1
+		}
+		service=$(jq -r '.service // empty' <<<"$clean")
+	fi
+
+	if [[ -n "$service" ]]; then
+		local project compose_args=()
+		project=$(_devcontainer_compose_project "$repo_root")
+		mapfile -t compose_args < <(_devcontainer_compose_file_args "$json" "$clean")
+		printf "docker compose %s -p %s stop\n" "${compose_args[*]}" "$project" >&2
+		command docker compose "${compose_args[@]}" -p "$project" stop
+		return
+	fi
+
+	local container_ids=()
+	mapfile -t container_ids < <(command docker ps -q --filter "label=devcontainer.local_folder=$repo_root" 2>/dev/null)
+	if [[ ${#container_ids[@]} -eq 0 ]]; then
+		echo "dstop: no running devcontainer for $repo_root" >&2
+		return 0
+	fi
+
+	printf "docker stop %s\n" "${container_ids[*]}" >&2
+	command docker stop "${container_ids[@]}"
+}
+complete -F _dstart_completion dstop
