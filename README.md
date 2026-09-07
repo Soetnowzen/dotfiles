@@ -16,7 +16,7 @@ A comprehensive collection of configuration files for various tools and applicat
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+git clone https://github.com/Soetnowzen/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 
 # Install essential configurations
@@ -29,21 +29,21 @@ make all
 ## 📦 What's Included
 
 ### Core Configurations
-- **Bash** (`bash/`) - Enhanced shell with modern CLI tools, improved history, and productivity aliases
-- **Zsh** (`myzsh/`) - Modern Z shell configuration with advanced prompt and completions
-- **Vim** (`vim/`) - Feature-rich vim configuration with syntax highlighting and plugins
-- **Git** (`gitconfig/`) - Advanced git configuration with aliases and hooks
-- **Tmux** (`tmux/`) - Terminal multiplexer configuration
+- **Bash** ([`bash/`](bash/README.md)) - Enhanced shell with modern CLI tools, improved history, and productivity aliases
+- **Zsh** ([`myzsh/`](myzsh/README.md)) - Modular Z shell configuration with a custom prompt and completions
+- **Vim** ([`vim/`](vim/README.md)) - Vim configuration with syntax highlighting and Vundle-managed plugins
+- **Git** ([`gitconfig/`](gitconfig/README.md)) - Git configuration with aliases and template hooks
+- **Tmux** ([`tmux/`](tmux/README.md)) - Terminal multiplexer configuration and automatic theme selection
 - **Input** (`input/`) - Readline configuration with vi-mode enhancements
 
 ### Development Tools
 - **GDB** (`gdb/`) - Debugger configuration with Python support
-- **Emacs** (`emacs/`) - Comprehensive Emacs configuration with packages
+- **Emacs** ([`emacs/`](emacs/README.md)) - Modular Emacs configuration with package bootstrapping
 - **VS Code** (`vscode/`) - Visual Studio Code settings and preferences
 - **DevContainers** (`.devcontainer/`) - Development container configurations
 
 ### Platform-Specific
-- **PowerShell** (`PowerShell/`) - PowerShell profile and Solarized color schemes
+- **PowerShell** ([`PowerShell/`](PowerShell/README.md)) - Windows Console color assets and their current status
 - **Mintty** (`mintty/`) - Terminal emulator configuration for Windows
 - **SumatraPDF** (`sumatra_pdf/`) - PDF viewer configuration for Windows
 - **Vimperator** (`vimperator/`) - Firefox extension configuration
@@ -61,11 +61,15 @@ make all
 make essential  # Installs bash, vim, git, tmux, input
 ```
 
-### Complete Installation
+### Standard Installation Set
 ```bash
-make all        # Install all available configurations
+make all        # Install the standard set of configurations
 make install    # Alias for 'all'
 ```
+
+Zsh, PowerShell, VS Code, and other configurations without Make targets require
+manual setup; see their directories for details. Optional targets such as
+`make copilot` are not included in `make all`.
 
 ### Individual Components
 ```bash
