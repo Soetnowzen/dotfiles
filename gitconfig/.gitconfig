@@ -99,8 +99,8 @@
 	default-branch = !"git rev-parse --abbrev-ref origin/HEAD | sed 's@origin/@@'"
 	deliver-branch = "!deliver_branch() { git merge --squash origin/$1; }; deliver_branch"
 	ds = diff --stat
-	dsm = !"git diff --stat $(git default-branch)..HEAD"
-	dsmf = !"git diff $(git default-branch)..HEAD -- "
+	dsm = !"git diff --stat origin/$(git default-branch)...HEAD"
+	dsmf = "!f() { git diff origin/$(git default-branch)...HEAD -- \"$@\"; }; f"
 	dt = difftool
 	dw = diff --word-diff
 	f = fetch
@@ -149,7 +149,9 @@
 	rc = rebase --continue
 	restore = checkout -m --
 	restore-previous = restore --source=HEAD~1
+	review = dsm
 	review-feature = !"git dsm"
+	review-files = dsmf
 	rh = "!reset_hard_function() { git reset HEAD~$1 --hard; }; reset_hard_function"
 	ro = !"git rebase origin/$(git default-branch)"
 	root = rev-parse --show-toplevel
