@@ -442,16 +442,21 @@ function marks() {
 
 function most_used_cmd() {
 	# Show most used commands with bar chart
-	history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' \
-		| grep -v "^[0-9.]*% $" \
-		| sort -nr \
-		| head -10 \
-		| awk '{printf "%-20s %3d (%.1f%%)\n", $3, $1, $2}'
+	HISTTIMEFORMAT= builtin history \
+		| command awk '{CMD[$2]++; count++} END {for (cmd in CMD) printf "%d %.1f %s\n", CMD[cmd], CMD[cmd] / count * 100, cmd}' \
+		| command sort -nr \
+		| command head -10 \
+		| command awk '{printf "%-20s %3d (%.1f%%)\n", $3, $1, $2}'
 }
 
 function most_used_cmd_with_args() {
 	# Show most used command combinations
-	history | awk '{$1=""; print substr($0,2)}' | sort | uniq -c | sort -nr | head -10
+	HISTTIMEFORMAT= builtin history \
+		| command awk '{$1=""; print substr($0, 2)}' \
+		| command sort \
+		| command uniq -c \
+		| command sort -nr \
+		| command head -10
 }
 
 function mcd()
