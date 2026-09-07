@@ -123,9 +123,15 @@ watch_files 'make test' src/example.c tests/example_test.c
 
 | Path | Purpose |
 | --- | --- |
-| `my.bashrc` | Main configuration, aliases, functions, and shell options |
+| `my.bashrc` | Main configuration, aliases, prompt lifecycle, and shell options |
 | `configurations/prompt.bash` | Prompt renderer and Git status collection |
-| `scripts/` | Completions and focused workflow helpers |
+| `scripts/command_wrappers.bash` | Modern CLI substitutions and guarded command wrappers |
+| `scripts/docker_helpers.bash` | Short Docker inspection and maintenance commands |
+| `scripts/git_helpers.bash` | Git alias tracing and configured clone workflow |
+| `scripts/search_helpers.bash` | Repository search and interactive replacement helpers |
+| `scripts/shell_helpers.bash` | Directory, history, process, Python, and timer helpers |
+| `scripts/terminal_helpers.bash` | Tail highlighting and terminal color tables |
+| `scripts/*_completion.bash` | Command-specific completion definitions |
 | `solarized-dark.reg` | Solarized Dark colors for the Windows Console registry |
 
 ## PuTTY color setup

@@ -212,266 +212,50 @@ shopt -s histappend
 
 # Aliases
 # {
-# Modern alternatives (install if you don't have them)
-# apt install bat eza fd-find ripgrep
-# Packages vs binaries: bat->batcat, eza (provides both eza and exa binaries), fd-find->fdfind, ripgrep->rg
-# Modern CLI tool simple aliases (fixed to avoid infinite loops)
-if command -v batcat >/dev/null 2>&1; then
-	cat() { printf "batcat %s\n" "$(printf '%q ' "$@")"  >&2; command batcat "$@"; }
-	c() { printf "c %s\n" "$(printf '%q ' "$@")"  >&2; command batcat "$@"; }
-	echo "cat -> batcat"
-else
-	alias cat='command cat'
-	c() { printf "c %s\n" "$(printf '%q ' "$@")"  >&2; command cat -nv "$@"; }
-fi
-
-if command -v fdfind >/dev/null 2>&1; then
-	find() { printf "fdfind %s\n" "$(printf '%q ' "$@")"  >&2; command fdfind "$@"; }
-	echo "find -> fdfind"
-else
-	alias find='command find'
-	alias ff='find . -type f -iname'
-	alias fi_reg="find . -type f -regex"
-fi
-
-if command -v rg >/dev/null 2>&1; then
-	grep() { printf "rg %s\n" "$(printf '%q ' "$@")"  >&2; command rg "$@"; }
-	echo "grep -> rg"
-else
-	alias grep='command grep --color'
-fi
-alias grepbb='grep -Rin --color --include=*.bb'
-alias grepc='grep -Rin --color --include=*.{cc,c,h,hh}'
-alias grepdir="grep '[^\\/]*$'"
-alias grepi='grep --color -i'
-alias grepout="grep -i 'err\\w\\+\\|fail\\w\\+\\|undefined\\|\\w\\+\\.\\(cc\\|h\\):[0-9]\\+\\|$'"
-alias greprin='grep --color -Rin'
-
-if command -v eza >/dev/null 2>&1; then
-	ls() { printf "eza --group-directories-first --color=auto %s\n" "$(printf '%q ' "$@")"  >&2; command eza --group-directories-first --color=auto "$@"; }
-	alias ls-git='eza --git --group-directories-first --color=auto'
-	echo "ls -> eza --group-directories-first --color=auto"
-elif command -v exa >/dev/null 2>&1; then
-	ls() { printf "exa --group-directories-first --color=auto %s\n" "$(printf '%q ' "$@")"  >&2; command exa --group-directories-first --color=auto "$@"; }
-	alias ls-git='exa --git --group-directories-first --color=auto'
-	echo "ls -> exa --group-directories-first --color=auto"
-else
-	alias ls='command ls -h -F --color --group-directories-first'
-fi
+source "$dotfiles_dir/scripts/command_wrappers.bash"
+source "$dotfiles_dir/scripts/git_helpers.bash"
+source "$dotfiles_dir/scripts/docker_helpers.bash"
+source "$dotfiles_dir/scripts/shell_helpers.bash"
+source "$dotfiles_dir/scripts/terminal_helpers.bash"
+source "$dotfiles_dir/scripts/search_helpers.bash"
 
 alias la='ls -a'
 alias ll='la -l'
 alias l='ll'
 alias l_size='ll -S'
 alias :q='exit'
-apt-get() { printf "sudo apt-get %s\n" "$(printf '%q ' "$@")"  >&2; sudo apt-get "$@"; }
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias bashr='vim ~/.bashrc'
 alias cl='clear &&'
 alias d='dirs -v'
-df() { printf "df -h %s\n" "$(printf '%q ' "$@")"  >&2; command df -h "$@"; }
 alias du_sort="du | sort -nr"
 alias ex="emacs --no-window-system"
 alias exc="emacsclient -nw -c"
 alias f='fg'
-_git_expand_alias() {
-	local subcmd="$1" seen="${2:-}" acc_args="${3:-}"
-	[[ "|$seen|" == *"|$subcmd|"* ]] && return
-	local expanded
-	expanded=$(command git config --get "alias.$subcmd" 2>/dev/null)
-	[[ -z "$expanded" ]] && return
-	seen+="|$subcmd"
-	local display_call="$subcmd${acc_args:+ $acc_args}"
-	if [[ "$expanded" == \!* ]]; then
-		local shell_cmd="${expanded#!}"
-		# Strip surrounding quotes git config may preserve
-		shell_cmd="${shell_cmd#\"}"; shell_cmd="${shell_cmd%\"}"
-		# Expand $(…) subshells for display only (runs in subshell, no side effects on main commands)
-		local display_cmd
-		display_cmd=$(eval "printf '%s' \"${shell_cmd//\"/\\\"}\"" 2>/dev/null) || display_cmd="$shell_cmd"
-		printf "  git %s -> %s\n" "$display_call" "$display_cmd" >&2
-		# Recurse if shell cmd is simply: git <subcmd> [args...]
-		if [[ "$shell_cmd" =~ ^git[[:space:]]+([a-zA-Z_-]+)(.*) ]]; then
-			local next_args="${BASH_REMATCH[2]# }"
-			local combined="${next_args}${acc_args:+ $acc_args}"
-			_git_expand_alias "${BASH_REMATCH[1]}" "$seen" "${combined% }"
-		fi
-	else
-		local next="${expanded%% *}"
-		local expansion_args=""
-		[[ "$expanded" == *" "* ]] && expansion_args="${expanded#* }"
-		local full_cmd="$expanded${acc_args:+ $acc_args}"
-		printf "  git %s -> git %s\n" "$display_call" "$full_cmd" >&2
-		local combined="${expansion_args}${acc_args:+ $acc_args}"
-		_git_expand_alias "$next" "$seen" "${combined# }"
-	fi
-}
-git() {
-	local subcmd="${1:-}"
-	if [[ -n "$subcmd" ]]; then
-		local user_args=""
-		[[ $# -gt 1 ]] && user_args="$(printf '%q ' "${@:2}")"
-		_git_expand_alias "$subcmd" "" "${user_args% }"
-	fi
-	command git "$@"
-}
 alias g='git'
 alias g_pr_stash='git stash && git pull --rebase && git stash pop'
 alias gitr='vim ~/.gitconfig'
 alias gr='cd `git rev-parse --show-toplevel` 2> /dev/null'
-h() { printf "history %s\n" "$(printf '%q ' "$@")" >&2; history "$@"; }
-j() { printf "jobs -l %s\n" "$(printf '%q ' "$@")" >&2; jobs -l "$@"; }
 alias d='dirs -v'
-less() { printf "less -r %s\n" "$(printf '%q ' "$@")"  >&2; command less -r "$@"; }
-mkdir() { printf "mkdir -pv %s\n" "$(printf '%q ' "$@")"  >&2; command mkdir -pv "$@"; }
-mount() { printf "mount %s | column -t\n" "$(printf '%q ' "$@")"  >&2; command mount "$@" | column -t; }
 alias o='popd'
 alias p='pushd'
 alias pd='pushd'
 alias po='popd'
 alias popdd='popd >/dev/null'
 alias print_path='echo $PATH | tr : "\n"'
-psu() { printf "ps u --forest %s\n" "$(printf '%q ' "$@")" >&2; command ps u --forest "$@"; }
 alias pushdd="pushd \$PWD > /dev/null"
 alias rmrf='rm -rf'
-t() { printf "tree %s\n" "$(printf '%q ' "$@")" >&2; command tree "$@"; }
 alias tcshr='vim ~/.tcshrc'
-# Theme is resolved here, not in tmux.conf: run-shell executes in the tmux
-# server, which has no controlling tty, so the OSC 11 query always fails there.
-tm() {
-  if command tmux has-session 2>/dev/null; then
-    printf "tmux attach\n" >&2
-  else
-    printf "tmux new\n" >&2
-    command tmux new-session -d
-  fi
-  ~/dotfiles/tmux/apply-theme.sh
-  command tmux attach
-}
-v-split()  { printf "vim -o %s\n"  "$(printf '%q ' "$@")" >&2; command vim -o  "$@"; }
-v-tsplit() { printf "vim -p %s\n"  "$(printf '%q ' "$@")" >&2; command vim -p  "$@"; }
-v-vsplit() { printf "vim -O %s\n"  "$(printf '%q ' "$@")" >&2; command vim -O  "$@"; }
-v()        { printf "vim -O %s\n"  "$(printf '%q ' "$@")" >&2; command vim -O  "$@"; }
-vd()       { printf "vimdiff %s\n" "$(printf '%q ' "$@")" >&2; command vimdiff  "$@"; }
 alias vimr='vim ~/.vimrc'
-vs()       { printf "vim -o %s\n"  "$(printf '%q ' "$@")" >&2; command vim -o  "$@"; }
-vt()       { printf "vim -p %s\n"  "$(printf '%q ' "$@")" >&2; command vim -p  "$@"; }
-vv()       { printf "vim -O %s\n"  "$(printf '%q ' "$@")" >&2; command vim -O  "$@"; }
-wget() { printf "wget -c %s\n" "$(printf '%q ' "$@")"  >&2; command wget -c "$@"; }
 
-# Safer rm with confirmation for files in certain directories
-rm() { printf "rm -I --preserve-root %s\n" "$(printf '%q ' "$@")"  >&2; command rm -I --preserve-root "$@"; }
-mv() { printf "mv -i %s\n" "$(printf '%q ' "$@")"  >&2; command mv -i "$@"; }
-cp() { printf "cp -i %s\n" "$(printf '%q ' "$@")"  >&2; command cp -i "$@"; }
-ln() { printf "ln -i %s\n" "$(printf '%q ' "$@")"  >&2; command ln -i "$@"; }
-
-# More comprehensive Docker aliases
-dc() { printf "docker-compose %s\n" "$(printf '%q ' "$@")" >&2; command docker-compose "$@"; }
-dps() { printf 'docker ps --format ... %s\n' "$(printf '%q ' "$@")" >&2; command docker ps --format 'table {{.Names}}	{{.Image}}	{{.Status}}	{{.Ports}}' "$@"; }
-dstats() { printf 'docker stats --format ... %s\n' "$(printf '%q ' "$@")" >&2; command docker stats --format 'table {{.Name}}	{{.CPUPerc}}	{{.MemUsage}}	{{.MemPerc}}	{{.NetIO}}	{{.BlockIO}}' "$@"; }
-dimg() { printf 'docker images --format ... %s\n' "$(printf '%q ' "$@")" >&2; command docker images --format 'table {{.Repository}}	{{.Tag}}	{{.Size}}	{{.CreatedAt}}' "$@"; }
-dlog() { printf "docker logs -f %s\n" "$(printf '%q ' "$@")" >&2; command docker logs -f "$@"; }
-dxec() { printf "docker exec -it %s\n" "$(printf '%q ' "$@")" >&2; command docker exec -it "$@"; }
-dclean() { printf "docker system prune -af && docker volume prune -f\n" >&2; command docker system prune -af && command docker volume prune -f; }
-docker_stop_all() { printf "docker stop \$(docker ps -q)\n" >&2; command docker stop $(command docker ps -q); }
 # Remove broken links by: "findBrokenLinks | exec rm {} \;"
 alias find_broken_links='command find -L . -type l'
 
-# SSH with automatic agent forwarding
-ssha() { printf "ssh -A %s\n" "$(printf '%q ' "$@")" >&2; command ssh -A "$@"; }
-
 # Quick SSH config editing
 alias sshconfig='vim ~/.ssh/config'
-
-# Show SSH connections
-sshlist() { printf "ss -t state established '( dport = :22 or sport = :22 )'\n" >&2; command ss -t state established '( dport = :22 or sport = :22 )'; }
-
-# Disk usage for current directory with human readable sizes
-function duh() {
-    printf "du -h --max-depth=1 %s | sort -hr\n" "$(printf '%q ' "$@")" >&2
-    command du -h --max-depth=1 "$@" | sort -hr
-}
-
-# Process monitoring
-function psgrep() {
-    printf "ps aux | grep -v grep | grep -i %s\n" "$(printf '%q ' "$@")" >&2
-    command ps aux | command grep -v grep | command grep -i "$@"
-}
-
-# Network information
-function myip() {
-    echo "Local IP: $(hostname -I | awk '{print $1}')"
-    echo "External IP: $(curl -s ifconfig.me)"
-}
-
-if [[ $UID != 0 ]]; then
-	reboot() { printf "sudo reboot\n" >&2; sudo reboot; }
-	update() { printf "sudo apt-get -y update && sudo apt-get -y upgrade\n" >&2; sudo apt-get -y update && sudo apt-get -y upgrade; }
-fi
 # }
-
-function password_gen() {
-	local length="${1:-20}"  # Default to 20 characters
-	local chars='A-Za-z0-9!@#$%^&*()_+-=[]{}|;:,.<>?'
-	tr -dc "$chars" </dev/urandom | head -c "$length"
-	echo  # Add newline
-}
-
-# Directory bookmark functions (replacing broken cdd)
-function mark() {
-	export "MARK_${1}"="$PWD"
-	echo "Marked $PWD as $1"
-}
-
-function jump() {
-	local mark_var="MARK_$1"
-	local mark_dir="${!mark_var}"
-	if [[ -n "$mark_dir" && -d "$mark_dir" ]]; then
-		cd "$mark_dir" || return 1
-	else
-		echo "Mark $1 not set or directory doesn't exist" >&2
-		return 1
-	fi
-}
-
-function marks() {
-	env | grep '^MARK_' | sed 's/^MARK_//' | sort
-}
-
-function most_used_cmd() {
-	# Show most used commands with bar chart
-	HISTTIMEFORMAT= builtin history \
-		| command awk '{CMD[$2]++; count++} END {for (cmd in CMD) printf "%d %.1f %s\n", CMD[cmd], CMD[cmd] / count * 100, cmd}' \
-		| command sort -nr \
-		| command head -10 \
-		| command awk '{printf "%-20s %3d (%.1f%%)\n", $3, $1, $2}'
-}
-
-function most_used_cmd_with_args() {
-	# Show most used command combinations
-	HISTTIMEFORMAT= builtin history \
-		| command awk '{$1=""; print substr($0, 2)}' \
-		| command sort \
-		| command uniq -c \
-		| command sort -nr \
-		| command head -10
-}
-
-function mcd()
-{
-	directory="${1}"
-	mkdir -p "$directory"
-	cd "$directory" || exit
-}
-
-function find_files() {
-	# Better name and implementation
-	local pattern="$1"
-	shift
-	find "${@:-.}" -type f -name "*${pattern}*" 2>/dev/null
-}
 
 # Solarized
 alias sol.dark='source ~/dotfiles/mintty/sol.dark'
@@ -482,66 +266,6 @@ bind '"\e[A":history-search-backward' # ]
 bind '"\e[B":history-search-forward' # ]
 bind '"\e[1;3D": backward-word' ### Alt left ]
 bind '"\e[1;3C": forward-word' ### Alt right" ]
-
-function my_pylint() {
-	local python_version="${1:-3}"
-	local python_file="$2"
-
-	if [[ -z "$python_file" ]]; then
-		echo "Usage: my_pylint [python_version] <file.py>" >&2
-		return 1
-	fi
-
-	python"${python_version}" -m pylint "$python_file"
-}
-
-function tail_color()
-{
-	local file RED GREEN YELLOW MAGENTA WHITE RESET
-	# BLUE CYAN ORANGE VIOLET
-	file="${1}"
-	RED="$(tput setaf 1)"
-	GREEN="$(tput setaf 2)"
-	YELLOW="$(tput setaf 3)"
-	BLUE="$(tput setaf 4)"
-	MAGENTA="$(tput setaf 5)"
-	CYAN="$(tput setaf 6)"
-	WHITE="$(tput setaf 7)"
-	# ORANGE="$(tput setaf 9)"
-	# VIOLET="$(tput setaf 13)"
-	RESET="$(tput sgr0)"
-	tail "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
-	s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
-	s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
-	s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
-	s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
-	s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
-	s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
-}
-
-function tailf_color()
-{
-	local file RED GREEN YELLOW MAGENTA WHITE RESET
-	# BLUE CYAN ORANGE VIOLET
-	file="${1}"
-	RED="$(tput setaf 1)"
-	GREEN="$(tput setaf 2)"
-	YELLOW="$(tput setaf 3)"
-	BLUE="$(tput setaf 4)"
-	MAGENTA="$(tput setaf 5)"
-	CYAN="$(tput setaf 6)"
-	WHITE="$(tput setaf 7)"
-	# ORANGE="$(tput setaf 9)"
-	# VIOLET="$(tput setaf 13)"
-	RESET="$(tput sgr0)"
-	tail -f "$file" | sed "s/\(\<fail\w\+\|\<err\w\+\)/$RED\1$RESET/gI;
-	s/\(\<warn\w\+\)/$YELLOW\1$RESET/gI;
-	s/\(\<info\w\+\)/$WHITE\1$RESET/gI;
-	s/\(\<ok\w\+\|\<done\>\|\<pass\w\+\)/$GREEN\1$RESET/gI;
-	s/\(\<makemake\>\|\<mkmk\>\)/$MAGENTA\1$RESET/gI;
-	s/\(\<true\>\|\<false\>\)/$CYAN\1$RESET/gI;
-	s/\(\<\w\+.\w\+\>:[[:digit:]]\+\)/$BLUE\1$RESET/gI"
-}
 
 # Template for argument parsing - remove if not needed
 # function parse_args() {
@@ -571,38 +295,6 @@ function tailf_color()
 
 # Colors
 # {
-
-# Color script
-function colors_and_formatting()
-{
-	# Background
-	for clbg in {40..47} {100..107} 49 ; do
-		# Foreground
-		for clfg in {30..37} {90..97} 39 ; do
-			# Formatting
-			for attr in 0 1 2 4 5 7 ; do
-				# Print the result
-				echo -en "\\e[${attr};${clbg};${clfg}m ^[${attr};${clbg};${clfg}m \\e[0m"
-			done
-			echo # Newline
-		done
-	done
-}
-
-function 256-colors()
-{
-	for fgbg in 38 48 ; do # Foreground / Background
-		for color in {0..255} ; do # Colors
-			# Display the color
-			printf "\\e[${fgbg};5;%sm  %3s  \\e[0m" $color $color
-			# Display 6 colors per lines
-			if [ $(((color + 1) % 6)) == 4 ] ; then
-				echo # New line
-			fi
-		done
-		echo # New line
-	done
-}
 
 # ls description
 # {
@@ -653,148 +345,8 @@ alias solar_start="\${SOLR_PATH}/bin/solr start"
 alias solar_stop="\${SOLR_PATH}/bin/solr stop"
 # }
 
-function countdown() {
-	# countdown 60              60 seconds
-	# countdown 60*30           30 minutes
-	# countdown $((24*60*60))   1 day
-	local seconds="${1:-60}"
-	local end_time=$(($(date +%s) + seconds))
-
-	while [[ $end_time -gt $(date +%s) ]]; do
-		local remaining=$((end_time - $(date +%s)))
-		printf "\r%s" "$(date -u -d @${remaining} +%H:%M:%S)"
-		sleep 0.1
-	done
-	echo -e "\nTime's up!"
-}
-
-function stopwatch()
-{
-	date1=$(date +%s);
-	while true; do
-		echo -ne "$(date -u --date @$(($(date +%s) - date1)) +%H:%M:%S)\\r";
-		sleep 0.1
-	done
-}
-
-function git-find()
-{
-	local word=$1
-	local RED="$(tput setaf 1)"
-	local GREEN="$(tput setaf 2)"
-	local YELLOW="$(tput setaf 3)"
-	local BLUE="$(tput setaf 4)"
-	local MAGENTA="$(tput setaf 5)"
-	local CYAN="$(tput setaf 6)"
-	local WHITE="$(tput setaf 7)"
-	local GREY="$(tput setaf 9)"
-	local VIOLET="$(tput setaf 13)"
-	local BLACK="$(tput setaf 16)"
-	local BOLD="$(tput bold)"
-	local UNDERLINE="$(tput smul)"
-	local EXIT_UNDERLINE="$(tput rmul)"
-	local RESTORE="$(tput sgr0)"
-	for file in $(git show --name-only); do
-		ROWS=$(git show -- ":/${file}" 2> /dev/null | gawk 'match($0,"^@@ -([0-9]+),[0-9]+ [+]([0-9]+),[0-9]+ @@",a){minus_count=a[1];plus_count=a[2];next};\
-			/^(---|\+\+\+|[^-+ ])/{print;next};\
-			{line=substr($0,2)};\
-			/^-/{print "-" minus_count++ ":" line;next};\
-			/^[+]/{print "+" plus_count++ ":" line;next};\
-			{print "(" minus_count++ "," plus_count++ "):"line}' | grep -E "^\\+[^\\+]" | grep -i "\\<${word}\\>")
-		local EXIT_STATUS="$?"
-		if [[ $EXIT_STATUS == 0 ]]; then
-			ROW_NUMBERS=$(echo "${ROWS}" | sed -e 's/+\([[:digit:]]\+\):.\+/\1/')
-			EXIT_STATUS="$?"
-			if [[ $EXIT_STATUS == 0 ]]; then
-				for ROW in $ROW_NUMBERS; do
-					echo -e "${RED}$file${RESTORE}:${GREEN}$ROW ${RESTORE}contains${CYAN} $1${RESTORE}"
-				done
-			fi
-		fi
-	done
-}
-
-function find_code()
-{
-	MATCH="$@"
-	grep -lr "$MATCH" ${SRCDIR} | while read file
-do
-	echo ${file}
-	grep -nh -A5 -B5 "@MATCH" "${file}"
-done
-}
-
-function search_and_replace() {
-	local old_phrase="$1"
-	local new_phrase="$2"
-
-	if [[ -z "$old_phrase" || -z "$new_phrase" ]]; then
-		echo "Usage: search_and_replace <old_phrase> <new_phrase>" >&2
-		return 1
-	fi
-
-	local files
-	files=$(grep -ril "$old_phrase" . 2>/dev/null)
-
-	if [[ -z "$files" ]]; then
-		echo "No files found containing '$old_phrase'"
-		return 0
-	fi
-
-	echo "Files to be modified:"
-	echo "$files"
-	read -p "Continue? (y/N): " -n 1 -r
-	echo
-
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		echo "$files" | xargs sed -i "s/$old_phrase/$new_phrase/g"
-		echo "Replacement complete!"
-	else
-		echo "Operation cancelled."
-	fi
-}
-
 # Variables
 # export DISPLAY=localhost:0.0
-
-# Git clone wrapper with automatic hook and config setup
-function git-clone() {
-    local repo_url="$1"
-    local target_dir="${2:-$(basename "$repo_url" .git)}"
-    local clone_to_projects=false
-
-    # If no target directory specified, clone to ~/projects/
-    if [[ -z "$2" ]]; then
-        mkdir -p ~/projects
-        target_dir="~/projects/$target_dir"
-        clone_to_projects=true
-    fi
-
-    echo "🚀 Cloning $repo_url to $target_dir..."
-    if git clone "$repo_url" "$target_dir"; then
-        cd "$target_dir" || return 1
-
-        echo "🔧 Setting up hooks and personal config..."
-
-        # Apply git template (installs hooks)
-        git init >/dev/null 2>&1
-
-        # Personal config is now handled by conditional includes
-        # But we can still set repo-specific settings
-        if [[ "$clone_to_projects" == true ]]; then
-            echo "📁 Cloned to projects directory - personal config auto-applied"
-        fi
-
-        echo "✅ Repository cloned and configured!"
-        echo "📁 Directory: $(pwd)"
-
-        # Show current git config
-        echo "👤 User: $(git config user.name) <$(git config user.email)>"
-    else
-        echo "❌ Clone failed!"
-        return 1
-    fi
-}
 
 # Aliases for convenience
 alias gcl='git-clone'
