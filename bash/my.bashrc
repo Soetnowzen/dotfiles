@@ -2,8 +2,34 @@
 
 # set -o vi
 # Set up vi mode indicators with custom styling
-bind 'set vi-ins-mode-string "\1\e[6;30;42m\2 INS \1\e[0m\2"'
-bind 'set vi-cmd-mode-string "\1\e[6;30;41m\2 CMD \1\e[0m\2"'
+__readline_mode_foreground=30
+if [[ -r /dev/tty ]]; then
+	__readline_stty=$(stty -g < /dev/tty 2>/dev/null)
+	if [[ -n $__readline_stty ]] && stty raw -echo min 0 time 2 < /dev/tty 2>/dev/null; then
+		if [[ -n ${TMUX:-} ]]; then
+			printf '\ePtmux;\e\033]11;?\007\e\\' > /dev/tty
+		else
+			printf '\033]11;?\007' > /dev/tty
+		fi
+		__readline_background=""
+		while IFS= read -r -n 1 -t 0.2 __readline_char < /dev/tty 2>/dev/null; do
+			__readline_background+="$__readline_char"
+			[[ $__readline_background == *$'\a'* || $__readline_background == *$'\033\\'* ]] && break
+		done
+		stty "$__readline_stty" < /dev/tty 2>/dev/null
+		if [[ $__readline_background =~ rgb:([0-9a-fA-F]+)/([0-9a-fA-F]+)/([0-9a-fA-F]+) ]]; then
+			__readline_red=$((16#${BASH_REMATCH[1]:0:2}))
+			__readline_green=$((16#${BASH_REMATCH[2]:0:2}))
+			__readline_blue=$((16#${BASH_REMATCH[3]:0:2}))
+			if (((__readline_red * 299 + __readline_green * 587 + __readline_blue * 114) / 1000 > 127)); then
+				__readline_mode_foreground=97
+			fi
+		fi
+	fi
+fi
+bind "set vi-ins-mode-string \"\1\e[6;${__readline_mode_foreground};42m\2 INS \1\e[0m\2\""
+bind "set vi-cmd-mode-string \"\1\e[6;${__readline_mode_foreground};41m\2 CMD \1\e[0m\2\""
+unset -v __readline_stty __readline_background __readline_char __readline_red __readline_green __readline_blue __readline_mode_foreground
 bind 'set show-mode-in-prompt on'
 # ctrl-k (until end), ctrl-u (until begin), ctrl-w (backward), ctrl-y (paste) - cutting and pasting text in the command line
 # ctrl-r search_term to search for previous command.

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if command -v batcat >/dev/null 2>&1; then
-	cat() { printf "batcat %s\n" "$(printf '%q ' "$@")" >&2; command batcat "$@"; }
-	c() { printf "c %s\n" "$(printf '%q ' "$@")" >&2; command batcat "$@"; }
+	cat() { printf "batcat --theme=ansi %s\n" "$(printf '%q ' "$@")" >&2; command batcat --theme=ansi "$@"; }
+	c() { printf "c %s\n" "$(printf '%q ' "$@")" >&2; command batcat --theme=ansi "$@"; }
 	echo "cat -> batcat"
 else
 	alias cat='command cat'
