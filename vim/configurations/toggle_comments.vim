@@ -1,15 +1,15 @@
 
-let s:comment_map = {
+let g:comment_map = {
 			\ "ahk": ';',
 			\ "automake": '#',
 			\ "bash_profile": '#',
 			\ "bashrc": '#',
 			\ "bat": 'REM',
-			\ "c": '\/\/',
+			\ "c": '//',
 			\ "cfg": '#',
 			\ "conf": '#',
 			\ "config": '#',
-			\ "cpp": '\/\/',
+			\ "cpp": '//',
 			\ "csh": '#',
 			\ "desktop": '#',
 			\ "eml": '>',
@@ -17,23 +17,23 @@ let s:comment_map = {
 			\ "fstab": '#',
 			\ "gdb": '#',
 			\ "gitconfig": '#',
-			\ "go": '\/\/',
+			\ "go": '//',
 			\ "haskell": '--',
-			\ "java": '\/\/',
-			\ "javascript": '\/\/',
+			\ "java": '//',
+			\ "javascript": '//',
 			\ "lisp": ';;',
 			\ "lua": '--',
 			\ "mail": '>',
 			\ "make": '#',
 			\ "markdown": '[//]: #',
-			\ "php": '\/\/',
+			\ "php": '//',
 			\ "plaintex": '%',
 			\ "pov": '#',
 			\ "profile": '#',
-			\ "proto": '\/\/',
+			\ "proto": '//',
 			\ "python": '#',
 			\ "ruby": '#',
-			\ "rust": '\/\/',
+			\ "rust": '//',
 			\ "scala": '\/\/',
 			\ "sh": '#',
 			\ "spec": '#',
@@ -45,30 +45,31 @@ let s:comment_map = {
 			\ "zsh": '#',
 			\ }
 
-function! ToggleComment()
-	" Skip if row only are whitespaces
-	if getline('.') !~ "^\\s*$"
-		if has_key(s:comment_map, &filetype)
-			let comment_leader = s:comment_map[&filetype]
-			if getline('.') =~ "^\\s*" . comment_leader . " "
-				" Uncomment the line
-				execute "silent s/^\\(\\s*\\)" . comment_leader . " /\\1/"
-			else
-				if getline('.') =~ "^\\s*" . comment_leader
-					" Uncomment the line
-					execute "silent s/^\\(\\s*\\)" . comment_leader . "/\\1/"
-				else
-					" Comment the line
-					execute "silent s/^\\(\\s*\\)/\\1" . comment_leader . " /"
-				end
-			end
+function! ToggleComment() range
+	if !has_key(g:comment_map, &filetype)
+		echo "No comment leader found for filetype"
+		return
+	endif
+
+	let comment_leader = g:comment_map[&filetype]
+	let comment_pattern = escape(comment_leader, '\\.^$~[]/')
+	for line_number in range(a:firstline, a:lastline)
+		let line = getline(line_number)
+		if line =~# '^\s*$'
+			continue
+		endif
+
+		let uncommented = substitute(line, '^\(\s*\)' . comment_pattern . '\%([[:space:]]\|$\)', '\1', '')
+		if uncommented !=# line
+			call setline(line_number, uncommented)
 		else
-			echo "No comment leader found for filetype"
-		end
-	end
+			let indent = matchstr(line, '^\s*')
+			call setline(line_number, indent . comment_leader . ' ' . strpart(line, strlen(indent)))
+		endif
+	endfor
 endfunction
 
 nnoremap <Leader><Space> :call ToggleComment()<CR>
 vnoremap <C-m> :call ToggleComment()<CR>
 nnoremap <C-m> :call ToggleComment()<CR>
-vnoremap <Leader>m :call ToggleBlockComment()<CR>
+vnoremap <Leader>m :call ToggleComment()<CR>

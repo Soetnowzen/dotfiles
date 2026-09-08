@@ -102,7 +102,6 @@ nnoremap <C-y>w :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <Leader>y :call WindowSwap#MarkWindowSwap()<CR>
 nnoremap <C-p>w :call WindowSwap#DoWindowSwap()<CR>
 nnoremap <Leader>p :call WindowSwap#DoWindowSwap()<CR>
-nnoremap <C-w>w :call WindowSwap#EasyWindowSwap()<CR>
 nnoremap <Leader>w :call WindowSwap#EasyWindowSwap()<CR>
 " }
 
@@ -187,10 +186,10 @@ let g:gitgutter_diff_args = '-w'
 " }
 
 " Asynchronous Lint Engine (ALE) {
-let b:ale_linters= {
+let g:ale_linters= {
 			\ 'python': ['flake8', 'pylint']
 			\ }
-let b:ale_fixers = {
+let g:ale_fixers = {
 			\ '*': ['remove_trailing_lines', 'trim_whitespace'],
 			\ 'cpp': ['clang-format'],
 			\ 'javascript': ['prettier', 'eslint', 'clang-format'],

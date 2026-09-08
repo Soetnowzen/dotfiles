@@ -4,6 +4,9 @@ source $VIMRUNTIME/vimrc_example.vim
 source $VIMRUNTIME/mswin.vim
 behave mswin
 
+" Change the map of <leader> from \ to ,
+let mapleader=","
+
 runtime custom/vundle.vim
 runtime custom/toggle_comments.vim
 runtime custom/folding.vim
@@ -78,9 +81,6 @@ set ttyfast               " Faster terminal connection
 
 " Delete comment characters when joining lines.
 set formatoptions+=j
-
-" Change the map of <leader> from \ to ,
-let mapleader=","
 
 " set System clipboard
 set clipboard=unnamed
@@ -526,10 +526,13 @@ let pattern = "\\s(if|for|while)\\(" . space_tab
 " autocmd FileType cpp,c let pattern = pattern.bit_operations_after.bit_operations_before
 highlight ExtraWhitespace ctermbg=Grey guibg=Grey ctermfg=Black guifg=Black
 execute 'match ExtraWhitespace /\v'. pattern .'/'
-execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
-execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd BufWinLeave * call clearmatches()
+augroup extra_whitespace
+	autocmd!
+	execute 'autocmd BufWinEnter * match ExtraWhitespace /\v'. pattern .'/'
+	execute 'autocmd InsertLeave * match ExtraWhitespace /\v'. pattern .'/'
+	autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+	autocmd BufWinLeave * call clearmatches()
+augroup END
 
 " Added a new command to remove trailing spaces
 " (search and replace / whitespaces / one or more, end of line)
