@@ -34,6 +34,21 @@ let g:solarized_italic=1 " 0 | 1
 let g:solarized_termcolors=16 " 16 | 256
 let g:solarized_termtrans=1 " 0 | 1
 let g:solarized_underline=1 " 0 | 1
+
+function! s:terminal_background() abort
+	let theme = getenv('TERM_THEME')
+	if index(['light', 'dark'], theme) >= 0
+		return theme
+	endif
+
+	let colorfgbg = matchlist(getenv('COLORFGBG'), '\v;(\d+)$')
+	if !empty(colorfgbg)
+		return str2nr(colorfgbg[1]) >= 7 ? 'light' : 'dark'
+	endif
+
+	return 'dark'
+endfunction
+
 if has('gui_running')
 	" if GVim else Vim
 	let g:solarized_contrast="high" " low | normal | high
@@ -51,7 +66,7 @@ else
 	set t_Co=256
 	let g:solarized_contrast = "high" " low | normal | high
 	let g:solarized_visibility = "high" " low | normal | high
-	set background=dark
+	execute 'set background=' . s:terminal_background()
 endif
 colorscheme solarized
 
@@ -103,7 +118,7 @@ nnoremap <Leader>r :LinediffReset<CR>
 if has('gui_running')
 	let g:airline_solarized_bg='light'
 else
-	let g:airline_solarized_bg='dark'
+	let g:airline_solarized_bg=&background
 endif
 
 " Set this. Airline will handle the rest.

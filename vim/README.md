@@ -64,3 +64,7 @@ Edit `configurations/vundle.vim` for plugins and theme behavior. Put reusable
 filetype syntax in `syntax/`, and keep general mappings or editor options in
 `my.vimrc`. Running `make vim` again refreshes the symlinks without replacing
 an existing Vundle checkout.
+
+Terminal Vim follows `TERM_THEME` when it is `light` or `dark`. The included
+tmux configuration sets this from its terminal-background detection; outside
+tmux, Vim falls back to the terminal's `COLORFGBG` value and then dark mode.
